@@ -1,0 +1,98 @@
+.dash {
+  display: flex;
+}
+.Dasbtn {
+  width: 90%;
+  height: 35px;
+  border: none;
+  border-radius: 5px;
+  outline: none;
+  transition: all 0.3s ease-in-out;
+}
+.Dasbtn:hover {
+  background-color: rgb(168, 167, 167);
+  margin-left: -8px;
+}
+#eet {
+  transition: all 0.9s ease-in-out;
+}
+#ett:hover {
+  transition: all 0.5s ease-in;
+  margin-top: -10px;
+  margin-left: -10px;
+} 
+#fi {
+  position: fixed;
+  position: sticky;
+  top: 13vh;
+}
+
+.burger button {
+  border: none;
+  color: white;
+  background-color: transparent;
+  font-size: 29px;
+  outline: none;
+}
+.messagess {
+  position: relative;
+  font-size: 25px;
+}
+.num {
+  height: 21px;
+  font-size: 12px;
+  width: 25px;
+  display: grid;
+  place-items: center;
+  position: absolute;
+  top: -1px;
+  right: 6px;
+  border-radius: 8px;
+}
+.round {
+  height: 50px;
+  background-color: rgb(201, 201, 201);
+  width: 50px;
+}
+#hoverEffect {
+  transition: all 0.3s ease-in-out;
+}
+#hoverEffect:hover {
+  background-color: #2d1455;
+  color: white;
+}
+@media (max-width: 800px) {
+  .messagess {
+    margin-left: -8%;
+  }
+  #dash2 {
+    height: 880px;
+  }
+  #tex {
+    display: none;
+  }
+  .burger {
+    left: 34%;
+  }
+  #dash3 {
+    position: none;
+    /* display: none; */
+  }
+  #fi {
+    background: rgba(0, 0, 0, 0.904);
+    box-shadow: none;
+    position: fixed;
+    z-index: 2;
+    transition: all 0.6s ease-in-out;
+    top: 13vh;
+    width: 85%;
+  }
+  .Dasbtn {
+    background-color: transparent;
+    color: white;
+    font-size: 18px;
+  }
+  .Dasbtn:hover {
+    background-color: #1451b9;
+  }
+}
