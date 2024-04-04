@@ -65,7 +65,8 @@ const PersonalInfo = () => {
     dateOfBirth: "",
     gender: "",
     marital_status: "",
-    image: ""
+    image: "",
+    maidenName: "",
   });
 
   useEffect(() => {
@@ -82,7 +83,8 @@ const PersonalInfo = () => {
         dateOfBirth: userDetails?.date_of_birth,
         gender: userDetails?.gender,
         marital_status: userDetails?.marital_status,
-        image: userDetails?.image
+        image: userDetails?.image,
+        maidenName:  userDetails?.maiden_name
       });
     }
   }, [userDetails]);
@@ -99,6 +101,7 @@ const PersonalInfo = () => {
     formData.append('date_of_birth', formValues.dateOfBirth);
     formData.append('gender', formValues.gender);
     formData.append('marital_status', formValues.marital_status);
+    formData.append('maiden_name', formValues.maidenName);
     try {
       const response = await api.updatePinfo(formData);
       console.log("Response: ", response);
@@ -204,6 +207,27 @@ const PersonalInfo = () => {
                     setFormValues({
                       ...formValues,
                       lastName: e.target.value,
+                    })
+                  }
+                />
+              </div>
+               <div class='form-group'>
+                <label
+                  for='exampleFormControlSelect1'
+                  className='fw-semibold text-muted fs-6 mt-3 mb-2'>
+                  Maiden Name
+                </label>
+                <input
+                  type='text'
+                  style={{ height: "40px" }}
+                  class='form-control rounded-0'
+                  id='exampleFormControlInput1'
+                  placeholder=''
+                  value={formValues.maidenName}
+                  onChange={(e) =>
+                    setFormValues({
+                      ...formValues,
+                      maidenName: e.target.value,
                     })
                   }
                 />
