@@ -201,27 +201,35 @@ const CompassionateLeave = ({ navigate }) => {
       setIsLoading(false);
     }
   };
+
+ 
   
 
-  // if (totalLeave > '0') {
-  //   return (
-  //     <Box
-  //       w={"80vw"}
-  //       display="flex"
-  //       flexDirection="column"
-  //       h={"20vh"}
-  //       alignItems="center"
-  //       justifyContent="center"
-  //     >
-  //       <div className='row mt-5 ' style={{ height: "10px", width:"80%"}}>
-  //         <Oops/>
-  //         <h2 style={{ textAlign:'center', marginTop:50}}>You are not Eligible for this Type of Leave.</h2>
-  //       </div>
-
-  //     </Box>
-      
-  //   );
-  // }
+  if (totalLeave > 0) {
+    return (
+      <Box
+        w={"80vw"}
+        display="flex"
+        flexDirection="column"
+        h={"20vh"}
+        alignItems="center"
+        justifyContent="center"
+      >
+        <div className="row mt-5 " style={{ height: "10px", width: "80%" }}>
+          <Oops />
+          <h2 style={{ textAlign: "center", marginTop: 50 }}>
+            You are not Eligible for this Type of Leave.
+          </h2>
+          <p
+            class=" fs-5 fw-semibold"
+            style={{ textAlign: "center", marginTop: 20 }}
+          >
+          You need to exhaust your annual leave to get access to compassionate leave
+          </p>
+        </div>
+      </Box>
+    );
+  }
 
   return (
     <div className='container-fluid'>

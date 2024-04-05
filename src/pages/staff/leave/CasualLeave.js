@@ -9,6 +9,11 @@ import { MoonLoader } from "react-spinners";
 import 'intl';
 import 'intl/locale-data/jsonp/en';
 import { getYear, getMonth } from 'date-fns';
+import {
+  Box,
+} from "@chakra-ui/react";
+import Oops from '../../../components/Opps';
+
 
 const CasualLeave = ({ navigate }) =>  {
 
@@ -22,7 +27,7 @@ const CasualLeave = ({ navigate }) =>  {
     rankDesignation,
     selectedLeaveType,
     staffType,
-    staffLevel
+    staffLevel, totalLeave
   } = location.state;
   
   const { enqueueSnackbar } = useSnackbar();
@@ -172,6 +177,33 @@ const CasualLeave = ({ navigate }) =>  {
       setIsLoading(false);
     }
   };
+
+  if (totalLeave === 0) {
+    return (
+      <Box
+        w={"80vw"}
+        display="flex"
+        flexDirection="column"
+        h={"20vh"}
+        alignItems="center"
+        justifyContent="center"
+      >
+        <div className="row mt-5 " style={{ height: "10px", width: "80%" }}>
+          <Oops />
+          <h2 style={{ textAlign: "center", marginTop: 50 }}>
+            You are not Eligible for this Type of Leave.
+          </h2>
+          <p
+            class=" fs-5 fw-semibold"
+            style={{ textAlign: "center", marginTop: 20 }}
+          >
+          You need to exhaust your annual leave to get access to compassionate leave
+          </p>
+        </div>
+      </Box>
+    );
+  }
+
 
   return (
     <div className='container-fluid'>

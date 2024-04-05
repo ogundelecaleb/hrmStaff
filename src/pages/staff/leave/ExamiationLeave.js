@@ -146,8 +146,8 @@ const ExaminationLeave = ({ navigate }) =>  {
   async function handleSubmit (e)  {
     e.preventDefault();
     setIsLoading(true);
-    if (!isDocument1Uploaded || !isDocument2Uploaded) {
-      enqueueSnackbar('Please upload both required documents', { variant: 'error' });
+    if (!isDocument1Uploaded) {
+      enqueueSnackbar('Please upload a document', { variant: 'error' });
       setIsLoading(false);
       return;
     }
@@ -491,7 +491,7 @@ const ExaminationLeave = ({ navigate }) =>  {
                   <label
                     style={{ marginBottom: '10px' }}
                     className='form-label fs-6 fw-semibold h-10'>
-                    Upload Document 2<sup className='text-danger'>*</sup>
+                    Upload Document 2<sup className='text-danger'>*</sup><span className='fs-8 fw-semibold h-10'>{"("}optional{")"}</span>
                   </label>
                   <input
                     type="file"

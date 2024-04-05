@@ -215,7 +215,7 @@ const PersonalInfo = () => {
                 <label
                   for='exampleFormControlSelect1'
                   className='fw-semibold text-muted fs-6 mt-3 mb-2'>
-                  Maiden Name
+                  Middle Name
                 </label>
                 <input
                   type='text'
