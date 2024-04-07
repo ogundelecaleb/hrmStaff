@@ -101,3 +101,4 @@ export const APPROVESPADEV = getApiUrl('/approve-spadev/')
 
 export const CREATEJOB = getApiUrl('/jobs')
 export const FETCHJOBS = getApiUrl('/all-jobs')
+export const LEAVECOUNT = getApiUrl('/training-leaves-count')
