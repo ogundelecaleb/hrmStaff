@@ -10,7 +10,6 @@ import { getYear, getMonth } from "date-fns";
 import { Box } from "@chakra-ui/react";
 import Oops from "../../../components/Opps";
 
-
 const TrainingLeave = ({ navigate }) => {
   const location = useLocation();
 
@@ -46,7 +45,6 @@ const TrainingLeave = ({ navigate }) => {
 
   async function getLeaveCount() {
     try {
-    
       const message = await api.leaveCount();
       console.log("leave count--- Messages:", message);
       setLeaveCount(message);
@@ -54,7 +52,6 @@ const TrainingLeave = ({ navigate }) => {
       console.error("Error fetching notifications", error);
       enqueueSnackbar(error.message, { variant: "error" });
     } finally {
-    
     }
   }
 
@@ -204,14 +201,25 @@ const TrainingLeave = ({ navigate }) => {
           <h2 style={{ textAlign: "center", marginTop: 50 }}>
             You are not Eligible for this Type of Leave.
           </h2>
+
+          <p
+            class=" fs-5 fw-semibold"
+            style={{ textAlign: "center", marginTop: 20 }}
+          >
+            This Leave doesn't apply to level 13 - 15 staffs
+          </p>
         </div>
       </Box>
     );
   }
 
-  
-  if (leaveCount && leaveCount?.training_count === 2
-  ) {
+  // Get the current date
+const currentDate = new Date();
+
+// Get the current year
+const currentYear = currentDate.getFullYear();
+
+  if (leaveCount && leaveCount?.training_count === 2 && leaveCount?.year === currentYear) {
     return (
       <Box
         w={"80vw"}
