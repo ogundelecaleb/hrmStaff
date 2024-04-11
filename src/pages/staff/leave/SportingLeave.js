@@ -93,13 +93,28 @@ const SportingLeave = ({ navigate }) =>  {
     calculateLeaveDuration();
   
     // Set the resumption date to a day after the end date
-    const nextDay = new Date(date);
-    nextDay.setDate(nextDay.getDate() + 1);
-    const formattedNextDay = nextDay.toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: '2-digit',
-      day: '2-digit',
+ 
+   
+     
+
+    let nextDay = new Date(date);
+     nextDay.setDate(nextDay.getDate() + 1);
+    const dayOfWeek = nextDay.getDay();
+    
+    if (dayOfWeek === 0) {
+      // Sunday
+      nextDay.setDate(nextDay.getDate() + 1); // Move to Monday
+    } else if (dayOfWeek === 6) {
+      // Saturday
+      nextDay.setDate(nextDay.getDate() + 2); // Move to Monday
+    }
+
+    const formattedNextDay = nextDay.toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
     });
+        
     setResumptiondate(formattedNextDay);
   };
 
@@ -120,7 +135,7 @@ const SportingLeave = ({ navigate }) =>  {
         start.setDate(start.getDate() + 1);
       }
   
-      setLeaveDuration(`${durationInDays} working day(s)`);
+      setLeaveDuration(`${durationInDays} day(s)`);
       setDurationInDays(durationInDays);
     } else {
       setLeaveDuration('');
