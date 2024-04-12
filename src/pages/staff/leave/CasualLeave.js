@@ -27,7 +27,9 @@ const CasualLeave = ({ navigate }) =>  {
     rankDesignation,
     selectedLeaveType,
     staffType,
-    staffLevel, totalLeave
+    staffLevel, 
+    totalLeave,
+
   } = location.state;
   
   const { enqueueSnackbar } = useSnackbar();

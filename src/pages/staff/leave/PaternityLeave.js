@@ -137,6 +137,12 @@ const PaternityLeave = ({ navigate }) => {
       setIsLoading(false);
       return;
     }
+
+      if (birthNum && birthNum > 2 ) {
+      enqueueSnackbar("Paternity Leave is only applicable to 1st and 2nd birth", { variant: "error" });
+      setIsLoading(false);
+      return;
+    }
     const formattedStartDate = startDate
       ? new Date(startDate).toISOString().split("T")[0]
       : null;
