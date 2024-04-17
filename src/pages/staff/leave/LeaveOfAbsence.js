@@ -112,6 +112,9 @@ const LeaveOfAbsence = ({ navigate }) =>  {
     retry: true,
   });
 
+
+  console.log(leaveStatusQuery.data)
+
   async function handleSubmit (e)  {
     e.preventDefault();
     setIsLoading(true);
@@ -170,8 +173,8 @@ const LeaveOfAbsence = ({ navigate }) =>  {
   };
 
   if (
-    leaveStatusQuery.data.annual_leave ||
-    leaveStatusQuery.data.compassionate_leave
+    leaveStatusQuery.data?.annual_leave ||
+    leaveStatusQuery.data?.compassionate_leave
   ) {
     return (
       <Box

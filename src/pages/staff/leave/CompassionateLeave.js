@@ -242,8 +242,8 @@ const CompassionateLeave = ({ navigate }) => {
   }
 
   if (
-    leaveStatusQuery.data.annual_leave ||
-    leaveStatusQuery.data.leave_of_absence
+    leaveStatusQuery.data?.annual_leave ||
+    leaveStatusQuery.data?.leave_of_absence
   ) {
     return (
       <Box

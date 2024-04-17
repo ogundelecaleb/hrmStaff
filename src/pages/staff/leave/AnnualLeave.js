@@ -187,6 +187,7 @@ const AnnualLeave = ({ navigate }) => {
     retry: true,
   });
 
+
   async function handleSubmit(e) {
     e.preventDefault();
     setIsLoading(true);
@@ -256,8 +257,8 @@ const AnnualLeave = ({ navigate }) => {
   }
 
   if (
-    leaveStatusQuery.data.compassionate_leave ||
-    leaveStatusQuery.data.leave_of_absence
+    leaveStatusQuery.data?.compassionate_leave ||
+    leaveStatusQuery.data?.leave_of_absence
   ) {
     return (
       <Box
