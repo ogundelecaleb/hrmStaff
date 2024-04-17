@@ -186,6 +186,14 @@ const MaternityLeave = ({ navigate }) => {
         <div className='row mt-5 ' style={{ height: "10px", width:"80%"}}>
           <Oops/>
           <h2 style={{ textAlign:'center', marginTop:50}}>You are not Eligible for this Type of Leave.</h2>
+
+
+          <p
+            class=" fs-5 fw-semibold"
+            style={{ textAlign: "center", marginTop: 20 }}
+          >
+          Mertanity Leave is only applicable to Female
+          </p>
         </div>
 
       </Box>

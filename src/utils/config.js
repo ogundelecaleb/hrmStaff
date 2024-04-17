@@ -98,6 +98,8 @@ export const HODSPADEV = getApiUrl('/hod-spadev')
 export const HNASEJSPADEV = getApiUrl('/hnasej-spadev')
 export const HNASESSPADEV = getApiUrl('/hnases-spadev')
 export const APPROVESPADEV = getApiUrl('/approve-spadev/')
+export const LEAVESTATUS = getApiUrl('/leave-status')
+
 
 export const CREATEJOB = getApiUrl('/jobs')
 export const FETCHJOBS = getApiUrl('/all-jobs')

@@ -91,7 +91,7 @@ import {
   HNASESSPADEV,
   APPROVESPADEV,
   CREATEJOB,
-  FETCHJOBS,LEAVECOUNT
+  FETCHJOBS,LEAVECOUNT, LEAVESTATUS
 } from "../utils/config";
 import { apiGet, apiPost, apiPut, apiDelete } from "../utils/utils";
 
@@ -470,4 +470,8 @@ export function fetchJobs(data) {
 
 export function leaveCount(data) {
   return apiGet(LEAVECOUNT, data);
+}
+
+export function leaveStatus(data) {
+  return apiGet(LEAVESTATUS, data);
 }

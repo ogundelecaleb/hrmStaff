@@ -9,6 +9,9 @@ import { MoonLoader } from "react-spinners";
 import "intl";
 import "intl/locale-data/jsonp/en";
 import { getYear, getMonth } from "date-fns";
+import { Box } from "@chakra-ui/react";
+import Oops from "../../../components/Opps";
+import { useQuery } from "@tanstack/react-query";
 
 const AnnualLeave = ({ navigate }) => {
   const location = useLocation();
@@ -174,6 +177,16 @@ const AnnualLeave = ({ navigate }) => {
     return startDate && addressLeave && leaveNumber && staffRep;
   };
 
+  const leaveStatus = async () => {
+    const res = await api.leaveStatus();
+    return res;
+  };
+
+  const leaveStatusQuery = useQuery(["leaveStatus"], () => leaveStatus(), {
+    cacheTime: Infinity,
+    retry: true,
+  });
+
   async function handleSubmit(e) {
     e.preventDefault();
     setIsLoading(true);
@@ -240,6 +253,36 @@ const AnnualLeave = ({ navigate }) => {
       enqueueSnackbar(error.message, { variant: "error" });
       setIsLoading(false);
     }
+  }
+
+  if (
+    leaveStatusQuery.data.compassionate_leave ||
+    leaveStatusQuery.data.leave_of_absence
+  ) {
+    return (
+      <Box
+        w={"80vw"}
+        display="flex"
+        flexDirection="column"
+        h={"20vh"}
+        alignItems="center"
+        justifyContent="center"
+      >
+        <div className="row mt-5 " style={{ height: "10px", width: "80%" }}>
+          <Oops />
+          <h2 style={{ textAlign: "center", marginTop: 50 }}>
+            You are not Eligible for this Type of Leave.
+          </h2>
+          <p
+            class=" fs-5 fw-semibold"
+            style={{ textAlign: "center", marginTop: 20 }}
+          >
+             Annual leave, compassionate leave and leave of absence cannot fly at
+            the same time
+          </p>
+        </div>
+      </Box>
+    );
   }
 
   return (
