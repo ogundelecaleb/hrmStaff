@@ -112,7 +112,7 @@ const LeaveOfAbsence = ({ navigate }) =>  {
     retry: true,
   });
 
-  console.log("leave status====>>>",leaveStatusQuery )
+  console.log("leave status====>>>",leaveStatusQuery.data )
 
   console.log(leaveStatusQuery.data)
 

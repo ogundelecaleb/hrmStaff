@@ -186,7 +186,7 @@ const AnnualLeave = ({ navigate }) => {
     cacheTime: Infinity,
     retry: true,
   });
-console.log("leave status====>>>",leaveStatusQuery )
+console.log("leave status====>>>",leaveStatusQuery.data )
 
   async function handleSubmit(e) {
     e.preventDefault();
