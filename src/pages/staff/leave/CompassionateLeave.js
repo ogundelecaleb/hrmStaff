@@ -240,6 +240,7 @@ const CompassionateLeave = ({ navigate }) => {
       </Box>
     );
   }
+  console.log("leave status====>>>",leaveStatusQuery )
 
   if (
     leaveStatusQuery.data?.annual_leave ||
