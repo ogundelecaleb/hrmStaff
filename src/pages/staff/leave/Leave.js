@@ -209,6 +209,7 @@ const Leave = () => {
           selectedLeaveType: leaveType,
           staffType: userDetails?.type,
           staffLevel: userDetails?.level,
+          totalLeave: userDetails.total_leave_due,
         },
       });
     } else if (checkForSportingLeave) {
