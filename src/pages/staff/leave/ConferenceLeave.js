@@ -161,7 +161,7 @@ const ConferenceLeave = ({ navigate }) => {
 
     if ( overuseLeave > totalLeave) {
       enqueueSnackbar(
-        "you dont have enough leave days from your annual leave",
+        "You do not have enough leave days from your annual leave",
         { variant: "error" }
       );
       setIsLoading(false);
