@@ -120,7 +120,7 @@ const ConferenceLeave = ({ navigate }) => {
         if (start.getDay() >= 1 && start.getDay() <= 5) {
           durationInDays++;
         }
-        start.setDate(start.getDate() + 1);
+        start.setDate(start.getDate());
       }
 
       if (durationInDays > 10) {
