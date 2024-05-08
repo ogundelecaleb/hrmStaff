@@ -298,7 +298,7 @@ const AppointmentRequest = ({ navigate }) => {
                             <Input value={salary} onChange={(e) => setSalary(e.target.value)} />
                         </FormControl>
                         <FormControl isRequired>
-                        <FormLabel color={"#515B6F"}>CONUNAS</FormLabel>
+                        <FormLabel color={"#515B6F"}>CONUNASS</FormLabel>
                         <Input placeholder='CONUNAS' disabled value={formValues.conunass} onChange={(e) =>
                             setFormValues({
                             ...formValues,
