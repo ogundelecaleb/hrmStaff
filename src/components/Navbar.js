@@ -64,7 +64,7 @@ const Navbar = ({ mobile, setMobile, display, reuseableNavigation }) => {
       className='border text-dark d-flex justify-content-between align-items-center sticky-top'
       style={{ width: "100%", height: "10%", backgroundColor: "white" }}>
       <div className='burger'>
-      <Text pl='3' pt='5' w='sm' fontSize={'20'} fontWeight={'bold'}>{Heading}</Text>
+      <Text  pl='3' pt='5'  fontSize={{base:'18px', md:'20px'}} fontWeight={'bold'}>{Heading}</Text>
         <div className={display ? "d-block" : "d-none"}>
           <button
             className='col-lg-1 text-dark '
@@ -86,14 +86,15 @@ const Navbar = ({ mobile, setMobile, display, reuseableNavigation }) => {
           <Link  onClick={() => reuseableNavigation("notification")}>
             <AiFillBell  size='25' style={{ color: "#84818A" }} />
           </Link>
-          <Link onClick={() => reuseableNavigation("inbox")}>
+          {/* <Link onClick={() => reuseableNavigation("inbox")}>
             <MdEmail size='25' style={{ color: "#84818A" }} />
-          </Link>
+          </Link> */}
         </div>
         <Box className='border rounded'>
           <Menu>
             <MenuButton
-              style={{ width: "200px", height: "40px" }}
+            width={{base: '150px', md: "200px"}}
+              style={{  height: "40px" }}
               as={Button}
               rightIcon={<AiOutlineCaretDown color='#84818A' />}>
               <Box display={"flex"} alignItems='center'>
