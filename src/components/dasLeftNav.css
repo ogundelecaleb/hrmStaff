@@ -40,7 +40,11 @@ body::-webkit-scrollbar {
   transition: all 0.3s ease-in-out;
   width: 18%;
   background-color: #17082d;
+  
 
+}
+.hide {
+  display: none;
 }
 .body {
   display: flex;

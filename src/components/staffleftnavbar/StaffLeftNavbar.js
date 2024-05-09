@@ -15,7 +15,7 @@ const StaffLeftNavbar = ({ mobile, setMobile }) => {
   const dash1Style = { flexDirection: "column" };
 
   return (
-    <div className={mobile ? "leftNav pb-5" : "swapLeftNav"}>
+    <div  className={mobile ? "hide" : "swapLeftNav"}>
       <div
         onClick={() => setMobile(true)}
         style={dash1Style}
