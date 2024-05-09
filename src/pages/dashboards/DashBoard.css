@@ -116,6 +116,9 @@
   }
   .burger {
     left: 34%;
+    display: flex;
+    align-items: center;
+    gap: 6px;
   }
   #dash3 {
     position: none;

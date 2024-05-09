@@ -64,14 +64,15 @@ const Navbar = ({ mobile, setMobile, display, reuseableNavigation }) => {
       className='border text-dark d-flex justify-content-between align-items-center sticky-top'
       style={{ width: "100%", height: "10%", backgroundColor: "white" }}>
       <div className='burger'>
-      <Text  pl='3' pt='5'  fontSize={{base:'18px', md:'20px'}} fontWeight={'bold'}>{Heading}</Text>
-        <div className={display ? "d-block" : "d-none"}>
+      <div className={display ? "d-block" : "d-none"}>
           <button
             className='col-lg-1 text-dark '
             onClick={() => setMobile(!mobile)}>
             <i className='ms-3 fa fa-bars'></i>
           </button>
         </div>
+      <Text  pl='3' pt='5'  fontSize={{base:'18px', md:'20px'}} fontWeight={'bold'}>{Heading}</Text>
+        
       </div>
       <div
         className='d-flex justify-content-end align-items-center pe-3'
