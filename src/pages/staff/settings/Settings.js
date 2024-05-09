@@ -56,10 +56,10 @@ const Settings = ({reuseableNavigation}) => {
     </Box>
     ) : (
     <Box style={{ width: "100%", height: "900px" }}>
-      <Box pl='10' borderBottom='1px solid #EBEAED'>
+      <Box px='6' borderBottom='1px solid #EBEAED'>
         <Text fontSize={28} py='3' m='0' fontWeight='medium'>Profile</Text>
       </Box>
-      <Box pl='14' pt='10' w='75%'>
+      <Box px='6' pt='10' w='75%'>
         <WrapItem>
         {userDetails.image ? (
               <Avatar

@@ -80,7 +80,7 @@ const EditProfile = ({ reuseableNavigation }) => {
 
         <Box style={{ width: "100%", height: "900px" }}>
 
-            <Box py='2' pl='10' borderBottom='1px solid #EBEAED'>
+            <Box py='2' px='6' borderBottom='1px solid #EBEAED'>
                 <Text color={'#2E2C34'} fontSize={'28px'} m='0' fontWeight='medium'>
                     Profile
                 </Text>
@@ -89,7 +89,7 @@ const EditProfile = ({ reuseableNavigation }) => {
                 </Text>
             </Box>
 
-            <HStack alignItems={'start'} w='100%' pl='10' my='5' spacing={'40'}>
+            <HStack alignItems={'start'} w='100%' px='6' my='5' spacing={'40'}>
                 <Box w='540px'>
                     <FormControl mb='5' isRequired>
                         <FormLabel color={'#515B6F'}>Full Name</FormLabel>
