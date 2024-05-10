@@ -18,9 +18,10 @@ const StaffDashboard = () => {
   useEffect(() => {
     if (width < 1180) {
       setDisplay(true);
+      setMobile(true);
     } else if (width > 1180) {
       setDisplay(false);
-      setMobile(true);
+      setMobile(false);
     }
   }, [width]);
 
