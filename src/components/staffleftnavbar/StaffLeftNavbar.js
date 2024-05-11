@@ -14,7 +14,7 @@ import LogoutModal from "../../pages/staff/logout/Logout";
 const StaffLeftNavbar = ({ mobile, setMobile }) => {
   const dash1Style = { flexDirection: "column" };
 
-  const handleCloseSidebar () {
+  const handleCloseSidebar = () => {
     if(mobile){
       setMobile(true)
     }else {
