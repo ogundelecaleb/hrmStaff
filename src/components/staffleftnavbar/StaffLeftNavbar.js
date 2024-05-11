@@ -15,11 +15,10 @@ const StaffLeftNavbar = ({ mobile, setMobile,display }) => {
   const dash1Style = { flexDirection: "column" };
 
   const handleCloseSidebar = () => {
-    if(display === false){
+    if(display === true){
       setMobile(true)
     }else {
       setMobile(false)
-
     }
   }
 
