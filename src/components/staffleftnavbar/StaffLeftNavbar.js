@@ -16,14 +16,17 @@ const StaffLeftNavbar = ({ mobile, setMobile }) => {
 
   const handleCloseSidebar () {
     if(mobile){
+      setMobile(true)
+    }else {
       setMobile(false)
+
     }
   }
 
   return (
     <div  className={mobile ? "hide" : "swapLeftNav"}>
-      <div
-        onClick={() => setMobile({mobile ? true : false})}
+      <div 
+        onClick={() => handleCloseSidebar()}
         style={dash1Style}
         className='d-flex over-class gap-2 ps-2 pt-3'>
         <div className='d-flex justify-content-center pe-3 pb-2'>
