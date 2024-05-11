@@ -11,11 +11,11 @@ import { MdInsertChart } from "react-icons/md";
 import { Link, useMatch, useResolvedPath } from "react-router-dom";
 import LogoutModal from "../../pages/staff/logout/Logout";
 
-const StaffLeftNavbar = ({ mobile, setMobile }) => {
+const StaffLeftNavbar = ({ mobile, setMobile,display }) => {
   const dash1Style = { flexDirection: "column" };
 
   const handleCloseSidebar = () => {
-    if(mobile === true){
+    if(display === true){
       setMobile(true)
     }else {
       setMobile(false)

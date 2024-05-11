@@ -28,7 +28,7 @@ const StaffDashboard = () => {
   return (
     <Box style={{ fontSize: "14px" }}>
       <Box className='d-flex text-white'>
-        <StaffLeftNavbar mobile={mobile} setMobile={setMobile} />
+        <StaffLeftNavbar mobile={mobile} setMobile={setMobile} display={display} />
         <StaffDashboardRoute
           mobile={mobile}
           setMobile={setMobile}
