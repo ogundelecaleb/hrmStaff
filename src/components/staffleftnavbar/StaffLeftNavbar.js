@@ -14,6 +14,12 @@ import LogoutModal from "../../pages/staff/logout/Logout";
 const StaffLeftNavbar = ({ mobile, setMobile }) => {
   const dash1Style = { flexDirection: "column" };
 
+  const handleCloseSidebar () {
+    if(mobile){
+      setMobile(false)
+    }
+  }
+
   return (
     <div  className={mobile ? "hide" : "swapLeftNav"}>
       <div
