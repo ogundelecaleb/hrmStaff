@@ -6,8 +6,8 @@ import StaffCard from "../../../../components/staffcard/StaffCard";
 
 const StaffAppointment = ({ navigate }) => {
   return (
-    <Box pl='6' mt='4' >
-      <SimpleGrid columns={3} spacing={5}>
+    <Box px='6' mt='4' >
+      <SimpleGrid columns={{base: 1, md:2}} spacing={{base: 3, md:5}}>
         <StaffCard
           label={"All Applications"}
           Icon={<MdPeople size={24} color='#EDF2F7' />}

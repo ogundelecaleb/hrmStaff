@@ -7,7 +7,7 @@ const StaffCard = ({ Icon, labelColor, IconBorderColor, label, CardBgColor, Acti
             borderRadius={'12px'}
             _hover={{ cursor: 'pointer' }}
             onClick={Action}
-            h={'280px'} w='370px' bg={CardBgColor}>
+            h={{base: "280", md:"302"}} w={{base: "100%", md:"440"}} bg={CardBgColor}>
             <Box
                 borderRadius={'8px'}
                 border="1px solid"

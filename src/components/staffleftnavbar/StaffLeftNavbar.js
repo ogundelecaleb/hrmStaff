@@ -49,7 +49,7 @@ const StaffLeftNavbar = ({ mobile, setMobile,display }) => {
             Calender & Schedule
           </div>
         </CustomLink>
-        <CustomLink to='inbox'>
+        {/* <CustomLink to='inbox'>
           <div
             id='hoverEffect'
             className='ps-3 ms-1 d-flex align-items-center rounded gap-2'
@@ -57,7 +57,7 @@ const StaffLeftNavbar = ({ mobile, setMobile,display }) => {
             <MdMoveToInbox size='25' style={{ color: "#84818A" }} />
             Inbox
           </div>
-        </CustomLink>
+        </CustomLink> */}
         <CustomLink to='event'>
           <div
             id='hoverEffect'
