@@ -11,41 +11,44 @@ import { MdInsertChart } from "react-icons/md";
 import { Link, useMatch, useResolvedPath } from "react-router-dom";
 import LogoutModal from "../../pages/staff/logout/Logout";
 
-const StaffLeftNavbar = ({ mobile, setMobile,display }) => {
+const StaffLeftNavbar = ({ mobile, setMobile, display, staffNumber }) => {
   const dash1Style = { flexDirection: "column" };
 
   const handleCloseSidebar = () => {
-    if(display === true){
-      setMobile(true)
-    }else {
-      setMobile(false)
+    if (display === true) {
+      setMobile(true);
+    } else {
+      setMobile(false);
     }
-  }
+  };
 
   return (
-    <div  className={mobile ? "hide" : "swapLeftNav"}>
-      <div 
+    <div className={mobile ? "hide" : "swapLeftNav"}>
+      <div
         onClick={() => handleCloseSidebar()}
         style={dash1Style}
-        className='d-flex over-class gap-2 ps-2 pt-3'>
-        <div className='d-flex justify-content-center pe-3 pb-2'>
-          <img src={schLogo} alt='schhol_image' />
+        className="d-flex over-class gap-2 ps-2 pt-3"
+      >
+        <div className="d-flex justify-content-center pe-3 pb-2">
+          <img src={schLogo} alt="schhol_image" />
         </div>
-        <CustomLink to='/dashboard'>
+        <CustomLink to="/dashboard">
           <div
-            id='hoverEffect'
-            className='ps-3 ms-1 d-flex align-items-center rounded gap-2'
-            style={{ height: "48px", width: "90%" }}>
-            <MdDashboard size='25' style={{ color: "#84818A" }} />
+            id="hoverEffect"
+            className="ps-3 ms-1 d-flex align-items-center rounded gap-2"
+            style={{ height: "48px", width: "90%" }}
+          >
+            <MdDashboard size="25" style={{ color: "#84818A" }} />
             Dashboard
           </div>
         </CustomLink>
-        <CustomLink to='calender'>
+        <CustomLink to="calender">
           <div
-            id='hoverEffect'
-            className='d-flex ps-3 ms-1 align-items-center rounded gap-2'
-            style={{ height: "48px", width: "90%" }}>
-            <IoMdCalendar size='25' style={{ color: "#84818A" }} />
+            id="hoverEffect"
+            className="d-flex ps-3 ms-1 align-items-center rounded gap-2"
+            style={{ height: "48px", width: "90%" }}
+          >
+            <IoMdCalendar size="25" style={{ color: "#84818A" }} />
             Calender & Schedule
           </div>
         </CustomLink>
@@ -58,46 +61,50 @@ const StaffLeftNavbar = ({ mobile, setMobile,display }) => {
             Inbox
           </div>
         </CustomLink> */}
-        <CustomLink to='event'>
+        <CustomLink to="event">
           <div
-            id='hoverEffect'
-            className='ps-3 ms-1 d-flex align-items-center rounded gap-2'
-            style={{ height: "48px", width: "90%" }}>
-            <RiBubbleChartFill size='25' style={{ color: "#84818A" }} />
+            id="hoverEffect"
+            className="ps-3 ms-1 d-flex align-items-center rounded gap-2"
+            style={{ height: "48px", width: "90%" }}
+          >
+            <RiBubbleChartFill size="25" style={{ color: "#84818A" }} />
             Events/Training
           </div>
         </CustomLink>
-        <p className='text-muted ms-4 mt-2' style={{ marginBottom: "-2px" }}>
+        <p className="text-muted ms-4 mt-2" style={{ marginBottom: "-2px" }}>
           Organization
         </p>
-        <CustomLink to='staff'>
+        <CustomLink to="staff">
           <div
-            id='hoverEffect'
-            className='ps-3 ms-1 d-flex align-items-center rounded gap-2'
-            style={{ height: "48px", width: "90%" }}>
-            <BsFilePersonFill size='25' style={{ color: "#84818A" }} />
+            id="hoverEffect"
+            className="ps-3 ms-1 d-flex align-items-center rounded gap-2"
+            style={{ height: "48px", width: "90%" }}
+          >
+            <BsFilePersonFill size="25" style={{ color: "#84818A" }} />
             Staff
           </div>
         </CustomLink>
-        <CustomLink to='leave'>
+        <CustomLink to="leave">
           <div
-            id='hoverEffect'
-            className='ps-3 ms-1 d-flex align-items-center rounded gap-2'
-            style={{ height: "48px", width: "90%" }}>
-            <RxReload size='25' style={{ color: "#84818A" }} />
+            id="hoverEffect"
+            className="ps-3 ms-1 d-flex align-items-center rounded gap-2"
+            style={{ height: "48px", width: "90%" }}
+          >
+            <RxReload size="25" style={{ color: "#84818A" }} />
             Leave
           </div>
         </CustomLink>
-        <CustomLink to='promotion'>
-          <div
-            id='hoverEffect'
-            className='ps-3 ms-1 d-flex align-items-center rounded gap-2'
-            style={{ height: "48px", width: "90%" }}>
-            <HiUpload size='25' style={{ color: "#84818A" }} />
-            SPADEV
-          </div>
-        </CustomLink>
-        <CustomLink to='report'>
+        <Link
+          to={`https://lasucom.edu.ng/appslogin/index.php?session=${staffNumber}`}
+          id="hoverEffect"
+          className="ps-3 ms-1 d-flex align-items-center rounded gap-2"
+          style={{ height: "48px", width: "90%" }}
+          target="_blank"
+        >
+          <HiUpload size="25" style={{ color: "#84818A" }} />
+          SPADEV
+        </Link>
+        {/* <CustomLink to='report'>
           <div
             id='hoverEffect'
             className='ps-3 ms-2 d-flex align-items-center rounded gap-2'
@@ -105,21 +112,22 @@ const StaffLeftNavbar = ({ mobile, setMobile,display }) => {
             <MdInsertChart size='25' style={{ color: "#84818A" }} />
             Report
           </div>
-        </CustomLink>
+        </CustomLink> */}
 
-        <p className='text-muted ms-4 pb-1 mt-1' style={{ marginBottom: "0" }}>
+        <p className="text-muted ms-4 pb-1 mt-1" style={{ marginBottom: "0" }}>
           Others
         </p>
-        <CustomLink to='setting'>
+        <CustomLink to="setting">
           <div
-            id='hoverEffect'
-            className='ps-3 ms-1 d-flex align-items-center rounded gap-2'
-            style={{ height: "48px", width: "90%", marginTop: "0px", }}>
-            <MdMoveToInbox size='25' style={{ color: "#84818A" }} />
+            id="hoverEffect"
+            className="ps-3 ms-1 d-flex align-items-center rounded gap-2"
+            style={{ height: "48px", width: "90%", marginTop: "0px" }}
+          >
+            <MdMoveToInbox size="25" style={{ color: "#84818A" }} />
             Settings
           </div>
         </CustomLink>
-        <LogoutModal/>
+        <LogoutModal />
       </div>
     </div>
   );
