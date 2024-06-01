@@ -654,6 +654,15 @@ const AcademicDetails = () => {
           </div>
         )}
 
+<div className="row pt-2">
+          <p className="text-DARK">
+            please report or contact the registrar in
+            the case of change or addition to any information provided
+            above with the exception of permanent address and date of first
+            amendment so that this record can be updated appropriately.
+          </p>
+        </div>
+
         <div className='col-lg-12 py-2 d-flex justify-content-end'>
           <div>
           <button

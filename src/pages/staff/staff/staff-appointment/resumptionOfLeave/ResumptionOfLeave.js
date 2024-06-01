@@ -365,7 +365,7 @@ const ResumptionOfLeave = ({ navigate }) => {
             <label
               for='exampleInputEmail1'
               class='form-label fs-6 fw-semibold h-10'>
-              Location
+              Department/Division/Unit
             </label>
             <input  class='form-control rounded-0' required value={leaveLocation}
             onChange={(e) => setLeaveLocation(e.target.value)}/>

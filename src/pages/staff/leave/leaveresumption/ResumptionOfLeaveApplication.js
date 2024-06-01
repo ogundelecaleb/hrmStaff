@@ -139,7 +139,7 @@ const ResumptionOfLeaveApplication = ({ navigate }) => {
   return (
     <div>
       <div class='border-bottom ps-4'>
-        <h1 class='fs-4 fw-semibold'>Resumption of Leave </h1>
+        <h1 class='fs-4 fw-semibold'>Resumption od Duty Certicate </h1>
         <p class='fs-5'>Kindly fill in the required information</p>
       </div>
       <form className='row px-4 pt-4'>
@@ -367,7 +367,7 @@ const ResumptionOfLeaveApplication = ({ navigate }) => {
             <label
               for='exampleInputEmail1'
               class='form-label fs-6 fw-semibold h-10'>
-              Location
+              Department/Division/Unit
             </label>
             <input  class='form-control rounded-0' required value={leaveLocation}
             onChange={(e) => setLeaveLocation(e.target.value)}/>

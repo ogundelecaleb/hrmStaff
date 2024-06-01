@@ -67,6 +67,7 @@ const PersonalInfo = () => {
     marital_status: "",
     image: "",
     maidenName: "",
+    title:""
   });
 
   useEffect(() => {
@@ -84,7 +85,8 @@ const PersonalInfo = () => {
         gender: userDetails?.gender,
         marital_status: userDetails?.marital_status,
         image: userDetails?.image,
-        maidenName:  userDetails?.maiden_name
+        maidenName:  userDetails?.maiden_name,
+        title: userDetails?.title
       });
     }
   }, [userDetails]);
@@ -95,6 +97,7 @@ const PersonalInfo = () => {
     const formData = new FormData();
     formData.append('image', file);
     formData.append('first_name', formValues.firstName);
+    formData.append('title', formValues.title);
     formData.append('last_name', formValues.lastName);
     formData.append('nationality', formValues.nationality);
     formData.append('state_of_origin', formValues.stateOfOrigin);
@@ -169,6 +172,27 @@ const PersonalInfo = () => {
           </div>
           <div className='col-lg-6 pe-'>
             <div>
+            <div class='form-group'>
+                <label
+                  for='exampleFormControlSelect1'
+                  className='fw-semibold text-muted fs-6 mt-3 mb-2'>
+                  Title
+                </label>
+                <input
+                  type='text'
+                  style={{ height: "40px" }}
+                  class='form-control rounded-0'
+                  id='exampleFormControlInput1'
+                  placeholder=''
+                  value={formValues.title}
+                  onChange={(e) =>
+                    setFormValues({
+                      ...formValues,
+                      title: e.target.value,
+                    })
+                  }
+                />
+              </div>
               <div class='form-group'>
                 <label
                   for='exampleFormControlSelect1'
@@ -417,6 +441,14 @@ const PersonalInfo = () => {
             </div>
           </div>
           <div className='col-lg-2'></div>
+          <div className="row pt-2">
+          <p className="text-DARK">
+            please report or contact the registrar in
+            the case of change or addition to any information provided
+            above with the exception of permanent address and date of first
+            amendment so that this record can be updated appropriately.
+          </p>
+        </div>
         </div>
         {/* <div className='row border-top pb-5 mt-4'> */}
         <div className='col-lg-12 py-5 d-flex justify-content-end'>

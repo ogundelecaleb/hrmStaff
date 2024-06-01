@@ -619,7 +619,14 @@ const FamilyDetails = () => {
           </p>
         </div>
       )}
-
+ <div className="row pt-2">
+          <p className="text-DARK">
+            please report or contact the registrar in
+            the case of change or addition to any information provided
+            above with the exception of permanent address and date of first
+            amendment so that this record can be updated appropriately.
+          </p>
+        </div>
       {/* <div className='row border-top pb-5 mt-4'> */}
         <div className='col-lg-12 py-5 d-flex justify-content-end'>
           <div>

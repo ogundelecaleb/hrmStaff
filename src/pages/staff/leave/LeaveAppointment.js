@@ -25,7 +25,7 @@ const LeaveAppointment = ({ navigate }) => {
           Action={() => navigate("leave-application")}
         />
         <HodStaffCard
-          label={"Resumption from leave"}
+          label={"Resumption of Duty Certificate"}
           Icon={<MdPeople size={24} color='#984779' />}
           CardBgColor={"#E4C0D3"}
           labelColor={"#984779"}

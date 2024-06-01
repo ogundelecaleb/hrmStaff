@@ -33,7 +33,7 @@ const StaffAppointment = ({ navigate }) => {
           Action={() => navigate("appointment-request")}
         />
         <StaffCard
-          label={" Regularization of Temporary Appointment  "}
+          label={" Regularization of Appointment"}
           Icon={<MdPeople size={24} color='EDF2F7' />}
           CardBgColor={"#17082DF0"}
           labelColor={"#EDF2F7"}

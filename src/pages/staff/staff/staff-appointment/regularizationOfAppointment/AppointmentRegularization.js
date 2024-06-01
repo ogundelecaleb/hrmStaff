@@ -112,6 +112,7 @@ const AppointmentRegularization = ({ navigate }) => {
         role: userDetails?.role,
         type: userDetails?.type,
         staffLevel: userDetails?.level,
+        title: userDetails?.title
       });
     }
   }, [userDetails]);
@@ -196,7 +197,10 @@ const AppointmentRegularization = ({ navigate }) => {
         
                   </Select>
                 </FormControl>
-        
+                <FormControl >
+                  <FormLabel color={"#515B6F"} my='5'>Title</FormLabel>
+                  <Input value={formValues.title} disabled/>
+                </FormControl>
                 <FormControl >
                   <FormLabel color={"#515B6F"} my='5'>Full Name</FormLabel>
                   <Input value={formValues.full_name} disabled/>
