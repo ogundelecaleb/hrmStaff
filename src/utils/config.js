@@ -104,3 +104,11 @@ export const LEAVESTATUS = getApiUrl('/leave-status')
 export const CREATEJOB = getApiUrl('/jobs')
 export const FETCHJOBS = getApiUrl('/all-jobs')
 export const LEAVECOUNT = getApiUrl('/training-leaves-count')
+
+
+
+
+export const AVAILABLESTAFF = getApiUrl('/get-available-staffs')
+
+
+

@@ -91,7 +91,7 @@ import {
   HNASESSPADEV,
   APPROVESPADEV,
   CREATEJOB,
-  FETCHJOBS,LEAVECOUNT, LEAVESTATUS
+  FETCHJOBS,LEAVECOUNT, LEAVESTATUS, AVAILABLESTAFF
 } from "../utils/config";
 import { apiGet, apiPost, apiPut, apiDelete } from "../utils/utils";
 
@@ -143,6 +143,10 @@ export function fetchStaffByDepartment(data) {
 
 export function fetchNotification(data) {
   return apiGet(NOTIFICATION, data);
+}
+
+export function fetchStaffs(data) {
+  return apiGet(AVAILABLESTAFF, data);
 }
 
 export function updatePinfo(data) {

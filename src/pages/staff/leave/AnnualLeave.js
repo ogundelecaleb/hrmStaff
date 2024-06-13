@@ -9,9 +9,38 @@ import { MoonLoader } from "react-spinners";
 import "intl";
 import "intl/locale-data/jsonp/en";
 import { getYear, getMonth } from "date-fns";
-import { Box } from "@chakra-ui/react";
+import {
+  Box,
+  Table,
+  TableContainer,
+  Tbody,
+  Td,
+  Th,
+  Thead,
+  Tr,
+  Select,
+  Button,
+  Center,
+  Divider,
+  Flex,
+  FormLabel,
+  Input,
+  InputGroup,
+  InputLeftElement,
+  InputRightElement,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
+  Text,
+  Textarea,
+} from "@chakra-ui/react";
 import Oops from "../../../components/Opps";
 import { useQuery } from "@tanstack/react-query";
+import { FiSearch } from "react-icons/fi";
 
 const AnnualLeave = ({ navigate }) => {
   const location = useLocation();
@@ -38,6 +67,9 @@ const AnnualLeave = ({ navigate }) => {
   const [staffRep, setStaffrep] = useState("");
   const [showAdditionalInfo, setShowAdditionalInfo] = useState(false);
   const [completedFirstSection, setCompletedFirstSection] = useState(false);
+  const [staffs, setStaffs] = useState([]);
+  const [staff, setStaff] = useState("");
+  const [isStaffModal, setIsStaffModal] = useState(false);
 
   function range(start, end, step) {
     const result = [];
@@ -117,6 +149,23 @@ const AnnualLeave = ({ navigate }) => {
   //   }
   // };
 
+  async function fetchStaffs() {
+    try {
+      const staffs = await api.fetchStaffs();
+      console.log("Staff Details:", staffs);
+      setStaffs(staffs);
+    } catch (error) {
+      console.error("Error fetching your basic details", error);
+      enqueueSnackbar(error.message, { variant: "error" });
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
+  useEffect(() => {
+    fetchStaffs();
+  }, []);
+
   const handleDateChange = (event) => {
     const selected = new Date(event.target.value);
     const today = new Date();
@@ -186,7 +235,7 @@ const AnnualLeave = ({ navigate }) => {
     cacheTime: Infinity,
     retry: true,
   });
-console.log("leave status====>>>",leaveStatusQuery.data )
+  console.log("leave status====>>>", leaveStatusQuery.data);
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -278,7 +327,7 @@ console.log("leave status====>>>",leaveStatusQuery.data )
             class=" fs-5 fw-semibold"
             style={{ textAlign: "center", marginTop: 20 }}
           >
-             Annual leave, compassionate leave and leave of absence cannot fly at
+            Annual leave, compassionate leave and leave of absence cannot fly at
             the same time
           </p>
         </div>
@@ -548,12 +597,18 @@ console.log("leave status====>>>",leaveStatusQuery.data )
                 <label class="form-label fs-6 fw-semibold">
                   To be relived by (Name of Staff)
                 </label>
-                <input
+                <div
+                  onClick={() => setIsStaffModal(true)}
+                  className="border px-3 py-2 rounded-0"
+                >
+                  {staffRep ? <p className="mb-0  fs-6">{staffRep}</p> : <p className="mb-0">Select a staff</p>}
+                </div>
+                {/* <input
                   required
                   class="form-control rounded-0"
                   value={staffRep}
                   onChange={(e) => setStaffrep(e.target.value)}
-                />
+                /> */}
               </div>
 
               <button
@@ -576,6 +631,68 @@ console.log("leave status====>>>",leaveStatusQuery.data )
             </div>
           </form>
         </div>
+        <Modal
+          isCentered
+          isOpen={isStaffModal}
+          onClose={() => setIsStaffModal(false)}
+          size="2xl"
+          className="max-h-[80vh]"
+        >
+          <ModalOverlay />
+          <ModalContent>
+            <ModalHeader fontSize={"sm"} py="3" color="#002240">
+              Select Multiple Customers
+            </ModalHeader>
+            <ModalCloseButton size={"sm"} />
+            <Divider />
+            <ModalBody py="2">
+              <InputGroup mb="6">
+                <InputLeftElement>
+                  <FiSearch color="#1A202C" />
+                </InputLeftElement>
+                <Input
+                  borderRadius={"6px"}
+                  w="60"
+                  fontSize={"sm"}
+                  placeholder="Search Customer..."
+                  //value={searchTerm}
+                  //onChange={(e) => setSearchTerm(e.target.value)}
+                />
+              </InputGroup>
+              {staffs &&
+                staffs?.available_users?.map((staff) => (
+                  <div
+                    onClick={() => {
+                      setStaffrep(staff.first_name + " " + staff.last_name);
+                      setIsStaffModal(false)}}
+                    className="w-full "
+                  >
+                    {" "}
+                    <div className="px-2 py-2 border rounded-2 mb-2 w-[300px]">
+                      {staff?.first_name}
+                    </div>
+                  </div>
+                ))}
+            </ModalBody>
+            <Divider />
+            <ModalFooter gap={"5"}>
+              <Button
+                color="white"
+                bg="#0E82F0"
+                fontSize={"sm"}
+                onClick={() => {
+                  // closeModal4();
+                }}
+              >
+                {/* {isLoadingdr ? (
+                <MoonLoader color={"white"} size={20} />
+              ) : (
+                <> Save </>
+              )} */}
+              </Button>
+            </ModalFooter>
+          </ModalContent>
+        </Modal>
       </div>
     </div>
   );

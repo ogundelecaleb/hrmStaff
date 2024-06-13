@@ -341,7 +341,12 @@ const AppointmentRequest = ({ navigate }) => {
               />
             </FormControl>
             <FormControl my="5" isRequired>
-              <FormLabel color={"#515B6F"}>Salary<span style={{fontSize: 12}}>{"("}your grade level/step is your salay e.g (07/02) {")"}</span></FormLabel>
+              <FormLabel color={"#515B6F"}>
+                Salary
+                <span style={{ fontSize: 12 }}>
+                  {"("}your grade level/step is your salay e.g (07/02) {")"}
+                </span>
+              </FormLabel>
               <Input
                 value={salary}
                 onChange={(e) => setSalary(e.target.value)}
