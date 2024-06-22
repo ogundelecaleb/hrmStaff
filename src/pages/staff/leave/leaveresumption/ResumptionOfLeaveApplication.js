@@ -22,6 +22,7 @@ const ResumptionOfLeaveApplication = ({ navigate }) => {
   const [leaveLocation, setLeaveLocation] = useState('');
   const [pfNumber, setPfNumber] = useState('');
   const [formValues, setFormValues] = useState({});
+  const [lastLeaveDetails, setLastLeaveDetails] = useState([]);
 
   function range(start, end, step) {
     const result = [];
@@ -49,6 +50,7 @@ const ResumptionOfLeaveApplication = ({ navigate }) => {
   useEffect(() => {
     if (userDetails) {
       fetchUserDetails();
+      fetchLastLeave() 
     }
   }, []);
 
@@ -60,6 +62,20 @@ const ResumptionOfLeaveApplication = ({ navigate }) => {
       setUserDetails(userDetails.data)
     } catch (error) {
       console.error("Error fetching your basic details", error);
+      enqueueSnackbar(error.message, { variant: 'error' })
+    }finally {
+      setIsLoading(false);
+    }
+  }
+
+  async function fetchLastLeave() {
+    try {
+      setIsLoading(true);
+      const lastLeave = await api.getLastLeave();
+      console.log("User Details:", lastLeave);
+      setLastLeaveDetails(lastLeave.last_approved_leave)
+    } catch (error) {
+      console.error("Error fetching your last leave details", error);
       enqueueSnackbar(error.message, { variant: 'error' })
     }finally {
       setIsLoading(false);
@@ -262,7 +278,7 @@ const ResumptionOfLeaveApplication = ({ navigate }) => {
               Just concluded Leave Type<sup className='text-danger'>*</sup>
             </label>
             <select
-               value={concludedLeave}
+               value={lastLeaveDetails?.leave_type}
                onChange={(e) => setConcludedLeave(e.target.value)}
               class='form-select rounded-0'
               aria-label='Default select example'>
@@ -360,7 +376,7 @@ const ResumptionOfLeaveApplication = ({ navigate }) => {
               class='form-label fs-6 fw-semibold h-10'>
               Duration of Leave
             </label>
-            <input  class='form-control rounded-0' required value={leaveDuration}
+            <input  class='form-control rounded-0' required value={lastLeaveDetails?.leave_duration}
             onChange={(e) => setLeaveDuration(e.target.value)}/>
           </div>
           <div class='mb-3'>
