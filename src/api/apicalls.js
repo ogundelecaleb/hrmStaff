@@ -92,7 +92,8 @@ import {
   APPROVESPADEV,
   CREATEJOB,
   FETCHJOBS,LEAVECOUNT, LEAVESTATUS, AVAILABLESTAFF,
-  LASTLEAVE
+  LASTLEAVE,
+  RESUMELEAVE
 } from "../utils/config";
 import { apiGet, apiPost, apiPut, apiDelete } from "../utils/utils";
 
@@ -483,4 +484,7 @@ export function leaveStatus(data) {
 
 export function getLastLeave(data) {
   return apiGet(LASTLEAVE, data);
+}
+export function resumeLeave(data) {
+  return apiPost(RESUMELEAVE, data);
 }

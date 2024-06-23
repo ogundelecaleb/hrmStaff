@@ -9,7 +9,7 @@ import { getYear, getMonth } from 'date-fns';
 import {
   Box,
 } from "@chakra-ui/react";
-
+import Moment from "moment";
 const ResumptionOfLeaveApplication = ({ navigate }) => {
 
   const { enqueueSnackbar } = useSnackbar();
@@ -48,10 +48,10 @@ const ResumptionOfLeaveApplication = ({ navigate }) => {
     "December",
   ];
   useEffect(() => {
-    if (userDetails) {
+    
       fetchUserDetails();
       fetchLastLeave() 
-    }
+  
   }, []);
 
   async function fetchUserDetails() {
@@ -76,7 +76,7 @@ const ResumptionOfLeaveApplication = ({ navigate }) => {
       setLastLeaveDetails(lastLeave.last_approved_leave)
     } catch (error) {
       console.error("Error fetching your last leave details", error);
-      enqueueSnackbar(error.message, { variant: 'error' })
+      enqueueSnackbar(error?.message, { variant: 'error' })
     }finally {
       setIsLoading(false);
     }
@@ -90,34 +90,31 @@ const ResumptionOfLeaveApplication = ({ navigate }) => {
         date_of_first_appointment: userDetails?.date_of_first_appointment,
         marital_status: userDetails?.marital_status,
         role: userDetails?.role,
-        type: userDetails?.type
+        type: userDetails?.type,
+        staffNumber: userDetails?.staff_number
       });
     }
-  }, [userDetails]);
+  }, []);
 
   async function handleSubmit (e)  {
     e.preventDefault();
-    setIsLoadingd(true);
+    
+    // setIsLoadingd(true);
 
     try {
-      let department_unit = "";
+      // let department_unit = "";
 
-      if (formValues.type === 'ASE' && formValues.role === 'DEAN') {
-        department_unit = formValues.faculty;
-      } else if (formValues.type === 'ASE' && (formValues.role === 'HOD' || formValues.role === 'RSWEP')) {
-        department_unit = formValues.department;
-      } else if (formValues.type === 'NASE') {
-        department_unit = formValues.unit;
-      }
+      // if (formValues.type === 'ASE' && formValues.role === 'DEAN') {
+      //   department_unit = formValues.faculty;
+      // } else if (formValues.type === 'ASE' && (formValues.role === 'HOD' || formValues.role === 'RSWEP')) {
+      //   department_unit = formValues.department;
+      // } else if (formValues.type === 'NASE') {
+      //   department_unit = formValues.unit;
+      // }
 
-      const response = await api.requestLeave({
-        full_name: `${userDetails?.first_name} ${userDetails?.last_name}`,
-        date_resumed: dateResumed,
-        pf_no: pfNumber,
-        department_unit: department_unit,
-        type_of_leave: concludedLeave,
-        duration_of_leave: leaveDuration,
-        location: leaveLocation,
+      const response = await api.resumeLeave({
+        leave_id:lastLeaveDetails?.id,
+        date_resumed: lastLeaveDetails?.resumption_date
       });  
       console.log("responce==>>>>>", response);
       enqueueSnackbar('Application successfull', { variant: 'success' })
@@ -125,10 +122,17 @@ const ResumptionOfLeaveApplication = ({ navigate }) => {
       navigate("submited");
     } catch (error) {
       console.log(error)
-      enqueueSnackbar(error.message, { variant: 'error' })
+      enqueueSnackbar(error?.message, { variant: 'error' })
       setIsLoadingd(false);
     }
   };
+  function formatDate(datetimeStr) {
+    const date = Moment(datetimeStr);
+    const formattedDate = date.format("MMM DD, YYYY");
+
+    return formattedDate;
+  }
+
 
   if (isLoading) {
     return (
@@ -155,12 +159,12 @@ const ResumptionOfLeaveApplication = ({ navigate }) => {
   return (
     <div>
       <div class='border-bottom ps-4'>
-        <h1 class='fs-4 fw-semibold'>Resumption od Duty Certicate </h1>
+        <h1 class='fs-4 fw-semibold'>Resumption of Duty Certicate </h1>
         <p class='fs-5'>Kindly fill in the required information</p>
       </div>
       <form className='row px-4 pt-4'>
         <div className='col-lg-6 ' 
-        onSubmit={handleSubmit}
+    
         >
           <div class='mb-3'>
             <label
@@ -191,8 +195,9 @@ const ResumptionOfLeaveApplication = ({ navigate }) => {
               class='form-label fs-6 fw-semibold h-10'>
               PF/CM No
             </label>
-            <input type='number' class='form-control rounded-0' required value={pfNumber}
-            onChange={(e) => setPfNumber(e.target.value)}/>
+            <input type='text' class='form-control rounded-0'  value={userDetails?.staff_number}
+            // onChange={(e) => setPfNumber(e.target.value)}
+            />
           </div>
           {formValues.type === 'ASE' && formValues.role === 'DEAN' && (
               <div class='mb-3'>
@@ -279,6 +284,7 @@ const ResumptionOfLeaveApplication = ({ navigate }) => {
             </label>
             <select
                value={lastLeaveDetails?.leave_type}
+               disabled
                onChange={(e) => setConcludedLeave(e.target.value)}
               class='form-select rounded-0'
               aria-label='Default select example'>
@@ -300,75 +306,15 @@ const ResumptionOfLeaveApplication = ({ navigate }) => {
             </select>
           </div>
 
-          <div class='mb-3 flex flex-col'>
-            <div>
-              <label class='form-label fs-6 fw-semibold'>Resumption Date</label>
-            </div>
-            <DatePicker
-                autoComplete="off"
-                renderCustomHeader={({
-                  date,
-                  changeYear,
-                  changeMonth,
-                  decreaseMonth,
-                  increaseMonth,
-                  prevMonthButtonDisabled,
-                  nextMonthButtonDisabled,
-                }) => (
-                  <div
-                    style={{
-                      margin: 10,
-                      display: "flex",
-                      justifyContent: "center",
-                    }}
-                  >
-                    <button onClick={decreaseMonth} disabled={prevMonthButtonDisabled}>
-                      {"<"}
-                    </button>
-                    <select
-                      value={getYear(date)}
-                      onChange={({ target: { value } }) => changeYear(value)}
-                    >
-                      {years.map((option) => (
-                        <option key={option} value={option}>
-                          {option}
-                        </option>
-                      ))}
-                    </select>
-          
-                    <select
-                      value={months[getMonth(date)]}
-                      onChange={({ target: { value } }) =>
-                        changeMonth(months.indexOf(value))
-                      }
-                    >
-                      {months.map((option) => (
-                        <option key={option} value={option}>
-                          {option}
-                        </option>
-                      ))}
-                    </select>
-          
-                    <button onClick={increaseMonth} disabled={nextMonthButtonDisabled}>
-                      {">"}
-                    </button>
-                  </div>
-                )}
-                  selected={dateResumed ? new Date(dateResumed) : null}
-                  onChange={(date) => {
-                    if (date instanceof Date && !isNaN(date)) {
-                      const formattedDate = date.toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' });
-                      setDateresumed(formattedDate);
-                    } else {
-                      setDateresumed('');
-                    }
-                  }}
-                  dateFormat='yyyy-MM-dd'
-                  className='form-control rounded-0'
-                  id='exampleFormControlInput1'
-                  placeholder=''
-                  shouldCloseOnSelect={true}
-                />
+         
+           <div class='mb-3'>
+            <label
+              for='exampleInputEmail1'
+              class='form-label fs-6 fw-semibold h-10'>
+             Resumption Date 
+            </label>
+            <input  class='form-control rounded-0' required value={formatDate(lastLeaveDetails?.resumption_date)}
+            onChange={(e) => setLeaveDuration(e.target.value)}/>
           </div>
           <div class='mb-3'>
             <label
@@ -379,7 +325,7 @@ const ResumptionOfLeaveApplication = ({ navigate }) => {
             <input  class='form-control rounded-0' required value={lastLeaveDetails?.leave_duration}
             onChange={(e) => setLeaveDuration(e.target.value)}/>
           </div>
-          <div class='mb-3'>
+          {/* <div class='mb-3'>
             <label
               for='exampleInputEmail1'
               class='form-label fs-6 fw-semibold h-10'>
@@ -387,14 +333,14 @@ const ResumptionOfLeaveApplication = ({ navigate }) => {
             </label>
             <input  class='form-control rounded-0' required value={leaveLocation}
             onChange={(e) => setLeaveLocation(e.target.value)}/>
-          </div>
+          </div> */}
           
         </div>
         <div className='col-lg-12 py-5 d-flex justify-content-end'>
             <div>
               <button
-                className='btn py-2 px-4 me-2  text-white rounded-0'
-                style={{ backgroundColor: "#984779" }} disabled={isLoadingd} type="submit">
+                className='btn py-2 px-4 me-2  text-white rounded-0'     onClick={handleSubmit}
+                style={{ backgroundColor: "#984779" }} disabled={isLoadingd} type="button">
                 {isLoadingd ? (
                   <MoonLoader color={"white"} size={20} />
                 ) : (<>Submit</>

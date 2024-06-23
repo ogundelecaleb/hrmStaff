@@ -105,6 +105,7 @@ export const CREATEJOB = getApiUrl('/jobs')
 export const FETCHJOBS = getApiUrl('/all-jobs')
 export const LEAVECOUNT = getApiUrl('/training-leaves-count')
 export const LASTLEAVE = getApiUrl('/last-approved-leave')
+export const RESUMELEAVE = getApiUrl('/resumption/duty')
 
 
 
