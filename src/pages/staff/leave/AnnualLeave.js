@@ -44,6 +44,7 @@ import { FiSearch } from "react-icons/fi";
 
 const AnnualLeave = ({ navigate }) => {
   const location = useLocation();
+  const [searchTerm, setSearchTerm] = useState("")
 
   const {
     fullName,
@@ -641,7 +642,7 @@ const AnnualLeave = ({ navigate }) => {
           <ModalOverlay />
           <ModalContent>
             <ModalHeader fontSize={"sm"} py="3" color="#002240">
-              Select Multiple Customers
+              Select a staff to relive you
             </ModalHeader>
             <ModalCloseButton size={"sm"} />
             <Divider />
@@ -655,12 +656,16 @@ const AnnualLeave = ({ navigate }) => {
                   w="60"
                   fontSize={"sm"}
                   placeholder="Search Customer..."
-                  //value={searchTerm}
-                  //onChange={(e) => setSearchTerm(e.target.value)}
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
                 />
               </InputGroup>
               {staffs &&
-                staffs?.available_users?.map((staff) => (
+                staffs?.available_users.filter((staff) =>
+                  staff.first_name 
+                    .toLowerCase()
+                    .includes(searchTerm.toLowerCase())
+                ).map((staff) => (
                   <div
                     onClick={() => {
                       setStaffrep(staff.first_name + " " + staff.last_name);
@@ -669,7 +674,8 @@ const AnnualLeave = ({ navigate }) => {
                   >
                     {" "}
                     <div className="px-2 py-2 border rounded-2 mb-2 w-[300px]">
-                      {staff?.first_name}
+                    <p>{staff.first_name + " " + staff.last_name}</p>  
+                    <p>{staff.email}</p>
                     </div>
                   </div>
                 ))}
