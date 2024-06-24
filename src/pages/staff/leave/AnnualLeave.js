@@ -655,7 +655,7 @@ const AnnualLeave = ({ navigate }) => {
                   borderRadius={"6px"}
                   w="60"
                   fontSize={"sm"}
-                  placeholder="Search Customer..."
+                  placeholder="Search staff..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                 />
