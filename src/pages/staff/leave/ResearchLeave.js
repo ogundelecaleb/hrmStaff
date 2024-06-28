@@ -9,7 +9,37 @@ import { MoonLoader } from "react-spinners";
 import "intl";
 import "intl/locale-data/jsonp/en";
 import { getYear, getMonth } from "date-fns";
-import { Box } from "@chakra-ui/react";
+import {
+  Box,
+  Table,
+  TableContainer,
+  Tbody,
+  Td,
+  Th,
+  Thead,
+  Tr,
+  Select,
+  Button,
+  Center,
+  Divider,
+  Flex,
+  FormLabel,
+  Input,
+  InputGroup,
+  InputLeftElement,
+  InputRightElement,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
+  Text,
+  Textarea,
+} from "@chakra-ui/react";
+import { FiSearch } from "react-icons/fi";
+
 import Oops from "../../../components/Opps";
 
 const ResearchLeave = ({ navigate }) => {
@@ -35,6 +65,26 @@ const ResearchLeave = ({ navigate }) => {
   const [leaveDuration, setLeaveDuration] = useState("");
   const [uploadedDocuments, setUploadedDocuments] = useState([]);
   const [isDocumentUploaded, setIsDocumentUploaded] = useState(false);
+  const [isStaffModal, setIsStaffModal] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [staffs, setStaffs] = useState([]);
+
+  async function fetchStaffs() {
+    try {
+      const staffs = await api.fetchStaffs();
+      console.log("Staff Details:", staffs);
+      setStaffs(staffs);
+    } catch (error) {
+      console.error("Error fetching your basic details", error);
+      enqueueSnackbar(error.message, { variant: "error" });
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
+  useEffect(() => {
+    fetchStaffs();
+  }, []);
 
   function range(start, end, step) {
     const result = [];

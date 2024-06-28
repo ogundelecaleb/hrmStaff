@@ -15,6 +15,10 @@ const PersonalInfo = () => {
   const { enqueueSnackbar } = useSnackbar();
   const [isLoadinge, setIsLoadinge] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [uploadedDocument2, setUploadedDocument2] = useState(null);
+  const [uploadedDocument1, setUploadedDocument1] = useState(null);
+  const [isDocument1Uploaded, setIsDocument1Uploaded] = useState(false);
+  const [isDocument2Uploaded, setIsDocument2Uploaded] = useState(false);
   const [file, setFile] = useState(null);
   
   function range(start, end, step) {
@@ -67,7 +71,8 @@ const PersonalInfo = () => {
     marital_status: "",
     image: "",
     maidenName: "",
-    title:""
+    title:"",
+    bloodGroup: ""
   });
 
   useEffect(() => {
@@ -86,7 +91,8 @@ const PersonalInfo = () => {
         marital_status: userDetails?.marital_status,
         image: userDetails?.image,
         maidenName:  userDetails?.maiden_name,
-        title: userDetails?.title
+        title: userDetails?.title,
+        bloodGroup: userDetails?.blood_group
       });
     }
   }, [userDetails]);
@@ -105,6 +111,9 @@ const PersonalInfo = () => {
     formData.append('gender', formValues.gender);
     formData.append('marital_status', formValues.marital_status);
     formData.append('maiden_name', formValues.maidenName);
+    formData.append('blood_group', formValues.bloodGroup);
+    formData.append('birth_certificate', uploadedDocument1);
+    formData.append('marriage_certificate', uploadedDocument2);
     try {
       const response = await api.updatePinfo(formData);
       console.log("Response: ", response);
@@ -116,6 +125,26 @@ const PersonalInfo = () => {
       setIsLoading(false);
     }
   }
+
+  const onFileChanges = (e, documentNumber) => {
+    const selectedFile = e.target.files[0];
+
+    if (selectedFile) {
+      const fileType = selectedFile.type;
+
+      if (fileType === 'application/pdf' || fileType === 'image/jpeg') {
+        if (documentNumber === 1) {
+          setUploadedDocument1(selectedFile);
+          setIsDocument1Uploaded(true);
+        } else if (documentNumber === 2) {
+          setUploadedDocument2(selectedFile);
+          setIsDocument2Uploaded(true);
+        }
+      } else {
+        enqueueSnackbar('Please select a valid PDF or JPEG file.', { variant: 'error' });
+      }
+    }
+  };
 
 
   return (
@@ -418,6 +447,29 @@ const PersonalInfo = () => {
                     <label
                       for='exampleFormControlSelect1'
                       className='fw-semibold text-muted fs-6 mt-3 mb-2'>
+                      Blood Group <sup className='text-danger'>*</sup>
+                    </label>
+                    <input
+                      type='text'
+                      style={{ height: "40px" }}
+                      class='form-control rounded-0'
+                      id='O+'
+                      placeholder=''
+                      value={formValues.bloodGroup}
+                      onChange={(e) =>
+                        setFormValues({
+                          ...formValues,
+                          bloodGroup: e.target.value,
+                        })
+                      }
+                    />
+                  </div>
+                </div>
+                <div className='col-lg-6'>
+                  <div class='form-group'>
+                    <label
+                      for='exampleFormControlSelect1'
+                      className='fw-semibold text-muted fs-6 mt-3 mb-2'>
                       Marital Status <sup className='text-danger'>*</sup>
                     </label>
                     <select
@@ -438,6 +490,39 @@ const PersonalInfo = () => {
                   </div>
                 </div>
               </div>
+              <div class='pb-2'>
+                <div className='mb-2'>
+                  <label
+                    style={{ marginBottom: '10px' }}
+                    className='fw-semibold text-muted fs-6 mt-3 mb-2'>
+                    Upload Birth Certicate<sup className='text-danger'>*</sup>
+                  </label>
+                  <input
+                    type="file"
+                    className="form-control rounded-0"
+                    id={`upload_document_1`}
+                    onChange={(e) => onFileChanges(e, 1)}
+                  />
+                  <sup className='text-danger'>Format accepted: Jpeg/Pdf</sup>
+                </div>
+              </div>
+              {formValues.marital_status === "Married" && (<div class='pb-2'>
+                <div className='mb-3'>
+                  <label
+                    style={{ marginBottom: '10px' }}
+                    className='fw-semibold text-muted fs-6 mt-3 mb-2'>
+                    Upload Marriage Certicate<sup className='text-danger'>*</sup>
+                  </label>
+                  <input
+                    type="file"
+                    className="form-control rounded-0"
+                    id={`upload_document_1`}
+                    onChange={(e) => onFileChanges(e, 2)}
+                  />
+                  <sup className='text-danger'>Format accepted: Jpeg/Pdf</sup>
+                </div>
+              </div>)}
+              
             </div>
           </div>
           <div className='col-lg-2'></div>

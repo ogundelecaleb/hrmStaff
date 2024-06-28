@@ -44,7 +44,6 @@ import { FiSearch } from "react-icons/fi";
 
 const AnnualLeave = ({ navigate }) => {
   const location = useLocation();
-  const [searchTerm, setSearchTerm] = useState("")
 
   const {
     fullName,
@@ -70,6 +69,7 @@ const AnnualLeave = ({ navigate }) => {
   const [completedFirstSection, setCompletedFirstSection] = useState(false);
   const [staffs, setStaffs] = useState([]);
   const [staff, setStaff] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
   const [isStaffModal, setIsStaffModal] = useState(false);
 
   function range(start, end, step) {
@@ -602,7 +602,11 @@ const AnnualLeave = ({ navigate }) => {
                   onClick={() => setIsStaffModal(true)}
                   className="border px-3 py-2 rounded-0"
                 >
-                  {staffRep ? <p className="mb-0  fs-6">{staffRep}</p> : <p className="mb-0">Select a staff</p>}
+                  {staffRep ? (
+                    <p className="mb-0  fs-6">{staffRep}</p>
+                  ) : (
+                    <p className="mb-0">Select a staff</p>
+                  )}
                 </div>
                 {/* <input
                   required
@@ -642,7 +646,7 @@ const AnnualLeave = ({ navigate }) => {
           <ModalOverlay />
           <ModalContent>
             <ModalHeader fontSize={"sm"} py="3" color="#002240">
-              Select a staff to relive you
+              Select Multiple Customers
             </ModalHeader>
             <ModalCloseButton size={"sm"} />
             <Divider />
@@ -655,48 +659,47 @@ const AnnualLeave = ({ navigate }) => {
                   borderRadius={"6px"}
                   w="60"
                   fontSize={"sm"}
-                  placeholder="Search staff..."
+                  placeholder="Search Customer..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                 />
               </InputGroup>
               {staffs &&
-                staffs?.available_users.filter((staff) =>
-                  staff.first_name 
-                    .toLowerCase()
-                    .includes(searchTerm.toLowerCase())
-                ).map((staff) => (
-                  <div
-                    onClick={() => {
-                      setStaffrep(staff.first_name + " " + staff.last_name);
-                      setIsStaffModal(false)}}
-                    className="w-full "
-                  >
-                    {" "}
-                    <div className="px-2 py-2 border rounded-2 mb-2 w-[300px]">
-                    <p>{staff.first_name + " " + staff.last_name}</p>  
-                    <p>{staff.email}</p>
+                staffs?.available_users
+                  ?.filter((staff) =>
+                    staff.first_name
+                      .toLowerCase()
+                      .includes(searchTerm.toLowerCase())
+                  )
+                  .map((staff) => (
+                    <div
+                      onClick={() => {
+                        setStaffrep(staff.first_name + " " + staff.last_name);
+                        setIsStaffModal(false);
+                      }}
+                      className="w-full "
+                    >
+                      {" "}
+                      <div className="px-2 py-2 border rounded-2 mb-2  flex justify-between">
+                        <p className="text-md md:text-base">
+                          {" "}
+                          {staff.first_name + " " + staff.last_name}
+                        </p>
+
+                        <p className="text-md md:text-base">{staff?.email}</p>
+
+                        {staffRep ===
+                        staff.first_name + " " + staff.last_name ? (
+                          <div className="bg-[#32D583] h-4 w-4 rounded-full"></div>
+                        ) : (
+                          <div className="border-[#5F5F60] border-[1.5px] h-4 w-4 rounded-full"></div>
+                        )}
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  ))}
             </ModalBody>
             <Divider />
-            <ModalFooter gap={"5"}>
-              <Button
-                color="white"
-                bg="#0E82F0"
-                fontSize={"sm"}
-                onClick={() => {
-                  // closeModal4();
-                }}
-              >
-                {/* {isLoadingdr ? (
-                <MoonLoader color={"white"} size={20} />
-              ) : (
-                <> Save </>
-              )} */}
-              </Button>
-            </ModalFooter>
+           
           </ModalContent>
         </Modal>
       </div>

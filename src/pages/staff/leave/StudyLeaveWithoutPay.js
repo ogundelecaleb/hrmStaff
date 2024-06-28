@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "react-datepicker/dist/react-datepicker.css";
 import { useLocation, useParams } from "react-router-dom";
 import { useSnackbar } from "notistack";
@@ -42,6 +42,26 @@ const StudyLeaveWithoutPay = ({ navigate }) => {
   const [leaveDuration, setLeaveDuration] = useState('');
   const [showAdditionalInfo, setShowAdditionalInfo] = useState(false);
   const [completedFirstSection, setCompletedFirstSection] = useState(false);
+  const [isStaffModal, setIsStaffModal] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [staffs, setStaffs] = useState([]);
+
+  async function fetchStaffs() {
+    try {
+      const staffs = await api.fetchStaffs();
+      console.log("Staff Details:", staffs);
+      setStaffs(staffs);
+    } catch (error) {
+      console.error("Error fetching your basic details", error);
+      enqueueSnackbar(error.message, { variant: "error" });
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
+  useEffect(() => {
+    fetchStaffs();
+  }, []);
 
   console.log(fullName,maritalStatus,departmentOrUnitOrFacultyID,dateOfFirstAppointment,rankDesignation,selectedLeaveType,addressLeave,staffRep);
 

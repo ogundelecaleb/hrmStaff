@@ -167,6 +167,7 @@ const Leave = () => {
           staffType: userDetails.type,
           totalLeave: userDetails.total_leave_due,
           staffLevel: userDetails?.level,
+          confirm: userDetails?.confirmation,
         },
       });
     } else if (checkForCasualLeave) {
@@ -181,6 +182,7 @@ const Leave = () => {
           staffType: userDetails?.type,
           staffLevel: userDetails?.level,
           totalLeave: userDetails?.total_leave_due,
+          confirm: userDetails?.confirmation,
 
         },
       });
@@ -196,6 +198,7 @@ const Leave = () => {
           staffType: userDetails.type,
           totalLeave: userDetails.total_leave_due,
           staffLevel: userDetails?.level,
+          confirm: userDetails?.confirmation,
         },
       });
     } else if (checkForConferenceLeave) {
@@ -210,6 +213,7 @@ const Leave = () => {
           staffType: userDetails?.type,
           staffLevel: userDetails?.level,
           totalLeave: userDetails.total_leave_due,
+          confirm: userDetails?.confirmation,
         },
       });
     } else if (checkForSportingLeave) {
@@ -224,6 +228,7 @@ const Leave = () => {
           staffType: userDetails.type,
           totalLeave: userDetails?.total_leave_due,
           staffLevel: userDetails?.level,
+          confirm: userDetails?.confirmation,
         },
       });
     } else if (checkForCompassionateLeave) {
@@ -238,6 +243,7 @@ const Leave = () => {
           staffType: userDetails.type,
           totalLeave: userDetails?.total_leave_due,
           staffLevel: userDetails?.level,
+          confirm: userDetails?.confirmation,
         },
       });
     } else if (checkForAdoptionLeave) {
@@ -252,6 +258,7 @@ const Leave = () => {
           selectedLeaveType: leaveType,
           staffType: userDetails?.type,
           staffLevel: userDetails?.level,
+          confirm: userDetails?.confirmation,
         },
       });
     } else if (checkForSickLeave) {
@@ -265,6 +272,7 @@ const Leave = () => {
           selectedLeaveType: leaveType,
           staffType: userDetails?.type,
           staffLevel: userDetails?.level,
+          confirm: userDetails?.confirmation,
         },
       });
     } else if (checkForTradeLeave) {
@@ -279,6 +287,7 @@ const Leave = () => {
           staffType: userDetails.type,
           level: userDetails?.level,
           staffLevel: userDetails?.level,
+          confirm: userDetails?.confirmation,
         },
       });
     } else if (checkForMaternityLeave) {
@@ -293,6 +302,7 @@ const Leave = () => {
           selectedLeaveType: leaveType,
           staffType: userDetails?.type,
           staffLevel: userDetails?.level,
+          confirm: userDetails?.confirmation,
         },
       });
     } else if (checkForPaternityLeave) {
@@ -307,6 +317,7 @@ const Leave = () => {
           selectedLeaveType: leaveType,
           staffType: userDetails?.type,
           staffLevel: userDetails?.level,
+          confirm: userDetails?.confirmation,
         },
       });
     } else if (checkForResearchLeave) {
@@ -321,6 +332,7 @@ const Leave = () => {
           staffType: userDetails.type,
           conuassLevel: userDetails?.conuass,
           staffLevel: userDetails?.level,
+          confirm: userDetails?.confirmation,
         },
       });
     } else if (checkForSabbaticalLeave) {
@@ -334,6 +346,7 @@ const Leave = () => {
           selectedLeaveType: leaveType,
           staffType: userDetails?.type,
           level: userDetails?.level,
+          confirm: userDetails?.confirmation,
         },
       });
     } else if (checkForStudyLeaveWithPay) {
@@ -346,6 +359,7 @@ const Leave = () => {
           rankDesignation: userDetails.role,
           selectedLeaveType: leaveType,
           staffType: userDetails.type,
+          confirm: userDetails?.confirmation,
         },
       });
     } else if (checkForShortTermStudyLeaveWithPay) {
@@ -359,6 +373,7 @@ const Leave = () => {
           selectedLeaveType: leaveType,
           staffType: userDetails.type,
           staffLevel: userDetails?.level,
+          confirm: userDetails?.confirmation,
         },
       });
     } else if (checkForStudyLeaveWithoutPay) {
@@ -372,6 +387,7 @@ const Leave = () => {
           selectedLeaveType: leaveType,
           staffType: userDetails.type,
           staffLevel: userDetails?.level,
+          confirm: userDetails?.confirmation,
         },
       });
     } else if (checkForTrainingLeave) {
@@ -385,6 +401,7 @@ const Leave = () => {
           selectedLeaveType: leaveType,
           staffType: userDetails.type,
           level: userDetails?.level,
+          confirm: userDetails?.confirmation,
         },
       });
     } else if (checkForAbsenceLeave) {
@@ -398,6 +415,7 @@ const Leave = () => {
           selectedLeaveType: leaveType,
           staffType: userDetails.type,
           staffLevel: userDetails?.level,
+          confirm: userDetails?.confirmation,
         },
       });
     } else if (checkForBereavementLeave) {
@@ -411,6 +429,7 @@ const Leave = () => {
           selectedLeaveType: leaveType,
           staffType: userDetails.type,
           staffLevel: userDetails?.level,
+          confirm: userDetails?.confirmation,
         },
       });
     }
