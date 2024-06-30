@@ -49,8 +49,8 @@ const AcademicDetails = () => {
       setUserDetails(userDetails.data)
       setIsLoadinge(false);
     } catch (error) {
-      console.error("Error fetching your basic details", error);
-      enqueueSnackbar(error.message, { variant: 'error' })
+      console.error("Error fetching your basic details");
+      // enqueueSnackbar(error.message, { variant: 'error' })
       setIsLoadinge(false);
     }
   }

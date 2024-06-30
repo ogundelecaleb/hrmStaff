@@ -36,9 +36,9 @@ body::-webkit-scrollbar {
   height: 1200px;
 }
 .swapLeftNav {
-  z-index: 30;
+  z-index: 50;
   transition: all 0.3s ease-in-out;
-  width: 18%;
+  width: 280px;
   background-color: #17082d;
   display: block
 }

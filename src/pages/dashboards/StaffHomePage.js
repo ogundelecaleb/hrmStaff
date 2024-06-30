@@ -33,8 +33,8 @@ const StaffHomePage = ({ switchRoutes }) => {
       setUserDetails(userDetails.data)
       
     } catch (error) {
-      console.error("Error fetching your basic details", error);
-      enqueueSnackbar(error.message, { variant: 'error' })
+      console.error("Error fetching your basic details");
+      // enqueueSnackbar(error.message, { variant: 'error' })
     }
   }
   useEffect(() => {
@@ -72,9 +72,9 @@ const StaffHomePage = ({ switchRoutes }) => {
         return { data: [] }; // Return empty data or handle differently
       }
     } catch (error) {
-      console.error("Error fetching leave data", error);
-      enqueueSnackbar(error.message, { variant: 'error' });
-      throw error; // Rethrow the error to be caught by react-query
+      console.error("Error fetching leave data");
+      // enqueueSnackbar(error.message, { variant: 'error' });
+     // Rethrow the error to be caught by react-query
     }
   }  
 

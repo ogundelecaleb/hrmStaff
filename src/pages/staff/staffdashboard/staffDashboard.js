@@ -26,7 +26,7 @@ const StaffDashboard = () => {
 
   return (
     <div style={{ fontSize: "14px" }}>
-      <div className='d-flex text-white'>
+      <div className=' text-white'>
         <StaffLeftNavbar mobile={mobile} setMobile={setMobile} />
         <StaffDashboardRoute
           mobile={mobile}

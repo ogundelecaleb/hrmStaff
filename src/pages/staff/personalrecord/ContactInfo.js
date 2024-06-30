@@ -41,8 +41,8 @@ const ContactInfo = () => {
       console.log("User Details:", userDetails);
       setUserDetails(userDetails.data)
     } catch (error) {
-      console.error("Error fetching your basic details", error);
-      enqueueSnackbar(error.message, { variant: 'error' })
+      console.error("Error fetching your basic details");
+      // enqueueSnackbar(error.message, { variant: 'error' })
     }
   }
   const [formValues, setFormValues] = useState({

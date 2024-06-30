@@ -43,8 +43,8 @@ const StaffDashboard = () => {
         setUserStaffNumber(userDetails?.data?.staff_number + randomNumber);
       }
     } catch (error) {
-      console.error("Error fetching your user details", error);
-      enqueueSnackbar(error.message, { variant: 'error' })
+      console.error("Error fetching your user details");
+      // enqueueSnackbar(error.message, { variant: 'error' })
     }
   }
 
@@ -53,8 +53,8 @@ const StaffDashboard = () => {
 
   return (
     <Box style={{ fontSize: "14px" }}>
-      <Box className='d-flex text-white'>
-        <StaffLeftNavbar mobile={mobile} setMobile={setMobile} display={display}  staffNumber={userStaffNumber}/>
+      <Box className='flex text-white'>
+        <StaffLeftNavbar mobile={mobile} setMobile={setMobile} display={display}  staffNumber={userStaffNumber} />
         <StaffDashboardRoute
           mobile={mobile}
           setMobile={setMobile}

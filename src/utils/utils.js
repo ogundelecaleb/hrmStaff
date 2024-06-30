@@ -140,7 +140,7 @@ export async function getUserDetails() {
     const userDetailsResponse = await apiGet(GETUSERDETAILS, {}, headers);
     return userDetailsResponse;
   } catch (error) {
-    console.error("Error fetching user details:", error);
-    throw error;
+    console.error("Error fetching user details:");
+    // throw error;
   }
 }

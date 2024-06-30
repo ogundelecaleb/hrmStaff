@@ -33,8 +33,8 @@ const Navbar = ({ mobile, setMobile, display, reuseableNavigation }) => {
       console.log("User Details:", userDetails);
       setUserDetails(userDetails);
     } catch (error) {
-      console.error("Error fetching your basic details", error);
-      enqueueSnackbar(error.message, { variant: "error" });
+      console.error("Error fetching your basic details");
+      // enqueueSnackbar(error.message, { variant: "error" });
     }
   }
   useEffect(() => {
@@ -59,7 +59,7 @@ const Navbar = ({ mobile, setMobile, display, reuseableNavigation }) => {
 
   return (
     <div
-      className="border text-dark d-flex justify-content-between align-items-center sticky-top"
+      className="border text-dark d-flex justify-content-between align-items-center "
       style={{ width: "100%", height: "10%", backgroundColor: "white" }}
     >
       <div className="burger">

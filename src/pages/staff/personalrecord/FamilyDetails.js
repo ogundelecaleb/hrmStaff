@@ -51,6 +51,7 @@ const FamilyDetails = () => {
     spouse_full_name: "",
     spouse_current_address: "",
     spouse_phone: "",
+    spouse_email: "",
     c1_full_name: "",
     c1_current_address: "",
     c1_relationship: "",
@@ -166,6 +167,7 @@ const FamilyDetails = () => {
         c4_date_of_birth: formValues.c4_date_of_birth,
         c4_gender: formValues.c2_gender,
         c4_email: formValues.c4_email,
+        spouse_email: formValues.spouse_email
       });
       console.log("responce==>>>>>", response);
       enqueueSnackbar("Information updated successfully", {
@@ -207,6 +209,28 @@ const FamilyDetails = () => {
                   setFormValues({
                     ...formValues,
                     spouse_full_name: e.target.value,
+                  })
+                }
+              />
+            </div>
+            <div class="form-group">
+              <label
+                for="exampleFormControlSelect1"
+                className="fw-semibold text-muted fs-6 mt-3 mb-2"
+              >
+              Email Address 
+              </label>
+              <input
+                type="text"
+                style={{ height: "40px" }}
+                class="form-control rounded-0"
+                id="exampleFormControlInput1"
+                placeholder=""
+                value={formValues.spouse_email}
+                onChange={(e) =>
+                  setFormValues({
+                    ...formValues,
+                    spouse_email: e.target.value,
                   })
                 }
               />
