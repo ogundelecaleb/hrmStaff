@@ -91,7 +91,8 @@ const ResumptionOfLeaveApplication = ({ navigate }) => {
         marital_status: userDetails?.marital_status,
         role: userDetails?.role,
         type: userDetails?.type,
-        staffNumber: userDetails?.staff_number
+        staffNumber: userDetails?.staff_number,
+        // unit: userDetails?.unit?.name
       });
     }
   }, []);
@@ -178,14 +179,14 @@ const ResumptionOfLeaveApplication = ({ navigate }) => {
             <label
               for='exampleInputEmail1'
               class='form-label fs-6 fw-semibold h-10'>
-              Rank<sup className='text-danger'>*</sup>
+              Department/Division/Unit<sup className='text-danger'>*</sup>
             </label>
             <input type='name' class='form-control rounded-0' disabled
-            value={formValues.role}
+            value={formValues.unit}
             onChange={(e) =>
               setFormValues({
                 ...formValues,
-                role: e.target.value,
+                unit: e.target.value,
               })
             }/>
           </div>

@@ -286,8 +286,35 @@ const AppointmentRequest = ({ navigate }) => {
                 disabled
               />
             </FormControl>
+            <FormControl mb="5" isRequired>
+              <FormLabel color={"#515B6F"}>Cadre</FormLabel>
+              <Select
+                // onChange={handlestaffTypesChange}
+                // value={staffTypes}
+                color={"#515B6F"}
+              >
+              
+                <option value="junior_staff">CONUNASS</option>
+                <option value="senior_staff">CONUATSS</option>
+              </Select>
+            </FormControl>
+
+            <FormControl mb="5" isRequired>
+                <FormLabel color={"#515B6F"}>Step</FormLabel>
+                <Input
+                type="number"
+                  // disabled
+                  // value={formValues.faculty}
+                  // onChange={(e) =>
+                  //   setFormValues({
+                  //     ...formValues,
+                  //     faculty: e.target.value,
+                  //   })
+                  // }
+                />
+              </FormControl>
             {formValues.type === "ASE" && formValues.role === "DEAN" && (
-              <FormControl isRequired>
+              <FormControl mb="5" isRequired>
                 <FormLabel color={"#515B6F"}>Faculty</FormLabel>
                 <Input
                   disabled
@@ -302,7 +329,7 @@ const AppointmentRequest = ({ navigate }) => {
               </FormControl>
             )}
             {formValues.type === "NASE" && (
-              <FormControl isRequired>
+              <FormControl mb="5" isRequired>
                 <FormLabel color={"#515B6F"}>Unit</FormLabel>
                 <Input
                   disabled
