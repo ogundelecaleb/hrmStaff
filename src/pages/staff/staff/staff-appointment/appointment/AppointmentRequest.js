@@ -232,7 +232,8 @@ const AppointmentRequest = ({ navigate }) => {
         <Box>
           <Box py="2" pl="10" borderBottom="1px solid #EBEAED">
             <Text fontSize={28} m="0" fontWeight="medium">
-              Appointment
+            Certification of Assumption of Duty
+
             </Text>
             <Text>Kindly fill in the required information</Text>
           </Box>
@@ -262,7 +263,7 @@ const AppointmentRequest = ({ navigate }) => {
               </Select>
             </FormControl>
             <FormControl isRequired>
-              <FormLabel color={"#515B6F"}>Staff Type</FormLabel>
+              <FormLabel color={"#515B6F"}>Staff Category</FormLabel>
               <Select
                 onChange={handlestaffTypesChange}
                 value={staffTypes}
@@ -273,11 +274,11 @@ const AppointmentRequest = ({ navigate }) => {
                 <option value="senior_staff">Senior Staff</option>
               </Select>
             </FormControl>
-            <Box my="10">
+            {/* <Box my="10">
               <Text fontSize={28} m="0" fontWeight="medium">
                 Certification of Assumption of Duty
               </Text>
-            </Box>
+            </Box> */}
             <FormControl my="5" isRequired>
               <FormLabel color={"#515B6F"}>Full Name</FormLabel>
               <Input
@@ -313,7 +314,7 @@ const AppointmentRequest = ({ navigate }) => {
                   // }
                 />
               </FormControl>
-            {formValues.type === "ASE" && formValues.role === "DEAN" && (
+            {(formValues.type === "ASE" || formValues.type === "NASE") && formValues.role === "DEAN" && (
               <FormControl mb="5" isRequired>
                 <FormLabel color={"#515B6F"}>Faculty</FormLabel>
                 <Input
@@ -330,7 +331,7 @@ const AppointmentRequest = ({ navigate }) => {
             )}
             {formValues.type === "NASE" && (
               <FormControl mb="5" isRequired>
-                <FormLabel color={"#515B6F"}>Unit</FormLabel>
+                <FormLabel color={"#515B6F"}>Department/Unit</FormLabel>
                 <Input
                   disabled
                   value={formValues.unit}
@@ -380,7 +381,7 @@ const AppointmentRequest = ({ navigate }) => {
                 placeholder="07/02"
               />
             </FormControl>
-            <FormControl isRequired>
+            {/* <FormControl isRequired>
               <FormLabel color={"#515B6F"}>CONUNASS</FormLabel>
               <Input
                 placeholder="CONUNAS"
@@ -393,7 +394,7 @@ const AppointmentRequest = ({ navigate }) => {
                   })
                 }
               />
-            </FormControl>
+            </FormControl> */}
           </Box>
 
           <CommonButton title={"Proceed to Next"} action={handleNavigate} />

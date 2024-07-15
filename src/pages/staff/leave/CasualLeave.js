@@ -66,6 +66,7 @@ const CasualLeave = ({ navigate }) =>  {
   const [resumptionDate, setResumptionDate] = useState(null);
   const [addressLeave, setAddressLeave] = useState('');
   const [leaveNumber, setLeaveumber] = useState('');
+  const [leaveAmount, setLeaveAmount] = useState("");
   const [staffRep, setStaffrep] = useState('');
   const [showAdditionalInfo, setShowAdditionalInfo] = useState(false);
   const [completedFirstSection, setCompletedFirstSection] = useState(false);
@@ -132,23 +133,36 @@ const CasualLeave = ({ navigate }) =>  {
 
   const calculateDates = (selectedStartDate) => {
     if (selectedStartDate instanceof Date && !isNaN(selectedStartDate)) {
-      let calculatedEndDate = new Date(selectedStartDate);
-      let calculatedResumptionDate = new Date(calculatedEndDate);
+      // let calculatedEndDate = new Date(selectedStartDate);
+      // let calculatedResumptionDate = new Date(calculatedEndDate);
+      const formattedDate = selectedStartDate.toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' });
+      
+      const leaveAmountValue = parseInt(leaveAmount, 10) || 0;
 
-      let daysToAdd = 3;
-      while (daysToAdd > 0) {
-        calculatedEndDate.setDate(calculatedEndDate.getDate() + 1);
 
-        if (!isWeekend(calculatedEndDate)) {
-          daysToAdd--;
+      
+      let currentDate = new Date(selectedStartDate);
+      let addedDays = 0;
+
+      while (addedDays < leaveAmountValue) {
+        currentDate.setDate(currentDate.getDate() + 1);
+
+        // Check if the current day is not a Saturday (6) or Sunday (0)
+        if (currentDate.getDay() !== 6 && currentDate.getDay() !== 0) {
+          addedDays++;
         }
       }
+      // calculatedResumptionDate.setDate(calculatedEndDate.getDate() + 1);
+      const resumptionDate = new Date(currentDate);
+      resumptionDate.setDate(resumptionDate.getDate() + 1);
+      const formattedResumptionDate = resumptionDate
+        .toISOString()
+        .split("T")[0];
 
-      calculatedResumptionDate.setDate(calculatedEndDate.getDate() + 1);
-
-      setEndDate(calculatedEndDate.toISOString().split('T')[0]);
-      setResumptionDate(calculatedResumptionDate.toISOString().split('T')[0]);
-      setLeaveDuration(3);
+      setEndDate(currentDate.toISOString().split('T')[0]);
+      setResumptionDate(formattedResumptionDate);
+      // setLeaveDuration(leaveAmountValue);
+      setStartDate(formattedDate);
     }
   };
 
@@ -266,6 +280,21 @@ const CasualLeave = ({ navigate }) =>  {
 
             <div class='pb-5' style={{ display: !showAdditionalInfo ? "block" : "none" }}>
               <div class='pb-2 pt-2'>
+              <div class="mb-3">
+                <label
+                  for="exampleInputEmail1"
+                  class="form-label fs-6 fw-semibold h-10"
+                >
+                  Specify the number of days you want to apply for
+                </label>
+                <input
+                  type="number"
+                  class="form-control rounded-0"
+                  required
+                  value={leaveAmount}
+                  onChange={(e) => setLeaveAmount(e.target.value)}
+                />
+              </div>
                 <div class='mb-3 flex flex-col'>
                   <div>
                     <label class='form-label fs-6 fw-semibold'>Start Date<sup className='text-danger'>*</sup></label>
@@ -322,16 +351,8 @@ const CasualLeave = ({ navigate }) =>  {
                     </div>
                   )}
                     selected={startDate ? new Date(startDate) : null}
-                    onChange={(date) => {
-                      if (date instanceof Date && !isNaN(date)) {
-                        const formattedDate = date.toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' });
-                        setStartDate(formattedDate);
-                        calculateDates(date);
-                      } else {
-                        setStartDate('');
-                        setEndDate(null);
-                        setResumptionDate(null);
-                      }
+                    onChange={(date) => { calculateDates(date);
+                      
                     }}
                     dateFormat='yyyy-MM-dd'
                     className='form-control rounded-0 '
