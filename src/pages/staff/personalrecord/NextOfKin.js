@@ -10,9 +10,14 @@ const NextOfKin = () => {
   const { enqueueSnackbar } = useSnackbar();
   const [isLoading, setIsLoading] = useState(false);
   const [isDeclarationAccepted, setIsDeclarationAccepted] = useState(false);
-  const [beneficiaries, setBeneficiaries] = useState([      { full_name: "", relationship: "", phone: "", email: "", percentage: "" }]);
+  const [beneficiaries, setBeneficiaries] = useState([ { full_name: "", relationship: "", phone: "", email: "", percentage: "" }]);
 
   const handleAddBeneficiary = () => {
+    if (beneficiaries?.length >= 4){
+      enqueueSnackbar("Maximum number of beneficiaries reached", { variant: "warning" });
+      return;
+    }
+    console.log("beneficiaries?.length", beneficiaries?.length)
     setBeneficiaries([
       ...beneficiaries,
       { full_name: "", relationship: "", phone: "", email: "", percentage: "" },
@@ -70,7 +75,7 @@ const NextOfKin = () => {
         beneficiary_relationship: userDetails?.beneficiary_relationship,
         beneficiary_phone: userDetails?.beneficiary_phone,
       });
-      //setBeneficiaries(userDetails?.beneficiary)
+      setBeneficiaries(userDetails?.beneficiary || [])
     }
   }, [userDetails]);
 
