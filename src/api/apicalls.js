@@ -93,7 +93,8 @@ import {
   CREATEJOB,
   FETCHJOBS,LEAVECOUNT, LEAVESTATUS, AVAILABLESTAFF,
   LASTLEAVE,
-  RESUMELEAVE
+  RESUMELEAVE,
+  RESPONDHODCOMMENT
 } from "../utils/config";
 import { apiGet, apiPost, apiPut, apiDelete } from "../utils/utils";
 
@@ -247,6 +248,10 @@ export function leaveResumption(data) {
 
 export function createNewRegularization(data) {
   return apiPost(REGULARIZATIONAPPLICATION, data);
+}
+
+export function AgreeDisagreeHodComment(data) {
+  return apiPost(RESPONDHODCOMMENT, data);
 }
 
 export function createNewCONFIRMATION(data) {

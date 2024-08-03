@@ -9,7 +9,7 @@ import {
   TabPanels,
   Tabs
 } from "@chakra-ui/tabs";
-import { Avatar } from '@chakra-ui/react'
+import { Avatar, Spinner } from '@chakra-ui/react'
 import {
   Box,
   Divider,
@@ -30,6 +30,8 @@ const AppointmentRegularizationDetails = () => {
   const { enqueueSnackbar } = useSnackbar();
   const [isLoading, setIsLoading] = useState(false);
   const [details, setDetails] = useState([]);
+  const [isLoadingw, setIsLoadingw] = useState(false);
+  const [isLoadingf, setIsLoadingf] = useState(false);
 
   useEffect(() => {
     setIsLoading(true);
@@ -91,8 +93,29 @@ const AppointmentRegularizationDetails = () => {
     );
   }
 
+  const handleSubmit = async (agreement) =>  {
+   // setIsLoadingw(true)
+    try {
+      const response = await api.AgreeDisagreeHodComment({
+        id: details?.id,
+        agree_or_decline: agreement,
+        comment: "staff comment" 
+        // regularization_of_appointment_form:uploadedDocuments,
+      });  
+      console.log("responce==>>>>>", response);
+      enqueueSnackbar(' successfull', { variant: 'success' })
+      setIsLoadingw(false)
+      setIsLoadingf(false)
+    } catch (error) {
+      console.error(error);
+      enqueueSnackbar(error.message || "An error occurred", {variant: "error"});
+      setIsLoadingf(false)
+      setIsLoadingw(false)
+    }
+  };
+
   return (
-    <Stack className='container' pl='12'>
+    <Stack className='' px='12'>
       <div
         id='no-padding-res'
         className='d-flex flex-wrap mt-3 align-items-center justify-content-between'>
@@ -105,7 +128,7 @@ const AppointmentRegularizationDetails = () => {
         </Link>
       </div>
       <Flex gap='5'>
-        <Box>
+        <Box className="w-full md:w-[30%] ">
           <Box p='5' border='1px solid #D6DDEB  ' h='fit-content'>
             <Box className='d-flex gap-2 my-4'>
               <Flex>
@@ -150,14 +173,27 @@ const AppointmentRegularizationDetails = () => {
                 </Text>
               </Box>
             ))}
+
+
+
+<Text fontWeight='medium' color='#25324B' className="mb-2">
+              HOD/HOU Comment:    {details.hod_approval}
+              </Text>
+              <p>Agree or Disagree to HOD/HOU Comment</p>
+              <div className="flex items-center justify-between">
+                <button onClick={()=> { handleSubmit("accept"); setIsLoadingw(true)}} className="py-2 px-3 rounded-md bg-green-400 text-white flex "> {isLoadingw ? <Spinner size="sm" color="white" /> : "Agree"}</button>
+                <button onClick={()=> { handleSubmit("disapprove"); setIsLoadingf(true)}} className="py-2 px-3 rounded-md bg-red-400 text-white ">{isLoadingf ? <Spinner size="sm" color="white" /> : "Disagree"}</button>
+              </div>
           </Box>
+         
           
         </Box>
+
         <Box
           h={"fit-content"}
           pb='20'
           px='5'
-          className='col-lg-7 border  tb-res-parent'>
+          className='col-lg-8 border  '>
           {/* <div className='tb-res'> */}
           <Tabs position='relative' variant={"line"} pt={"2"}>
             <Box className='tab-scroll' overflowX={"auto"}>
