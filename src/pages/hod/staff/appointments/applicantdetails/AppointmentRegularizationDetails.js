@@ -244,7 +244,12 @@ const AppointmentRegularizationDetails = () => {
             </Box>
             {details?.applicant_approval_status_to_hod && (
               <div className="mt-2">
-                {" "}
+                <Text fontSize={"md"} color="#7C8493" m="0">
+                  Staff Comment HOD/HOU Comment:
+                </Text>
+                <Text fontSize={"md"} color="#25324B" fontWeight={""}>
+                  {details?.applicant_comment_to_hod}
+                </Text>{" "}
                 <Text fontSize={"md"} color="#7C8493" m="0">
                   Staff Response HOD/HOU Comment:
                 </Text>

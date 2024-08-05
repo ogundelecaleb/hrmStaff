@@ -7,9 +7,9 @@ import {
   TabList,
   TabPanel,
   TabPanels,
-  Tabs
+  Tabs,
 } from "@chakra-ui/tabs";
-import { Avatar, Spinner } from '@chakra-ui/react'
+import { Avatar, Spinner } from "@chakra-ui/react";
 import {
   Box,
   Divider,
@@ -24,11 +24,11 @@ import { useSnackbar } from "notistack";
 import { MoonLoader } from "react-spinners";
 
 const AppointmentRegularizationDetails = () => {
-
   const navigate = useNavigate();
   const { id } = useParams();
   const { enqueueSnackbar } = useSnackbar();
   const [isLoading, setIsLoading] = useState(false);
+  const [comment, setComment] = useState("");
   const [details, setDetails] = useState([]);
   const [isLoadingw, setIsLoadingw] = useState(false);
   const [isLoadingf, setIsLoadingf] = useState(false);
@@ -36,20 +36,25 @@ const AppointmentRegularizationDetails = () => {
   useEffect(() => {
     setIsLoading(true);
     if (id) {
-      api.getRegularizationbyID(id)
-      .then(response => {
+      fetchRegularizationRequest();
+    }
+  }, [id]);
+
+  const fetchRegularizationRequest = () => {
+    api
+      .getRegularizationbyID(id)
+      .then((response) => {
         const leaveData = response.data;
-        setDetails(leaveData)
+        setDetails(leaveData);
         console.log(response.data);
         setIsLoading(false);
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(error);
-        enqueueSnackbar(error.message, { variant: 'error' })
+        enqueueSnackbar(error.message, { variant: "error" });
         setIsLoading(false);
       });
-    }
-  }, [id]);
+  };
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -73,98 +78,109 @@ const AppointmentRegularizationDetails = () => {
 
   if (isLoading) {
     return (
-        <Box
+      <Box
         w={"80vw"}
         display="flex"
         flexDirection="column"
         h={"80vh"}
         alignItems="center"
         justifyContent="center"
-        >
+      >
         <div
-            className="fixed inset-0 flex items-center justify-center bg-white bg-opacity-70"
-            style={{ zIndex: 9999 }}
+          className="fixed inset-0 flex items-center justify-center bg-white bg-opacity-70"
+          style={{ zIndex: 9999 }}
         >
-            <div className="inline-block">
+          <div className="inline-block">
             <MoonLoader color={"#984779"} size={80} />
-            </div>
+          </div>
         </div>
-        </Box>
+      </Box>
     );
   }
 
-  const handleSubmit = async (agreement) =>  {
-   // setIsLoadingw(true)
+  const handleSubmit = async (agreement) => {
+    // setIsLoadingw(true)
     try {
       const response = await api.AgreeDisagreeHodComment({
         id: details?.id,
         agree_or_decline: agreement,
-        comment: "staff comment" 
+        comment: comment,
         // regularization_of_appointment_form:uploadedDocuments,
-      });  
+      });
       console.log("responce==>>>>>", response);
-      enqueueSnackbar(' successfull', { variant: 'success' })
-      setIsLoadingw(false)
-      setIsLoadingf(false)
+      enqueueSnackbar(" successfull", { variant: "success" });
+      fetchRegularizationRequest();
+      setIsLoadingw(false);
+      setIsLoadingf(false);
     } catch (error) {
       console.error(error);
-      enqueueSnackbar(error.message || "An error occurred", {variant: "error"});
-      setIsLoadingf(false)
-      setIsLoadingw(false)
+      enqueueSnackbar(error.message || "An error occurred", {
+        variant: "error",
+      });
+      setIsLoadingf(false);
+      setIsLoadingw(false);
     }
   };
 
   return (
-    <Stack className='' px='12'>
+    <Stack className="" px="12">
       <div
-        id='no-padding-res'
-        className='d-flex flex-wrap mt-3 align-items-center justify-content-between'>
+        id="no-padding-res"
+        className="d-flex flex-wrap mt-3 align-items-center justify-content-between"
+      >
         <Link
           style={{ cursor: "pointer", marginLeft: "-12px" }}
           onClick={() => navigate(-1)}
-          className='d-flex align-items-center gap-2'>
+          className="d-flex align-items-center gap-2"
+        >
           <BsArrowLeftShort size={"40"} />
-          <p className=' fs-5 mt-3 '>Applicant Details</p>
+          <p className=" fs-5 mt-3 ">Applicant Details</p>
         </Link>
       </div>
-      <Flex gap='5'>
-        <Box className="w-full md:w-[30%] ">
-          <Box p='5' border='1px solid #D6DDEB  ' h='fit-content'>
-            <Box className='d-flex gap-2 my-4'>
+      <div className="flex flex-col lg:flex-row gap-8">
+        <Box className="w-full lg:w-[30%] ">
+          <Box p="5" border="1px solid #D6DDEB  " h="fit-content">
+            <Box className="d-flex gap-2 my-4">
               <Flex>
-              <Avatar src={details.user_image} size='xl' />
-                <Box ml='3'>
-                  <Text fontWeight='bold'>
-                    {details.full_name}
-                  </Text>
-                  <Text fontSize='sm'>{details.staffID}</Text>
-                  <Text fontSize='sm'>{details.role}</Text>
+                <Avatar src={details.user_image} size="xl" />
+                <Box ml="3">
+                  <Text fontWeight="bold">{details.full_name}</Text>
+                  <Text fontSize="sm">{details.staffID}</Text>
+                  <Text fontSize="sm">{details.role}</Text>
                 </Box>
               </Flex>
             </Box>
-            <Box className='py-2 px-3 ' style={{ backgroundColor: "#F8F8FD" }}>
+            <Box className="py-2 px-3 " style={{ backgroundColor: "#F8F8FD" }}>
               <Flex justifyContent={"space-between"}>
-                <Text m='0' color='#25324B'>
-                Date Applied: 
+                <Text m="0" color="#25324B">
+                  Date Applied:
                 </Text>
-                <Text m='0' color='#7C8493'>
-                {formatshortDate(details.date || "Application Date not available")}
+                <Text m="0" color="#7C8493">
+                  {formatshortDate(
+                    details.date || "Application Date not available"
+                  )}
                 </Text>
               </Flex>
               <Divider />
 
-              <Text fontWeight='medium' color='#25324B'>
-              Regularization of Appointment
+              <Text fontWeight="medium" color="#25324B">
+                Regularization of Appointment
               </Text>
             </Box>
             <Divider />
             {details.approvals?.map((approval, index) => (
-              <Box key={index} p="5" border="1px solid #D6DDEB" h="fit-content" mt="7">
+              <Box
+                key={index}
+                p="5"
+                border="1px solid #D6DDEB"
+                h="fit-content"
+                mt="7"
+              >
                 <Flex justifyContent={"space-between"}>
-                  <Text m='0' color='#25324B' className="fw-semibold fs-8">
+                  <Text m="0" color="#25324B" className="fw-semibold fs-8">
                     {approval.role}
                   </Text>
-                  <Text m='0' color='#7C8493'>
+                  <Text m="0" color="#7C8493">
                     {formatDate(approval.date)}
                   </Text>
                 </Flex>
@@ -174,127 +190,174 @@ const AppointmentRegularizationDetails = () => {
               </Box>
             ))}
 
+            <Text fontWeight="medium" color="#25324B" className="mb-2">
+              HOD/HOU Comment: {details.hod_approval}
+            </Text>
 
-
-<Text fontWeight='medium' color='#25324B' className="mb-2">
-              HOD/HOU Comment:    {details.hod_approval}
-              </Text>
-              <p>Agree or Disagree to HOD/HOU Comment</p>
-              <div className="flex items-center justify-between">
-                <button onClick={()=> { handleSubmit("accept"); setIsLoadingw(true)}} className="py-2 px-3 rounded-md bg-green-400 text-white flex "> {isLoadingw ? <Spinner size="sm" color="white" /> : "Agree"}</button>
-                <button onClick={()=> { handleSubmit("disapprove"); setIsLoadingf(true)}} className="py-2 px-3 rounded-md bg-red-400 text-white ">{isLoadingf ? <Spinner size="sm" color="white" /> : "Disagree"}</button>
-              </div>
-          </Box>
-         
           
+            {!details?.applicant_approval_status_to_hod ||
+            !details?.applicant_comment_to_hod ? (
+              <div>
+                <Text fontWeight="medium" color="#25324B" className="mb-2">
+                  Staff Comment on HOD/HOU Comment
+                </Text>
+                <textarea
+                  value={comment}
+                  onChange={(e) => setComment(e.target.value)}
+                  className="h-[80px] form-control rounded-0 mb-2"
+                />
+
+                <p>Agree or Disagree to HOD/HOU Comment</p>
+                <div className="flex items-center justify-between">
+                  <button
+                    onClick={() => {
+                      handleSubmit("accept");
+                      setIsLoadingw(true);
+                    }}
+                    className="py-2 px-3 rounded-md bg-green-400 text-white flex "
+                  >
+                    {" "}
+                    {isLoadingw ? <Spinner size="sm" color="white" /> : "Agree"}
+                  </button>
+                  <button
+                    onClick={() => {
+                      handleSubmit("disapprove");
+                      setIsLoadingf(true);
+                    }}
+                    className="py-2 px-3 rounded-md bg-red-400 text-white "
+                  >
+                    {isLoadingf ? (
+                      <Spinner size="sm" color="white" />
+                    ) : (
+                      "Disagree"
+                    )}
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <div className="mt-2">
+                <Text fontSize={"md"} color="#7C8493" m="0">
+                  Staff Comment HOD/HOU Comment:
+                </Text>
+                <Text fontSize={"md"} color="#25324B" fontWeight={""}>
+                  {details?.applicant_comment_to_hod}
+                </Text>{" "}
+                <Text fontSize={"md"} color="#7C8493" m="0">
+                  Staff Response HOD/HOU Comment:
+                </Text>
+                <Text fontSize={"md"} color="#25324B" fontWeight={""}>
+                  {details?.applicant_approval_status_to_hod}
+                </Text>
+              </div>
+            )}
+          </Box>
         </Box>
 
-        <Box
-          h={"fit-content"}
-          pb='20'
-          px='5'
-          className='col-lg-8 border  '>
+        <Box pb="20" px="5" className="w-full lg:w-[70%] ">
           {/* <div className='tb-res'> */}
-          <Tabs position='relative' variant={"line"} pt={"2"}>
-            <Box className='tab-scroll' overflowX={"auto"}>
-              <Box className='tb-res-2' position={"relative"}>
-                <TabList className='border-bottom'>
+          <Tabs position="relative" variant={"line"} pt={"2"}>
+            <Box className="tab-scroll" overflowX={"auto"}>
+              <Box className="tb-res-2" position={"relative"}>
+                <TabList className="border-bottom">
                   <Tab
                     _focus={{ color: "black" }}
                     fontWeight={"semibold"}
-                    color={"gray"}>
+                    color={"gray"}
+                  >
                     Applicant Information
                   </Tab>
                   <Tab
                     _focus={{ color: "black" }}
                     fontWeight={"semibold"}
-                    color={"gray"}>
+                    color={"gray"}
+                  >
                     Document
                   </Tab>
                 </TabList>
                 <TabIndicator
-                  mt='-1.5px'
-                  height='3px'
-                  borderRadius='9px 9px 0 0'
+                  mt="-1.5px"
+                  height="3px"
+                  borderRadius="9px 9px 0 0"
                 />
               </Box>
             </Box>
             <TabPanels>
               <TabPanel>
-                <Grid templateColumns='repeat(2, 1fr)' gap={6}>
-                  <GridItem w='100%' h='10'>
-                    <Text fontSize={"lg"} color='#7C8493' m='0'>
+                <Grid templateColumns="repeat(2, 1fr)" gap={6}>
+                  <GridItem w="100%" h="10">
+                    <Text fontSize={"lg"} color="#7C8493" m="0">
                       Full Name
                     </Text>
-                    <Text fontSize={"lg"} color='#25324B' fontWeight={"medium"}>
-                    {details.full_name}
+                    <Text fontSize={"lg"} color="#25324B" fontWeight={"medium"}>
+                      {details.full_name}
                     </Text>
                   </GridItem>
-                  <GridItem w='100%' h='10'>
-                    <Text fontSize={"lg"} color='#7C8493' m='0'>
-                     Staff Type
+                  <GridItem w="100%" h="10">
+                    <Text fontSize={"lg"} color="#7C8493" m="0">
+                      Staff Type
                     </Text>
-                    <Text fontSize={"lg"} color='#25324B' fontWeight={"medium"}>
-                    {details.staff_type}
-                    </Text>
-                  </GridItem>
-                  <GridItem w='100%' h='10'>
-                    <Text fontSize={"lg"} color='#7C8493' m='0'>
-                    PF/CM No{" "}
-                    </Text>
-                    <Text fontSize={"lg"} color='#25324B' fontWeight={"medium"}>
-                    {details.pf_no}
+                    <Text fontSize={"lg"} color="#25324B" fontWeight={"medium"}>
+                      {details.staff_type}
                     </Text>
                   </GridItem>
-                  <GridItem w='100%' h='10'>
-                    <Text fontSize={"lg"} color='#7C8493' m='0'>
-                    Current Level{" "}
+                  <GridItem w="100%" h="10">
+                    <Text fontSize={"lg"} color="#7C8493" m="0">
+                      PF/CM No{" "}
                     </Text>
-                    <Text fontSize={"lg"} color='#25324B' fontWeight={"medium"}>
-                    {details.level}
-                    </Text>
-                  </GridItem>
-                  <GridItem w='100%' h='10'>
-                    <Text fontSize={"lg"} color='#7C8493' m='0'>
-                    Date of First Appointment{" "}
-                    </Text>
-                    <Text fontSize={"lg"} color='#25324B' fontWeight={"medium"}>
-                    {formatDate(details.date_of_first_appointment)}
+                    <Text fontSize={"lg"} color="#25324B" fontWeight={"medium"}>
+                      {details.pf_no}
                     </Text>
                   </GridItem>
-                  <GridItem w='100%' h='10'>
-                    <Text fontSize={"lg"} color='#7C8493' m='0'>
+                  <GridItem w="100%" h="10">
+                    <Text fontSize={"lg"} color="#7C8493" m="0">
+                      Current Level{" "}
+                    </Text>
+                    <Text fontSize={"lg"} color="#25324B" fontWeight={"medium"}>
+                      {details.level}
+                    </Text>
+                  </GridItem>
+                  <GridItem w="100%" h="10">
+                    <Text fontSize={"lg"} color="#7C8493" m="0">
+                      Date of First Appointment{" "}
+                    </Text>
+                    <Text fontSize={"lg"} color="#25324B" fontWeight={"medium"}>
+                      {formatDate(details.date_of_first_appointment)}
+                    </Text>
+                  </GridItem>
+                  <GridItem w="100%" h="10">
+                    <Text fontSize={"lg"} color="#7C8493" m="0">
                       Division/Department/Unit
                     </Text>
-                    <Text fontSize={"md"} color='#25324B' fontWeight={"medium"}>
-                    {details.department?.name || details.faculty?.name || details.unit?.name}
+                    <Text fontSize={"md"} color="#25324B" fontWeight={"medium"}>
+                      {details.department?.name ||
+                        details.faculty?.name ||
+                        details.unit?.name}
                     </Text>
                   </GridItem>
-                  <GridItem w='100%' h='10'>
-                    <Text fontSize={"lg"} color='#7C8493' m='0'>
-                    Grade on Temporary Appointment
+                  <GridItem w="100%" h="10">
+                    <Text fontSize={"lg"} color="#7C8493" m="0">
+                      Grade on Temporary Appointment
                     </Text>
-                    <Text fontSize={"lg"} color='#25324B' fontWeight={"medium"}>
-                    {details.grade_on_temporary_appointment}
-                    </Text>
-                  </GridItem>
-                  <GridItem w='100%' h='12' >
-                    <Text fontSize={"lg"} color='#7C8493' m='0' mt='5'>
-                    Regularization of appointment form
-                    </Text>
-                    <Text fontSize={"md"} color='#25324B' fontWeight={"medium"}>
-                    {details.regularization_of_appointment_form}
+                    <Text fontSize={"lg"} color="#25324B" fontWeight={"medium"}>
+                      {details.grade_on_temporary_appointment}
                     </Text>
                   </GridItem>
-                  <GridItem w='100%' h='12'>
-                    <Text fontSize={"md"} color='#7C8493' m='0'>
-                    Details of work done since Appointment
+                  <GridItem w="100%" h="12">
+                    <Text fontSize={"lg"} color="#7C8493" m="0" mt="5">
+                      Regularization of appointment form
                     </Text>
-                    <Text fontSize={"sm"} color='#25324B' fontWeight={"medium"}>
+                    <Text fontSize={"md"} color="#25324B" fontWeight={"medium"}>
+                      {details.regularization_of_appointment_form}
+                    </Text>
+                  </GridItem>
+                  <GridItem w="100%" h="12">
+                    <Text fontSize={"md"} color="#7C8493" m="0">
+                      Details of work done since Appointment
+                    </Text>
+                    <Text fontSize={"sm"} color="#25324B" fontWeight={"medium"}>
                       {details.details_of_work_done_since_appointment}
                     </Text>
                   </GridItem>
-                  
                 </Grid>
               </TabPanel>
               <TabPanel>Document</TabPanel>
@@ -302,7 +365,7 @@ const AppointmentRegularizationDetails = () => {
           </Tabs>
           {/* </div> */}
         </Box>
-      </Flex>
+      </div>
     </Stack>
   );
 };
