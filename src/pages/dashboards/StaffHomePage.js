@@ -100,7 +100,7 @@ const StaffHomePage = ({ switchRoutes }) => {
       "contact_address",
       "date_of_first_appointment",
       "k1_full_name",
-      "beneficiary_full_name",
+      // "beneficiary_full_name",
       "q1_name_of_institution",
     ];
     const filledFields = fieldsToCheck.reduce((count, field) => {
