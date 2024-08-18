@@ -7,15 +7,12 @@ import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { MoonLoader } from "react-spinners";
 import { CircularProgress, CircularProgressLabel } from "@chakra-ui/react";
-import { getYear, getMonth } from 'date-fns';
-import {
-  Box,
-} from "@chakra-ui/react";
-import 'intl';
-import 'intl/locale-data/jsonp/en';
+import { getYear, getMonth } from "date-fns";
+import { Box } from "@chakra-ui/react";
+import "intl";
+import "intl/locale-data/jsonp/en";
 
 const Leave = () => {
-
   const navigate = useNavigate();
   const [userDetails, setUserDetails] = useState([]);
   const { enqueueSnackbar } = useSnackbar();
@@ -29,7 +26,7 @@ const Leave = () => {
     }
     return result;
   }
-  
+
   const years = range(1990, getYear(new Date()) + 1, 1);
   const months = [
     "January",
@@ -45,17 +42,17 @@ const Leave = () => {
     "November",
     "December",
   ];
-  
+
   async function fetchUserDetails() {
     try {
       setIsLoading(true);
       const userDetails = await getUserDetails();
       console.log("User Details:", userDetails);
-      setUserDetails(userDetails.data)
+      setUserDetails(userDetails.data);
     } catch (error) {
       console.error("Error fetching your basic details", error);
-      enqueueSnackbar(error.message, { variant: 'error' })
-    }finally {
+      enqueueSnackbar(error.message, { variant: "error" });
+    } finally {
       setIsLoading(false);
     }
   }
@@ -104,7 +101,7 @@ const Leave = () => {
         date_of_first_appointment: userDetails?.date_of_first_appointment,
         marital_status: userDetails?.marital_status,
         role: userDetails?.role,
-        type: userDetails?.type
+        type: userDetails?.type,
       });
     }
   }, [userDetails]);
@@ -116,14 +113,19 @@ const Leave = () => {
   }, []);
 
   const [leaveType, setLeaveType] = useState("");
-  
+
   const getRoleBasedID = (userRole) => {
-    if (userRole === 'HOD' || userRole === 'RSWEP') {
+    if (userRole === "HOD" || userRole === "RSWEP") {
       return userDetails.department?.id;
-    } else if (userRole === 'DEAN') {
+    } else if (userRole === "DEAN") {
       return userDetails.faculty?.id;
-    } else if (userRole === 'HOU' || userRole === 'NTSWEP') {
+    } else if (
+      userRole === "HOU" ||
+      (userRole === "NTSWEP" && userDetails.unit?.id !== "8")
+    ) {
       return userDetails.unit?.id;
+    } else if (userRole === "NTSWEP" && userDetails.unit?.id === 8) {
+      return userDetails.department?.id;
     }
     return null;
   };
@@ -131,7 +133,7 @@ const Leave = () => {
   const handleNavigate = (e) => {
     e.preventDefault();
     if (!leaveType) {
-      enqueueSnackbar('Please select a leave type', { variant: 'warning' });
+      enqueueSnackbar("Please select a leave type", { variant: "warning" });
       return;
     }
     console.log("Selected Leave Type:", leaveType);
@@ -149,7 +151,8 @@ const Leave = () => {
     let checkForResearchLeave = leaveType === "research-leave";
     let checkForSabbaticalLeave = leaveType === "sabbatical-leave";
     let checkForStudyLeaveWithPay = leaveType === "study-leave-with-pay";
-    let checkForShortTermStudyLeaveWithPay = leaveType === "short-term-study-leave-with-pay";
+    let checkForShortTermStudyLeaveWithPay =
+      leaveType === "short-term-study-leave-with-pay";
     let checkForStudyLeaveWithoutPay = leaveType === "study-leave-without-pay";
     let checkForTrainingLeave = leaveType === "training-leave";
     let checkForAbsenceLeave = leaveType === "leave-of-absence";
@@ -168,6 +171,7 @@ const Leave = () => {
           totalLeave: userDetails.total_leave_due,
           staffLevel: userDetails?.level,
           confirm: userDetails?.confirmation,
+          department: userDetails?.department?.id
         },
       });
     } else if (checkForCasualLeave) {
@@ -183,7 +187,7 @@ const Leave = () => {
           staffLevel: userDetails?.level,
           totalLeave: userDetails?.total_leave_due,
           confirm: userDetails?.confirmation,
-
+          department: userDetails?.department?.id
         },
       });
     } else if (checkForExaminationLeave) {
@@ -199,6 +203,7 @@ const Leave = () => {
           totalLeave: userDetails.total_leave_due,
           staffLevel: userDetails?.level,
           confirm: userDetails?.confirmation,
+          department: userDetails?.department?.id
         },
       });
     } else if (checkForConferenceLeave) {
@@ -214,6 +219,7 @@ const Leave = () => {
           staffLevel: userDetails?.level,
           totalLeave: userDetails.total_leave_due,
           confirm: userDetails?.confirmation,
+          department: userDetails?.department?.id
         },
       });
     } else if (checkForSportingLeave) {
@@ -229,6 +235,7 @@ const Leave = () => {
           totalLeave: userDetails?.total_leave_due,
           staffLevel: userDetails?.level,
           confirm: userDetails?.confirmation,
+          department: userDetails?.department?.id
         },
       });
     } else if (checkForCompassionateLeave) {
@@ -244,6 +251,7 @@ const Leave = () => {
           totalLeave: userDetails?.total_leave_due,
           staffLevel: userDetails?.level,
           confirm: userDetails?.confirmation,
+          department: userDetails?.department?.id
         },
       });
     } else if (checkForAdoptionLeave) {
@@ -259,6 +267,7 @@ const Leave = () => {
           staffType: userDetails?.type,
           staffLevel: userDetails?.level,
           confirm: userDetails?.confirmation,
+          department: userDetails?.department?.id
         },
       });
     } else if (checkForSickLeave) {
@@ -273,6 +282,7 @@ const Leave = () => {
           staffType: userDetails?.type,
           staffLevel: userDetails?.level,
           confirm: userDetails?.confirmation,
+          department: userDetails?.department?.id
         },
       });
     } else if (checkForTradeLeave) {
@@ -288,6 +298,7 @@ const Leave = () => {
           level: userDetails?.level,
           staffLevel: userDetails?.level,
           confirm: userDetails?.confirmation,
+          department: userDetails?.department?.id
         },
       });
     } else if (checkForMaternityLeave) {
@@ -303,6 +314,7 @@ const Leave = () => {
           staffType: userDetails?.type,
           staffLevel: userDetails?.level,
           confirm: userDetails?.confirmation,
+          department: userDetails?.department?.id
         },
       });
     } else if (checkForPaternityLeave) {
@@ -318,6 +330,7 @@ const Leave = () => {
           staffType: userDetails?.type,
           staffLevel: userDetails?.level,
           confirm: userDetails?.confirmation,
+          department: userDetails?.department?.id
         },
       });
     } else if (checkForResearchLeave) {
@@ -333,6 +346,7 @@ const Leave = () => {
           conuassLevel: userDetails?.conuass,
           staffLevel: userDetails?.level,
           confirm: userDetails?.confirmation,
+          department: userDetails?.department?.id
         },
       });
     } else if (checkForSabbaticalLeave) {
@@ -347,6 +361,7 @@ const Leave = () => {
           staffType: userDetails?.type,
           level: userDetails?.level,
           confirm: userDetails?.confirmation,
+          department: userDetails?.department?.id
         },
       });
     } else if (checkForStudyLeaveWithPay) {
@@ -360,6 +375,7 @@ const Leave = () => {
           selectedLeaveType: leaveType,
           staffType: userDetails.type,
           confirm: userDetails?.confirmation,
+          department: userDetails?.department?.id
         },
       });
     } else if (checkForShortTermStudyLeaveWithPay) {
@@ -374,6 +390,7 @@ const Leave = () => {
           staffType: userDetails.type,
           staffLevel: userDetails?.level,
           confirm: userDetails?.confirmation,
+          department: userDetails?.department?.id
         },
       });
     } else if (checkForStudyLeaveWithoutPay) {
@@ -388,6 +405,7 @@ const Leave = () => {
           staffType: userDetails.type,
           staffLevel: userDetails?.level,
           confirm: userDetails?.confirmation,
+          department: userDetails?.department?.id
         },
       });
     } else if (checkForTrainingLeave) {
@@ -402,6 +420,7 @@ const Leave = () => {
           staffType: userDetails.type,
           level: userDetails?.level,
           confirm: userDetails?.confirmation,
+          department: userDetails?.department?.id
         },
       });
     } else if (checkForAbsenceLeave) {
@@ -416,6 +435,7 @@ const Leave = () => {
           staffType: userDetails.type,
           staffLevel: userDetails?.level,
           confirm: userDetails?.confirmation,
+          department: userDetails?.department?.id
         },
       });
     } else if (checkForBereavementLeave) {
@@ -430,13 +450,11 @@ const Leave = () => {
           staffType: userDetails.type,
           staffLevel: userDetails?.level,
           confirm: userDetails?.confirmation,
+          department: userDetails?.department?.id
         },
       });
     }
-
   };
-
- 
 
   if (isLoading) {
     return (
@@ -470,69 +488,64 @@ const Leave = () => {
         alignItems="center"
         justifyContent="center"
       >
+        <div className="row mt-5 " style={{ height: "180px", width: "80%" }}>
+          <div
+            className="col-lg-12 rounded-1 px-3 d-flex justify-content-between align-items-center border"
+            style={{ border: "1px solid #EFF4F8", borderRadius: 10 }}
+          >
+            <div className="d-flex gap-3 align-items-center">
+              <CircularProgress
+                value={progress}
+                thickness="6"
+                size="75"
+                color="green.400"
+              >
+                <CircularProgressLabel>{progress}</CircularProgressLabel>
+              </CircularProgress>
+              <div className="line-height-10">
+                <p class="fs-4 fw-semibold">Complete all Process</p>
 
-          <div className='row mt-5 ' style={{ height: "180px", width:"80%"}}>
-            <div
-              className='col-lg-12 rounded-1 px-3 d-flex justify-content-between align-items-center border'
-              style={{ border: "1px solid #EFF4F8", borderRadius: 10 }}>
-              <div className='d-flex gap-3 align-items-center'>
-                <CircularProgress
-                  value={progress}
-                  thickness='6'
-                  size='75'
-                  color='green.400'>
-                  <CircularProgressLabel>
-                  {progress}
-                  </CircularProgressLabel>
-                </CircularProgress>
-                <div className='line-height-10'>
-                  <p class='fs-4 fw-semibold'>Complete all Process</p>
-
-                  <p className='fs-6 text-muted'>
-                    Your personal records profile is{" "}
-                    <span className='text-warning'>{progress}%</span> completed, to access the leave application you need to complete your profile information
-                  </p>
-                </div>
+                <p className="fs-6 text-muted">
+                  Your personal records profile is{" "}
+                  <span className="text-warning">{progress}%</span> completed,
+                  to access the leave application you need to complete your
+                  profile information
+                </p>
               </div>
             </div>
           </div>
-        
+        </div>
       </Box>
-      
     );
   }
 
   return (
-    <div className='container-fluid'>
-      <div class='border-bottom ps-5' id='no-padding-res'>
-        <h1 class='fs-3 fw-semibold'>Leave Application</h1>
-        <p class='fs-5'>Kindly fill in the required information</p>
+    <div className="container-fluid">
+      <div class="border-bottom ps-5" id="no-padding-res">
+        <h1 class="fs-3 fw-semibold">Leave Application</h1>
+        <p class="fs-5">Kindly fill in the required information</p>
       </div>
-      <div className='row'>
-      
+      <div className="row">
         <form
-          class=' px-5 pt-5 col-md-6 '
-          id='sec-padding-res'
-          style={{ paddingBottom: "100px" }}>
-          <div class='pb-5'>
-            <div class='mb-3'>
-              <label class='form-label fs-6 fw-semibold h-10'>
-                Full Name
-              </label>
+          class=" px-5 pt-5 col-md-6 "
+          id="sec-padding-res"
+          style={{ paddingBottom: "100px" }}
+        >
+          <div class="pb-5">
+            <div class="mb-3">
+              <label class="form-label fs-6 fw-semibold h-10">Full Name</label>
               <input
-                type='text'
+                type="text"
                 style={{ height: "40px" }}
-                class='form-control rounded-0'
-                id='exampleFormControlInput1'
-                placeholder=''
+                class="form-control rounded-0"
+                id="exampleFormControlInput1"
+                placeholder=""
                 disabled
                 value={`${userDetails?.first_name} ${userDetails?.last_name}`}
               />
             </div>
-            <div className='mb-3'>
-              <label class='form-label fs-6 fw-semibold'>
-                Marital Status
-              </label>
+            <div className="mb-3">
+              <label class="form-label fs-6 fw-semibold">Marital Status</label>
               <select
                 className="form-select rounded-0"
                 disabled
@@ -545,25 +558,28 @@ const Leave = () => {
                   })
                 }
               >
-                <option value="" disabled>Select Status</option>
+                <option value="" disabled>
+                  Select Status
+                </option>
                 <option value="Single">Single</option>
                 <option value="Married">Married</option>
               </select>
             </div>
-            
-            {formValues.type === 'ASE' && formValues.role === 'DEAN' && (
-              <div class='mb-3'>
+
+            {formValues.type === "ASE" && formValues.role === "DEAN" && (
+              <div class="mb-3">
                 <label
-                  for='exampleInputEmail1'
-                  class='form-label fs-6 fw-semibold'>
+                  for="exampleInputEmail1"
+                  class="form-label fs-6 fw-semibold"
+                >
                   Faculty
                 </label>
                 <input
-                  type='text'
+                  type="text"
                   style={{ height: "40px" }}
-                  class='form-control rounded-0'
-                  id='exampleFormControlInput1'
-                  placeholder=''
+                  class="form-control rounded-0"
+                  id="exampleFormControlInput1"
+                  placeholder=""
                   disabled
                   value={formValues.faculty}
                   onChange={(e) =>
@@ -576,20 +592,47 @@ const Leave = () => {
               </div>
             )}
 
-            {(formValues.type === 'ASE' && (formValues.role === 'HOD' || formValues.role === 'RSWEP')) && (
+            {formValues.type === "ASE" &&
+              (formValues.role === "HOD" || formValues.role === "RSWEP") && (
+                <div class="mb-3">
+                  <label
+                    for="exampleInputEmail1"
+                    class="form-label fs-6 fw-semibold"
+                  >
+                    Department
+                  </label>
+                  <input
+                    type="text"
+                    style={{ height: "40px" }}
+                    class="form-control rounded-0"
+                    id="exampleFormControlInput1"
+                    placeholder=""
+                    disabled
+                    value={formValues.department}
+                    onChange={(e) =>
+                      setFormValues({
+                        ...formValues,
+                        department: e.target.value,
+                      })
+                    }
+                  />
+                </div>
+              )}
 
-              <div class='mb-3'>
+            {formValues.type === "NASE" && userDetails?.unit?.id === 8 && (
+              <div class="mb-3">
                 <label
-                  for='exampleInputEmail1'
-                  class='form-label fs-6 fw-semibold'>
+                  for="exampleInputEmail1"
+                  class="form-label fs-6 fw-semibold"
+                >
                   Department
                 </label>
                 <input
-                  type='text'
+                  type="text"
                   style={{ height: "40px" }}
-                  class='form-control rounded-0'
-                  id='exampleFormControlInput1'
-                  placeholder=''
+                  class="form-control rounded-0"
+                  id="exampleFormControlInput1"
+                  placeholder=""
                   disabled
                   value={formValues.department}
                   onChange={(e) =>
@@ -601,21 +644,20 @@ const Leave = () => {
                 />
               </div>
             )}
-
-            {formValues.type === 'NASE' && (
-
-              <div class='mb-3'>
+            {formValues.type === "NASE" && (
+              <div class="mb-3">
                 <label
-                  for='exampleInputEmail1'
-                  class='form-label fs-6 fw-semibold'>
+                  for="exampleInputEmail1"
+                  class="form-label fs-6 fw-semibold"
+                >
                   Unit
                 </label>
                 <input
-                  type='text'
+                  type="text"
                   style={{ height: "40px" }}
-                  class='form-control rounded-0'
-                  id='exampleFormControlInput1'
-                  placeholder=''
+                  class="form-control rounded-0"
+                  id="exampleFormControlInput1"
+                  placeholder=""
                   disabled
                   value={formValues.unit}
                   onChange={(e) =>
@@ -628,122 +670,134 @@ const Leave = () => {
               </div>
             )}
 
-            <div class='mb-3'>
+            <div class="mb-3">
               <label
-                for='exampleInputEmail1'
-                class='form-label fs-6 fw-semibold'>
-                Leave Type<sup className='text-danger'>*</sup>
+                for="exampleInputEmail1"
+                class="form-label fs-6 fw-semibold"
+              >
+                Leave Type<sup className="text-danger">*</sup>
               </label>
               <select
                 onChange={(e) => setLeaveType(e.target.value)}
-                class='form-select rounded-0'
-                aria-label='Default select example'>
+                class="form-select rounded-0"
+                aria-label="Default select example"
+              >
                 <option selected>Leave Type</option>
-                <option value='annual-leave'>Annual Leave</option>
-                <option value='casual-leave'>Casual Leave</option>
-                <option value='examination-leave'>Examination Leave</option>
-                <option value='conference-leave'>Conference / Seminar / Workshop Leave</option>
-                <option value='sporting-leave'>Leave for Approved Sporting Events</option>
-                <option value='compassionate-leave'>Compassionate Leave</option>
-                <option value='adoption-leave'>Adoption Leave</option>
-                <option value='sick-leave'>Sick Leave</option>
-                <option value='leave-for-trade'>Leave for Trade Union Conference And Business</option>
-                <option value='maternity-leave'>Maternity Leave</option>
-                <option value='paternity-leave'>Paternity Leave </option>
-                <option value='research-leave'>Research Leave</option>
-                <option value='sabbatical-leave'>Sabbatical Leave</option>
-                <option value='study-leave-with-pay'>Study Leave With Pay </option>
-                <option value='short-term-study-leave-with-pay'>Short Term Study Leave With Pay </option>
-                <option value='study-leave-without-pay'>Study Leave Without Pay </option>
-                <option value='training-leave'>Training Leave</option>
-                <option value='leave-of-absence'>Leave of Absence</option>
-                <option value='bereavement-leave'>Bereavement Leave</option>
+                <option value="annual-leave">Annual Leave</option>
+                <option value="casual-leave">Casual Leave</option>
+                <option value="examination-leave">Examination Leave</option>
+                <option value="conference-leave">
+                  Conference / Seminar / Workshop Leave
+                </option>
+                <option value="sporting-leave">
+                  Leave for Approved Sporting Events
+                </option>
+                <option value="compassionate-leave">Compassionate Leave</option>
+                <option value="adoption-leave">Adoption Leave</option>
+                <option value="sick-leave">Sick Leave</option>
+                <option value="leave-for-trade">
+                  Leave for Trade Union Conference And Business
+                </option>
+                <option value="maternity-leave">Maternity Leave</option>
+                <option value="paternity-leave">Paternity Leave </option>
+                <option value="research-leave">Research Leave</option>
+                <option value="sabbatical-leave">Sabbatical Leave</option>
+                <option value="study-leave-with-pay">
+                  Study Leave With Pay{" "}
+                </option>
+                <option value="short-term-study-leave-with-pay">
+                  Short Term Study Leave With Pay{" "}
+                </option>
+                <option value="study-leave-without-pay">
+                  Study Leave Without Pay{" "}
+                </option>
+                <option value="training-leave">Training Leave</option>
+                <option value="leave-of-absence">Leave of Absence</option>
+                <option value="bereavement-leave">Bereavement Leave</option>
               </select>
             </div>
 
             {/* {verifyLeave ? ( */}
-              <>
-                {" "}
-                <div class='mb-3 flex flex-col'>
-                    <div class='form-group'>
-                      <label
-                        for='exampleFormControlSelect1'
-                        className='form-label fs-6 fw-semibold'>
-                        Date of First Appointment{" "}
-                        <sup className='text-danger'>*</sup>
-                      </label>
-                    </div>
-                    <DatePicker
-                    shouldCloseOnSelect={true}
-                    autoComplete="off"
-                      selected={
-                        formValues.date_of_first_appointment
-                          ? new Date(formValues.date_of_first_appointment)
-                          : null
-                      }
-                      onChange={(date) => {
-                        if (date instanceof Date && !isNaN(date)) {
-                          const formattedDate = date.toISOString().split('T')[0];
-                          setFormValues({
-                            ...formValues,
-                            date_of_first_appointment: formattedDate,
-                          });
-                        } else {
-                          setFormValues({
-                            ...formValues,
-                            date_of_first_appointment: '',
-                          });
-                        }
-                      }}
-                      dateFormat="yyyy-MM-dd"
-                      disabled
-                      className="form-control rounded-0"
-                      id="exampleFormControlInput1"
-                      placeholder=""
-                    />
-                  
-                </div>
-                <div class='mb-3'>
+            <>
+              {" "}
+              <div class="mb-3 flex flex-col">
+                <div class="form-group">
                   <label
-                    for='exampleInputEmail1'
-                    class='form-label fs-6 fw-semibold'>
-                    Rank/Designation<sup className='text-danger'>*</sup>
+                    for="exampleFormControlSelect1"
+                    className="form-label fs-6 fw-semibold"
+                  >
+                    Date of First Appointment{" "}
+                    <sup className="text-danger">*</sup>
                   </label>
-                  <input
-                    type='text'
-                    style={{ height: "40px" }}
-                    class='form-control rounded-0'
-                    id='exampleFormControlInput1'
-                    disabled
-                    value={formValues.role}
-                    onChange={(e) =>
+                </div>
+                <DatePicker
+                  shouldCloseOnSelect={true}
+                  autoComplete="off"
+                  selected={
+                    formValues.date_of_first_appointment
+                      ? new Date(formValues.date_of_first_appointment)
+                      : null
+                  }
+                  onChange={(date) => {
+                    if (date instanceof Date && !isNaN(date)) {
+                      const formattedDate = date.toISOString().split("T")[0];
                       setFormValues({
                         ...formValues,
-                        role: e.target.value,
-                      })
+                        date_of_first_appointment: formattedDate,
+                      });
+                    } else {
+                      setFormValues({
+                        ...formValues,
+                        date_of_first_appointment: "",
+                      });
                     }
-                  />
-                </div>
-                
-              </>
-            
+                  }}
+                  dateFormat="yyyy-MM-dd"
+                  disabled
+                  className="form-control rounded-0"
+                  id="exampleFormControlInput1"
+                  placeholder=""
+                />
+              </div>
+              <div class="mb-3">
+                <label
+                  for="exampleInputEmail1"
+                  class="form-label fs-6 fw-semibold"
+                >
+                  Rank/Designation<sup className="text-danger">*</sup>
+                </label>
+                <input
+                  type="text"
+                  style={{ height: "40px" }}
+                  class="form-control rounded-0"
+                  id="exampleFormControlInput1"
+                  disabled
+                  value={formValues.role}
+                  onChange={(e) =>
+                    setFormValues({
+                      ...formValues,
+                      role: e.target.value,
+                    })
+                  }
+                />
+              </div>
+            </>
           </div>
-          
+
           <button
             onClick={handleNavigate}
-            type='submit'
+            type="submit"
             style={{
               backgroundColor: " #984779",
               borderColor: "white",
               right: 50,
               position: "absolute",
             }}
-            class='my-10 p-2 text-md-start text-white fs-6 fw-semibold'>
+            class="my-10 p-2 text-md-start text-white fs-6 fw-semibold"
+          >
             Proceed to Next
           </button>
-        
         </form>
-      
       </div>
     </div>
   );

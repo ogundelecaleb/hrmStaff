@@ -52,7 +52,7 @@ const SickLeave = ({ navigate }) => {
     rankDesignation,
     selectedLeaveType,
     staffType,
-    staffLevel
+    staffLevel, department
   } = location.state;
   
   const { enqueueSnackbar } = useSnackbar();
@@ -228,7 +228,7 @@ const SickLeave = ({ navigate }) => {
     formData.append('upload_documents', uploadedDocuments);
     formData.append('full_name', fullName);
     formData.append('marital_status', maritalStatus);
-    formData.append('department_id', departmentId);
+    formData.append('department_id', departmentId || department);
     formData.append('faculty_id', facultyId);
     formData.append('unit_id', unitId);
     formData.append('leave_type', selectedLeaveType);

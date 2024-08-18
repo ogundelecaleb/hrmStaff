@@ -54,7 +54,7 @@ const ConferenceLeave = ({ navigate }) => {
     selectedLeaveType,
     staffType,
     staffLevel,
-    totalLeave,
+    totalLeave,department
   } = location.state;
 
   const { enqueueSnackbar } = useSnackbar();
@@ -263,7 +263,7 @@ const ConferenceLeave = ({ navigate }) => {
     formData.append("upload_documents", uploadedDocuments);
     formData.append("full_name", fullName);
     formData.append("marital_status", maritalStatus);
-    formData.append("department_id", departmentId);
+    formData.append("department_id", departmentId|| department);
     formData.append("faculty_id", facultyId);
     formData.append("unit_id", unitId);
     formData.append("leave_type", selectedLeaveType);

@@ -55,6 +55,7 @@ const AnnualLeave = ({ navigate }) => {
     totalLeave,
     staffType,
     staffLevel,
+    department
   } = location.state;
 
   const { enqueueSnackbar } = useSnackbar();
@@ -278,7 +279,7 @@ const AnnualLeave = ({ navigate }) => {
       const response = await api.requestLeave({
         full_name: fullName,
         marital_status: maritalStatus,
-        department_id: departmentId,
+        department_id: departmentId || department,
         faculty_id: facultyId,
         unit_id: unitId,
         leave_type: selectedLeaveType,
