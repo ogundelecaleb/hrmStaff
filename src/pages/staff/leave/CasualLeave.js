@@ -182,11 +182,11 @@ const CasualLeave = ({ navigate }) =>  {
   async function handleSubmit (e)  {
     e.preventDefault();
     setIsLoading(true);
-    // if (!isDocumentUploaded) {
-    //   enqueueSnackbar('Please upload a document', { variant: 'error' });
-    //   setIsLoading(false);
-    //   return;
-    // }
+    if (leaveDuration > totalLeave) {
+      enqueueSnackbar('leave duration cannot exceed remaining annual Leave', { variant: 'error' });
+      setIsLoading(false);
+      return;
+    }
     console.log(fullName,maritalStatus,departmentOrUnitOrFacultyID,dateOfFirstAppointment,rankDesignation,selectedLeaveType,startDate,endDate,addressLeave);
 
     const formattedStartDate = startDate
@@ -238,7 +238,7 @@ const CasualLeave = ({ navigate }) =>  {
     }
   };
 
-  if (totalLeave === 0) {
+  if (totalLeave == 0) {
     return (
       <Box
         w={"80vw"}
@@ -257,7 +257,7 @@ const CasualLeave = ({ navigate }) =>  {
             class=" fs-5 fw-semibold"
             style={{ textAlign: "center", marginTop: 20 }}
           >
-          You need to exhaust your annual leave to get access to compassionate leave
+         You have exhausted your annual leave
           </p>
         </div>
       </Box>
