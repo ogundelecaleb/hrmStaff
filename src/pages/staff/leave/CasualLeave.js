@@ -6,9 +6,9 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import api from "../../../api";
 import { MoonLoader } from "react-spinners";
-import 'intl';
-import 'intl/locale-data/jsonp/en';
-import { getYear, getMonth } from 'date-fns';
+import "intl";
+import "intl/locale-data/jsonp/en";
+import { getYear, getMonth } from "date-fns";
 import {
   Box,
   Table,
@@ -38,12 +38,10 @@ import {
   Text,
   Textarea,
 } from "@chakra-ui/react";
-import Oops from '../../../components/Opps';
+import Oops from "../../../components/Opps";
 import { FiSearch } from "react-icons/fi";
 
-
-const CasualLeave = ({ navigate }) =>  {
-
+const CasualLeave = ({ navigate }) => {
   const location = useLocation();
 
   const {
@@ -53,24 +51,24 @@ const CasualLeave = ({ navigate }) =>  {
     dateOfFirstAppointment,
     rankDesignation,
     selectedLeaveType,
-    staffType,department,
-    staffLevel, 
+    staffType,
+    department,
+    staffLevel,
     totalLeave,
-
   } = location.state;
-  
+
   const { enqueueSnackbar } = useSnackbar();
   const [isLoading, setIsLoading] = useState(false);
-  const [startDate, setStartDate] = useState('');
+  const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState(null);
   const [resumptionDate, setResumptionDate] = useState(null);
-  const [addressLeave, setAddressLeave] = useState('');
-  const [leaveNumber, setLeaveumber] = useState('');
+  const [addressLeave, setAddressLeave] = useState("");
+  const [leaveNumber, setLeaveumber] = useState("");
   const [leaveAmount, setLeaveAmount] = useState("");
-  const [staffRep, setStaffrep] = useState('');
+  const [staffRep, setStaffrep] = useState("");
   const [showAdditionalInfo, setShowAdditionalInfo] = useState(false);
   const [completedFirstSection, setCompletedFirstSection] = useState(false);
-  const [leaveDuration, setLeaveDuration] = useState('');
+  const [leaveDuration, setLeaveDuration] = useState("");
   const [isStaffModal, setIsStaffModal] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [staffs, setStaffs] = useState([]);
@@ -100,7 +98,18 @@ const CasualLeave = ({ navigate }) =>  {
     return result;
   }
 
-  console.log(fullName,maritalStatus,departmentOrUnitOrFacultyID,dateOfFirstAppointment,rankDesignation,selectedLeaveType,startDate,endDate,addressLeave,resumptionDate);
+  console.log(
+    fullName,
+    maritalStatus,
+    departmentOrUnitOrFacultyID,
+    dateOfFirstAppointment,
+    rankDesignation,
+    selectedLeaveType,
+    startDate,
+    endDate,
+    addressLeave,
+    resumptionDate
+  );
 
   const years = range(1990, getYear(new Date()) + 1, 1);
   const months = [
@@ -128,19 +137,21 @@ const CasualLeave = ({ navigate }) =>  {
 
   const isWeekend = (date) => {
     const day = date.getDay();
-    return day === 0 || day === 6; 
+    return day === 0 || day === 6;
   };
 
   const calculateDates = (selectedStartDate) => {
     if (selectedStartDate instanceof Date && !isNaN(selectedStartDate)) {
       // let calculatedEndDate = new Date(selectedStartDate);
       // let calculatedResumptionDate = new Date(calculatedEndDate);
-      const formattedDate = selectedStartDate.toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' });
-      
+      const formattedDate = selectedStartDate.toLocaleDateString("en-US", {
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+      });
+
       const leaveAmountValue = parseInt(leaveAmount, 10) || 0;
 
-
-      
       let currentDate = new Date(selectedStartDate);
       let addedDays = 0;
 
@@ -159,7 +170,7 @@ const CasualLeave = ({ navigate }) =>  {
         .toISOString()
         .split("T")[0];
 
-      setEndDate(currentDate.toISOString().split('T')[0]);
+      setEndDate(currentDate.toISOString().split("T")[0]);
       setResumptionDate(formattedResumptionDate);
       // setLeaveDuration(leaveAmountValue);
       setStartDate(formattedDate);
@@ -177,66 +188,80 @@ const CasualLeave = ({ navigate }) =>  {
   //       enqueueSnackbar('Please select a valid PDF or JPEG file.', { variant: 'error' });
   //     }
   //   }
-  // };   
+  // };
 
-  async function handleSubmit (e)  {
+  async function handleSubmit(e) {
     e.preventDefault();
     setIsLoading(true);
-    if (leaveDuration > totalLeave) {
-      enqueueSnackbar('leave duration cannot exceed remaining annual Leave', { variant: 'error' });
+    console.log("leaveAmount====>>>", leaveAmount, totalLeave);
+    if (leaveAmount > parseInt(totalLeave, 10)) {
+      enqueueSnackbar(
+        `You have ${totalLeave} days of annual leave remaining, leave duration cannot exceed remaining annual Leave`,
+        { variant: "error" }
+      );
       setIsLoading(false);
       return;
     }
-    console.log(fullName,maritalStatus,departmentOrUnitOrFacultyID,dateOfFirstAppointment,rankDesignation,selectedLeaveType,startDate,endDate,addressLeave);
+    console.log(
+      fullName,
+      maritalStatus,
+      departmentOrUnitOrFacultyID,
+      dateOfFirstAppointment,
+      rankDesignation,
+      selectedLeaveType,
+      startDate,
+      endDate,
+      addressLeave
+    );
 
     const formattedStartDate = startDate
-    ? new Date(startDate).toISOString().split('T')[0]
-    : null;
+      ? new Date(startDate).toISOString().split("T")[0]
+      : null;
 
     let departmentId = "";
     let facultyId = "";
     let unitId = "";
 
-    if (rankDesignation === 'HOD' || rankDesignation === 'RSWEP') {
+    if (rankDesignation === "HOD" || rankDesignation === "RSWEP") {
       departmentId = departmentOrUnitOrFacultyID;
-    } else if (rankDesignation === 'DEAN') {
+    } else if (rankDesignation === "DEAN") {
       facultyId = departmentOrUnitOrFacultyID;
-    } else if (rankDesignation === 'HOU' || rankDesignation === 'NTSWEP') {
+    } else if (rankDesignation === "HOU" || rankDesignation === "NTSWEP") {
       unitId = departmentOrUnitOrFacultyID;
     }
 
     const formData = new FormData();
     // formData.append('upload_documents', uploadedDocuments);
-    formData.append('full_name', fullName);
-    formData.append('marital_status', maritalStatus);
-    formData.append('department_id', departmentId||department); 
-    formData.append('faculty_id', facultyId);
-    formData.append('unit_id', unitId);
-    formData.append('leave_type', selectedLeaveType);
-    formData.append('date_of_first_appointment', dateOfFirstAppointment);
-    formData.append('designation', rankDesignation);
-    formData.append('start_date', formattedStartDate);
-    formData.append('end_date', endDate);
-    formData.append('leave_address', addressLeave);
-    formData.append('leave_phone', leaveNumber);
-    formData.append('replacement_on_duty', staffRep);
-    formData.append('resumption_date', resumptionDate);
-    formData.append('leave_duration', leaveDuration);
-    formData.append('type', staffType);
-    formData.append('level', staffLevel);
+    formData.append("full_name", fullName);
+    formData.append("marital_status", maritalStatus);
+    formData.append("department_id", departmentId || department);
+    formData.append("faculty_id", facultyId);
+    formData.append("unit_id", unitId);
+    formData.append("leave_type", selectedLeaveType);
+    formData.append("date_of_first_appointment", dateOfFirstAppointment);
+    formData.append("designation", rankDesignation);
+    formData.append("start_date", formattedStartDate);
+    formData.append("end_date", endDate);
+    formData.append("leave_address", addressLeave);
+    formData.append("leave_phone", leaveNumber);
+    formData.append("replacement_on_duty", staffRep);
+    formData.append("resumption_date", resumptionDate);
+    formData.append("leave_duration", leaveAmount);
+    formData.append("type", staffType);
+    formData.append("level", staffLevel);
 
     try {
       const response = await api.requestLeave(formData);
       console.log("responce==>>>>>", response);
-      enqueueSnackbar('Leave Application successfull', { variant: 'success' })
+      enqueueSnackbar("Leave Application successfull", { variant: "success" });
       setIsLoading(false);
       navigate("submited");
     } catch (error) {
-      console.log(error)
-      enqueueSnackbar(error.message, { variant: 'error' })
+      console.log(error);
+      enqueueSnackbar(error.message, { variant: "error" });
       setIsLoading(false);
     }
-  };
+  }
 
   if (totalLeave == 0) {
     return (
@@ -257,129 +282,150 @@ const CasualLeave = ({ navigate }) =>  {
             class=" fs-5 fw-semibold"
             style={{ textAlign: "center", marginTop: 20 }}
           >
-         You have exhausted your annual leave
+            You have exhausted your annual leave
           </p>
         </div>
       </Box>
     );
   }
 
-
   return (
-    <div className='container-fluid'>
-      <div className='row'>
-        <div class='border-bottom ps-4' id='sec-padding-res'>
-          <h1 class='fs-3 fw-semibold'>Leave</h1>
-          <p class='fs-5'>Kindly fill in the required information</p>
+    <div className="container-fluid">
+      <div className="row">
+        <div class="border-bottom ps-4" id="sec-padding-res">
+          <h1 class="fs-3 fw-semibold">Leave</h1>
+          <p class="fs-5">Kindly fill in the required information</p>
         </div>
-        <div className='col-md-6'>
-        <form
-            class=' ps-4 pt-5 '
-            id='sec-padding-res'
-            style={{ paddingBottom: "100px" }} onSubmit={handleSubmit}>
+        <div className="col-md-6">
+          <form
+            class=" ps-4 pt-5 "
+            id="sec-padding-res"
+            style={{ paddingBottom: "100px" }}
+            onSubmit={handleSubmit}
+          >
+            <div
+              class="pb-5"
+              style={{ display: !showAdditionalInfo ? "block" : "none" }}
+            >
+              <div class="pb-2 pt-2">
+                <div class="mb-3">
+                  <label
+                    for="exampleInputEmail1"
+                    class="form-label fs-6 fw-semibold h-10"
+                  >
+                    Specify the number of days you want to apply for
+                  </label>
+                  <input
+                    type="number"
+                    class="form-control rounded-0"
+                    required
+                    value={leaveAmount}
+                    onChange={(e) => setLeaveAmount(e.target.value)}
+                  />
+                </div>
+                <div class="mb-3 flex flex-col">
+                  <div>
+                    <label class="form-label fs-6 fw-semibold">
+                      Start Date<sup className="text-danger">*</sup>
+                    </label>
+                  </div>
+                  <DatePicker
+                    shouldCloseOnSelect={true}
+                    autoComplete="off"
+                    renderCustomHeader={({
+                      date,
+                      changeYear,
+                      changeMonth,
+                      decreaseMonth,
+                      increaseMonth,
+                      prevMonthButtonDisabled,
+                      nextMonthButtonDisabled,
+                    }) => (
+                      <div
+                        style={{
+                          margin: 10,
+                          display: "flex",
+                          justifyContent: "center",
+                        }}
+                      >
+                        <button
+                          onClick={decreaseMonth}
+                          disabled={prevMonthButtonDisabled}
+                        >
+                          {"<"}
+                        </button>
+                        <select
+                          value={getYear(date)}
+                          onChange={({ target: { value } }) =>
+                            changeYear(value)
+                          }
+                        >
+                          {years.map((option) => (
+                            <option key={option} value={option}>
+                              {option}
+                            </option>
+                          ))}
+                        </select>
 
-            <div class='pb-5' style={{ display: !showAdditionalInfo ? "block" : "none" }}>
-              <div class='pb-2 pt-2'>
+                        <select
+                          value={months[getMonth(date)]}
+                          onChange={({ target: { value } }) =>
+                            changeMonth(months.indexOf(value))
+                          }
+                        >
+                          {months.map((option) => (
+                            <option key={option} value={option}>
+                              {option}
+                            </option>
+                          ))}
+                        </select>
+
+                        <button
+                          onClick={increaseMonth}
+                          disabled={nextMonthButtonDisabled}
+                        >
+                          {">"}
+                        </button>
+                      </div>
+                    )}
+                    selected={startDate ? new Date(startDate) : null}
+                    onChange={(date) => {
+                      calculateDates(date);
+                    }}
+                    dateFormat="yyyy-MM-dd"
+                    className="form-control rounded-0 "
+                    id="exampleFormControlInput1"
+                    placeholder=""
+                  />
+                </div>
+              </div>
+              <div class="mb-3 flex flex-col">
+                <div>
+                  <label class="form-label fs-6 fw-semibold">
+                    End Date: {endDate}
+                  </label>
+                </div>
+              </div>
+              <div class="mb-3 flex flex-col">
+                <div>
+                  <label class="form-label fs-6 fw-semibold">
+                    Resumption Date: {resumptionDate}
+                  </label>
+                </div>
+              </div>
+
               <div class="mb-3">
                 <label
                   for="exampleInputEmail1"
                   class="form-label fs-6 fw-semibold h-10"
                 >
-                  Specify the number of days you want to apply for
-                </label>
-                <input
-                  type="number"
-                  class="form-control rounded-0"
-                  required
-                  value={leaveAmount}
-                  onChange={(e) => setLeaveAmount(e.target.value)}
-                />
-              </div>
-                <div class='mb-3 flex flex-col'>
-                  <div>
-                    <label class='form-label fs-6 fw-semibold'>Start Date<sup className='text-danger'>*</sup></label>
-                  </div>
-                  <DatePicker
-                  shouldCloseOnSelect={true}
-                  autoComplete="off"
-                  renderCustomHeader={({
-                    date,
-                    changeYear,
-                    changeMonth,
-                    decreaseMonth,
-                    increaseMonth,
-                    prevMonthButtonDisabled,
-                    nextMonthButtonDisabled,
-                  }) => (
-                    <div
-                      style={{
-                        margin: 10,
-                        display: "flex",
-                        justifyContent: "center",
-                      }}
-                    >
-                      <button onClick={decreaseMonth} disabled={prevMonthButtonDisabled}>
-                        {"<"}
-                      </button>
-                      <select
-                        value={getYear(date)}
-                        onChange={({ target: { value } }) => changeYear(value)}
-                      >
-                        {years.map((option) => (
-                          <option key={option} value={option}>
-                            {option}
-                          </option>
-                        ))}
-                      </select>
-            
-                      <select
-                        value={months[getMonth(date)]}
-                        onChange={({ target: { value } }) =>
-                          changeMonth(months.indexOf(value))
-                        }
-                      >
-                        {months.map((option) => (
-                          <option key={option} value={option}>
-                            {option}
-                          </option>
-                        ))}
-                      </select>
-            
-                      <button onClick={increaseMonth} disabled={nextMonthButtonDisabled}>
-                        {">"}
-                      </button>
-                    </div>
-                  )}
-                    selected={startDate ? new Date(startDate) : null}
-                    onChange={(date) => { calculateDates(date);
-                      
-                    }}
-                    dateFormat='yyyy-MM-dd'
-                    className='form-control rounded-0 '
-                    id='exampleFormControlInput1'
-                    placeholder=''
-                  />
-                </div>
-              </div>
-              <div class='mb-3 flex flex-col'>
-                <div>
-                  <label class='form-label fs-6 fw-semibold'>End Date: {endDate}</label>
-                </div>
-                
-              </div>
-              <div class='mb-3 flex flex-col'>
-                <div>
-                  <label class='form-label fs-6 fw-semibold'>Resumption Date: {resumptionDate}</label>
-                </div>
-              </div>
-              
-              <div class='mb-3'>
-                <label
-                  for='exampleInputEmail1'
-                  class='form-label fs-6 fw-semibold h-10'>
                   Phone Number while on Leave
                 </label>
-                <input class='form-control rounded-0' value={leaveNumber} onChange={(e) => setLeaveumber(e.target.value)}/>
+                <input
+                  class="form-control rounded-0"
+                  value={leaveNumber}
+                  onChange={(e) => setLeaveumber(e.target.value)}
+                />
               </div>
               <div class="mb-3">
                 <label class="form-label fs-6 fw-semibold">
@@ -403,74 +449,77 @@ const CasualLeave = ({ navigate }) =>  {
                 /> */}
               </div>
               <Modal
-          isCentered
-          isOpen={isStaffModal}
-          onClose={() => setIsStaffModal(false)}
-          size="2xl"
-          className="max-h-[80vh]"
-        >
-          <ModalOverlay />
-          <ModalContent>
-            <ModalHeader fontSize={"sm"} py="3" color="#002240">
-              Select Staff 
-            </ModalHeader>
-            <ModalCloseButton size={"sm"} />
-            <Divider />
-            <ModalBody py="2">
-              <InputGroup mb="6">
-                <InputLeftElement>
-                  <FiSearch color="#1A202C" />
-                </InputLeftElement>
-                <Input
-                  borderRadius={"6px"}
-                  w="60"
-                  fontSize={"sm"}
-                  placeholder="Search Staffs..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                />
-              </InputGroup>
-              {staffs &&
-                staffs?.available_users
-                  ?.filter((staff) =>
-                    staff.first_name
-                      .toLowerCase()
-                      .includes(searchTerm.toLowerCase())
-                  )
-                  .map((staff) => (
-                    <div
-                      onClick={() => {
-                        setStaffrep(staff.first_name + " " + staff.last_name);
-                        setIsStaffModal(false);
-                      }}
-                      className="w-full "
-                    >
-                      {" "}
-                      <div className="px-2 py-2 border rounded-2 mb-2  flex justify-between">
-                        <p className="text-md md:text-base">
-                          {" "}
-                          {staff.first_name + " " + staff.last_name}
-                        </p>
+                isCentered
+                isOpen={isStaffModal}
+                onClose={() => setIsStaffModal(false)}
+                size="2xl"
+                className="max-h-[80vh]"
+              >
+                <ModalOverlay />
+                <ModalContent>
+                  <ModalHeader fontSize={"sm"} py="3" color="#002240">
+                    Select Staff
+                  </ModalHeader>
+                  <ModalCloseButton size={"sm"} />
+                  <Divider />
+                  <ModalBody py="2">
+                    <InputGroup mb="6">
+                      <InputLeftElement>
+                        <FiSearch color="#1A202C" />
+                      </InputLeftElement>
+                      <Input
+                        borderRadius={"6px"}
+                        w="60"
+                        fontSize={"sm"}
+                        placeholder="Search Staffs..."
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                      />
+                    </InputGroup>
+                    {staffs &&
+                      staffs?.available_users
+                        ?.filter((staff) =>
+                          staff.first_name
+                            .toLowerCase()
+                            .includes(searchTerm.toLowerCase())
+                        )
+                        .map((staff) => (
+                          <div
+                            onClick={() => {
+                              setStaffrep(
+                                staff.first_name + " " + staff.last_name
+                              );
+                              setIsStaffModal(false);
+                            }}
+                            className="w-full "
+                          >
+                            {" "}
+                            <div className="px-2 py-2 border rounded-2 mb-2  flex justify-between">
+                              <p className="text-md md:text-base">
+                                {" "}
+                                {staff.first_name + " " + staff.last_name}
+                              </p>
 
-                        <p className="text-md md:text-base">{staff?.email}</p>
+                              <p className="text-md md:text-base">
+                                {staff?.email}
+                              </p>
 
-                        {staffRep ===
-                        staff.first_name + " " + staff.last_name ? (
-                          <div className="bg-[#32D583] h-4 w-4 rounded-full"></div>
-                        ) : (
-                          <div className="border-[#5F5F60] border-[1.5px] h-4 w-4 rounded-full"></div>
-                        )}
-                      </div>
-                    </div>
-                  ))}
-            </ModalBody>
-            <Divider />
-           
-          </ModalContent>
-        </Modal>
+                              {staffRep ===
+                              staff.first_name + " " + staff.last_name ? (
+                                <div className="bg-[#32D583] h-4 w-4 rounded-full"></div>
+                              ) : (
+                                <div className="border-[#5F5F60] border-[1.5px] h-4 w-4 rounded-full"></div>
+                              )}
+                            </div>
+                          </div>
+                        ))}
+                  </ModalBody>
+                  <Divider />
+                </ModalContent>
+              </Modal>
 
               <button
-                type='button'
+                type="button"
                 onClick={handleProceed}
                 style={{
                   backgroundColor: " #984779",
@@ -478,21 +527,26 @@ const CasualLeave = ({ navigate }) =>  {
                   right: 50,
                   position: "absolute",
                 }}
-                class='my-10 p-2 text-md-start text-white fs-6 fw-semibold'>
+                class="my-10 p-2 text-md-start text-white fs-6 fw-semibold"
+              >
                 Proceed to Next
               </button>
             </div>
 
-            <div class='pb-5' style={{ display: showAdditionalInfo ? "block" : "none" }}>
-             
-              <div class='mb-3'>
-                <label for='address' class='form-label fs-6 fw-semibold'>
+            <div
+              class="pb-5"
+              style={{ display: showAdditionalInfo ? "block" : "none" }}
+            >
+              <div class="mb-3">
+                <label for="address" class="form-label fs-6 fw-semibold">
                   Address while on Leave
                 </label>
                 <textarea
-                  class='form-control'
-                  aria-label='With textarea' value={addressLeave}
-                  onChange={(e) => setAddressLeave(e.target.value)}></textarea>
+                  class="form-control"
+                  aria-label="With textarea"
+                  value={addressLeave}
+                  onChange={(e) => setAddressLeave(e.target.value)}
+                ></textarea>
               </div>
               {/* <div class='pb-2'>
                 <div className='mb-3'>
@@ -512,20 +566,22 @@ const CasualLeave = ({ navigate }) =>  {
               </div> */}
               <button
                 disabled={isLoading}
-                type='submit' 
+                type="submit"
                 style={{
                   backgroundColor: " #984779",
                   borderColor: "white",
                   right: 50,
                   position: "absolute",
                 }}
-                className='my-10 p-2 text-md-start text-white fs-6 fw-semibold'>
+                className="my-10 p-2 text-md-start text-white fs-6 fw-semibold"
+              >
                 {isLoading ? (
-                      <MoonLoader color={"white"} size={20} />
-                    ) : ( <>Submit</>
-                    )}
+                  <MoonLoader color={"white"} size={20} />
+                ) : (
+                  <>Submit</>
+                )}
               </button>
-            </div>            
+            </div>
           </form>
         </div>
       </div>
