@@ -187,7 +187,7 @@ const CasualLeave = ({ navigate }) => {
   //     } else {
   //       enqueueSnackbar('Please select a valid PDF or JPEG file.', { variant: 'error' });
   //     }
-  //   }
+  //   =
   // };
 
   async function handleSubmit(e) {

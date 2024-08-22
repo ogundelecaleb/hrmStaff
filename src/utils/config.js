@@ -112,6 +112,8 @@ export const RESUMELEAVE = getApiUrl('/resumption/duty')
 
 
 export const AVAILABLESTAFF = getApiUrl('/get-available-staffs')
+export const UNREADNOTIFICATION = getApiUrl('/notification-unread-count')
+export const MARKASREAD = getApiUrl('/mark-all-read')
 
 
 

@@ -94,7 +94,9 @@ import {
   FETCHJOBS,LEAVECOUNT, LEAVESTATUS, AVAILABLESTAFF,
   LASTLEAVE,
   RESUMELEAVE,
-  RESPONDHODCOMMENT
+  RESPONDHODCOMMENT,
+  UNREADNOTIFICATION,
+  MARKASREAD
 } from "../utils/config";
 import { apiGet, apiPost, apiPut, apiDelete } from "../utils/utils";
 
@@ -102,6 +104,12 @@ import { apiGet, apiPost, apiPut, apiDelete } from "../utils/utils";
 
 export function fetchRole(data) {
   return apiGet(GETROLE, data);
+}
+export function fetchUnreadmsg(data) {
+  return apiGet(UNREADNOTIFICATION, data);
+}
+export function markAsRead(data) {
+  return apiGet(MARKASREAD, data);
 }
 
 export function addUser(data) {

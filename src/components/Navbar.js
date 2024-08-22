@@ -17,6 +17,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import { useSnackbar } from "notistack";
 import { getUserDetails } from "../utils/utils";
+import api from "../api";
 
 const Navbar = ({ mobile, setMobile, display, reuseableNavigation }) => {
   // const location = useLocation();
@@ -24,14 +25,25 @@ const Navbar = ({ mobile, setMobile, display, reuseableNavigation }) => {
 
   const navigate = useNavigate();
   const [userDetails, setUserDetails] = useState([]);
+  const [unreadMsg, setUnreadMsg] = useState(0);
   const { enqueueSnackbar } = useSnackbar();
   let Heading = "";
 
   async function fetchUserDetails() {
     try {
       const userDetails = await getUserDetails();
-      console.log("User Details:", userDetails);
+      //console.log("User Details:", userDetails);
       setUserDetails(userDetails);
+    } catch (error) {
+      console.error("Error fetching your basic details");
+      // enqueueSnackbar(error.message, { variant: "error" });
+    }
+  }
+  async function fetchUnreadmsg() {
+    try {
+      const unreadMsg = await api.fetchUnreadmsg();
+      console.log("unread message===>>:", unreadMsg);
+      setUnreadMsg(unreadMsg?.unread_count);
     } catch (error) {
       console.error("Error fetching your basic details");
       // enqueueSnackbar(error.message, { variant: "error" });
@@ -39,6 +51,7 @@ const Navbar = ({ mobile, setMobile, display, reuseableNavigation }) => {
   }
   useEffect(() => {
     fetchUserDetails();
+    fetchUnreadmsg();
   }, []);
 
   if (userDetails?.data?.role === "HOD") {
@@ -82,7 +95,7 @@ const Navbar = ({ mobile, setMobile, display, reuseableNavigation }) => {
       </div>
       <div
         className="d-flex justify-content-end align-items-center pe-3"
-        style={{  height: "70px", gap: "20px" }}
+        style={{ height: "70px", gap: "20px" }}
       >
         <div
           className="d-flex gap-3"
@@ -92,8 +105,14 @@ const Navbar = ({ mobile, setMobile, display, reuseableNavigation }) => {
           <div>
             <BiSearchAlt2 size="25" style={{ color: "#84818A" }} />
           </div>
-          <Link onClick={() => reuseableNavigation("notification")}>
+          <Link
+            onClick={() => reuseableNavigation("notification")}
+            className="relative"
+          >
             <AiFillBell size="25" style={{ color: "#84818A" }} />
+            <div className="h-[17px] w-[17px] rounded-full bg-red-500 flex justify-center items-center absolute -top-1 -right-2">
+              <p className="text-white text-xs m-0">{unreadMsg}</p>
+            </div>
           </Link>
           {/* <Link onClick={() => reuseableNavigation("inbox")}>
             <MdEmail size='25' style={{ color: "#84818A" }} />
