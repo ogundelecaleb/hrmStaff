@@ -205,7 +205,7 @@ const TrainingLeave = ({ navigate }) => {
   }
 
   if (
-    staffType === "NASE" &&
+    //staffType === "NASE" &&
     ["Level 13", "Level 14", "Level 15"].includes(level)
   ) {
     return (

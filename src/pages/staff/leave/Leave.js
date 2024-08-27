@@ -435,7 +435,8 @@ const Leave = () => {
           staffType: userDetails.type,
           staffLevel: userDetails?.level,
           confirm: userDetails?.confirmation,
-          department: userDetails?.department?.id
+          department: userDetails?.department?.id,
+         
         },
       });
     } else if (checkForBereavementLeave) {

@@ -180,11 +180,13 @@ const AnnualLeave = ({ navigate }) => {
     }
   };
 
-  const handleStartDateChange = (date) => {
-    if (date instanceof Date && !isNaN(date)) {
-      const formattedStartDate = date.toISOString().split("T")[0];
+  const handleStartDateChange = (event) => {
+    
+   
+  
+      const formattedStartDate = event.target.value;
       const leaveAmountValue = parseInt(leaveAmount, 10) || 0;
-
+ console.log("start ate", formattedStartDate )
       if (leaveAmountValue > totalLeave) {
         enqueueSnackbar("Leave amount cannot exceed the total leave due", {
           variant: "error",
@@ -195,7 +197,7 @@ const AnnualLeave = ({ navigate }) => {
         return;
       }
 
-      let currentDate = new Date(date);
+      let currentDate = new Date(formattedStartDate);
       let addedDays = 0;
 
       while (addedDays < leaveAmountValue) {
@@ -217,11 +219,7 @@ const AnnualLeave = ({ navigate }) => {
       setStartDate(formattedStartDate);
       setEndDate(formattedEndDate);
       setResumptionDate(formattedResumptionDate);
-    } else {
-      setStartDate("");
-      setEndDate("");
-      setResumptionDate("");
-    }
+   
   };
 
   const areAllFieldsValid = () => {
@@ -457,14 +455,26 @@ const AnnualLeave = ({ navigate }) => {
                   id="dateInput"
                   value={dateResumed}
                   onChange={handleDateChange}
-                  max={new Date().toISOString().split("T")[0]} // Set max attribute to today's date
+                  //min={new Date().toISOString().split("T")[0]} 
+                  max={new Date().toISOString().split("T")[0]} 
+                  // Set max attribute to today's date
                 />
               </div>
               <div class="mb-3 flex flex-col">
                 <div>
                   <label class="form-label fs-6 fw-semibold">Start Date</label>
                 </div>
-                <DatePicker
+                <input
+                  className="form-control rounded-0"
+                  type="date"
+                  id="dateInput"
+                  value={startDate}
+                  onChange={handleStartDateChange}
+                  min={new Date().toISOString().split("T")[0]} 
+                  //max={new Date().toISOString().split("T")[0]} 
+                  // Set max attribute to today's date
+                />
+                {/* <DatePicker
                   shouldCloseOnSelect={true}
                   autoComplete="off"
                   renderCustomHeader={({
@@ -527,7 +537,7 @@ const AnnualLeave = ({ navigate }) => {
                   className="form-control rounded-0 "
                   id="exampleFormControlInput1"
                   required
-                />
+                /> */}
               </div>
               <div class="mb-3 flex flex-col">
                 <div>

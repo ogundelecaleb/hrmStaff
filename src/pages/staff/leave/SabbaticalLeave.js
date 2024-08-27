@@ -219,7 +219,7 @@ const SabbaticalLeave = ({ navigate }) => {
   }
 
   if (
-    staffType === "NASE" &&
+    // staffType === "NASE" &&
     [
       "Level 1",
       "Level 2",
@@ -231,7 +231,7 @@ const SabbaticalLeave = ({ navigate }) => {
       "Level 8",
       "Level 9",
       "Level 10",
-      "Level 11",
+      // "Level 11",
     ].includes(level)
   ) {
     return (
@@ -252,7 +252,8 @@ const SabbaticalLeave = ({ navigate }) => {
             class=" fs-5 fw-semibold"
             style={{ textAlign: "center", marginTop: 20 }}
           >
-            Sabbatical Leave is only entitled to ASE Staff and level 12 above
+            {/* Sabbatical Leave is only entitled to ASE Staff and level 11 above */}
+            Sabbatical Leave is only entitled to level 11 above
           </p>
         </div>
       </Box>

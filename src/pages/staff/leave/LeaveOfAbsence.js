@@ -194,6 +194,66 @@ const LeaveOfAbsence = ({ navigate }) =>  {
     }
   };
 
+  //Calculate the diffrence in the month of first appointment to cureent month
+  function calculateMonthDifference(date1, date2) {
+    // Parse the date strings into Date objects
+    const startDate = new Date(date1);
+    const endDate = new Date(date2);
+
+    // Calculate the difference in years and months
+    const yearsDifference = endDate.getFullYear() - startDate.getFullYear();
+    const monthsDifference = endDate.getMonth() - startDate.getMonth();
+
+    // Total months difference
+    const totalMonthsDifference = yearsDifference * 12 + monthsDifference;
+
+    return totalMonthsDifference;
+}
+let currentDate = new Date();
+let monthSpentInService = calculateMonthDifference(dateOfFirstAppointment,currentDate )
+
+
+//convert Month spend to years and month
+function convertMonthsToYearsAndMonths(months) {
+  const years = Math.floor(months / 12); // Calculate full years
+  const remainingMonths = months % 12;   // Calculate remaining months
+
+  return {
+      years: years,
+      remainingMonths: remainingMonths
+  };
+}
+
+const convertedMonths = convertMonthsToYearsAndMonths(monthSpentInService);
+
+  if (
+    monthSpentInService  < 25
+  ) {
+    return (
+      <Box
+        w={"80vw"}
+        display="flex"
+        flexDirection="column"
+        h={"20vh"}
+        alignItems="center"
+        justifyContent="center"
+      >
+        <div className="row mt-5 " style={{ height: "10px", width: "80%" }}>
+          <Oops />
+          <h2 style={{ textAlign: "center", marginTop: 50 }}>
+            You are not Eligible for this Type of Leave.
+          </h2>
+          <p
+            class=" fs-5 fw-semibold"
+            style={{ textAlign: "center", marginTop: 20 }}
+          >
+      Staff must be confirmed on ground for 3 years to take this leave, you have spent {convertedMonths.years} years and {convertedMonths.remainingMonths} months in service
+          </p>
+        </div>
+      </Box>
+    );
+  }
+
   if (
     leaveStatusQuery.data?.annual_leave ||
     leaveStatusQuery.data?.compassionate_leave
