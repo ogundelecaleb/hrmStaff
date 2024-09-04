@@ -1,5 +1,5 @@
 import React, { useState, useEffect, } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { BsArrowLeftShort } from "react-icons/bs";
 import {
   TabIndicator,
@@ -28,7 +28,7 @@ import { getUserDetails } from "../../../../../utils/utils";
 import { MoonLoader } from "react-spinners";
 import { RxAvatar } from "react-icons/rx";
 
-const AnnualDetails = () => {
+const AnnualDetails = (props) => {
 
   const navigate = useNavigate();
   const { id } = useParams();
@@ -41,6 +41,11 @@ const AnnualDetails = () => {
   const [commentText, setCommentText] = useState("");
   const [isCommentDisplayed, setIsCommentDisplayed] = useState(false);
   const [isLoadinge, setIsLoadinge] = useState(false);
+  const location = useLocation()
+  const { from } = location.state;
+  console.log("passed state====>", from)
+
+
 
   const handleCommentSubmit = () => {
     if (commentText.trim() !== "") {

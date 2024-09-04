@@ -126,7 +126,7 @@ const Leave = ({ id }) => {
     }
   }  
 
-  const { isLoading, isError, data, error, isPreviousData, refetch } = useQuery(['leaveRequests', page], () =>
+  const { isLoading, isError, data, error, isPreviousData, refetch } = useQuery(['leaveRequest', page], () =>
     getdLeaves(page),
     {
       keepPreviousData: true, refetchOnWindowFocus: "always",
@@ -309,7 +309,10 @@ const Leave = ({ id }) => {
                         <Td>{item.leave_duration}</Td>
                         <Td>
                           <Link
-                            to={`${item.leave_type}/details/${item.id}`}>
+                            
+                            to={`${item.leave_type}/details/${item.id}`}
+                             state={{ from: "occupation" }}
+                            >
                             <Button
                               bg={"#EBEAED"}
                               border={"1px solid #984779"}

@@ -55,7 +55,7 @@ const AnnualLeave = ({ navigate }) => {
     totalLeave,
     staffType,
     staffLevel,
-    department
+    department,
   } = location.state;
 
   const { enqueueSnackbar } = useSnackbar();
@@ -181,45 +181,39 @@ const AnnualLeave = ({ navigate }) => {
   };
 
   const handleStartDateChange = (event) => {
-    
-   
-  
-      const formattedStartDate = event.target.value;
-      const leaveAmountValue = parseInt(leaveAmount, 10) || 0;
- console.log("start ate", formattedStartDate )
-      if (leaveAmountValue > totalLeave) {
-        enqueueSnackbar("Leave amount cannot exceed the total leave due", {
-          variant: "error",
-        });
-        setStartDate("");
-        setEndDate("");
-        setResumptionDate("");
-        return;
+    const formattedStartDate = event.target.value;
+    const leaveAmountValue = parseInt(leaveAmount, 10) || 0;
+    console.log("start ate", formattedStartDate);
+    if (leaveAmountValue > totalLeave) {
+      enqueueSnackbar("Leave amount cannot exceed the total leave due", {
+        variant: "error",
+      });
+      setStartDate("");
+      setEndDate("");
+      setResumptionDate("");
+      return;
+    }
+
+    let currentDate = new Date(formattedStartDate);
+    let addedDays = 0;
+
+    while (addedDays < leaveAmountValue) {
+      currentDate.setDate(currentDate.getDate() + 1);
+
+      // Check if the current day is not a Saturday (6) or Sunday (0)
+      if (currentDate.getDay() !== 6 && currentDate.getDay() !== 0) {
+        addedDays++;
       }
+    }
 
-      let currentDate = new Date(formattedStartDate);
-      let addedDays = 0;
+    const formattedEndDate = currentDate.toISOString().split("T")[0];
+    const resumptionDate = new Date(currentDate);
+    resumptionDate.setDate(resumptionDate.getDate() + 1);
+    const formattedResumptionDate = resumptionDate.toISOString().split("T")[0];
 
-      while (addedDays < leaveAmountValue) {
-        currentDate.setDate(currentDate.getDate() + 1);
-
-        // Check if the current day is not a Saturday (6) or Sunday (0)
-        if (currentDate.getDay() !== 6 && currentDate.getDay() !== 0) {
-          addedDays++;
-        }
-      }
-
-      const formattedEndDate = currentDate.toISOString().split("T")[0];
-      const resumptionDate = new Date(currentDate);
-      resumptionDate.setDate(resumptionDate.getDate() + 1);
-      const formattedResumptionDate = resumptionDate
-        .toISOString()
-        .split("T")[0];
-
-      setStartDate(formattedStartDate);
-      setEndDate(formattedEndDate);
-      setResumptionDate(formattedResumptionDate);
-   
+    setStartDate(formattedStartDate);
+    setEndDate(formattedEndDate);
+    setResumptionDate(formattedResumptionDate);
   };
 
   const areAllFieldsValid = () => {
@@ -384,79 +378,15 @@ const AnnualLeave = ({ navigate }) => {
                     Date Resumed from Last Leave
                   </label>
                 </div>
-                {/* <DatePicker
-                autoComplete="off"
-                renderCustomHeader={({
-                  date,
-                  changeYear,
-                  changeMonth,
-                  decreaseMonth,
-                  increaseMonth,
-                  prevMonthButtonDisabled,
-                  nextMonthButtonDisabled,
-                }) => (
-                  <div
-                    style={{
-                      margin: 10,
-                      display: "flex",
-                      justifyContent: "center",
-                    }}
-                  >
-                    <button onClick={decreaseMonth} disabled={prevMonthButtonDisabled}>
-                      {"<"}
-                    </button>
-                    <select
-                      value={getYear(date)}
-                      onChange={({ target: { value } }) => changeYear(value)}
-                    >
-                      {years.map((option) => (
-                        <option key={option} value={option}>
-                          {option}
-                        </option>
-                      ))}
-                    </select>
-          
-                    <select
-                      value={months[getMonth(date)]}
-                      onChange={({ target: { value } }) =>
-                        changeMonth(months.indexOf(value))
-                      }
-                    >
-                      {months.map((option) => (
-                        <option key={option} value={option}>
-                          {option}
-                        </option>
-                      ))}
-                    </select>
-          
-                    <button onClick={increaseMonth} disabled={nextMonthButtonDisabled}>
-                      {">"}
-                    </button>
-                  </div>
-                )}
-                  selected={dateResumed ? new Date(dateResumed) : null}
-                  onChange={(date) => {
-                    if (date instanceof Date && !isNaN(date)) {
-                      const formattedDate = date.toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' });
-                      setDateresumed(formattedDate);
-                    } else {
-                      setDateresumed('');
-                    }
-                  }}
-                  dateFormat='yyyy-MM-dd'
-                  className='form-control rounded-0'
-                  id='exampleFormControlInput1'
-                  placeholder=''
-                  shouldCloseOnSelect={true}
-                /> */}
+
                 <input
                   className="form-control rounded-0"
                   type="date"
                   id="dateInput"
                   value={dateResumed}
                   onChange={handleDateChange}
-                  //min={new Date().toISOString().split("T")[0]} 
-                  max={new Date().toISOString().split("T")[0]} 
+                  //min={new Date().toISOString().split("T")[0]}
+                  max={new Date().toISOString().split("T")[0]}
                   // Set max attribute to today's date
                 />
               </div>
@@ -470,74 +400,10 @@ const AnnualLeave = ({ navigate }) => {
                   id="dateInput"
                   value={startDate}
                   onChange={handleStartDateChange}
-                  min={new Date().toISOString().split("T")[0]} 
-                  //max={new Date().toISOString().split("T")[0]} 
+                  min={new Date().toISOString().split("T")[0]}
+                  //max={new Date().toISOString().split("T")[0]}
                   // Set max attribute to today's date
                 />
-                {/* <DatePicker
-                  shouldCloseOnSelect={true}
-                  autoComplete="off"
-                  renderCustomHeader={({
-                    date,
-                    changeYear,
-                    changeMonth,
-                    decreaseMonth,
-                    increaseMonth,
-                    prevMonthButtonDisabled,
-                    nextMonthButtonDisabled,
-                  }) => (
-                    <div
-                      style={{
-                        margin: 10,
-                        display: "flex",
-                        justifyContent: "center",
-                      }}
-                    >
-                      <button
-                        onClick={decreaseMonth}
-                        disabled={prevMonthButtonDisabled}
-                      >
-                        {"<"}
-                      </button>
-                      <select
-                        value={getYear(date)}
-                        onChange={({ target: { value } }) => changeYear(value)}
-                      >
-                        {years.map((option) => (
-                          <option key={option} value={option}>
-                            {option}
-                          </option>
-                        ))}
-                      </select>
-
-                      <select
-                        value={months[getMonth(date)]}
-                        onChange={({ target: { value } }) =>
-                          changeMonth(months.indexOf(value))
-                        }
-                      >
-                        {months.map((option) => (
-                          <option key={option} value={option}>
-                            {option}
-                          </option>
-                        ))}
-                      </select>
-
-                      <button
-                        onClick={increaseMonth}
-                        disabled={nextMonthButtonDisabled}
-                      >
-                        {">"}
-                      </button>
-                    </div>
-                  )}
-                  selected={startDate ? new Date(startDate) : null}
-                  onChange={handleStartDateChange} // Use the modified handler
-                  dateFormat="yyyy-MM-dd"
-                  className="form-control rounded-0 "
-                  id="exampleFormControlInput1"
-                  required
-                /> */}
               </div>
               <div class="mb-3 flex flex-col">
                 <div>
@@ -619,12 +485,6 @@ const AnnualLeave = ({ navigate }) => {
                     <p className="mb-0">Select a staff</p>
                   )}
                 </div>
-                {/* <input
-                  required
-                  class="form-control rounded-0"
-                  value={staffRep}
-                  onChange={(e) => setStaffrep(e.target.value)}
-                /> */}
               </div>
 
               <button
@@ -710,7 +570,6 @@ const AnnualLeave = ({ navigate }) => {
                   ))}
             </ModalBody>
             <Divider />
-           
           </ModalContent>
         </Modal>
       </div>

@@ -56,7 +56,8 @@ const MaternityLeave = ({ navigate }) => {
     gender,
     staffType,
     staffLevel,
-    department
+    department,
+    children
   } = location.state;
   
   const { enqueueSnackbar } = useSnackbar();
@@ -102,7 +103,6 @@ const MaternityLeave = ({ navigate }) => {
     return result;
   }
 
-  console.log(fullName,maritalStatus,departmentOrUnitOrFacultyID,dateOfFirstAppointment,staffLevel,rankDesignation,selectedLeaveType,startDate,endDate,addressLeave,staffRep,resumptionDate,birthNum);
 
   const years = range(1990, getYear(new Date()) + 1, 1);
   const months = [

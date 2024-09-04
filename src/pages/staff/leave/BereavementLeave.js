@@ -39,6 +39,7 @@ const BereavementLeave = ({ navigate }) => {
   const [uploadedDocuments, setUploadedDocuments] = useState([]);
   const [isDocumentUploaded, setIsDocumentUploaded] = useState(false);
   const [durationInDays, setDurationInDays] = useState(0);
+  const [leaveAmount, setLeaveAmount] = useState()
 
   function range(start, end, step) {
     const result = [];
@@ -232,6 +233,43 @@ const BereavementLeave = ({ navigate }) => {
       setIsLoading(false);
     }
   }
+ 
+
+  const handleStartDateChange = (event) => {
+    const formattedStartDate = event.target.value;
+    const leaveAmountValue = parseInt(leaveAmount, 10) || 0;
+    let totalLeave = 21
+    if (leaveAmountValue > totalLeave) {
+      enqueueSnackbar("Leave amount cannot exceed 21 days", {
+        variant: "error",
+      });
+      setStartDate("");
+      setEndDate("");
+      setResumptiondate("");
+      return;
+    }
+
+    let currentDate = new Date(formattedStartDate);
+    let addedDays = 0;
+
+    while (addedDays < leaveAmountValue) {
+      currentDate.setDate(currentDate.getDate() + 1);
+
+      // Check if the current day is not a Saturday (6) or Sunday (0)
+      if (currentDate.getDay() !== 6 && currentDate.getDay() !== 0) {
+        addedDays++;
+      }
+    }
+
+    const formattedEndDate = currentDate.toISOString().split("T")[0];
+    const resumptionDate = new Date(currentDate);
+    resumptionDate.setDate(resumptionDate.getDate() + 1);
+    const formattedResumptionDate = resumptionDate.toISOString().split("T")[0];
+
+    setStartDate(formattedStartDate);
+    setEndDate(formattedEndDate);
+    setResumptiondate(formattedResumptionDate);
+  };
 
   return (
     <div className="container-fluid">
@@ -251,6 +289,58 @@ const BereavementLeave = ({ navigate }) => {
               class="pb-5"
               style={{ display: !showAdditionalInfo ? "block" : "none" }}
             >
+
+<div class="mb-3">
+                <label
+                  for="exampleInputEmail1"
+                  class="form-label fs-6 fw-semibold h-10"
+                >
+                  Specify the number of days you want to apply for
+                </label>
+                <input
+                  type="number"
+                  class="form-control rounded-0"
+                  required
+                  value={leaveAmount}
+                  onChange={(e) => setLeaveAmount(e.target.value)}
+                />
+              </div>
+             
+              <div class="mb-3 flex flex-col">
+                <div>
+                  <label class="form-label fs-6 fw-semibold">Start Date</label>
+                </div>
+                <input
+                  className="form-control rounded-0"
+                  type="date"
+                  id="dateInput"
+                  value={startDate}
+                  onChange={handleStartDateChange}
+                  min={new Date().toISOString().split("T")[0]} 
+                  //max={new Date().toISOString().split("T")[0]} 
+                  // Set max attribute to today's date
+                />
+               
+              </div>
+              <div class="mb-3 flex flex-col">
+                <div>
+                  <label class="form-label fs-6 fw-semibold">
+                    End Date: {endDate}
+                  </label>
+                </div>
+              </div>
+
+              <div class="mb-3 flex flex-col">
+                <div>
+                  <label class="form-label fs-6 fw-semibold">
+                    Resumption Date: {resumptionDate}
+                  </label>
+                </div>
+              </div>
+
+
+
+
               <div class="pb-2 pt-2">
                 <div class="mb-3 flex flex-col">
                   <div>

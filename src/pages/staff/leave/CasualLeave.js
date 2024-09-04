@@ -193,7 +193,8 @@ const CasualLeave = ({ navigate }) => {
   async function handleSubmit(e) {
     e.preventDefault();
     setIsLoading(true);
-    console.log("leaveAmount====>>>", leaveAmount, totalLeave);
+    console.log("casuall leave department====>>>> ", department)
+
     if (leaveAmount > parseInt(totalLeave, 10)) {
       enqueueSnackbar(
         `You have ${totalLeave} days of annual leave remaining, leave duration cannot exceed remaining annual Leave`,
@@ -229,12 +230,12 @@ const CasualLeave = ({ navigate }) => {
     } else if (rankDesignation === "HOU" || rankDesignation === "NTSWEP") {
       unitId = departmentOrUnitOrFacultyID;
     }
-
+console.log("casuall leave department ", department)
     const formData = new FormData();
     // formData.append('upload_documents', uploadedDocuments);
     formData.append("full_name", fullName);
     formData.append("marital_status", maritalStatus);
-    formData.append("department_id", departmentId || department);
+    formData.append("department_id", department || departmentId  );
     formData.append("faculty_id", facultyId);
     formData.append("unit_id", unitId);
     formData.append("leave_type", selectedLeaveType);

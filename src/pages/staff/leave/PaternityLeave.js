@@ -53,7 +53,8 @@ const PaternityLeave = ({ navigate }) => {
     gender,
     staffType,
     staffLevel,
-    department
+    department,
+    children
   } = location.state;
 
   const { enqueueSnackbar } = useSnackbar();
