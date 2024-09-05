@@ -72,6 +72,8 @@ const AnnualLeave = ({ navigate }) => {
   const [staff, setStaff] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const [isStaffModal, setIsStaffModal] = useState(false);
+  const [lastApproved, setLastApproved] = useState("")
+
 
   function range(start, end, step) {
     const result = [];
@@ -163,9 +165,21 @@ const AnnualLeave = ({ navigate }) => {
       setIsLoading(false);
     }
   }
+  async function fetchLastApprovedLeave() {
+    try {
+      const lastApproved = await api.lastApprovedLeave();
+      console.log("lastapproved", lastApproved);
+      setLastApproved(lastApproved?.message)
+   
+    } catch (error) {
+      console.error("Error fetching last Approved", error);
+      enqueueSnackbar(error.message, { variant: 'error' })
+    }
+  }
 
   useEffect(() => {
     fetchStaffs();
+    fetchLastApprovedLeave()
   }, []);
 
   const handleDateChange = (event) => {

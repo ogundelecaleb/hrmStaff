@@ -152,7 +152,17 @@ export const CasualDetails = (props) => {
       setIsLoadingd(false);
     }
   }
+  function getLastItem(array) {
 
+    console.log("appprovalls===>>>", leaveDetails?.approval_bodies)
+    // Check if the array is not empty
+    if (array.length === 0) {
+        return undefined; // Return undefined if the array is empty
+    }
+
+    // Return the last item in the array
+    return array[array.length - 1];
+}
 
     return (
       <Stack className='container' pl='12'>
@@ -304,8 +314,8 @@ export const CasualDetails = (props) => {
               <Button borderRadius={"0"} color='white' bg='#388B41' onClick={handleApprovedBtn}>
               {isLoading ? (
                       <MoonLoader color={"white"} size={20} />
-                    ) : ( <> Approve </>
-                    )}
+                    ) : (<> { (leaveDetails?.approval_bodies && getLastItem(leaveDetails?.approval_bodies)) === userDetails?.data?.role ? "Approve" : "Recomemnd" } </>
+                  )}
               </Button>
             </Flex>
           )}

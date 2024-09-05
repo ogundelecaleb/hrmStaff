@@ -96,7 +96,8 @@ import {
   RESUMELEAVE,
   RESPONDHODCOMMENT,
   UNREADNOTIFICATION,
-  MARKASREAD
+  MARKASREAD,
+  GETLASTLEAVE
 } from "../utils/config";
 import { apiGet, apiPost, apiPut, apiDelete } from "../utils/utils";
 
@@ -112,6 +113,9 @@ export function markAsRead(data) {
   return apiGet(MARKASREAD, data);
 }
 
+export function lastApprovedLeave(data) {
+  return apiGet(GETLASTLEAVE, data);
+}
 export function addUser(data) {
   return apiPost(ADDUSER, data);
 }

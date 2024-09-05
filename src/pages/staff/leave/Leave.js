@@ -71,9 +71,9 @@ const Leave = () => {
       "marital_status",
       "contact_address",
       "date_of_first_appointment",
-      "k1_full_name",
+       "k1_full_name",
       // "beneficiary_full_name",
-      "q1_name_of_institution",
+       "q1_name_of_institution",
     ];
     const filledFields = fieldsToCheck.reduce((count, field) => {
       if (userDetails[field] !== null && userDetails[field] !== undefined) {
@@ -314,6 +314,7 @@ const Leave = () => {
           staffType: userDetails?.type,
           staffLevel: userDetails?.level,
           confirm: userDetails?.confirmation,
+          children: userDetails?.children,
           department: userDetails?.department?.id
         },
       });
@@ -330,6 +331,7 @@ const Leave = () => {
           staffType: userDetails?.type,
           staffLevel: userDetails?.level,
           confirm: userDetails?.confirmation,
+          children: userDetails?.children,
           department: userDetails?.department?.id
         },
       });

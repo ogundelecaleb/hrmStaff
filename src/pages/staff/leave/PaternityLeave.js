@@ -211,11 +211,13 @@ const PaternityLeave = ({ navigate }) => {
       unitId = departmentOrUnitOrFacultyID;
     }
 
+    let formattedData = department !== undefined ? department : '';
+
     const formData = new FormData();
     formData.append("upload_documents", uploadedDocuments);
     formData.append("full_name", fullName);
     formData.append("marital_status", maritalStatus);
-    formData.append("department_id", departmentId || department);
+    formData.append("department_id", departmentId || formattedData);
     formData.append("faculty_id", facultyId);
     formData.append("unit_id", unitId);
     formData.append("leave_type", selectedLeaveType);
@@ -224,7 +226,7 @@ const PaternityLeave = ({ navigate }) => {
     formData.append("start_date", formattedStartDate);
     formData.append("end_date", endDate);
     formData.append("leave_address", addressLeave);
-    formData.append("number_of_births", birthNum);
+    formData.append("number_of_births", children?.length);
     formData.append("leave_phone", leaveNumber);
     formData.append("replacement_on_duty", staffRep);
     formData.append("resumption_date", resumptionDate);
@@ -298,8 +300,9 @@ const PaternityLeave = ({ navigate }) => {
                 </label>
                 <input
                   class="form-control rounded-0"
-                  value={birthNum}
-                  onChange={(e) => setBirthNum(e.target.value)}
+                  value={children?.length}
+                  disabled
+                  // onChange={(e) => setBirthNum(e.target.value)}
                 />
               </div>
               <div class="pb-2">
