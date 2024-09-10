@@ -13,6 +13,7 @@ import {
   MenuItem,
   MenuList,
   Text,
+  Avatar,
 } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import { useSnackbar } from "notistack";
@@ -72,23 +73,18 @@ const Navbar = ({ mobile, setMobile, display, reuseableNavigation }) => {
 
   return (
     <div
-      className="border text-dark d-flex justify-content-between align-items-center "
-      style={{ width: "100%", height: "10%", backgroundColor: "white" }}
+    className='border text-dark flex justify-between items-center sticky-top'
+    style={{ width: "100%", backgroundColor: "white" }}
     >
-      <div className="burger">
-        <div className={display ? "dblock" : "dnone"}>
-          <button
-            className="col-lg-1 text-dark "
-            onClick={() => setMobile(!mobile)}
-          >
+      <div className="burger flex gap-3 items-center ">
+        <div className={display ? "d-block " : "d-none"}>
+          <button className=" text-dark " onClick={() => setMobile(!mobile)}>
             <i className="ms-3 fa fa-bars"></i>
           </button>
         </div>
         <Text
           pl="3"
-          pt="5"
-          fontSize={{ base: "18px", md: "20px" }}
-          fontWeight={"bold"}
+          className="text-[16px] md:text-[18px] font-semibold lg:font-bold"
         >
           {Heading}
         </Text>
@@ -128,17 +124,17 @@ const Navbar = ({ mobile, setMobile, display, reuseableNavigation }) => {
             >
               <Box display={"flex"} alignItems="center">
                 {userDetails?.data?.image ? (
-                  <Image
-                    boxSize="1.5rem"
-                    borderRadius="full"
-                    src={userDetails?.data?.image}
-                    mr="12px"
+                  <Avatar
+                    h={"25px"}
+                    w={"25px"}
                     borderWidth={1}
                     borderColor={"#ccc"}
+                    src={userDetails?.data?.image}
                   />
                 ) : (
                   <RxAvatar size={25} color={"#000"} />
                 )}
+
                 <Text m="0" fontWeight={600} fontSize="14px">
                   {userDetails?.data?.first_name} {userDetails?.data?.last_name}
                 </Text>
@@ -157,7 +153,14 @@ const Navbar = ({ mobile, setMobile, display, reuseableNavigation }) => {
             </MenuList>
           </Menu>
         </Box>
+        <div className={display && !mobile ? "d-block " : "d-none"}>
+          <button className=" text-dark burger " onClick={() => setMobile(!mobile)}>
+            <i className="ms-3 fa fa-bars"></i>
+          </button>
+        </div>
       </div>
+
+     
     </div>
   );
 };

@@ -36,7 +36,7 @@ body::-webkit-scrollbar {
   height: 1200px;
 }
 .swapLeftNav {
-  z-index: 50;
+  z-index: 9999;
   transition: all 0.3s ease-in-out;
   width: 280px;
   background-color: #17082d;
@@ -55,7 +55,7 @@ body::-webkit-scrollbar {
     transition: all 0.3s ease-in-out;
     position: fixed;
     left: 0;
-    z-index: 10;
+    z-index: 99999;
     transform: translate(0%);
     width: 260px;
     overflow-y: auto;
