@@ -254,7 +254,9 @@ const StudyLeaveWithPay = ({ navigate }) => {
 
   const convertedMonths = convertMonthsToYearsAndMonths(monthSpentInService);
 
-  if (monthSpentInService < 36) {
+  console.log("level=====>>>", staffLevel)
+
+  if (monthSpentInService > 36) {
     return (
       <Box
         w={"80vw"}

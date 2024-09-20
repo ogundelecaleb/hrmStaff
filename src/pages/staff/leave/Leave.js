@@ -361,7 +361,7 @@ const Leave = () => {
           rankDesignation: userDetails.role,
           selectedLeaveType: leaveType,
           staffType: userDetails?.type,
-          level: userDetails?.level,
+          staffLevel: userDetails?.level,
           confirm: userDetails?.confirmation,
           department: userDetails?.department?.id
         },
@@ -377,7 +377,6 @@ const Leave = () => {
           selectedLeaveType: leaveType,
           staffType: userDetails.type,
           level: userDetails?.level,
-
           confirm: userDetails?.confirmation,
           department: userDetails?.department?.id
         },
