@@ -54,6 +54,7 @@ const StudyLeaveWithPay = ({ navigate }) => {
     selectedLeaveType,
     staffType,
     department,
+    staffLevel,
   } = location.state;
 
   const { enqueueSnackbar } = useSnackbar();
@@ -204,6 +205,7 @@ const StudyLeaveWithPay = ({ navigate }) => {
     formData.append("resumption_date", resumptionDate);
     formData.append("leave_duration", leaveDuration);
     formData.append("type", staffType);
+    formData.append("level", staffLevel);
 
     try {
       const response = await api.requestLeave(formData);

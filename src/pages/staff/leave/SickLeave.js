@@ -52,7 +52,8 @@ const SickLeave = ({ navigate }) => {
     rankDesignation,
     selectedLeaveType,
     staffType,
-    staffLevel, department
+    staffLevel,
+     department
   } = location.state;
   
   const { enqueueSnackbar } = useSnackbar();
