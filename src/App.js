@@ -24,7 +24,13 @@ function App() {
   return (
     <div>
       <Toaster position="top-right" reverseOrder={false} />
-      <SnackbarProvider autoHideDuration={4000}>
+      <SnackbarProvider
+        anchorOrigin={{
+          vertical: "top",
+          horizontal: "right",
+        }}
+        autoHideDuration={3000}
+      >
         <QueryClientProvider client={queryClient}>
           <AuthProvider>
             <Router>

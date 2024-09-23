@@ -422,75 +422,67 @@ const ConferenceLeave = ({ navigate }) => {
                   />
                 </div>
               </div>
-              <div class="mb-3 flex flex-col">
+              <div class='mb-3 flex flex-col'>
                 <div>
-                  <label class="form-label fs-6 fw-semibold">
-                    End Date<sup className="text-danger">*</sup>
-                  </label>
+                  <label class='form-label fs-6 fw-semibold'>End Date<sup className='text-danger'>*</sup></label>
                 </div>
                 <DatePicker
-                  shouldCloseOnSelect={true}
-                  autoComplete="off"
-                  renderCustomHeader={({
-                    date,
-                    changeYear,
-                    changeMonth,
-                    decreaseMonth,
-                    increaseMonth,
-                    prevMonthButtonDisabled,
-                    nextMonthButtonDisabled,
-                  }) => (
-                    <div
-                      style={{
-                        margin: 10,
-                        display: "flex",
-                        justifyContent: "center",
-                      }}
+                shouldCloseOnSelect={true}
+                autoComplete="off"
+                renderCustomHeader={({
+                  date,
+                  changeYear,
+                  changeMonth,
+                  decreaseMonth,
+                  increaseMonth,
+                  prevMonthButtonDisabled,
+                  nextMonthButtonDisabled,
+                }) => (
+                  <div
+                    style={{
+                      margin: 10,
+                      display: "flex",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <button onClick={decreaseMonth} disabled={prevMonthButtonDisabled}>
+                      {"<"}
+                    </button>
+                    <select
+                      value={getYear(date)}
+                      onChange={({ target: { value } }) => changeYear(value)}
                     >
-                      <button
-                        onClick={decreaseMonth}
-                        disabled={prevMonthButtonDisabled}
-                      >
-                        {"<"}
-                      </button>
-                      <select
-                        value={getYear(date)}
-                        onChange={({ target: { value } }) => changeYear(value)}
-                      >
-                        {years.map((option) => (
-                          <option key={option} value={option}>
-                            {option}
-                          </option>
-                        ))}
-                      </select>
-
-                      <select
-                        value={months[getMonth(date)]}
-                        onChange={({ target: { value } }) =>
-                          changeMonth(months.indexOf(value))
-                        }
-                      >
-                        {months.map((option) => (
-                          <option key={option} value={option}>
-                            {option}
-                          </option>
-                        ))}
-                      </select>
-
-                      <button
-                        onClick={increaseMonth}
-                        disabled={nextMonthButtonDisabled}
-                      >
-                        {">"}
-                      </button>
-                    </div>
-                  )}
+                      {years.map((option) => (
+                        <option key={option} value={option}>
+                          {option}
+                        </option>
+                      ))}
+                    </select>
+          
+                    <select
+                      value={months[getMonth(date)]}
+                      onChange={({ target: { value } }) =>
+                        changeMonth(months.indexOf(value))
+                      }
+                    >
+                      {months.map((option) => (
+                        <option key={option} value={option}>
+                          {option}
+                        </option>
+                      ))}
+                    </select>
+          
+                    <button onClick={increaseMonth} disabled={nextMonthButtonDisabled}>
+                      {">"}
+                    </button>
+                  </div>
+                )}
                   selected={endDate ? new Date(endDate) : null}
                   onChange={(date) => handleEndDateChange(date)}
-                  dateFormat="yyyy-MM-dd"
-                  className="form-control rounded-0 "
-                  id="exampleFormControlInput1"
-                  placeholder=""
+                  dateFormat='yyyy-MM-dd'
+                  className='form-control rounded-0 '
+                  id='exampleFormControlInput1'
+                  placeholder=''
                 />
               </div>
               <div class="mb-3 flex flex-col">

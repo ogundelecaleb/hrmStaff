@@ -261,6 +261,22 @@ const ExaminationLeave = ({ navigate }) =>  {
     }
   };
 
+  // Function to add one day to a date
+  function addOneDay(dateString) {
+    // Convert the string into a Date object
+    const date = new Date(dateString);
+    
+    // Add one day to the date
+    date.setDate(date.getDate() + 1);
+    
+    // Format the new date back to "YYYY-MM-DD"
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-indexed
+    const day = String(date.getDate()).padStart(2, '0');
+    
+    return `${year}-${month}-${day}`;
+  }
+
   return (
     <div className='container-fluid'>
       <div className='row'>
@@ -413,6 +429,76 @@ const ExaminationLeave = ({ navigate }) =>  {
               <div class='mb-3'>
                 <p class='form-label fs-6 fw-semibold'>Leave Duration: {leaveDuration}</p>
               </div>
+              <div class='mb-3 flex flex-col'>
+                <div>
+                  <label class='form-label fs-6 fw-semibold'>Resumption Date</label>
+                </div>
+                <DatePicker
+                shouldCloseOnSelect={true}
+                autoComplete="off"
+                renderCustomHeader={({
+                  date,
+                  changeYear,
+                  changeMonth,
+                  decreaseMonth,
+                  increaseMonth,
+                  prevMonthButtonDisabled,
+                  nextMonthButtonDisabled,
+                }) => (
+                  <div
+                    style={{
+                      margin: 10,
+                      display: "flex",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <button onClick={decreaseMonth} disabled={prevMonthButtonDisabled}>
+                      {"<"}
+                    </button>
+                    <select
+                      value={getYear(date)}
+                      onChange={({ target: { value } }) => changeYear(value)}
+                    >
+                      {years.map((option) => (
+                        <option key={option} value={option}>
+                          {option}
+                        </option>
+                      ))}
+                    </select>
+          
+                    <select
+                      value={months[getMonth(date)]}
+                      onChange={({ target: { value } }) =>
+                        changeMonth(months.indexOf(value))
+                      }
+                    >
+                      {months.map((option) => (
+                        <option key={option} value={option}>
+                          {option}
+                        </option>
+                      ))}
+                    </select>
+          
+                    <button onClick={increaseMonth} disabled={nextMonthButtonDisabled}>
+                      {">"}
+                    </button>
+                  </div>
+                )}
+                  selected={resumptionDate ? new Date(resumptionDate) : null}
+                  onChange={(date) => {
+                    if (date instanceof Date && !isNaN(date)) {
+                      const formattedDate = date.toLocaleDateString('en-US',{ year: 'numeric', month: '2-digit', day: '2-digit' });
+                      setResumptiondate(formattedDate);
+                    } else {
+                      setResumptiondate('');
+                    }
+                  }}
+                  dateFormat='yyyy-MM-dd'
+                  className='form-control rounded-0 '
+                  id='exampleFormControlInput1'
+                  placeholder=''
+                />
+              </div>
               <div class='mb-3'>
                 <label
                   for='exampleInputEmail1'
@@ -523,76 +609,7 @@ const ExaminationLeave = ({ navigate }) =>  {
             </div>
 
             <div class='pb-5' style={{ display: showAdditionalInfo ? "block" : "none" }}>
-              <div class='mb-3 flex flex-col'>
-                <div>
-                  <label class='form-label fs-6 fw-semibold'>Resumption Date</label>
-                </div>
-                <DatePicker
-                shouldCloseOnSelect={true}
-                autoComplete="off"
-                renderCustomHeader={({
-                  date,
-                  changeYear,
-                  changeMonth,
-                  decreaseMonth,
-                  increaseMonth,
-                  prevMonthButtonDisabled,
-                  nextMonthButtonDisabled,
-                }) => (
-                  <div
-                    style={{
-                      margin: 10,
-                      display: "flex",
-                      justifyContent: "center",
-                    }}
-                  >
-                    <button onClick={decreaseMonth} disabled={prevMonthButtonDisabled}>
-                      {"<"}
-                    </button>
-                    <select
-                      value={getYear(date)}
-                      onChange={({ target: { value } }) => changeYear(value)}
-                    >
-                      {years.map((option) => (
-                        <option key={option} value={option}>
-                          {option}
-                        </option>
-                      ))}
-                    </select>
-          
-                    <select
-                      value={months[getMonth(date)]}
-                      onChange={({ target: { value } }) =>
-                        changeMonth(months.indexOf(value))
-                      }
-                    >
-                      {months.map((option) => (
-                        <option key={option} value={option}>
-                          {option}
-                        </option>
-                      ))}
-                    </select>
-          
-                    <button onClick={increaseMonth} disabled={nextMonthButtonDisabled}>
-                      {">"}
-                    </button>
-                  </div>
-                )}
-                  selected={resumptionDate ? new Date(resumptionDate) : null}
-                  onChange={(date) => {
-                    if (date instanceof Date && !isNaN(date)) {
-                      const formattedDate = date.toLocaleDateString('en-US',{ year: 'numeric', month: '2-digit', day: '2-digit' });
-                      setResumptiondate(formattedDate);
-                    } else {
-                      setResumptiondate('');
-                    }
-                  }}
-                  dateFormat='yyyy-MM-dd'
-                  className='form-control rounded-0 '
-                  id='exampleFormControlInput1'
-                  placeholder=''
-                />
-              </div>
+             
               <div class='mb-3'>
                 <label for='address' class='form-label fs-6 fw-semibold'>
                   Address while on Leave
