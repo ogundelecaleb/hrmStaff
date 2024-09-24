@@ -115,6 +115,7 @@ export const AVAILABLESTAFF = getApiUrl('/get-available-staffs')
 export const UNREADNOTIFICATION = getApiUrl('/notification-unread-count')
 export const MARKASREAD = getApiUrl('/mark-all-read')
 export const GETLASTLEAVE = getApiUrl('/last-approved-leave')
+export const STAFFONLEAVE = getApiUrl('/user-leave-status')
 
 
 

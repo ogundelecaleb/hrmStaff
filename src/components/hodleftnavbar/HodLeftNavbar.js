@@ -9,7 +9,9 @@ import { MdInsertChart } from "react-icons/md";
 import { Link, useMatch, useResolvedPath } from "react-router-dom";
 import { useState } from "react";
 import { AiOutlineDown, AiOutlineUp } from "react-icons/ai";
-import { IoTimerSharp, IoSettings } from "react-icons/io5";
+import { IoTimerSharp, IoSettings, IoTimer } from "react-icons/io5";
+import { BsInboxes } from "react-icons/bs";
+
 import LogoutModal from "../../pages/hod/logout/Logout";
 
 const HodLeftNavbar = ({ mobile, setMobile }) => {
@@ -170,6 +172,15 @@ const HodLeftNavbar = ({ mobile, setMobile }) => {
             style={{ height: "48px", width: "90%" }}>
             <IoTimerSharp size='25' style={{ color: "#84818A" }} />
             Leave Matters
+          </div>
+        </CustomLink>
+        <CustomLink to='staffsonleave'>
+          <div
+            id='hoverEffect'
+            className='ps-3 ms-1 d-flex align-items-center rounded gap-2 position-relative'
+            style={{ height: "48px", width: "90%" }}>
+            <BsInboxes size='25' style={{ color: "#84818A" }} />
+            Staffs On Leave 
           </div>
         </CustomLink>
         <CustomLink to='spadev'>

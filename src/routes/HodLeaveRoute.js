@@ -26,6 +26,7 @@ import TradeLeave from "../pages/staff/leave/TradeLeave";
 import SportingLeave from "../pages/staff/leave/SportingLeave";
 import ConferenceLeave from "../pages/staff/leave/ConferenceLeave";
 import ShortTermStudyLeave from "../pages/staff/leave/ShortTermStudyLeave";
+import StaffOnLeave from "../pages/hod/staff/leave/StaffOnLeave";
 const HodLeaveRoute = () => {
 
   const navigation = useNavigate();
@@ -42,10 +43,11 @@ const HodLeaveRoute = () => {
           path='annual-leave'
           element={<AnnualLeave navigate={navigate} />}
         />
-        <Route
-          path='casual-leave'
-          element={<CasualLeave navigate={navigate} />}
+         <Route
+          path='annual-leave'
+          element={<AnnualLeave navigate={navigate} />}
         />
+       
         <Route
           path='compassionate-leave'
           element={<CompassionateLeave navigate={navigate} />}

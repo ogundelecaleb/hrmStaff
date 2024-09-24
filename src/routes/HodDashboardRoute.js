@@ -24,6 +24,7 @@ import PersonalRecord from "../pages/staff/personalrecord/PersonalRecord";
 import Inbox from "../pages/staff/inbox/Inbox";
 import { Notification } from "../pages/hod/notification/Notification";
 import HodSpaDevRoute from "./HodSpaDevRoute";
+import StaffOnLeave from "../pages/hod/staff/leave/StaffOnLeave";
 
 const HodDashboardRoute = ({ mobile, setMobile, display }) => {
 
@@ -50,6 +51,10 @@ const HodDashboardRoute = ({ mobile, setMobile, display }) => {
         <Route path='/' exact element={<MainDashboard />} />
         <Route path='/dashboard' exact element={<MainDashboard />} />
         <Route path='/leave' exact element={<Leave />} />
+        <Route
+          path='staffsonleave'
+          element={<StaffOnLeave navigate={navigate} />}
+        />
         <Route
           path='/leave-application/*'
           element={<HodLeaveRoute reuseableNavigation={reuseableNavigation} />}

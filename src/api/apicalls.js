@@ -97,7 +97,8 @@ import {
   RESPONDHODCOMMENT,
   UNREADNOTIFICATION,
   MARKASREAD,
-  GETLASTLEAVE
+  GETLASTLEAVE,
+  STAFFONLEAVE
 } from "../utils/config";
 import { apiGet, apiPost, apiPut, apiDelete } from "../utils/utils";
 
@@ -504,4 +505,7 @@ export function getLastLeave(data) {
 }
 export function resumeLeave(data) {
   return apiPost(RESUMELEAVE, data);
+}
+export function staffOnLeave(data) {
+  return apiGet(STAFFONLEAVE, data);
 }

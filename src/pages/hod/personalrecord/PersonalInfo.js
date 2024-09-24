@@ -266,55 +266,23 @@ const PersonalInfo = () => {
                       Date of Birth{" "}
                       <sup className='text-danger'>*</sup>
                     </label>
-                    <DatePicker
-                      selected={
-                        formValues.dateOfBirth
-                          ? new Date(formValues.dateOfBirth)
-                          : null
-                      }
-                      onChange={(date) => {
-                        if (date instanceof Date && !isNaN(date)) {
-                          const formattedDate = date.toISOString().split('T')[0];
-                          setFormValues({
-                            ...formValues,
-                            dateOfBirth: formattedDate,
-                          });
-                        } else {
-                          setFormValues({
-                            ...formValues,
-                            dateOfBirth: '',
-                          });
-                        }
-                      }}
-                      dateFormat="yyyy-MM-dd"
-                      className="form-control rounded-0"
-                      id="exampleFormControlInput1"
-                      placeholder=""
-                    />
-                  </div>
-                </div>
-                <div className='col-lg-6'>
-                  <div class='form-group'>
-                    <label
-                      for='exampleFormControlSelect1'
-                      className='fw-semibold text-muted fs-6 mt-3 mb-2'>
-                      Gender <sup className='text-danger'>*</sup>
-                    </label>
-                    <select
-                      className="form-select rounded-0"
-                      id="exampleFormControlSelect1"
-                      value={formValues.gender}
+
+                    <input
+                  className="form-control rounded-0"
+                  type="date"
+                  id="dateInput"
+                  value={formValues.dateOfBirth}
                       onChange={(e) =>
                         setFormValues({
                           ...formValues,
-                          gender: e.target.value,
+                          dateOfBirth: e.target.value,
                         })
                       }
-                    >
-                      <option value="" disabled>Select Gender</option>
-                      <option value="Male">Male</option>
-                      <option value="Female">Female</option>
-                    </select>
+                  //min={new Date().toISOString().split("T")[0]}
+                  max={new Date().toISOString().split("T")[0]}
+                  // Set max attribute to today's date
+                />
+                   
                   </div>
                 </div>
                 <div className='col-lg-6'>
