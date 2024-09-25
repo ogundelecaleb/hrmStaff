@@ -406,7 +406,7 @@ const AnnualDetails = (props) => {
                       Leave due for Current year
                     </Text>
                     <Text fontSize={"medium"} color='#25324B' fontWeight={"medium"}>
-                      {leaveDetails.leave_due_current_year}
+                      {leaveDetails.total_leave_due}
                     </Text>
                   </GridItem>
                   <GridItem w='100%' h='10' mt='4'>
@@ -417,14 +417,7 @@ const AnnualDetails = (props) => {
                         {leaveDetails.replacement_on_duty}
                       </Text>
                     </GridItem>
-                  <GridItem w='100%' h='10'>
-                    <Text fontSize={"lg"} color='#7C8493' m='0'>
-                      Deferred Leave{" "}
-                    </Text>
-                    <Text fontSize={"medium"} color='#25324B' fontWeight={"medium"}>
-                      {leaveDetails.deferred_leave}
-                    </Text>
-                  </GridItem>
+                  
                   
                   <GridItem w='100%' h='10'>
                     <Text fontSize={"lg"} color='#7C8493' m='0'>

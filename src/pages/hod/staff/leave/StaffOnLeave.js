@@ -1,10 +1,6 @@
 import React, { useState, useEffect, useCallback } from "react";
-import {
-  Skeleton,Box
-} from "@chakra-ui/react";
-import {
-  Text,
-} from "@chakra-ui/layout";
+import { Skeleton, Box } from "@chakra-ui/react";
+import { Text } from "@chakra-ui/layout";
 import { AiOutlineMenu, AiOutlinePlus } from "react-icons/ai";
 import { TbDirection, TbGridDots } from "react-icons/tb";
 import { MdSearch } from "react-icons/md";
@@ -13,23 +9,22 @@ import CommonButton from "../../../../components/commonbutton/Button";
 import api from "../../../../api";
 import { useNavigate, Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import NoData from "../../../../components/NoData"
-
+import NoData from "../../../../components/NoData";
 
 const CustomSkeletonLoader = ({ count }) => {
   const skeletonRows = Array.from({ length: count }, (_, index) => (
     <tr key={index}>
-      <td className='text-center' style={{ height: "65px" }}>
+      <td className="text-center" style={{ height: "65px" }}>
         <Skeleton width="100%" height="50px" />
       </td>
-      <td className='fs-6 text-center '>
+      <td className="fs-6 text-center ">
         <Skeleton width="100%" height="50px" />
       </td>
-      <td className='fs-6 text-center '>
+      <td className="fs-6 text-center ">
         <Skeleton width="100%" height="50px" />
       </td>
-      <td className='text-center' style={{ cursor: "pointer", width:'40px' }}>
-        <Skeleton width="60%" height="25px"  />
+      <td className="text-center" style={{ cursor: "pointer", width: "40px" }}>
+        <Skeleton width="60%" height="25px" />
         <Skeleton width="60%" height="25px" marginTop="10px" />
       </td>
     </tr>
@@ -39,30 +34,30 @@ const CustomSkeletonLoader = ({ count }) => {
 };
 
 const StaffOnLeave = () => {
-
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
   const [page, setPage] = useState(1);
-
+  const [searchTerm, setSearchTerm] = useState("");
 
   async function staffOnLeave(page) {
-    const response = await api.staffOnLeave({ params: { page } })
+    const response = await api.staffOnLeave(searchTerm);
     return response;
   }
 
-  const { isLoading, isError, data, error, isPreviousData, refetch } = useQuery(['leaveRequests', page], () =>
-    staffOnLeave(page),
+  const { isLoading, isError, data, error, isPreviousData, refetch } = useQuery(
+    ["leaveRequests", page],
+    () => staffOnLeave(page, searchTerm),
     {
-      keepPreviousData: true, refetchOnWindowFocus: "always",
+      keepPreviousData: true,
+      refetchOnWindowFocus: "always",
     }
-
   );
-  
+
   function formatDate(dateString) {
     const date = new Date(dateString);
     const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0'); // Adding 1 to month since it's zero-based
-    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, "0"); // Adding 1 to month since it's zero-based
+    const day = String(date.getDate()).padStart(2, "0");
     return `${year}-${month}-${day}`;
   }
 
@@ -99,15 +94,20 @@ const StaffOnLeave = () => {
                   <div style={{ position: "absolute" }}>
                     <input
                       type="text"
-                      className="form-control mt-2 ps-5"
+                      className=" mt-2 ps-5 border "
                       style={{ height: "45px" }}
                       placeholder="Search for staff"
+                      onChange={(e) => setSearchTerm(e.target.value)}
                     />
+                      {/* <option value="">Select Leave Status</option>
+                      <option value="true">On Leave</option>
+                      <option value="false">Not On Leave</option>
+                    </select> */}
                   </div>
                   <div
                     style={{ position: "absolute", top: "18px", left: "10px" }}
                   >
-                    <MdSearch size={"25"} />
+                    <MdSearch size={"20"} />
                   </div>
                 </div>
               </div>
@@ -142,7 +142,7 @@ const StaffOnLeave = () => {
                         </label>
                       </th>
                       <th scope="col" className="fw-light py-3 text-muted fs-6">
-                        Leave Type{" "}
+                        Leave Request
                         <label style={{ marginBottom: "-8px" }}>
                           <TbDirection size={"25"} />
                         </label>
@@ -153,70 +153,51 @@ const StaffOnLeave = () => {
                           <TbDirection size={"25"} />
                         </label>
                       </th>
-                      <th scope="col" className="fw-light py-3 text-muted fs-6">
-                        Date Applied{" "}
-                        <label style={{ marginBottom: "-8px" }}>
-                          <TbDirection size={"25"} />
-                        </label>
-                      </th>
-                      <th scope="col" className="fw-light py-3 text-muted fs-6">
-                        Department{" "}
-                        <label style={{ marginBottom: "-8px" }}>
-                          <TbDirection size={"25"} />
-                        </label>
-                      </th>
-                      <th scope="col" className="fw-light py-3 text-muted fs-6">
+
+                      {/* <th scope="col" className="fw-light py-3 text-muted fs-6">
                         Action{" "}
                         <label style={{ marginBottom: "-8px" }}>
                           <TbDirection size={"25"} />
                         </label>
-                      </th>
+                      </th> */}
                     </tr>
                   </thead>
 
                   <br />
 
                   {isLoading && !isPreviousData && <div>Loading...</div>}
-
-                  {data?.data?.map((item) => (
-                    <tbody key={item.id} className="border">
-                      <tr>
-                        <th scope="row">
-                          {/* {index + 1} */}
-                          <input type="checkbox" className="mt-4" />
-                        </th>
-                        <td>
-                          <div className="d-flex gap-4">
-                            <img
-                              src={item.user_image}
-                              style={{
-                                borderRadius: "50%",
-                                width: "40px",
-                                height: "40px",
-                              }}
-                              className="mt-2"
-                              alt="/"
-                            />
-                            <div>
-                              <p
-                                className="fw-semibold pt-4"
-                                fontSize={"smaller"}
-                              >
-                                {item.full_name}
-                              </p>
-                              {/* <p className='fw-bold text-muted'>{item.full_name}</p> */}
-                            </div>
-                          </div>
-                        </td>
-                        <td className="mt-4">
-                          <p fontSize={"smaller"}>{item.leave_type}</p>
-                        </td>
-                        <td>
-                          <button className="btn fw-semibold btn-outline-primary mt-3  h-8 btn-sm rounded-2">
-                            {item.status}
-                          </button>
-                        </td>
-                        <td className="fw-semibold">
+                  {data?.users
+                    ?.filter((result) =>
+                      result?.first_name
+                        .toLowerCase()
+                        .includes(searchTerm.toLowerCase())
+                    )
+                    .map((item) => (
+                      <tbody key={item.id} className="border">
+                        <tr>
+                          <th scope="row">
+                            {/* {index + 1} */}
+                            <input type="checkbox" className="" />
+                          </th>
+                          <td>
+                            <p
+                              className="fw-semibold "
+                              fontSize={"normal"}
+                            >
+                              {item.first_name} {item.last_name}
+                            </p>
+                          </td>
+                          <td className="">
+                            <p fontSize={"normal"}>{item.status}</p>
+                          </td>
+                          <td>
+                            <button className="btn fw-semibold   h-8 btn-sm rounded-2">
+                              {item.on_leave === true
+                                ? "Currently on leave"
+                                : "Present"}
+                            </button>
+                          </td>
+                          {/* <td className="fw-semibold">
                           <p className="mt-3">{formatDate(item.date)}</p>
                         </td>
                         <td className="pt-4">
@@ -225,8 +206,8 @@ const StaffOnLeave = () => {
                               item.faculty?.name ||
                               item.unit?.name}
                           </Text>
-                        </td>
-                        <td className="fw-semibold">
+                        </td> */}
+                          {/* <td className="fw-semibold">
                           <Link to={`leave-applicant-details/${item.id}`}>
                             <button
                               className="btn py-1 px-3 rounded-0 mt-3 btn-sm rounded-0 fw-semibold"
@@ -240,10 +221,10 @@ const StaffOnLeave = () => {
                             </button>
                           </Link>
                           <b className="fs-6 ps-2 pt-3">...</b>
-                        </td>
-                      </tr>
-                    </tbody>
-                  ))}
+                        </td> */}
+                        </tr>
+                      </tbody>
+                    ))}
                 </table>
               </div>
             </div>

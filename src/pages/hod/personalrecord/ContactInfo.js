@@ -326,11 +326,11 @@ const ContactInfo = () => {
                 class='form-control rounded-0'
                 id='exampleFormControlInput1'
                 placeholder=''
-                value={formValues.present_designation}
+                value={formValues.role}
                 onChange={(e) =>
                   setFormValues({
                     ...formValues,
-                    present_designation: e.target.value,
+                    role: e.target.value,
                   })
                 }
               />

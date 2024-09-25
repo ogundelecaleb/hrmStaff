@@ -531,7 +531,7 @@ const AnnualLeave = ({ navigate }) => {
           <ModalOverlay />
           <ModalContent>
             <ModalHeader fontSize={"sm"} py="3" color="#002240">
-              Select Multiple Customers
+              Select Staff
             </ModalHeader>
             <ModalCloseButton size={"sm"} />
             <Divider />
@@ -544,7 +544,7 @@ const AnnualLeave = ({ navigate }) => {
                   borderRadius={"6px"}
                   w="60"
                   fontSize={"sm"}
-                  placeholder="Search Customer..."
+                  placeholder="Search staff..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                 />
