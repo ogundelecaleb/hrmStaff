@@ -138,20 +138,23 @@ const ConferenceLeave = ({ navigate }) => {
   };
 
   const handleEndDateChange = (date) => {
-    const formattedDate = date.toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "2-digit",
-      day: "2-digit",
+    const formattedDate = date.toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
     });
-
+  
+    // Set the end date and calculate leave duration
     setEndDate(formattedDate);
     calculateLeaveDuration();
+  
+    // Set the resumption date to a day after the end date
     const nextDay = new Date(date);
     nextDay.setDate(nextDay.getDate() + 1);
-    const formattedNextDay = nextDay.toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "2-digit",
-      day: "2-digit",
+    const formattedNextDay = nextDay.toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
     });
     setResumptiondate(formattedNextDay);
   };
@@ -165,27 +168,28 @@ const ConferenceLeave = ({ navigate }) => {
       const start = new Date(startDate);
       const end = new Date(endDate);
       let durationInDays = 0;
-
+  
       while (start <= end) {
-        if (start.getDay() >= 1 && start.getDay() <= 5) {
+        if (start.getDay() >= 0 && start.getDay() <= 6) {
           durationInDays++;
         }
-        start.setDate(start.getDate());
+        start.setDate(start.getDate() + 1);
       }
-
-      if (durationInDays > 10) {
-        enqueueSnackbar(
-          `Permissions in Excess of 10 Days shall be deducted from your Annual Leave`,
-          { variant: "warning" }
-        );
+  
+      const totalLeaveDays = parseFloat(totalLeave);
+  
+      if (durationInDays > totalLeaveDays) {
+        enqueueSnackbar(`Leave duration cannot exceed ${totalLeaveDays} working day(s)`, { variant: 'error' });
+        setEndDate('');
+      } else {
+        setLeaveDuration(`${durationInDays} working day(s)`);
+        setDurationInDays(durationInDays);
       }
-
-      setLeaveDuration(`${durationInDays} day(s)`);
-      setDurationInDays(durationInDays);
     } else {
-      setLeaveDuration("");
+      setLeaveDuration('');
     }
   };
+
 
   const onFileChanges = (e) => {
     const selectedFile = e.target.files[0];
@@ -337,88 +341,74 @@ const ConferenceLeave = ({ navigate }) => {
               style={{ display: !showAdditionalInfo ? "block" : "none" }}
             >
               <div class="pb-2 pt-2">
-                <div class="mb-3 flex flex-col">
+              <div class='mb-3 flex flex-col'>
                   <div>
-                    <label class="form-label fs-6 fw-semibold">
-                      Start Date<sup className="text-danger">*</sup>
-                    </label>
+                    <label class='form-label fs-6 fw-semibold'>Start Date<sup className='text-danger'>*</sup></label>
                   </div>
                   <DatePicker
-                    shouldCloseOnSelect={true}
-                    autoComplete="off"
-                    renderCustomHeader={({
-                      date,
-                      changeYear,
-                      changeMonth,
-                      decreaseMonth,
-                      increaseMonth,
-                      prevMonthButtonDisabled,
-                      nextMonthButtonDisabled,
-                    }) => (
-                      <div
-                        style={{
-                          margin: 10,
-                          display: "flex",
-                          justifyContent: "center",
-                        }}
+                  shouldCloseOnSelect={true}
+                  autoComplete="off"
+                  renderCustomHeader={({
+                    date,
+                    changeYear,
+                    changeMonth,
+                    decreaseMonth,
+                    increaseMonth,
+                    prevMonthButtonDisabled,
+                    nextMonthButtonDisabled,
+                  }) => (
+                    <div
+                      style={{
+                        margin: 10,
+                        display: "flex",
+                        justifyContent: "center",
+                      }}
+                    >
+                      <button onClick={decreaseMonth} disabled={prevMonthButtonDisabled}>
+                        {"<"}
+                      </button>
+                      <select
+                        value={getYear(date)}
+                        onChange={({ target: { value } }) => changeYear(value)}
                       >
-                        <button
-                          onClick={decreaseMonth}
-                          disabled={prevMonthButtonDisabled}
-                        >
-                          {"<"}
-                        </button>
-                        <select
-                          value={getYear(date)}
-                          onChange={({ target: { value } }) =>
-                            changeYear(value)
-                          }
-                        >
-                          {years.map((option) => (
-                            <option key={option} value={option}>
-                              {option}
-                            </option>
-                          ))}
-                        </select>
-
-                        <select
-                          value={months[getMonth(date)]}
-                          onChange={({ target: { value } }) =>
-                            changeMonth(months.indexOf(value))
-                          }
-                        >
-                          {months.map((option) => (
-                            <option key={option} value={option}>
-                              {option}
-                            </option>
-                          ))}
-                        </select>
-
-                        <button
-                          onClick={increaseMonth}
-                          disabled={nextMonthButtonDisabled}
-                        >
-                          {">"}
-                        </button>
-                      </div>
-                    )}
+                        {years.map((option) => (
+                          <option key={option} value={option}>
+                            {option}
+                          </option>
+                        ))}
+                      </select>
+            
+                      <select
+                        value={months[getMonth(date)]}
+                        onChange={({ target: { value } }) =>
+                          changeMonth(months.indexOf(value))
+                        }
+                      >
+                        {months.map((option) => (
+                          <option key={option} value={option}>
+                            {option}
+                          </option>
+                        ))}
+                      </select>
+            
+                      <button onClick={increaseMonth} disabled={nextMonthButtonDisabled}>
+                        {">"}
+                      </button>
+                    </div>
+                  )}
                     selected={startDate ? new Date(startDate) : null}
                     onChange={(date) => {
                       if (date instanceof Date && !isNaN(date)) {
-                        const formattedDate = date.toLocaleDateString("en-US", {
-                          year: "numeric",
-                          month: "2-digit",
-                          day: "2-digit",
-                        });
+                        const formattedDate = date.toLocaleDateString('en-US',{ year: 'numeric', month: '2-digit', day: '2-digit' });
                         setStartDate(formattedDate);
                       } else {
-                        setStartDate("");
+                        setStartDate('');
                       }
                     }}
-                    dateFormat="yyyy-MM-dd"
-                    className="form-control rounded-0 "
-                    id="exampleFormControlInput1"
-                    placeholder=""
+                    dateFormat='yyyy-MM-dd'
+                    className='form-control rounded-0 '
+                    id='exampleFormControlInput1'
+                    placeholder=''
                   />
                 </div>
               </div>
