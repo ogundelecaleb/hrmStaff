@@ -114,6 +114,8 @@ const AppointmentRegularization = ({ navigate }) => {
         staffLevel: userDetails?.level,
         title: userDetails?.title
       });
+      setPfNumber(userDetails?.staff_number)
+      setAppointDate(userDetails?.date_of_first_appointment)
     }
   }, [userDetails]);
 

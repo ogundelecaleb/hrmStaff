@@ -401,14 +401,14 @@ const AnnualDetails = (props) => {
                     </Text>
                   </GridItem>
 
-                  <GridItem w='100%' h='10'>
+                  {/* <GridItem w='100%' h='10'>
                     <Text fontSize={"lg"} color='#7C8493' m='0'>
                       Leave due for Current year
                     </Text>
                     <Text fontSize={"medium"} color='#25324B' fontWeight={"medium"}>
                       {leaveDetails.total_leave_due}
                     </Text>
-                  </GridItem>
+                  </GridItem> */}
                   <GridItem w='100%' h='10' mt='4'>
                       <Text fontSize={"lg"} color='#7C8493' m='0'>
                       To be relived by (Name of Staff)
