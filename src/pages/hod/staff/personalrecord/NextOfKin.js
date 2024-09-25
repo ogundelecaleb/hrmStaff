@@ -226,10 +226,8 @@ const NextOfKin = () => {
             In of Death, my benefits should be paid in favour of :
           </p>
         </div>
-        <div className='row mt-4 pb-4 pb-4'>
-          <div className='col-lg-4'>
-            <p className='fs-5 pt-2 fw-semibold'>Beneficiary</p>
-          </div>
+        <div className='row mt-4 pb-4'>
+       
           <div className='col-lg-6 pe-'>
             <div class='form-group'>
               <label
