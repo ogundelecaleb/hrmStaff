@@ -40,6 +40,8 @@ const BereavementLeave = ({ navigate }) => {
   const [isDocumentUploaded, setIsDocumentUploaded] = useState(false);
   const [durationInDays, setDurationInDays] = useState(0);
   const [leaveAmount, setLeaveAmount] = useState(0)
+  const [staffRepId, setStaffRepId] = useState("")
+
 
   function range(start, end, step) {
     const result = [];
@@ -220,6 +222,8 @@ const BereavementLeave = ({ navigate }) => {
     formData.append("leave_duration", leaveAmount);
     formData.append("type", staffType);
     formData.append("level", staffLevel);
+    formData.append('replacement_on_duty_id', staffRepId);
+
 
     try {
       const response = await api.requestLeave(formData);

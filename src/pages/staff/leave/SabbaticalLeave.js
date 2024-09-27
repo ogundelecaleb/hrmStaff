@@ -72,6 +72,8 @@ const SabbaticalLeave = ({ navigate }) => {
   const [isStaffModal, setIsStaffModal] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [staffs, setStaffs] = useState([]);
+  const [staffRepId, setStaffRepId] = useState("")
+
 
   async function fetchStaffs() {
     try {
@@ -204,6 +206,7 @@ const SabbaticalLeave = ({ navigate }) => {
     formData.append("leave_duration", leaveDuration);
     formData.append("type", staffType);
     formData.append("level", level);
+    formData.append('replacement_on_duty_id', staffRepId);
 
     try {
       const response = await api.requestLeave(formData);
@@ -485,6 +488,8 @@ const SabbaticalLeave = ({ navigate }) => {
                     <div
                       onClick={() => {
                         setStaffrep(staff.first_name + " " + staff.last_name);
+                        setStaffRepId(staff?.id)
+
                         setIsStaffModal(false);
                       }}
                       className="w-full "

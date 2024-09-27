@@ -73,6 +73,7 @@ const AnnualLeave = ({ navigate }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [isStaffModal, setIsStaffModal] = useState(false);
   const [lastApproved, setLastApproved] = useState("")
+  const [staffRepId, setStaffRepId] = useState("")
 
 
   function range(start, end, step) {
@@ -301,6 +302,7 @@ const AnnualLeave = ({ navigate }) => {
         replacement_on_duty: staffRep,
         type: staffType,
         level: staffLevel,
+        replacement_on_duty_id: staffRepId, 
       });
       console.log("responce==>>>>>", response);
       enqueueSnackbar("Leave Application successfull", { variant: "success" });
@@ -560,6 +562,7 @@ const AnnualLeave = ({ navigate }) => {
                     <div
                       onClick={() => {
                         setStaffrep(staff.first_name + " " + staff.last_name);
+                        setStaffRepId(staff?.id)
                         setIsStaffModal(false);
                       }}
                       className="w-full "

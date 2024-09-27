@@ -197,6 +197,7 @@ const AdoptionLeave = ({ navigate }) => {
     formData.append('leave_duration', leaveDuration);
     formData.append('type', staffType);
     formData.append('level', staffLevel);
+    formData.append('replacement_on_duty_id', staffLevel);
     try {
       const response = await api.requestLeave(formData);
       console.log("responce==>>>>>", response);

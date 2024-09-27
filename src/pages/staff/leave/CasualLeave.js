@@ -72,6 +72,8 @@ const CasualLeave = ({ navigate }) => {
   const [isStaffModal, setIsStaffModal] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [staffs, setStaffs] = useState([]);
+  const [staffRepId, setStaffRepId] = useState("")
+
 
   async function fetchStaffs() {
     try {
@@ -250,6 +252,8 @@ console.log("casuall leave department ", department)
     formData.append("leave_duration", leaveAmount);
     formData.append("type", staffType);
     formData.append("level", staffLevel);
+    formData.append('replacement_on_duty_id', staffRepId);
+
 
     try {
       const response = await api.requestLeave(formData);
@@ -490,6 +494,8 @@ console.log("casuall leave department ", department)
                               setStaffrep(
                                 staff.first_name + " " + staff.last_name
                               );
+                              setStaffRepId(staff?.id)
+
                               setIsStaffModal(false);
                             }}
                             className="w-full "
