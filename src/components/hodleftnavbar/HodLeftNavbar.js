@@ -37,7 +37,7 @@ const HodLeftNavbar = ({ mobile, setMobile, display, staffNumber }) => {
     // <div className={mobile ? "leftNav pb-5" : "swapLeftNav"}>
     <div className={mobile ? "hide" : "swapLeftNav"}>
       <div
-        onClick={() => setMobile(true)}
+        onClick={() => handleCloseSidebar()}
         style={dash1Style}
         className="d-flex over-class gap-2 ps-2 pt-3"
       >
