@@ -54,7 +54,9 @@ const ExaminationLeave = ({ navigate }) =>  {
     totalLeave,
     staffType,
     staffLevel,
-    department
+    department,
+    unit,
+    faculty
   } = location.state;
   
   const { enqueueSnackbar } = useSnackbar();

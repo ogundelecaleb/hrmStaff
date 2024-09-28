@@ -54,7 +54,9 @@ const ConferenceLeave = ({ navigate }) => {
     selectedLeaveType,
     staffType,
     staffLevel,
-    totalLeave,department
+    totalLeave,department,
+    unit,
+    faculty
   } = location.state;
 
   const { enqueueSnackbar } = useSnackbar();

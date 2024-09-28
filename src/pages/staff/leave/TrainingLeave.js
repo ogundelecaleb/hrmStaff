@@ -22,7 +22,9 @@ const TrainingLeave = ({ navigate }) => {
     selectedLeaveType,
     staffType,
     level,
-    department
+    department,
+    unit,
+    faculty,
   } = location.state;
 
   const { enqueueSnackbar } = useSnackbar();
@@ -177,8 +179,8 @@ const TrainingLeave = ({ navigate }) => {
     formData.append("full_name", fullName);
     formData.append("marital_status", maritalStatus);
     formData.append("department_id", departmentId || department);
-    formData.append("faculty_id", facultyId);
-    formData.append("unit_id", unitId);
+    formData.append("faculty_id", faculty);
+    formData.append("unit_id", unit);
     formData.append("leave_type", selectedLeaveType);
     formData.append("date_of_first_appointment", dateOfFirstAppointment);
     formData.append("designation", rankDesignation);
@@ -235,12 +237,16 @@ const TrainingLeave = ({ navigate }) => {
   }
 
   // Get the current date
-const currentDate = new Date();
+  const currentDate = new Date();
 
-// Get the current year
-const currentYear = currentDate.getFullYear();
+  // Get the current year
+  const currentYear = currentDate.getFullYear();
 
-  if (leaveCount && leaveCount?.training_count === 2 && leaveCount?.year === currentYear) {
+  if (
+    leaveCount &&
+    leaveCount?.training_count === 2 &&
+    leaveCount?.year === currentYear
+  ) {
     return (
       <Box
         w={"80vw"}

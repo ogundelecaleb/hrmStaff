@@ -25,6 +25,8 @@ const StudyLeaveWithoutPay = ({ navigate }) => {
     staffType,
     staffLevel,
     department,
+    unit,
+    faculty
   } = location.state;
 
   const { enqueueSnackbar } = useSnackbar();
@@ -162,8 +164,8 @@ const StudyLeaveWithoutPay = ({ navigate }) => {
     formData.append("full_name", fullName);
     formData.append("marital_status", maritalStatus);
     formData.append("department_id", departmentId || department);
-    formData.append("faculty_id", facultyId);
-    formData.append("unit_id", unitId);
+    formData.append("faculty_id", faculty);
+    formData.append("unit_id", unit);
     formData.append("leave_type", selectedLeaveType);
     formData.append("date_of_first_appointment", dateOfFirstAppointment);
     formData.append("designation", rankDesignation);
