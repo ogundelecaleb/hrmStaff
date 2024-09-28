@@ -85,7 +85,7 @@ const StaffHomePage = ({ switchRoutes }) => {
   const progress = calculateProgress();
 
   return (
-    <div className="px-16px md:px-[28px]">
+    <div className="px-[16px] md:px-[28px]">
       <p className="text-[#000] text-[16px] md:text-[16px] xl:text-[16px] font-medium leading-[24px]  ">
         Overview
       </p>

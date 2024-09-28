@@ -177,6 +177,7 @@ const PersonalInfo = () => {
                   style={{ height: "40px" }}
                   class='form-control rounded-0'
                   id='exampleFormControlInput1'
+                  required
                   placeholder=''
                   value={formValues.firstName}
                   onChange={(e) =>
@@ -198,6 +199,7 @@ const PersonalInfo = () => {
                   style={{ height: "40px" }}
                   class='form-control rounded-0'
                   id='exampleFormControlInput1'
+                  required
                   placeholder=''
                   value={formValues.lastName}
                   onChange={(e) =>
@@ -222,6 +224,7 @@ const PersonalInfo = () => {
                       class='form-control rounded-0'
                       id='exampleFormControlInput1'
                       placeholder=''
+                      required
                       value={formValues.nationality}
                       onChange={(e) =>
                         setFormValues({
@@ -245,6 +248,7 @@ const PersonalInfo = () => {
                       class='form-control rounded-0'
                       id='exampleFormControlInput1'
                       placeholder=''
+                      required
                       value={formValues.stateOfOrigin}
                       onChange={(e) =>
                         setFormValues({
@@ -268,9 +272,10 @@ const PersonalInfo = () => {
                     </label>
 
                     <input
-                  className="form-control rounded-0"
+                  className=" rounded-0"
                   type="date"
                   id="dateInput"
+                  required
                   value={formValues.dateOfBirth}
                       onChange={(e) =>
                         setFormValues({
@@ -295,6 +300,7 @@ const PersonalInfo = () => {
                     <select
                       className="form-select rounded-0"
                       id="exampleFormControlSelect1"
+                      required
                       value={formValues.marital_status}
                       onChange={(e) =>
                         setFormValues({

@@ -16,54 +16,59 @@ import AcademicDetails from "./AcademicDetails";
 
 const PersonalRecord = () => {
   return (
-    <Box className='container'>
-      <Tabs position='relative' variant='unstyled'>
-        <Box className='table-responsive pt-3'>
+    <Box className="px-4 md:px-5 xl:px-6">
+      <Tabs position="relative" variant="unstyled">
+        <Box className="table-responsive pt-3">
           <TabList>
             <Tab
               fontSize={"lg"}
               fontWeight={"semibold"}
               _focus={{ fontWeight: "bold" }}
-              color='black'>
-              Personal information
+              color="black"
+            >
+              <p className="whitespace-nowrap mb-0">Personal information</p>
             </Tab>
             <Tab
               _focus={{ fontWeight: "bold" }}
               fontWeight={"semibold"}
               fontSize={"lg"}
-              color='black'>
-              Contact information
+              color="black"
+            >
+              <p className="whitespace-nowrap mb-0">Contact information</p> 
             </Tab>
             <Tab
               _focus={{ fontWeight: "bold" }}
               fontWeight={"semibold"}
               fontSize={"lg"}
-              color='black'>
-              Next of kin/Beneficiary
+              color="black"
+            >
+                <p className="whitespace-nowrap mb-0">Next of kin/Beneficiary</p>  
             </Tab>
             <Tab
               _focus={{ fontWeight: "bold" }}
               fontWeight={"semibold"}
               fontSize={"lg"}
-              color='black'>
+              color="black"
+            >
               {" "}
-              Family Details
+              <p className="whitespace-nowrap mb-0"> Family Details</p>
             </Tab>
             <Tab
               _focus={{ fontWeight: "bold" }}
               fontWeight={"semibold"}
               fontSize={"lg"}
-              color='black'>
-              Academic Details
+              color="black"
+            >
+                 <p className="whitespace-nowrap mb-0"> Academic Details</p>
             </Tab>
           </TabList>
         </Box>
         <TabIndicator
-          mt='-1.5px'
-          height='3px'
-          bg='blue.500'
-          borderRadius='6px 6px 0 0'
-          width='50px'
+          mt="-1.5px"
+          height="3px"
+          bg="blue.500"
+          borderRadius="6px 6px 0 0"
+          width="50px"
         />
         <TabPanels>
           <TabPanel>

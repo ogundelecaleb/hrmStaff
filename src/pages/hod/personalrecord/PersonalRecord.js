@@ -16,7 +16,7 @@ import AcademicDetails from "./AcademicDetails";
 
 const PersonalRecord = () => {
   return (
-    <Box className='container'>
+    <Box className='px-4 md:px-5 xl:px-6'>
       <Tabs position='relative' variant='unstyled'>
         <Box className='table-responsive pt-3'>
           <TabList>
@@ -25,7 +25,7 @@ const PersonalRecord = () => {
               fontWeight={"semibold"}
               _focus={{ fontWeight: "bold" }}
               color='black'>
-              Personal information
+              Personal i
             </Tab>
             <Tab
               _focus={{ fontWeight: "bold" }}

@@ -174,7 +174,7 @@ const PersonalInfo = () => {
       <Box className='row border-bottom pb-10'>
         <Box className='col-lg-4'>
           <Text color={'black'} className='fs-5 pt-2 fw-semibold'>Profile Photo</Text>
-          <Text color={'black'} className='fs-6 text-muted' maxW={60} >
+          <Text color={'black'} className='fs-6 text-muted w-full ' >
             This Image will be shown publicly as your profile picture here and
             on all documents generated in the future
           </Text>
@@ -213,6 +213,7 @@ const PersonalInfo = () => {
                   class='form-control rounded-0'
                   id='exampleFormControlInput1'
                   placeholder=''
+                  required
                   value={formValues.title}
                   onChange={(e) =>
                     setFormValues({
@@ -234,6 +235,7 @@ const PersonalInfo = () => {
                   class='form-control rounded-0'
                   id='exampleFormControlInput1'
                   placeholder=''
+                  required
                   value={formValues.firstName}
                   onChange={(e) =>
                     setFormValues({
@@ -255,6 +257,7 @@ const PersonalInfo = () => {
                   class='form-control rounded-0'
                   id='exampleFormControlInput1'
                   placeholder=''
+                  required
                   value={formValues.lastName}
                   onChange={(e) =>
                     setFormValues({
@@ -276,6 +279,7 @@ const PersonalInfo = () => {
                   class='form-control rounded-0'
                   id='exampleFormControlInput1'
                   placeholder=''
+                  required
                   value={formValues.maidenName}
                   onChange={(e) =>
                     setFormValues({
@@ -299,6 +303,7 @@ const PersonalInfo = () => {
                       class='form-control rounded-0'
                       id='exampleFormControlInput1'
                       placeholder=''
+                      required
                       value={formValues.nationality}
                       onChange={(e) =>
                         setFormValues({
@@ -322,6 +327,7 @@ const PersonalInfo = () => {
                       class='form-control rounded-0'
                       id='exampleFormControlInput1'
                       placeholder=''
+                      required
                       value={formValues.stateOfOrigin}
                       onChange={(e) =>
                         setFormValues({
@@ -343,79 +349,22 @@ const PersonalInfo = () => {
                       Date of Birth{" "}
                       <sup className='text-danger'>*</sup>
                     </label>
-                    <DatePicker
-                    renderCustomHeader={({
-                      date,
-                      changeYear,
-                      changeMonth,
-                      decreaseMonth,
-                      increaseMonth,
-                      prevMonthButtonDisabled,
-                      nextMonthButtonDisabled,
-                    }) => (
-                      <div
-                        style={{
-                          margin: 10,
-                          display: "flex",
-                          justifyContent: "center",
-                        }}
-                      >
-                        <button onClick={decreaseMonth} disabled={prevMonthButtonDisabled}>
-                          {"<"}
-                        </button>
-                        <select
-                          value={getYear(date)}
-                          onChange={({ target: { value } }) => changeYear(value)}
-                        >
-                          {years.map((option) => (
-                            <option key={option} value={option}>
-                              {option}
-                            </option>
-                          ))}
-                        </select>
-              
-                        <select
-                          value={months[getMonth(date)]}
-                          onChange={({ target: { value } }) =>
-                            changeMonth(months.indexOf(value))
-                          }
-                        >
-                          {months.map((option) => (
-                            <option key={option} value={option}>
-                              {option}
-                            </option>
-                          ))}
-                        </select>
-              
-                        <button onClick={increaseMonth} disabled={nextMonthButtonDisabled}>
-                          {">"}
-                        </button>
-                      </div>
-                    )}
-                      selected={
-                        formValues.dateOfBirth
-                          ? new Date(formValues.dateOfBirth)
-                          : null
+                    <input
+                      className="border py-2 px-2 w-full rounded-0"
+                      type="date"
+                  id="dateInput"
+                  required
+                  value={formValues.dateOfBirth}
+                      onChange={(e) =>
+                        setFormValues({
+                          ...formValues,
+                          dateOfBirth: e.target.value,
+                        })
                       }
-                      onChange={(date) => {
-                        if (date instanceof Date && !isNaN(date)) {
-                          const formattedDate = date.toISOString().split('T')[0];
-                          setFormValues({
-                            ...formValues,
-                            dateOfBirth: formattedDate,
-                          });
-                        } else {
-                          setFormValues({
-                            ...formValues,
-                            dateOfBirth: '',
-                          });
-                        }
-                      }}
-                      dateFormat="yyyy-MM-dd"
-                      className="form-control rounded-0"
-                      id="exampleFormControlInput1"
-                      placeholder=""
-                    />
+                  //min={new Date().toISOString().split("T")[0]}
+                  max={new Date().toISOString().split("T")[0]}
+                  // Set max attribute to today's date
+                />
                   </div>
                 </div>
                 <div className='col-lg-6'>
@@ -426,9 +375,10 @@ const PersonalInfo = () => {
                       Gender <sup className='text-danger'>*</sup>
                     </label>
                     <select
-                      className="form-select rounded-0"
+                      className="border py-2 px-2 w-full rounded-0"
                       id="exampleFormControlSelect1"
                       value={formValues.gender}
+                      required
                       onChange={(e) =>
                         setFormValues({
                           ...formValues,
@@ -452,9 +402,10 @@ const PersonalInfo = () => {
                     <input
                       type='text'
                       style={{ height: "40px" }}
-                      class='form-control rounded-0'
+                      className="border py-2 px-2 w-full rounded-0"
                       id='O+'
                       placeholder=''
+                      required
                       value={formValues.bloodGroup}
                       onChange={(e) =>
                         setFormValues({
@@ -473,9 +424,10 @@ const PersonalInfo = () => {
                       Marital Status <sup className='text-danger'>*</sup>
                     </label>
                     <select
-                      className="form-select rounded-0"
+                      className="border py-2 px-2 w-full rounded-0"
                       id="exampleFormControlSelect1"
                       value={formValues.marital_status}
+                      required
                       onChange={(e) =>
                         setFormValues({
                           ...formValues,
@@ -499,7 +451,8 @@ const PersonalInfo = () => {
                   </label>
                   <input
                     type="file"
-                    className="form-control rounded-0"
+                    className="border py-2 px-2 w-full rounded-0"
+                    required
                     id={`upload_document_1`}
                     onChange={(e) => onFileChanges(e, 1)}
                   />

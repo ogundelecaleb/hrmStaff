@@ -120,8 +120,9 @@ const ContactInfo = () => {
                   </label>
                   <input
                     type='text'
-                    style={{ height: "40px" }}
-                    class='form-control rounded-0'
+                    //style={{ height: "40px" }}
+                    className="border py-2 px-2 w-full rounded-0"
+                    required
                     id='exampleFormControlInput1'
                     placeholder=''
                     value={formValues.phone}
@@ -142,9 +143,9 @@ const ContactInfo = () => {
                     Email <sup className='text-danger'>*</sup>
                   </label>
                   <input
-                    type='text'
-                    style={{ height: "40px" }}
-                    class='form-control rounded-0'
+                    type='email'
+                    //style={{ height: "40px" }}
+                    className="border py-2 px-2 w-full rounded-0"
                     id='exampleFormControlInput1'
                     disabled
                     value={formValues.email}
@@ -166,8 +167,8 @@ const ContactInfo = () => {
               </label>
                 <input
                   type='text'
-                  style={{ height: "40px" }}
-                  class='form-control rounded-0'
+                 // style={{ height: "40px" }}
+                  className="border py-2 px-2 w-full rounded-0"
                   id='exampleFormControlInput1'
                   placeholder=''
                   value={formValues.current_address}
@@ -187,8 +188,8 @@ const ContactInfo = () => {
               </label>
               <input
                 type='text'
-                style={{ height: "40px" }}
-                class='form-control rounded-0'
+                // style={{ height: "40px" }}
+                className="border py-2 px-2 w-full rounded-0"
                 id='exampleFormControlInput1'
                 placeholder=''
                 value={formValues.contact_address}
@@ -208,8 +209,8 @@ const ContactInfo = () => {
               </label>
               <input
                   type='text'
-                  style={{ height: "40px" }}
-                  class='form-control rounded-0'
+                  //style={{ height: "40px" }}
+                  className="border py-2 px-2 w-full rounded-0"
                   id='exampleFormControlInput1'
                   placeholder=''
                   value={formValues.permanent_address}
@@ -224,7 +225,7 @@ const ContactInfo = () => {
         </div>
         <div className='col-lg-2'></div>
       </div>
-      <div className='row mt-4 border-bottom pb-4 pb-4'>
+      <div className='row mt-4 border-bottom pb-4'>
         <div className='col-lg-4'>
           <p className='fs-5 pt-2 fw-semibold'>Work Contact</p>
         </div>
@@ -322,8 +323,8 @@ const ContactInfo = () => {
                 </label>
                 <input
                 type='text'
-                style={{ height: "40px" }}
-                class='form-control rounded-0'
+                //style={{ height: "40px" }}
+                className="border py-2 px-2 w-full rounded-0"
                 id='exampleFormControlInput1'
                 disabled
                 value={formValues.level}
@@ -347,8 +348,8 @@ const ContactInfo = () => {
               </label>
               <input
                   type='text'
-                  style={{ height: "40px" }}
-                  class='form-control rounded-0'
+                  //style={{ height: "40px" }}
+                  className="border py-2 px-2 w-full rounded-0"
                   id='exampleFormControlInput1'
                   placeholder=''
                   disabled
@@ -372,8 +373,8 @@ const ContactInfo = () => {
             </label>
             <input
               type='text'
-              style={{ height: "40px" }}
-              class='form-control rounded-0'
+              //style={{ height: "40px" }}
+              className="border py-2 px-2 w-full rounded-0"
               id='exampleFormControlInput1'
               placeholder=''
               disabled
