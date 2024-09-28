@@ -40,7 +40,7 @@ const HodDashboardRoute = ({ mobile, setMobile, display }) => {
   };
 
   return (
-    <div className='rightBody  text-dark'>
+    <div className='w-full  text-dark'>
       <Navbar
         mobile={mobile}
         setMobile={setMobile}

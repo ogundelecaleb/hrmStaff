@@ -123,6 +123,7 @@ const PersonalInfo = () => {
       <Box className='pb-2 border-bottom'>
         <Text color={'black'} className='fs-5 pt-2 fw-semibold'>Basic Information</Text>
         <Text className='fs-6 text-muted' style={{ marginTop: "-15px" }}>
+          
           This is your personal information that you can update any time
         </Text>
       </Box>

@@ -171,7 +171,9 @@ const Leave = () => {
           totalLeave: userDetails.total_leave_due,
           staffLevel: userDetails?.level,
           confirm: userDetails?.confirmation,
-          department: userDetails?.department?.id
+          department: userDetails?.department?.id,
+          unit: userDetails?.unit?.id,
+          faculty: userDetails?.faculty?.id
         },
       });
     } else if (checkForCasualLeave) {
@@ -187,7 +189,9 @@ const Leave = () => {
           staffLevel: userDetails?.level,
           totalLeave: userDetails?.total_leave_due,
           confirm: userDetails?.confirmation,
-          department: userDetails?.department?.id
+          department: userDetails?.department?.id,
+          unit: userDetails?.unit?.id,
+          faculty: userDetails?.faculty?.id
         },
       });
     } else if (checkForExaminationLeave) {
@@ -203,7 +207,9 @@ const Leave = () => {
           totalLeave: userDetails.total_leave_due,
           staffLevel: userDetails?.level,
           confirm: userDetails?.confirmation,
-          department: userDetails?.department?.id
+          department: userDetails?.department?.id,
+          unit: userDetails?.unit?.id,
+          faculty: userDetails?.faculty?.id
         },
       });
     } else if (checkForConferenceLeave) {
@@ -219,7 +225,9 @@ const Leave = () => {
           staffLevel: userDetails?.level,
           totalLeave: userDetails.total_leave_due,
           confirm: userDetails?.confirmation,
-          department: userDetails?.department?.id
+          department: userDetails?.department?.id,
+          unit: userDetails?.unit?.id,
+          faculty: userDetails?.faculty?.id
         },
       });
     } else if (checkForSportingLeave) {
@@ -235,7 +243,9 @@ const Leave = () => {
           totalLeave: userDetails?.total_leave_due,
           staffLevel: userDetails?.level,
           confirm: userDetails?.confirmation,
-          department: userDetails?.department?.id
+          department: userDetails?.department?.id,
+          unit: userDetails?.unit?.id,
+          faculty: userDetails?.faculty?.id
         },
       });
     } else if (checkForCompassionateLeave) {
@@ -251,7 +261,9 @@ const Leave = () => {
           totalLeave: userDetails?.total_leave_due,
           staffLevel: userDetails?.level,
           confirm: userDetails?.confirmation,
-          department: userDetails?.department?.id
+          department: userDetails?.department?.id,
+          unit: userDetails?.unit?.id,
+          faculty: userDetails?.faculty?.id
         },
       });
     } else if (checkForAdoptionLeave) {
@@ -267,7 +279,9 @@ const Leave = () => {
           staffType: userDetails?.type,
           staffLevel: userDetails?.level,
           confirm: userDetails?.confirmation,
-          department: userDetails?.department?.id
+          department: userDetails?.department?.id,
+          unit: userDetails?.unit?.id,
+          faculty: userDetails?.faculty?.id
         },
       });
     } else if (checkForSickLeave) {
@@ -282,7 +296,9 @@ const Leave = () => {
           staffType: userDetails?.type,
           staffLevel: userDetails?.level,
           confirm: userDetails?.confirmation,
-          department: userDetails?.department?.id
+          department: userDetails?.department?.id,
+          unit: userDetails?.unit?.id,
+          faculty: userDetails?.faculty?.id
         },
       });
     } else if (checkForTradeLeave) {
@@ -298,7 +314,10 @@ const Leave = () => {
           level: userDetails?.level,
           staffLevel: userDetails?.level,
           confirm: userDetails?.confirmation,
-          department: userDetails?.department?.id
+          department: userDetails?.department?.id,
+          unit: userDetails?.unit?.id,
+          faculty: userDetails?.faculty?.id
+
         },
       });
     } else if (checkForMaternityLeave) {
@@ -315,7 +334,9 @@ const Leave = () => {
           staffLevel: userDetails?.level,
           confirm: userDetails?.confirmation,
           children: userDetails?.children,
-          department: userDetails?.department?.id
+          department: userDetails?.department?.id,
+          unit: userDetails?.unit?.id,
+          faculty: userDetails?.faculty?.id
         },
       });
     } else if (checkForPaternityLeave) {
@@ -332,7 +353,9 @@ const Leave = () => {
           staffLevel: userDetails?.level,
           confirm: userDetails?.confirmation,
           children: userDetails?.children,
-          department: userDetails?.department?.id
+          department: userDetails?.department?.id,
+          unit: userDetails?.unit?.id,
+          faculty: userDetails?.faculty?.id
         },
       });
     } else if (checkForResearchLeave) {
@@ -348,7 +371,9 @@ const Leave = () => {
           conuassLevel: userDetails?.conuass,
           staffLevel: userDetails?.level,
           confirm: userDetails?.confirmation,
-          department: userDetails?.department?.id
+          department: userDetails?.department?.id,
+          unit: userDetails?.unit?.id,
+          faculty: userDetails?.faculty?.id
         },
       });
     } else if (checkForSabbaticalLeave) {
@@ -363,7 +388,9 @@ const Leave = () => {
           staffType: userDetails?.type,
           staffLevel: userDetails?.level,
           confirm: userDetails?.confirmation,
-          department: userDetails?.department?.id
+          department: userDetails?.department?.id,
+          unit: userDetails?.unit?.id,
+          faculty: userDetails?.faculty?.id
         },
       });
     } else if (checkForStudyLeaveWithPay) {
@@ -378,7 +405,9 @@ const Leave = () => {
           staffType: userDetails.type,
           level: userDetails?.level,
           confirm: userDetails?.confirmation,
-          department: userDetails?.department?.id
+          department: userDetails?.department?.id,
+          unit: userDetails?.unit?.id,
+          faculty: userDetails?.faculty?.id
         },
       });
     } else if (checkForShortTermStudyLeaveWithPay) {
@@ -393,7 +422,10 @@ const Leave = () => {
           staffType: userDetails.type,
           staffLevel: userDetails?.level,
           confirm: userDetails?.confirmation,
-          department: userDetails?.department?.id
+          department: userDetails?.department?.id,
+          unit: userDetails?.unit?.id,
+          faculty: userDetails?.faculty?.id
+
         },
       });
     } else if (checkForStudyLeaveWithoutPay) {
@@ -408,7 +440,9 @@ const Leave = () => {
           staffType: userDetails.type,
           staffLevel: userDetails?.level,
           confirm: userDetails?.confirmation,
-          department: userDetails?.department?.id
+          department: userDetails?.department?.id,
+          unit: userDetails?.unit?.id,
+          faculty: userDetails?.faculty?.id
         },
       });
     } else if (checkForTrainingLeave) {
@@ -423,7 +457,9 @@ const Leave = () => {
           staffType: userDetails.type,
           level: userDetails?.level,
           confirm: userDetails?.confirmation,
-          department: userDetails?.department?.id
+          department: userDetails?.department?.id,
+          unit: userDetails?.unit?.id,
+          faculty: userDetails?.faculty?.id
         },
       });
     } else if (checkForAbsenceLeave) {
@@ -439,6 +475,8 @@ const Leave = () => {
           staffLevel: userDetails?.level,
           confirm: userDetails?.confirmation,
           department: userDetails?.department?.id,
+          unit: userDetails?.unit?.id,
+          faculty: userDetails?.faculty?.id
          
         },
       });
@@ -454,7 +492,9 @@ const Leave = () => {
           staffType: userDetails.type,
           staffLevel: userDetails?.level,
           confirm: userDetails?.confirmation,
-          department: userDetails?.department?.id
+          department: userDetails?.department?.id,
+          unit: userDetails?.unit?.id,
+          faculty: userDetails?.faculty?.id
         },
       });
     }

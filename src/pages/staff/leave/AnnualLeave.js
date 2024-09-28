@@ -56,6 +56,8 @@ const AnnualLeave = ({ navigate }) => {
     staffType,
     staffLevel,
     department,
+    unit,
+    faculty
   } = location.state;
 
   const { enqueueSnackbar } = useSnackbar();
@@ -287,8 +289,8 @@ const AnnualLeave = ({ navigate }) => {
         full_name: fullName,
         marital_status: maritalStatus,
         department_id: departmentId || department,
-        faculty_id: facultyId,
-        unit_id: unitId,
+        faculty_id: faculty,
+        unit_id: unit,
         leave_type: selectedLeaveType,
         date_of_first_appointment: dateOfFirstAppointment,
         designation: rankDesignation,
