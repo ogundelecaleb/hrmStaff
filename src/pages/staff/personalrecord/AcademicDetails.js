@@ -169,9 +169,9 @@ const AcademicDetails = () => {
           </div>
         </Box>
       ) : (
-        <div className="container">
+        <div className="">
           <form onSubmit={handleSubmit}>
-            <div className="row mt-4 border-bottom pb-4 pb-4">
+            <div className="row mt-4 border-bottom pb-4">
               <div className="col-lg-4">
                 <Text color={"black"} className="fs-5 pt-2 fw-semibold">
                   First Degree
@@ -191,6 +191,7 @@ const AcademicDetails = () => {
                     class="form-control rounded-0"
                     id="exampleFormControlInput1"
                     placeholder=""
+                    required
                     value={formValues.q1_name_of_institution}
                     onChange={(e) =>
                       setFormValues({
@@ -442,7 +443,7 @@ const AcademicDetails = () => {
                 </div>
               </div>
             </div>
-            <div className="row mt-4 border-bottom pb-4 pb-4">
+            <div className="row mt-4 border-bottom pb-4">
               <div className="col-lg-4">
                 <p className="fs-5 pt-2 fw-semibold">Other Degrees</p>
               </div>

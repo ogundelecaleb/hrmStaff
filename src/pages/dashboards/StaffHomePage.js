@@ -170,7 +170,7 @@ const StaffHomePage = ({ switchRoutes }) => {
         </div>
       </div>
 
-      {progress > 1 && (
+      {progress <100 && (
         <div
           className="flex rounded-1 py-3 md:py-5 px-3 mt-5 row border"
           style={{ border: "1px solid #EFF4F8", borderRadius: 10 }}
@@ -234,7 +234,7 @@ const StaffHomePage = ({ switchRoutes }) => {
                   scope="col"
                   className=" px-2 md:px-5 border-b-[0.8px] border-[#E4E7EC] py-[12px] gap-[6px] md:gap-[12px] text-[14px] md:text-[16px] text-[#98A2B3]  font-medium leading-[20px] md:leading-[24px] tracking-[0.2%]"
                 >
-                  <div className="flex  gap-[6px] md:gap-[12px] items-center my-0">
+                  <div className="flex pl-2  gap-[6px] md:gap-[12px] items-center my-0">
                     Leave Type
                   </div>
                 </th>
@@ -292,7 +292,7 @@ const StaffHomePage = ({ switchRoutes }) => {
               {data &&
                 data?.data?.map((result, index) => (
                   <tr key={index} className="mb-2 hover:bg-light-gray">
-                    <td className="whitespace-nowrap py-[16px] bg-white  px-5  border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px] text-[#667185] font-medium text-left  ">
+                    <td className="whitespace-nowrap py-[16px] bg-white pl-2 pr-5  border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px] text-[#667185] font-medium text-left  ">
                       {result?.leave_type}
                     </td>
 

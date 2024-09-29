@@ -105,7 +105,7 @@ const ContactInfo = () => {
   return (
     <div className='container'>
       <form onSubmit={handleSubmit}>
-      <div className='row mt-4 border-bottom pb-4 pb-4'>
+      <div className='row mt-4 border-bottom pb-4'>
         <div className='col-lg-4'>
           <Text color={'black'} className='fs-5 pt-2 fw-semibold'>Contact Details</Text>
         </div>
@@ -125,6 +125,7 @@ const ContactInfo = () => {
                     required
                     id='exampleFormControlInput1'
                     placeholder=''
+                    
                     value={formValues.phone}
                     onChange={(e) =>
                       setFormValues({
@@ -148,6 +149,7 @@ const ContactInfo = () => {
                     className="border py-2 px-2 w-full rounded-0"
                     id='exampleFormControlInput1'
                     disabled
+                    required
                     value={formValues.email}
                     onChange={(e) =>
                       setFormValues({
@@ -171,6 +173,7 @@ const ContactInfo = () => {
                   className="border py-2 px-2 w-full rounded-0"
                   id='exampleFormControlInput1'
                   placeholder=''
+                  required
                   value={formValues.current_address}
                   onChange={(e) =>
                     setFormValues({
@@ -192,6 +195,7 @@ const ContactInfo = () => {
                 className="border py-2 px-2 w-full rounded-0"
                 id='exampleFormControlInput1'
                 placeholder=''
+                required
                 value={formValues.contact_address}
                 onChange={(e) =>
                   setFormValues({
