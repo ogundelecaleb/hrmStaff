@@ -197,7 +197,7 @@ const NextOfKin = () => {
           </div>
           <div className="col-lg-2"></div>
         </div>
-        <div className="row mt-4 pb-4 pb-4 border-bottom">
+        <div className="row mt-4 pb-4  border-bottom">
           <div className="col-lg-4">
             <p className="fs-5 pt-2 fw-semibold">Next of Kin 2</p>
           </div>
@@ -285,9 +285,7 @@ const NextOfKin = () => {
           </p>
         </div>
         <div className="w-full md:w-[60%] mt-4 pb-4">
-          <div className="">
-            <p className="fs-5 pt-2 fw-semibold">Beneficiary</p>
-          </div>
+         
           {beneficiaries.map((beneficiary, index) => (
             <div key={index} style={{ marginBottom: "10px" }}>
               <div className=" pe-">
@@ -403,7 +401,7 @@ const NextOfKin = () => {
             style={{ backgroundColor: "#984779" }}
             onClick={handleAddBeneficiary}
           >
-            Add More
+           {beneficiaries?.length === 0 ? "Add First Beneficiary" : "Add More Beneficiary"}
           </button>
           <div className="col-lg-2"></div>
         </div>
