@@ -9,6 +9,36 @@ import { MoonLoader } from "react-spinners";
 import "intl";
 import "intl/locale-data/jsonp/en";
 import { getYear, getMonth } from "date-fns";
+import {
+  Box,
+  Table,
+  TableContainer,
+  Tbody,
+  Td,
+  Th,
+  Thead,
+  Tr,
+  Select,
+  Button,
+  Center,
+  Divider,
+  Flex,
+  FormLabel,
+  Input,
+  InputGroup,
+  InputLeftElement,
+  InputRightElement,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
+  Text,
+  Textarea,
+} from "@chakra-ui/react";
+import { FiSearch } from "react-icons/fi";
 
 const BereavementLeave = ({ navigate }) => {
   const location = useLocation();
@@ -41,8 +71,14 @@ const BereavementLeave = ({ navigate }) => {
   const [uploadedDocuments, setUploadedDocuments] = useState([]);
   const [isDocumentUploaded, setIsDocumentUploaded] = useState(false);
   const [durationInDays, setDurationInDays] = useState(0);
+  const [isStaffModal, setIsStaffModal] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [staffs, setStaffs] = useState([]);
+
   const [leaveAmount, setLeaveAmount] = useState(0)
   const [staffRepId, setStaffRepId] = useState("")
+  const [staffRep, setStaffrep] = useState("");
+
 
 
   function range(start, end, step) {
@@ -52,20 +88,24 @@ const BereavementLeave = ({ navigate }) => {
     }
     return result;
   }
+  async function fetchStaffs() {
+    try {
+      const staffs = await api.fetchStaffs();
+      console.log("Staff Details:", staffs);
+      setStaffs(staffs);
+    } catch (error) {
+      console.error("Error fetching your basic details", error);
+      enqueueSnackbar(error.message, { variant: "error" });
+    } finally {
+      setIsLoading(false);
+    }
+  }
 
-  console.log(
-    fullName,
-    maritalStatus,
-    departmentOrUnitOrFacultyID,
-    dateOfFirstAppointment,
-    rankDesignation,
-    selectedLeaveType,
-    startDate,
-    endDate,
-    addressLeave,
-    resumptionDate,
-    leaveDuration
-  );
+  useEffect(() => {
+    fetchStaffs();
+  }, []);
+
+ 
 
   const years = range(1990, getYear(new Date()) + 1, 1);
   const months = [
@@ -175,17 +215,7 @@ const BereavementLeave = ({ navigate }) => {
       setIsLoading(false);
       return;
     }
-    console.log(
-      fullName,
-      maritalStatus,
-      departmentOrUnitOrFacultyID,
-      dateOfFirstAppointment,
-      rankDesignation,
-      selectedLeaveType,
-      startDate,
-      endDate,
-      addressLeave
-    );
+  
 
     const formattedStartDate = startDate
       ? new Date(startDate).toISOString().split("T")[0]
@@ -328,6 +358,7 @@ const BereavementLeave = ({ navigate }) => {
                   className="form-control rounded-0"
                   type="date"
                   id="dateInput"
+                  required
                   value={startDate}
                   onChange={handleStartDateChange}
                   min={new Date().toISOString().split("T")[0]} 
@@ -369,10 +400,105 @@ const BereavementLeave = ({ navigate }) => {
                 </label>
                 <input
                   class="form-control rounded-0"
+                  required
                   value={leaveNumber}
                   onChange={(e) => setLeaveumber(e.target.value)}
                 />
               </div>
+
+              <div class="mb-3">
+                <label class="form-label fs-6 fw-semibold">
+                  To be relived by (Name of Staff)
+                </label>
+              <div
+                  onClick={() => setIsStaffModal(true)}
+                  className="border px-3 py-2 rounded-0"
+                >
+                  {staffRep ? (
+                    <p className="mb-0  fs-6">{staffRep}</p>
+                  ) : (
+                    <p className="mb-0">Select a staff</p>
+                  )}
+                </div>
+                {/* <input
+                  required
+                  class="form-control rounded-0"
+                  value={staffRep}
+                  onChange={(e) => setStaffrep(e.target.value)}
+                /> */}
+              </div>
+              <Modal
+                isCentered
+                isOpen={isStaffModal}
+                onClose={() => setIsStaffModal(false)}
+                size="2xl"
+                className="max-h-[80vh]"
+              >
+                <ModalOverlay />
+                <ModalContent>
+                  <ModalHeader fontSize={"sm"} py="3" color="#002240">
+                    Select Staff
+                  </ModalHeader>
+                  <ModalCloseButton size={"sm"} />
+                  <Divider />
+                  <ModalBody py="2">
+                    <InputGroup mb="6">
+                      <InputLeftElement>
+                        <FiSearch color="#1A202C" />
+                      </InputLeftElement>
+                      <Input
+                        borderRadius={"6px"}
+                        w="60"
+                        fontSize={"sm"}
+                        placeholder="Search Staffs..."
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                      />
+                    </InputGroup>
+                    {staffs &&
+                      staffs?.available_users
+                        ?.filter((staff) =>
+                          staff.first_name
+                            .toLowerCase()
+                            .includes(searchTerm.toLowerCase())
+                        )
+                        .map((staff) => (
+                          <div
+                            onClick={() => {
+                              setStaffrep(
+                                staff.first_name + " " + staff.last_name
+                              );
+                              setStaffRepId(staff?.id)
+
+                              setIsStaffModal(false);
+                            }}
+                            className="w-full "
+                          >
+                            {" "}
+                            <div className="px-2 py-2 border rounded-2 mb-2  flex justify-between">
+                              <p className="text-md md:text-base">
+                                {" "}
+                                {staff.first_name + " " + staff.last_name}
+                              </p>
+
+                              <p className="text-md md:text-base">
+                                {staff?.email}
+                              </p>
+
+                              {staffRep ===
+                              staff.first_name + " " + staff.last_name ? (
+                                <div className="bg-[#32D583] h-4 w-4 rounded-full"></div>
+                              ) : (
+                                <div className="border-[#5F5F60] border-[1.5px] h-4 w-4 rounded-full"></div>
+                              )}
+                            </div>
+                          </div>
+                        ))}
+                  </ModalBody>
+                  <Divider />
+                </ModalContent>
+              </Modal>
+
 
               <button
                 type="button"
