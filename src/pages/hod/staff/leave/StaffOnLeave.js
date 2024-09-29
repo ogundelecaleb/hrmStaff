@@ -82,7 +82,7 @@ const StaffOnLeave = () => {
         </div>
       ) : (
         <div>
-          <div className="container px-4">
+          <div className=" px-4 md:px-5">
             <div className="row mt-4 pa-res px-3">
               <div className="col-lg-4 pt-3 " style={{ height: "70px" }}>
                 <p className="fs-5 ">
@@ -167,11 +167,7 @@ const StaffOnLeave = () => {
 
                   {isLoading && !isPreviousData && <div>Loading...</div>}
                   {data?.users
-                    ?.filter((result) =>
-                      result?.first_name
-                        .toLowerCase()
-                        .includes(searchTerm.toLowerCase())
-                    )
+                    ?.filter((result) => result?.on_leave)
                     .map((item) => (
                       <tbody key={item.id} className="border">
                         <tr>

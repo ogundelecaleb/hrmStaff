@@ -55,7 +55,7 @@ const HodLeftNavbar = ({ mobile, setMobile, display, staffNumber }) => {
             Dashboard
           </div>
         </CustomLink>
-        <CustomLink to="calender">
+        {/* <CustomLink to="calender">
           <div
             id="hoverEffect"
             className="d-flex ps-3 ms-1 align-items-center rounded gap-2"
@@ -64,8 +64,8 @@ const HodLeftNavbar = ({ mobile, setMobile, display, staffNumber }) => {
             <IoMdCalendar size="25" style={{ color: "#84818A" }} />
             Calender & Schedule
           </div>
-        </CustomLink>
-        <CustomLink to="inbox">
+        </CustomLink> */}
+        {/* <CustomLink to="inbox">
           <div
             id="hoverEffect"
             className="ps-3 ms-1 d-flex align-items-center rounded gap-2"
@@ -74,8 +74,8 @@ const HodLeftNavbar = ({ mobile, setMobile, display, staffNumber }) => {
             <MdMoveToInbox size="25" style={{ color: "#84818A" }} />
             Inbox
           </div>
-        </CustomLink>
-        <CustomLink to="event">
+        </CustomLink> */}
+        {/* <CustomLink to="event">
           <div
             id="hoverEffect"
             className="ps-3 ms-1 d-flex align-items-center rounded gap-2"
@@ -84,10 +84,10 @@ const HodLeftNavbar = ({ mobile, setMobile, display, staffNumber }) => {
             <RiBubbleChartFill size="25" style={{ color: "#84818A" }} />
             Events/Training
           </div>
-        </CustomLink>
-        <p className="text-muted ms-4 mt-2" style={{ marginBottom: "-2px" }}>
+        </CustomLink> */}
+        {/* <p className="text-muted ms-4 mt-2" style={{ marginBottom: "-2px" }}>
           Recruitments
-        </p>
+        </p> */}
         {/* <CustomLink to='job-openings'>
           <div
             id='hoverEffect'
@@ -97,7 +97,7 @@ const HodLeftNavbar = ({ mobile, setMobile, display, staffNumber }) => {
             Job Openings
           </div>
         </CustomLink> */}
-        <CustomLink to="job-applicants">
+        {/* <CustomLink to="job-applicants">
           <div
             id="hoverEffect"
             className="ps-3 ms-1 d-flex align-items-center rounded gap-2"
@@ -106,10 +106,10 @@ const HodLeftNavbar = ({ mobile, setMobile, display, staffNumber }) => {
             <MdSupervisedUserCircle size="25" style={{ color: "#84818A" }} />
             Job Applicants
           </div>
-        </CustomLink>
-        <p className="text-muted ms-4 mt-2" style={{ marginBottom: "-2px" }}>
+        </CustomLink> */}
+        {/* <p className="text-muted ms-4 mt-2" style={{ marginBottom: "-2px" }}>
           Organization
-        </p>
+        </p> */}
         <CustomLink to="staff">
           <div
             onClick={() => setStaffDropDown(!staffDropDown)}

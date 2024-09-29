@@ -11,7 +11,7 @@ function NotificationAnimation() {
 
   return (
     <div>
-      <Lottie options={defaultOptions} height={400} width={400} />
+      <Lottie options={defaultOptions} height={200} width={200} />
     </div>
   );
 }

@@ -57,7 +57,15 @@ const Navbar = ({ mobile, setMobile, display, reuseableNavigation }) => {
 
   if (userDetails?.data?.role === "HOD") {
     Heading = "HEAD OF DEPARTMENT(HOD)";
-  } else if (userDetails?.data?.role === "CS") {
+  }if (userDetails?.data?.role === "HOU") {
+      Heading = "HEAD OF UNIT(HOU)";
+
+
+    } else if (userDetails?.data?.role === "HNASES") {
+      Heading = "OFFICE OF HEAD OF NASE SENIOR";
+    } else if (userDetails?.data?.role === "HNASEJ") {
+      Heading = "OFFICE OF HEAD OF NASE JUNIOR";
+    } else if (userDetails?.data?.role === "CS") {
     Heading = "OFFICE OF THE COLLEGE SECRETARY";
   } else if (userDetails?.data?.role === "PT") {
     Heading = "OFFICE OF THE PROVOST";
@@ -70,6 +78,7 @@ const Navbar = ({ mobile, setMobile, display, reuseableNavigation }) => {
   } else if (userDetails?.data?.role === "DPT") {
     Heading = "OFFICE OF THE DEPUTY PROVOST";
   }
+
 
   return (
     <div

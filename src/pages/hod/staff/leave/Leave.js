@@ -183,10 +183,10 @@ const Leave = ({ id }) => {
           px='10'
           justifyContent='space-between'>
           <Text fontSize={"2xl"}>Total Applicantions : {data?.meta?.total}</Text>{" "}
-          <Link
+          {/* <Link
             to='/portal/leave-application'>
             <CommonButton title={"Apply for Leave"} />
-          </Link>
+          </Link> */}
         </Box>
       </Box>
       <Box>
