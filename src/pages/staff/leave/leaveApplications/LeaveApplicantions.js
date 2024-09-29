@@ -87,7 +87,7 @@ const LeaveApplicantions = () => {
         </div>
       ) : (
         <div>
-          <div className="container px-4">
+          <div className=" px-4 md:px-6">
             <div className="row mt-4 pa-res px-3">
               <div className="col-lg-4 pt-3 " style={{ height: "70px" }}>
                 <p className="fs-5 ">
@@ -194,30 +194,27 @@ const LeaveApplicantions = () => {
                                 width: "40px",
                                 height: "40px",
                               }}
-                              className="mt-2"
+                             
                               alt="/"
                             />
-                            <div>
-                              <p
-                                className="fw-semibold pt-4"
-                                fontSize={"smaller"}
-                              >
+                            <div className="pt-4"> 
+                              
                                 {item.full_name}
-                              </p>
+                            
                               {/* <p className='fw-bold text-muted'>{item.full_name}</p> */}
                             </div>
                           </div>
                         </td>
-                        <td className="mt-4">
-                          <p fontSize={"smaller"}>{item.leave_type}</p>
+                        <td className="pt-4">
+                         {item.leave_type}
                         </td>
                         <td>
                           <button className="btn fw-semibold btn-outline-primary mt-3  h-8 btn-sm rounded-2">
                             {item.status}
                           </button>
                         </td>
-                        <td className="fw-semibold">
-                          <p className="mt-3">{formatDate(item.date)}</p>
+                        <td className="fw-semibold pt-4">
+                        {formatDate(item.date)}
                         </td>
                         <td className="pt-4">
                           <Text fontSize={"smaller"} color="#25324B">
@@ -226,7 +223,7 @@ const LeaveApplicantions = () => {
                               item.unit?.name}
                           </Text>
                         </td>
-                        <td className="fw-semibold">
+                        <td className="fw-semibold ">
                           <Link to={`leave-applicant-details/${item.id}`}>
                             <button
                               className="btn py-1 px-3 rounded-0 mt-3 btn-sm rounded-0 fw-semibold"
@@ -239,7 +236,6 @@ const LeaveApplicantions = () => {
                               View Application
                             </button>
                           </Link>
-                          <b className="fs-6 ps-2 pt-3">...</b>
                         </td>
                       </tr>
                     </tbody>
