@@ -55,7 +55,9 @@ const AdoptionLeave = ({ navigate }) => {
     gender,
     staffType,
     staffLevel,
-    department
+    department,
+    unit,
+    faculty
   } = location.state;
   
   const { enqueueSnackbar } = useSnackbar();
@@ -165,24 +167,26 @@ const AdoptionLeave = ({ navigate }) => {
     ? new Date(startDate).toISOString().split('T')[0]
     : null;
 
-    let departmentId = '';
-    let facultyId = '';
-    let unitId = '';
+    // let departmentId = '';
+    // let facultyId = '';
+    // let unitId = '';
 
-    if (rankDesignation === 'HOD' || rankDesignation === 'RSWEP') {
-      departmentId = departmentOrUnitOrFacultyID;
-    } else if (rankDesignation === 'DEAN') {
-      facultyId = departmentOrUnitOrFacultyID;
-    } else if (rankDesignation === 'HOU' || rankDesignation === 'NTSWEP') {
-      unitId = departmentOrUnitOrFacultyID;
-    }
+    // if (rankDesignation === 'HOD' || rankDesignation === 'RSWEP') {
+    //   departmentId = departmentOrUnitOrFacultyID;
+    // } else if (rankDesignation === 'DEAN') {
+    //   facultyId = departmentOrUnitOrFacultyID;
+    // } else if (rankDesignation === 'HOU' || rankDesignation === 'NTSWEP') {
+    //   unitId = departmentOrUnitOrFacultyID;
+    // }
     let formattedData = department !== undefined ? department : "";
+    let facultyId = faculty !== undefined ? faculty : "";
+    let unitId = unit !== undefined ? unit : "";
 
     const formData = new FormData();
     formData.append('upload_documents', uploadedDocuments);
     formData.append('full_name', fullName);
     formData.append('marital_status', maritalStatus);
-    formData.append('department_id', departmentId || formattedData);
+    formData.append('department_id', formattedData);
     formData.append('faculty_id', facultyId);
     formData.append('unit_id', unitId);
     formData.append('leave_type', selectedLeaveType);

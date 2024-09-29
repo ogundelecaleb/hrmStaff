@@ -220,26 +220,27 @@ const ExaminationLeave = ({ navigate }) =>  {
     ? new Date(resumptionDate).toISOString().split('T')[0]
     : null;
 
-    let departmentId = "";
-    let facultyId = "";
-    let unitId = "";
+    // let departmentId = "";
+    // let facultyId = "";
+    // let unitId = "";
 
-    if (rankDesignation === 'HOD' || rankDesignation === 'RSWEP') {
-      departmentId = departmentOrUnitOrFacultyID;
-    } else if (rankDesignation === 'DEAN') {
-      facultyId = departmentOrUnitOrFacultyID;
-    } else if (rankDesignation === 'HOU' || rankDesignation === 'NTSWEP') {
-      unitId = departmentOrUnitOrFacultyID;
-    }
+    // if (rankDesignation === 'HOD' || rankDesignation === 'RSWEP') {
+    //   departmentId = departmentOrUnitOrFacultyID;
+    // } else if (rankDesignation === 'DEAN') {
+    //   facultyId = departmentOrUnitOrFacultyID;
+    // } else if (rankDesignation === 'HOU' || rankDesignation === 'NTSWEP') {
+    //   unitId = departmentOrUnitOrFacultyID;
+    // }
     let formattedData = department !== undefined ? department : "";
-
+    let facultyId = faculty !== undefined ? faculty : "";
+    let unitId = unit !== undefined ? unit : "";
 
     const formData = new FormData();
     formData.append('upload_documents', uploadedDocument1);
     formData.append('upload_document_2', uploadedDocument2);
     formData.append('full_name', fullName);
     formData.append('marital_status', maritalStatus);
-    formData.append('department_id', departmentId|| formattedData);
+    formData.append('department_id', formattedData);
     formData.append('faculty_id', facultyId);
     formData.append('unit_id', unitId);
     formData.append('leave_type', selectedLeaveType);
