@@ -156,46 +156,52 @@ const StaffHomePage = ({ switchRoutes }) => {
           </div>
         </div>
       </div>
-      <div className="row mt-5">
-        <div
-          className="col-lg-12 rounded-1 px-3 row border"
-          style={{ border: "1px solid #EFF4F8", borderRadius: 10 }}
-        >
-          <div className="col-lg-1 pt-4">
-            {" "}
-            <CircularProgress
-              value={progress}
-              thickness="6"
-              size="75"
-              color="green.400"
-            >
-              <CircularProgressLabel>{progress}%</CircularProgressLabel>
-            </CircularProgress>
-          </div>
-          <div className="col-lg-8 d-flex gap-3 align-items-center">
-            <div className="line-height-10 ps-2" id="zero-padding">
-              <p class="fs-4 fw-semibold" id="res">
-                Complete all Process
-              </p>
 
-              <p className="fs-6 text-muted" id="res">
-                Your personal records profile is
-                <span className="text-warning"> {progress}% </span> completed
-              </p>
+      {
+        progress >1 && (
+          <div className="row mt-5">
+          <div
+            className="col-lg-12 rounded-1 px-3 row border"
+            style={{ border: "1px solid #EFF4F8", borderRadius: 10 }}
+          >
+            <div className="col-lg-1 pt-4">
+              {" "}
+              <CircularProgress
+                value={progress}
+                thickness="6"
+                size="75"
+                color="green.400"
+              >
+                <CircularProgressLabel>{progress}%</CircularProgressLabel>
+              </CircularProgress>
+            </div>
+            <div className="col-lg-8 d-flex gap-3 align-items-center">
+              <div className="line-height-10 ps-2" id="zero-padding">
+                <p class="fs-4 fw-semibold" id="res">
+                  Complete all Process
+                </p>
+  
+                <p className="fs-6 text-muted" id="res">
+                  Your personal records profile is
+                  <span className="text-warning"> {progress}% </span> completed
+                </p>
+              </div>
+            </div>
+            <div className="col-lg-3 py-5">
+              <Link to={`personal-records`}>
+                <button
+                  className="btn btn-primary"
+                  style={{ backgroundColor: "#984779", border: "none" }}
+                >
+                  Complete Profile
+                </button>
+              </Link>
             </div>
           </div>
-          <div className="col-lg-3 py-5">
-            <Link to={`personal-records`}>
-              <button
-                className="btn btn-primary"
-                style={{ backgroundColor: "#984779", border: "none" }}
-              >
-                Complete Profile
-              </button>
-            </Link>
-          </div>
         </div>
-      </div>
+        )
+      }
+     
 
       <div className="row mt-4 mb-2">
         <div className="col-lg-8">
