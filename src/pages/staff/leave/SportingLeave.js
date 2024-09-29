@@ -224,6 +224,11 @@ const SportingLeave = ({ navigate }) => {
       setIsLoading(false);
       return;
     }
+    if (!staffRepId) {
+      enqueueSnackbar('Please choose a staff to releive you', { variant: 'error' });
+      setIsLoading(false);
+      return;
+    }
     console.log(
       fullName,
       maritalStatus,
@@ -249,6 +254,7 @@ const SportingLeave = ({ navigate }) => {
     const formattedResumptionDate = resumptionDate
       ? new Date(resumptionDate).toISOString().split("T")[0]
       : null;
+
 
     // let departmentId = "";
     // let facultyId = "";

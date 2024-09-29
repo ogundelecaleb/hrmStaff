@@ -251,6 +251,12 @@ const AnnualLeave = ({ navigate }) => {
   async function handleSubmit(e) {
     e.preventDefault();
     setIsLoading(true);
+
+    if (!staffRepId) {
+      enqueueSnackbar('Please choose a staff to releive you', { variant: 'error' });
+      setIsLoading(false);
+      return;
+    }
     console.log(
       fullName,
       maritalStatus,

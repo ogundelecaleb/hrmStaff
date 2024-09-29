@@ -215,6 +215,7 @@ const StudyLeaveWithPay = ({ navigate }) => {
       setIsLoading(false);
       return;
     }
+    
     const formattedStartDate = startDate
       ? new Date(startDate).toISOString().split("T")[0]
       : null;

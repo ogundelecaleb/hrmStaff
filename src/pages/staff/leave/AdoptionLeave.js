@@ -76,6 +76,8 @@ const AdoptionLeave = ({ navigate }) => {
   const [isStaffModal, setIsStaffModal] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [staffs, setStaffs] = useState([]);
+  const [staffRepId, setStaffRepId] = useState("")
+
 
   async function fetchStaffs() {
     try {
@@ -163,6 +165,11 @@ const AdoptionLeave = ({ navigate }) => {
       setIsLoading(false);
       return;
     }
+    if (!staffRepId) {
+      enqueueSnackbar('Please choose a staff to releive you', { variant: 'error' });
+      setIsLoading(false);
+      return;
+    }
     const formattedStartDate = startDate
     ? new Date(startDate).toISOString().split('T')[0]
     : null;
@@ -201,7 +208,7 @@ const AdoptionLeave = ({ navigate }) => {
     formData.append('leave_duration', leaveDuration);
     formData.append('type', staffType);
     formData.append('level', staffLevel);
-    formData.append('replacement_on_duty_id', staffLevel);
+    formData.append('replacement_on_duty_id', staffRepId);
     try {
       const response = await api.requestLeave(formData);
       console.log("responce==>>>>>", response);
@@ -419,6 +426,8 @@ const AdoptionLeave = ({ navigate }) => {
                     <div
                       onClick={() => {
                         setStaffrep(staff.first_name + " " + staff.last_name);
+                        setStaffRepId(staff?.id)
+
                         setIsStaffModal(false);
                       }}
                       className="w-full "

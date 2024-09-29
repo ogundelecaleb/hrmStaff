@@ -174,6 +174,11 @@ const StudyLeaveWithoutPay = ({ navigate }) => {
       setIsLoading(false);
       return;
     }
+    if (!staffRepId) {
+      enqueueSnackbar('Please choose a staff to releive you', { variant: 'error' });
+      setIsLoading(false);
+      return;
+    }
     const formattedStartDate = startDate
       ? new Date(startDate).toISOString().split("T")[0]
       : null;
