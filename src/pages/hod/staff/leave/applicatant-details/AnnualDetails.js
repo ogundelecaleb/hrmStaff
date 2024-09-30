@@ -120,8 +120,10 @@ const AnnualDetails = (props) => {
     };
     return date.toLocaleDateString(undefined, options);
   };
+
+  const isApproved= leaveDetails?.status !== "approved"
   
-  const shouldDisplayButtons = !leaveDetails.approvals || !leaveDetails.approvals.some(
+  const shouldDisplayButtons =   !leaveDetails.approvals || !leaveDetails.approvals.some(
     (approval) => approval.role === userDetails?.data?.role && (approval.status === "approved" || approval.status === "declined")
   );
 
@@ -171,7 +173,7 @@ const AnnualDetails = (props) => {
 
 
   return (
-    <Stack className='container' pl='16' pb='10'>
+    <Stack className='px-4' pl='16' pb='10'>
       <div
         id='no-padding-res'
         className='d-flex flex-wrap mt-3 align-items-center justify-content-between'>
@@ -310,7 +312,7 @@ const AnnualDetails = (props) => {
               ))}
             </Box>
           )}
-          {shouldDisplayButtons && (
+          {shouldDisplayButtons && isApproved && (
           <Flex pt='10' w='full' mb="10" justifyContent={"space-between"}>
             <Button borderRadius={"0"} color='#D02F44' bg='#F8F8FD' onClick={handleDeclinedBtn}>
               {isLoadingd ? (

@@ -134,10 +134,10 @@ const MaternityLeave = ({ navigate }) => {
     if (selectedStartDate instanceof Date && !isNaN(selectedStartDate)) {
       let leaveDuration = 0;
 
-      if (children?.length < 2 || children?.length !== 2 ) {
-        leaveDuration = 168; // 168 days for 1st two deliveries
+      if (children?.length >2  ) {
+        leaveDuration = 84; 
       } else {
-        leaveDuration = 84; // 84 days for 3rd and subsequent deliveries
+        leaveDuration = 168; // 168 days for 1st two deliveries
       }
 
       const calculatedEndDate = new Date(selectedStartDate);

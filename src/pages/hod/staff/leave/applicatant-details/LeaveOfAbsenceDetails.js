@@ -160,9 +160,11 @@ export const LeaveOfAbsenceDetails = () => {
     // Return the last item in the array
     return array[array.length - 1];
 }
+const isApproved= leaveDetails?.status !== "approved"
+
 
   return (
-    <Stack className='container' pl='16' pb='10'>
+    <Stack className='px-4' pl='16' pb='10'>
       <div
         id='no-padding-res'
         className='d-flex flex-wrap mt-3 align-items-center justify-content-between'>
@@ -300,8 +302,7 @@ export const LeaveOfAbsenceDetails = () => {
               ))}
             </Box>
           )}
-          {shouldDisplayButtons && (
-          <Flex pt='10' w='full' mb='10' justifyContent={"space-between"}>
+          {shouldDisplayButtons && isApproved && (          <Flex pt='10' w='full' mb='10' justifyContent={"space-between"}>
             <Button borderRadius={"0"} color='#D02F44' bg='#F8F8FD' onClick={handleDeclinedBtn}>
               {isLoadingd ? (
                 <MoonLoader color={"white"} size={20} />

@@ -162,6 +162,9 @@ export const ShortTermStudyLeaveDetails = () => {
     return array[array.length - 1];
 }
 
+const isApproved= leaveDetails?.status !== "approved"
+
+
 
     return (
       <Stack className='container' pl='12'>

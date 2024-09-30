@@ -308,7 +308,7 @@ const Leave = ({ id }) => {
                         <Td>{formatDate(item.date)}</Td>
                         <Td>{item.leave_duration}</Td>
                         <Td>
-                          <Link
+                      <Link
                             
                             to={`${item.leave_type}/details/${item.id}`}
                              state={{ from: "occupation" }}
@@ -320,6 +320,7 @@ const Leave = ({ id }) => {
                               See Application
                             </Button>
                           </Link>
+                         
                         </Td>
                       </Tr>
                     ))}

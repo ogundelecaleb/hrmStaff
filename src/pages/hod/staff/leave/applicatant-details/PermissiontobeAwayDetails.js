@@ -161,6 +161,8 @@ export const PermissiontobeAwayDetails = () => {
     // Return the last item in the array
     return array[array.length - 1];
 }
+const isApproved= leaveDetails?.status !== "approved"
+
 
   return (
     <Stack className='container' pl='16' pb='10'>
@@ -301,7 +303,7 @@ export const PermissiontobeAwayDetails = () => {
               ))}
             </Box>
           )}
-          {shouldDisplayButtons && (
+               {shouldDisplayButtons && isApproved && (
           <Flex pt='10' w='full' mt='10' justifyContent={"space-between"}>
             <Button borderRadius={"0"} color='#D02F44' bg='#F8F8FD' onClick={handleDeclinedBtn}>
               {isLoadingd ? (

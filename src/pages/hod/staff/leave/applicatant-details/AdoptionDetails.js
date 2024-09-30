@@ -131,6 +131,7 @@ const AdoptionDetails = () => {
       console.log("Leave is not approved. Cannot generate certificate.");
     }
   };
+  const isApproved= leaveDetails?.status !== "approved"
 
 
   async function handleApprovedBtn (e)  {
@@ -191,7 +192,7 @@ const AdoptionDetails = () => {
 
   
     return (
-      <Stack className='container' pl='12'>
+      <Stack className='px-4' pl='12'>
         <div
           id='no-padding-res'
           className='d-flex flex-wrap mt-3 align-items-center justify-content-between'>
@@ -329,8 +330,7 @@ const AdoptionDetails = () => {
               ))}
             </Box>
           )}
-          {shouldDisplayButtons && (
-            <Flex pt='10' w='full' mb="10" justifyContent={"space-between"}>
+          {shouldDisplayButtons && isApproved && (            <Flex pt='10' w='full' mb="10" justifyContent={"space-between"}>
               <Button borderRadius={"0"} color='#D02F44' bg='#F8F8FD' onClick={handleDeclinedBtn}>
                 {isLoadingd ? (
                       <MoonLoader color={"white"} size={20} />
