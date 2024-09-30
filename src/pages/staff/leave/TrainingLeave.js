@@ -196,7 +196,6 @@ const TrainingLeave = ({ navigate }) => {
 
     // let facultyId = "";
     // let unitId = "";
-
     // if (rankDesignation === "HOD" || rankDesignation === "RSWEP") {
     //   departmentId = departmentOrUnitOrFacultyID;
     // } else if (rankDesignation === "DEAN") {

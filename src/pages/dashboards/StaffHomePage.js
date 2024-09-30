@@ -366,7 +366,7 @@ const StaffHomePage = ({ switchRoutes }) => {
                       {" "}
                       <button
                         className={`rounded-[20px] md:rounded-[40px] flex justify-center items-center gap-2 px-[12px]  py-[4px] md:py-[4px] border-[0.5px] ${
-                          result?.status === "Declined"
+                          result?.status === "declined"
                             ? "bg-[#FEECEB] text-[#F44336] border-[#F44336]"
                             : result?.status === "pending"
                             ? "bg-[#FFF5E6] text-[#F44336] border-[#FF9800]"
@@ -567,7 +567,7 @@ const StaffHomePage = ({ switchRoutes }) => {
                       {" "}
                       <button
                         className={`rounded-[20px] md:rounded-[40px] flex justify-center items-center gap-2 px-[12px]  py-[4px] md:py-[4px] border-[0.5px] ${
-                          item?.status === "Declined"
+                          item?.status === "declined"
                             ? "bg-[#FEECEB] text-[#F44336] border-[#F44336]"
                             : item?.status === "pending"
                             ? "bg-[#FFF5E6] text-[#F44336] border-[#FF9800]"
@@ -590,7 +590,7 @@ const StaffHomePage = ({ switchRoutes }) => {
 
 
 
-      <div className="row mt-4 mb-2">
+      {/* <div className="row mt-4 mb-2">
         <div className="col-lg-8">
           {datar.map((items, key) => {
             return (
@@ -636,7 +636,7 @@ const StaffHomePage = ({ switchRoutes }) => {
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };
