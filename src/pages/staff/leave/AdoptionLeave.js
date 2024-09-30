@@ -41,6 +41,7 @@ import {
 import { FiSearch } from "react-icons/fi";
 
 import Oops from '../../../components/Opps';
+import { ArrowLeft } from "iconsax-react";
 
 const AdoptionLeave = ({ navigate }) => {
 
@@ -77,6 +78,8 @@ const AdoptionLeave = ({ navigate }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [staffs, setStaffs] = useState([]);
   const [staffRepId, setStaffRepId] = useState("")
+  const [page, setPage] = useState("1");
+
 
 
   async function fetchStaffs() {
@@ -245,17 +248,23 @@ const AdoptionLeave = ({ navigate }) => {
   return (
     <div className='container-fluid'>
       <div className='row'>
-        <div class='border-bottom ps-4' id='sec-padding-res'>
-          <h1 class='fs-3 fw-semibold'>Leave</h1>
-          <p class='fs-5'>Kindly fill in the required information</p>
+      <div class="border-bottom py-2" id="sec-padding-res">
+          <h1 class="text-[18px] font-medium">Adoption Leave</h1>
+          <p class="text-gray-500 mb-0">Kindly fill in the required information</p>
         </div>
-        <div className='col-md-6'>
+        <div className="col-md-6">
           <form
-            class=' ps-4 pt-5 '
-            id='sec-padding-res'
-            style={{ paddingBottom: "100px" }} onSubmit={handleSubmit}>
-
-            <div class='pb-5' style={{ display: !showAdditionalInfo ? "block" : "none" }}>
+            class=" ps-4 pt-3 "
+            id="sec-padding-res"
+            style={{ paddingBottom: "100px" }}
+            onSubmit={handleSubmit}
+          >
+            {/* Annual Leave form  start */}
+            {page === "1" && (
+              <div
+                class="pb-5"
+                // style={{ display: !showAdditionalInfo ? "block" : "none" }}
+              >
             <div class='pb-2 pt-2'>
                 <div class='mb-3 flex flex-col'>
                   <div>
@@ -351,21 +360,32 @@ const AdoptionLeave = ({ navigate }) => {
               </div>
               
               <button
-                type='button'
-                onClick={handleProceed}
-                style={{
-                  backgroundColor: " #984779",
-                  borderColor: "white",
-                  right: 50,
-                  position: "absolute",
-                }}
-                class='my-10 p-2 text-md-start text-white fs-6 fw-semibold'>
-                Proceed to Next
-              </button>
-            </div>
+                  type="button"
+                  onClick={() => setPage("2")}
+                  style={{
+                    backgroundColor: " #984779",
+                    borderColor: "white",
+                    right: 50,
+                    position: "absolute",
+                  }}
+                  class="my-10 p-2 text-md-start text-white fs-6 fw-semibold"
+                >
+                  Proceed to Next
+                </button>
+              </div>
+            )}
 
-            <div class='pb-5' style={{ display: showAdditionalInfo ? "block" : "none" }}>
-            
+            {/* Annual Leave form  end */}
+
+            {/* Additional info start*/}
+            {page === "2" && (
+              <div
+                class="pb-5"
+                // style={{ display: showAdditionalInfo ? "block" : "none" }}
+              >
+                <button onClick={() => setPage("1")} className="mb-2">
+                  <ArrowLeft size="20" variant="Linear" color="#000" />
+                </button>
                <div class="mb-3">
                 <label class="form-label fs-6 fw-semibold">
                   To be relived by (Name of Staff)
@@ -494,7 +514,7 @@ const AdoptionLeave = ({ navigate }) => {
                   ) : ( <>Submit</>
                   )}
               </button>
-            </div>            
+            </div>    )}        
           </form>
         </div>
       </div>

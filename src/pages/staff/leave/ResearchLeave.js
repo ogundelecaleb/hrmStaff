@@ -71,6 +71,8 @@ const ResearchLeave = ({ navigate }) => {
   const [isStaffModal, setIsStaffModal] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [staffs, setStaffs] = useState([]);
+  const [page, setPage] = useState("1");
+
 
   async function fetchStaffs() {
     try {

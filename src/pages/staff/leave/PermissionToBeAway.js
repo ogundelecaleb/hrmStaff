@@ -11,6 +11,7 @@ import {
   Box,
 } from "@chakra-ui/react";
 import Oops from '../../../components/Opps';
+import { ArrowLeft } from "iconsax-react";
 
 const PermissionToBeAway = ({ navigate }) =>  {
   
@@ -40,6 +41,8 @@ const PermissionToBeAway = ({ navigate }) =>  {
   const [uploadedDocuments, setUploadedDocuments] = useState([]);
   const [isDocumentUploaded, setIsDocumentUploaded] = useState(false);
   const [durationInDays, setDurationInDays] = useState(0);
+  const [page, setPage] = useState("1");
+
 
 
   function range(start, end, step) {
@@ -234,17 +237,24 @@ const PermissionToBeAway = ({ navigate }) =>  {
   return (
     <div className='container-fluid'>
       <div className='row'>
-        <div class='border-bottom ps-4' id='sec-padding-res'>
-          <h1 class='fs-3 fw-semibold'>Leave</h1>
-          <p class='fs-5'>Kindly fill in the required information</p>
+      <div class="border-bottom py-2" id="sec-padding-res">
+          <h1 class="text-[18px] font-medium">Leave</h1>
+          <p class="text-gray-500 mb-0">Kindly fill in the required information</p>
         </div>
-        <div className='col-md-6'>
-        <form
-            class=' ps-4 pt-5 '
-            id='sec-padding-res'
-            style={{ paddingBottom: "100px" }} onSubmit={handleSubmit}>
 
-            <div class='pb-5' style={{ display: !showAdditionalInfo ? "block" : "none" }}>
+        <div className="col-md-6">
+          <form
+            class=" ps-4 pt-3 "
+            id="sec-padding-res"
+            style={{ paddingBottom: "100px" }}
+            onSubmit={handleSubmit}
+          >
+            {/* Annual Leave form  start */}
+            {page === "1" && (
+              <div
+                class="pb-5"
+                // style={{ display: !showAdditionalInfo ? "block" : "none" }}
+              >
               <div class='pb-2 pt-2'>
                 <div class='mb-3 flex flex-col'>
                   <div>
@@ -398,20 +408,32 @@ const PermissionToBeAway = ({ navigate }) =>  {
                 <input class='form-control rounded-0' value={staffRep} onChange={(e) => setStaffrep(e.target.value)}/>
               </div>
               <button
-                type='button'
-                onClick={handleProceed}
-                style={{
-                  backgroundColor: " #984779",
-                  borderColor: "white",
-                  right: 50,
-                  position: "absolute",
-                }}
-                class='my-10 p-2 text-md-start text-white fs-6 fw-semibold'>
-                Proceed to Next
-              </button>
-            </div>
+                  type="button"
+                  onClick={() => setPage("2")}
+                  style={{
+                    backgroundColor: " #984779",
+                    borderColor: "white",
+                    right: 50,
+                    position: "absolute",
+                  }}
+                  class="my-10 p-2 text-md-start text-white fs-6 fw-semibold"
+                >
+                  Proceed to Next
+                </button>
+              </div>
+            )}
 
-            <div class='pb-5' style={{ display: showAdditionalInfo ? "block" : "none" }}>
+            {/* Annual Leave form  end */}
+
+            {/* Additional info start*/}
+            {page === "2" && (
+              <div
+                class="pb-5"
+                // style={{ display: showAdditionalInfo ? "block" : "none" }}
+              >
+                <button onClick={() => setPage("1")} className="mb-2">
+                  <ArrowLeft size="20" variant="Linear" color="#000" />
+                </button>
               <div class='mb-3 flex flex-col'>
                 <div>
                   <label class='form-label fs-6 fw-semibold'>Resumption Date</label>
@@ -522,7 +544,7 @@ const PermissionToBeAway = ({ navigate }) =>  {
                     ) : ( <>Submit</>
                     )}
               </button>
-            </div>            
+            </div>    )}        
           </form>
         </div>
       </div>
