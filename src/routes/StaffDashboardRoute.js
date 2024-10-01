@@ -7,6 +7,7 @@ import Event from "../pages/staff/event/Event";
 import Calender from "../pages/staff/calender/Calender";
 import Navbar from "../components/Navbar";
 import LeaveSecond from "../pages/staff/leave/LeaveSecond";
+import LeaveCertificate from "../pages/staff/leave/LeaveCertificate";
 import MainDashboard from "../pages/dashboards/MainStaffDashboard";
 import EditProfile from "../pages/staff/settings/editprofile/EditProfile";
 import SecondEditProfile from "../pages/staff/settings/editprofile/SecondEditProfile";
@@ -43,7 +44,7 @@ const StaffDashboardRoute = ({ mobile, setMobile, display }) => {
         reuseableNavigation={reuseableNavigation}
       />
       <Routes>
-        <Route path='/dashboard' exact element={<MainDashboard />} />
+        <Route path='/dashboard' exact element={<MainDashboard   reuseableNavigation={reuseableNavigation} />} />
         <Route
           path='/leave/*'
           element={<StaffLeaveRoute navigate={navigate} />}
@@ -59,6 +60,10 @@ const StaffDashboardRoute = ({ mobile, setMobile, display }) => {
         <Route
           path='/setting'
           element={<Settings reuseableNavigation={reuseableNavigation} />}
+        />
+          <Route
+          path='/leave-certificate'
+          element={<LeaveCertificate navigate={navigate} />}
         />
         <Route
           path='/staff/*'

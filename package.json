@@ -26,6 +26,7 @@
     "font-awesome": "^4.7.0",
     "framer-motion": "^10.12.2",
     "get-google-fonts": "^1.2.2",
+    "html2canvas": "^1.4.1",
     "iconsax-react": "^0.0.8",
     "intl": "^1.2.5",
     "jspdf": "^2.5.1",

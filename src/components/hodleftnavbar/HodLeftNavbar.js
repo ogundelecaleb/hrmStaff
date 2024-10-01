@@ -167,14 +167,14 @@ const HodLeftNavbar = ({ mobile, setMobile, display, staffNumber }) => {
               className="w-100 py-2 px-2"
               to="staff/confirmed-appointments"
             >
-              Confirmed Appointment
+              Confirmation of Appointment
             </Link>
             <Link
               style={{ borderBottom: "1px solid #2D1460" }}
               className="w-100 py-2 px-2"
               to="staff/withdrawal-appointments"
             >
-              Withdrawal Appointment
+              Withdrawal of Appointment
             </Link>
             {/* <Link
               style={{ borderBottom: "1px solid #2D1460" }}
