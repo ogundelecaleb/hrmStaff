@@ -86,13 +86,14 @@ const LeaveCertificate = () => {
             </h2>
           </div>
         </div>
+        
 
         <div className="px-4 md:px-5 lg:px-7 pt-4 md:pt-6 pb-7">
           <p className="text-lg  font-semibold text-center">
             This is to certify that
           </p>
           <h2 className="text-center">{result?.full_name}</h2>
-          <p className="text-center">has been granted leave from</p>
+          <p className="text-center">has been granted approval to proceed on leave from</p>
           <p className="text-center text-lg">
             <strong>{formatDate(result?.start_date)}</strong> to{" "}
             <strong>{formatDate(result?.end_date)}</strong>
@@ -108,6 +109,9 @@ const LeaveCertificate = () => {
             Resumption Date: <span className="text-base font-medium">{formatDate(result?.resumption_date)}</span>
           </p>
           <p className="text-lg font-semibold ">
+            Leave Duration: <span className="text-base font-medium">{formatDate(result?.leave_duration)}</span>
+          </p>
+          <p className="text-lg font-semibold ">
             Current Designation: <span className="text-base font-medium">{result?.designation}</span>
           </p>
           <p className="text-lg font-semibold ">
@@ -117,9 +121,7 @@ const LeaveCertificate = () => {
           <p className="text-lg font-semibold ">
             Staff to Relieve: <span className="text-base font-medium">{result?.replacement_on_duty}</span>
           </p>
-          <p className="text-lg font-semibold ">
-          Approval Status: <span className="text-base font-medium">{result?.status}</span>
-          </p>
+        
 
           {/* <p>
           Issued on: <strong>{new Date().toLocaleDateString()}</strong>

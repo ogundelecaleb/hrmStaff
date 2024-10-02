@@ -340,8 +340,8 @@ const StaffHomePage = ({ switchRoutes, navigate }) => {
                       scope="col"
                       className="px-2 md:px-5  border-b-[0.8px] border-[#E4E7EC] py-[12px] gap-[6px] md:gap-[12px] text-[14px] md:text-[16px] text-[#98A2B3]  font-medium leading-[20px] md:leading-[24px] tracking-[0.2%]"
                     >
-                      <div className="flex gap-[6px] md:gap-[12px] items-center my-0">
-                        Action
+                      <div className="flex justify-center gap-[6px] md:gap-[12px] items-center my-0">
+                      Action
                       </div>
                     </th>
                   </tr>
@@ -391,22 +391,24 @@ const StaffHomePage = ({ switchRoutes, navigate }) => {
                           </button>{" "}
                         </td>
                         <td className="whitespace-nowrap py-[16px] bg-white  px-5  border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px] text-[#667185] font-medium text-left  ">
-                          <Link to="/leave-certificate" state={result}>
-                            {" "}
-                            <button
-                              // onClick={() =>
-                              //   navigate("leave-certificate", {
-                              //     state: result?.leave_type
-                              //   })
-                              // }
-                              onClick={()=> 
-                                console.log("------>>>", result)
-                              }
-                              className="text-[#984779] px-3 py-1 rounded-md border hover:bg-gray-300  "
-                            >
-                              View Certificate
-                            </button>
-                          </Link>
+                          {result?.status === "approved" ? (
+                            <Link to="/leave-certificate" state={result}>
+                              {" "}
+                              <button
+                                // onClick={() =>
+                                //   navigate("leave-certificate", {
+                                //     state: result?.leave_type
+                                //   })
+                                // }
+                                onClick={() => console.log("------>>>", result)}
+                                className="text-[#984779] px-3 py-1 rounded-md border hover:bg-gray-300  "
+                              >
+                                View Certificate
+                              </button>
+                            </Link>
+                          ) : (
+                            <p className="text-center">...</p>
+                          )}
                         </td>
                       </tr>
                     ))}
