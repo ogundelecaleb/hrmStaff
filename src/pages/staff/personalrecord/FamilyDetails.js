@@ -358,30 +358,7 @@ const FamilyDetails = () => {
               />
             </div>
             <div class="row">
-              <div className="col-lg-6">
-                <div class="form-group">
-                  <label
-                    for="exampleFormControlSelect1"
-                    className="fw-semibold text-muted fs-6 mt-3 mb-2"
-                  >
-                    Relationship to you
-                  </label>
-                  <input
-                    type="text"
-                    style={{ height: "40px" }}
-                    class="form-control rounded-0"
-                    id="exampleFormControlInput1"
-                    placeholder=""
-                    value={formValues.c1_relationship}
-                    onChange={(e) =>
-                      setFormValues({
-                        ...formValues,
-                        c1_relationship: e.target.value,
-                      })
-                    }
-                  />
-                </div>
-              </div>
+              
               <div className="col-lg-6">
                 <div class="form-group">
                   <label

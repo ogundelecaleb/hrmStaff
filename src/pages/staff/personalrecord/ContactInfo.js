@@ -123,6 +123,7 @@ const ContactInfo = () => {
                     //style={{ height: "40px" }}
                     className="border py-2 px-2 w-full rounded-0"
                     required
+                    disabled
                     id='exampleFormControlInput1'
                     placeholder=''
                     
@@ -243,104 +244,27 @@ const ContactInfo = () => {
                   Date of First Appointment{" "}
                   <sup className='text-danger'>*</sup>
                 </label>
-                <DatePicker
-                renderCustomHeader={({
-                  date,
-                  changeYear,
-                  changeMonth,
-                  decreaseMonth,
-                  increaseMonth,
-                  prevMonthButtonDisabled,
-                  nextMonthButtonDisabled,
-                }) => (
-                  <div
-                    style={{
-                      margin: 10,
-                      display: "flex",
-                      justifyContent: "center",
-                    }}
-                  >
-                    <button onClick={decreaseMonth} disabled={prevMonthButtonDisabled}>
-                      {"<"}
-                    </button>
-                    <select
-                      value={getYear(date)}
-                      onChange={({ target: { value } }) => changeYear(value)}
-                    >
-                      {years.map((option) => (
-                        <option key={option} value={option}>
-                          {option}
-                        </option>
-                      ))}
-                    </select>
-          
-                    <select
-                      value={months[getMonth(date)]}
-                      onChange={({ target: { value } }) =>
-                        changeMonth(months.indexOf(value))
-                      }
-                    >
-                      {months.map((option) => (
-                        <option key={option} value={option}>
-                          {option}
-                        </option>
-                      ))}
-                    </select>
-          
-                    <button onClick={increaseMonth} disabled={nextMonthButtonDisabled}>
-                      {">"}
-                    </button>
-                  </div>
-                )}
-                  selected={
-                    formValues.date_of_first_appointment
-                      ? new Date(formValues.date_of_first_appointment)
-                      : null
-                  }
-                  onChange={(date) => {
-                    if (date instanceof Date && !isNaN(date)) {
-                      const formattedDate = date.toISOString().split('T')[0];
-                      setFormValues({
-                        ...formValues,
-                        date_of_first_appointment: formattedDate,
-                      });
-                    } else {
-                      setFormValues({
-                        ...formValues,
-                        date_of_first_appointment: '',
-                      });
-                    }
-                  }}
-                  dateFormat="yyyy-MM-dd"
-                  className="form-control rounded-0"
-                  id="exampleFormControlInput1"
-                  placeholder=""
-                />
-              </div>
-            </div>
-            <div className='col-lg-6'>
-              <div class='form-group'>
-                <label
-                  for='exampleFormControlSelect1'
-                  className='fw-semibold text-muted fs-6 mt-3 mb-2'>
-                  Present Designation
-                </label>
+
                 <input
-                type='text'
-                //style={{ height: "40px" }}
-                className="border py-2 px-2 w-full rounded-0"
-                id='exampleFormControlInput1'
-                disabled
-                value={formValues.level}
-                onChange={(e) =>
-                  setFormValues({
-                    ...formValues,
-                    level: e.target.value,
-                  })
-                }
-              />
+                  type='text'
+                  //style={{ height: "40px" }}
+                  className="border py-2 px-2 w-full rounded-0"
+                  id='exampleFormControlInput1'
+                  placeholder=''
+                  required
+                  disabled
+                  value={  formValues.date_of_first_appointment}
+                  onChange={(e) =>
+                    setFormValues({
+                      ...formValues,
+                      date_of_first_appointment: e.target.value,
+                    })
+                  }
+                />
+               
               </div>
             </div>
+           
           </div>
           
           {formValues.type === 'ASE' && formValues.role === 'DEAN' && (

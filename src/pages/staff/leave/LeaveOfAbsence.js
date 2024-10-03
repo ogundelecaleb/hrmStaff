@@ -301,7 +301,7 @@ const LeaveOfAbsence = ({ navigate }) => {
             You are not Eligible for this Type of Leave.
           </h2>
           <p className="text-[16px] md:text-[18px] text-center ">
-            Staff must be confirmed on ground for 3 years to take this leave,
+            Staff must be confirmed and on ground for 3 years to take this leave,
             you have spent {convertedMonths.years} years and{" "}
             {convertedMonths.remainingMonths} months in service
           </p>

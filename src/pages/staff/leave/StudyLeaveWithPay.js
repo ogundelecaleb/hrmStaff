@@ -293,7 +293,7 @@ const StudyLeaveWithPay = ({ navigate }) => {
             class=" fs-5 fw-semibold"
             style={{ textAlign: "center", marginTop: 20 }}
           >
-            Staff must be confirmed on ground for 3 years to take this leave,
+            Staff must be confirmed and on ground for 3 years to take this leave,
             you have spent {convertedMonths.years} years and{" "}
             {convertedMonths.remainingMonths} months in service
           </p>

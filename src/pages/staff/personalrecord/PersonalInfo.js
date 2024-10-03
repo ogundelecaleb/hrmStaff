@@ -214,6 +214,7 @@ const PersonalInfo = () => {
                   id='exampleFormControlInput1'
                   placeholder=''
                   required
+                  disabled
                   value={formValues.title}
                   onChange={(e) =>
                     setFormValues({
@@ -236,6 +237,7 @@ const PersonalInfo = () => {
                   id='exampleFormControlInput1'
                   placeholder=''
                   required
+                  disabled
                   value={formValues.firstName}
                   onChange={(e) =>
                     setFormValues({
@@ -258,6 +260,7 @@ const PersonalInfo = () => {
                   id='exampleFormControlInput1'
                   placeholder=''
                   required
+                  disabled
                   value={formValues.lastName}
                   onChange={(e) =>
                     setFormValues({
@@ -280,6 +283,7 @@ const PersonalInfo = () => {
                   id='exampleFormControlInput1'
                   placeholder=''
                   required
+                  disabled
                   value={formValues.maidenName}
                   onChange={(e) =>
                     setFormValues({
@@ -328,6 +332,7 @@ const PersonalInfo = () => {
                       id='exampleFormControlInput1'
                       placeholder=''
                       required
+                      disabled
                       value={formValues.stateOfOrigin}
                       onChange={(e) =>
                         setFormValues({
@@ -351,9 +356,10 @@ const PersonalInfo = () => {
                     </label>
                     <input
                       className="border py-2 px-2 w-full rounded-0"
-                      type="date"
+                      type="text"
                   id="dateInput"
                   required
+                  disabled
                   value={formValues.dateOfBirth}
                       onChange={(e) =>
                         setFormValues({
@@ -379,6 +385,7 @@ const PersonalInfo = () => {
                       id="exampleFormControlSelect1"
                       value={formValues.gender}
                       required
+                      disabled
                       onChange={(e) =>
                         setFormValues({
                           ...formValues,
@@ -428,6 +435,7 @@ const PersonalInfo = () => {
                       id="exampleFormControlSelect1"
                       value={formValues.marital_status}
                       required
+                      disabled
                       onChange={(e) =>
                         setFormValues({
                           ...formValues,
@@ -447,12 +455,11 @@ const PersonalInfo = () => {
                   <label
                     style={{ marginBottom: '10px' }}
                     className='fw-semibold text-muted fs-6 mt-3 mb-2'>
-                    Upload Birth Certicate<sup className='text-danger'>*</sup>
+                    Upload Birth Certicate
                   </label>
                   <input
                     type="file"
                     className="border py-2 px-2 w-full rounded-0"
-                    required
                     id={`upload_document_1`}
                     onChange={(e) => onFileChanges(e, 1)}
                   />
@@ -464,7 +471,7 @@ const PersonalInfo = () => {
                   <label
                     style={{ marginBottom: '10px' }}
                     className='fw-semibold text-muted fs-6 mt-3 mb-2'>
-                    Upload Marriage Certicate<sup className='text-danger'>*</sup>
+                    Upload Marriage Certicate
                   </label>
                   <input
                     type="file"
