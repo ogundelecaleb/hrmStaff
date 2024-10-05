@@ -57,7 +57,8 @@ const ConferenceLeave = ({ navigate }) => {
     staffLevel,
     totalLeave,department,
     unit,
-    faculty
+    faculty,
+    supervisorRole,
   } = location.state;
 
   const { enqueueSnackbar } = useSnackbar();
@@ -299,6 +300,8 @@ const ConferenceLeave = ({ navigate }) => {
     formData.append("type", staffType);
     formData.append("level", staffLevel);
     formData.append('replacement_on_duty_id', staffRepId);
+    formData.append('user_supervision_role', supervisorRole);
+
 
 
     try {

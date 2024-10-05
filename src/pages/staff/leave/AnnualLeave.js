@@ -59,6 +59,7 @@ const AnnualLeave = ({ navigate }) => {
     department,
     unit,
     faculty,
+    supervisorRole
   } = location.state;
 
   const { enqueueSnackbar } = useSnackbar();
@@ -313,6 +314,7 @@ const AnnualLeave = ({ navigate }) => {
         type: staffType,
         level: staffLevel,
         replacement_on_duty_id: staffRepId,
+        user_supervision_role:supervisorRole
       });
       console.log("responce==>>>>>", response);
       enqueueSnackbar("Leave Application successfull", { variant: "success" });

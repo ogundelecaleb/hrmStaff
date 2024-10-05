@@ -25,6 +25,8 @@ const PermissionToBeAway = ({ navigate }) =>  {
     rankDesignation,
     selectedLeaveType,
     staffType,
+   
+    supervisorRole,
   } = location.state;
   
   const { enqueueSnackbar } = useSnackbar();
@@ -194,6 +196,8 @@ const PermissionToBeAway = ({ navigate }) =>  {
     formData.append('resumption_date', formattedResumptionDate);
     formData.append('leave_duration', durationInDays);
     formData.append('type', staffType);
+    formData.append('user_supervision_role', supervisorRole);
+
 
     try {
       const response = await api.requestLeave(formData);

@@ -173,7 +173,8 @@ const Leave = () => {
           confirm: userDetails?.confirmation,
           department: userDetails?.department?.id,
           unit: userDetails?.unit?.id,
-          faculty: userDetails?.faculty?.id
+          faculty: userDetails?.faculty?.id,
+          supervisorRole: userDetails?.user_supervision_role
         },
       });
     } else if (checkForCasualLeave) {
@@ -191,7 +192,9 @@ const Leave = () => {
           confirm: userDetails?.confirmation,
           department: userDetails?.department?.id,
           unit: userDetails?.unit?.id,
-          faculty: userDetails?.faculty?.id
+          faculty: userDetails?.faculty?.id,
+          supervisorRole: userDetails?.user_supervision_role
+
         },
       });
     } else if (checkForExaminationLeave) {
@@ -209,7 +212,9 @@ const Leave = () => {
           confirm: userDetails?.confirmation,
           department: userDetails?.department?.id,
           unit: userDetails?.unit?.id,
-          faculty: userDetails?.faculty?.id
+          faculty: userDetails?.faculty?.id,
+          supervisorRole: userDetails?.user_supervision_role
+
         },
       });
     } else if (checkForConferenceLeave) {
@@ -227,7 +232,9 @@ const Leave = () => {
           confirm: userDetails?.confirmation,
           department: userDetails?.department?.id,
           unit: userDetails?.unit?.id,
-          faculty: userDetails?.faculty?.id
+          faculty: userDetails?.faculty?.id,
+          supervisorRole: userDetails?.user_supervision_role
+
         },
       });
     } else if (checkForSportingLeave) {
@@ -245,7 +252,9 @@ const Leave = () => {
           confirm: userDetails?.confirmation,
           department: userDetails?.department?.id,
           unit: userDetails?.unit?.id,
-          faculty: userDetails?.faculty?.id
+          faculty: userDetails?.faculty?.id,
+          supervisorRole: userDetails?.user_supervision_role
+
         },
       });
     } else if (checkForCompassionateLeave) {
@@ -263,7 +272,9 @@ const Leave = () => {
           confirm: userDetails?.confirmation,
           department: userDetails?.department?.id,
           unit: userDetails?.unit?.id,
-          faculty: userDetails?.faculty?.id
+          faculty: userDetails?.faculty?.id,
+          supervisorRole: userDetails?.user_supervision_role
+
         },
       });
     } else if (checkForAdoptionLeave) {
@@ -281,7 +292,9 @@ const Leave = () => {
           confirm: userDetails?.confirmation,
           department: userDetails?.department?.id,
           unit: userDetails?.unit?.id,
-          faculty: userDetails?.faculty?.id
+          faculty: userDetails?.faculty?.id,
+          supervisorRole: userDetails?.user_supervision_role
+
         },
       });
     } else if (checkForSickLeave) {
@@ -298,7 +311,9 @@ const Leave = () => {
           confirm: userDetails?.confirmation,
           department: userDetails?.department?.id,
           unit: userDetails?.unit?.id,
-          faculty: userDetails?.faculty?.id
+          faculty: userDetails?.faculty?.id,
+          supervisorRole: userDetails?.user_supervision_role
+
         },
       });
     } else if (checkForTradeLeave) {
@@ -316,7 +331,9 @@ const Leave = () => {
           confirm: userDetails?.confirmation,
           department: userDetails?.department?.id,
           unit: userDetails?.unit?.id,
-          faculty: userDetails?.faculty?.id
+          faculty: userDetails?.faculty?.id,
+          supervisorRole: userDetails?.user_supervision_role
+
 
         },
       });
@@ -336,7 +353,9 @@ const Leave = () => {
           children: userDetails?.children,
           department: userDetails?.department?.id,
           unit: userDetails?.unit?.id,
-          faculty: userDetails?.faculty?.id
+          faculty: userDetails?.faculty?.id,
+          supervisorRole: userDetails?.user_supervision_role
+
         },
       });
     } else if (checkForPaternityLeave) {
@@ -355,7 +374,9 @@ const Leave = () => {
           children: userDetails?.children,
           department: userDetails?.department?.id,
           unit: userDetails?.unit?.id,
-          faculty: userDetails?.faculty?.id
+          faculty: userDetails?.faculty?.id,
+          supervisorRole: userDetails?.user_supervision_role
+
         },
       });
     } else if (checkForResearchLeave) {
@@ -373,7 +394,9 @@ const Leave = () => {
           confirm: userDetails?.confirmation,
           department: userDetails?.department?.id,
           unit: userDetails?.unit?.id,
-          faculty: userDetails?.faculty?.id
+          faculty: userDetails?.faculty?.id,
+          supervisorRole: userDetails?.user_supervision_role
+
         },
       });
     } else if (checkForSabbaticalLeave) {
@@ -390,7 +413,9 @@ const Leave = () => {
           confirm: userDetails?.confirmation,
           department: userDetails?.department?.id,
           unit: userDetails?.unit?.id,
-          faculty: userDetails?.faculty?.id
+          faculty: userDetails?.faculty?.id,
+          supervisorRole: userDetails?.user_supervision_role
+
         },
       });
     } else if (checkForStudyLeaveWithPay) {
@@ -407,7 +432,9 @@ const Leave = () => {
           confirm: userDetails?.confirmation,
           department: userDetails?.department?.id,
           unit: userDetails?.unit?.id,
-          faculty: userDetails?.faculty?.id
+          faculty: userDetails?.faculty?.id,
+          supervisorRole: userDetails?.user_supervision_role
+
         },
       });
     } else if (checkForShortTermStudyLeaveWithPay) {
@@ -424,7 +451,9 @@ const Leave = () => {
           confirm: userDetails?.confirmation,
           department: userDetails?.department?.id,
           unit: userDetails?.unit?.id,
-          faculty: userDetails?.faculty?.id
+          faculty: userDetails?.faculty?.id,
+          supervisorRole: userDetails?.user_supervision_role
+
 
         },
       });
@@ -442,7 +471,9 @@ const Leave = () => {
           confirm: userDetails?.confirmation,
           department: userDetails?.department?.id,
           unit: userDetails?.unit?.id,
-          faculty: userDetails?.faculty?.id
+          faculty: userDetails?.faculty?.id,
+          supervisorRole: userDetails?.user_supervision_role
+
         },
       });
     } else if (checkForTrainingLeave) {
@@ -459,7 +490,9 @@ const Leave = () => {
           confirm: userDetails?.confirmation,
           department: userDetails?.department?.id,
           unit: userDetails?.unit?.id,
-          faculty: userDetails?.faculty?.id
+          faculty: userDetails?.faculty?.id,
+          supervisorRole: userDetails?.user_supervision_role
+
         },
       });
     } else if (checkForAbsenceLeave) {
@@ -476,7 +509,9 @@ const Leave = () => {
           confirm: userDetails?.confirmation,
           department: userDetails?.department?.id,
           unit: userDetails?.unit?.id,
-          faculty: userDetails?.faculty?.id
+          faculty: userDetails?.faculty?.id,
+          supervisorRole: userDetails?.user_supervision_role
+
          
         },
       });
@@ -494,7 +529,10 @@ const Leave = () => {
           confirm: userDetails?.confirmation,
           department: userDetails?.department?.id,
           unit: userDetails?.unit?.id,
-          faculty: userDetails?.faculty?.id
+          faculty: userDetails?.faculty?.id,
+          supervisorRole: userDetails?.user_supervision_role
+
+
         },
       });
     }
