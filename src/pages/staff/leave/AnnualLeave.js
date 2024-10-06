@@ -314,7 +314,7 @@ const AnnualLeave = ({ navigate }) => {
         type: staffType,
         level: staffLevel,
         replacement_on_duty_id: staffRepId,
-        user_supervision_role:supervisorRole
+        user_supervision_role: supervisorRole  !== undefined ? supervisorRole : ""
       });
       console.log("responce==>>>>>", response);
       enqueueSnackbar("Leave Application successfull", { variant: "success" });

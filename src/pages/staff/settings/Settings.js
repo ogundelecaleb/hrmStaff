@@ -80,13 +80,16 @@ const Settings = ({ reuseableNavigation }) => {
           </div>
         </Box>
       ) : (
-        <Box style={{ width: "100%", height: "900px" }}>
-          <Box px="6" borderBottom="1px solid #EBEAED">
+        <Box
+          className="px-4 md:px-6"
+          style={{ width: "100%", height: "900px" }}
+        >
+          <Box borderBottom="1px solid #EBEAED">
             <Text fontSize={28} py="3" m="0" fontWeight="medium">
               Profile
             </Text>
           </Box>
-          <Box px="6" pt="10" w="75%">
+          <Box pt="10">
             <WrapItem>
               {userDetails.image ? (
                 <Avatar
@@ -100,7 +103,7 @@ const Settings = ({ reuseableNavigation }) => {
                 <RxAvatar size={130} color={"#25324B"} />
               )}
             </WrapItem>
-            <Flex justifyContent={"space-between"}>
+            <div className="grid grid-cols-2 sm:grid-cols-2  lg:grid-cols-3  gap-5">
               <Box>
                 <Box>
                   <p className="text-lg font-semibold mt-2 mb-[0px]">
@@ -241,90 +244,104 @@ const Settings = ({ reuseableNavigation }) => {
                     </>
                   )}
 
-                  { userDetails && userDetails?.children.map((child) => (
+                  <p className="mt-2 mb-0 text-gray-900 underline">
+                    Children Details
+                  </p>
+
+                  {userDetails &&
+                    userDetails?.children?.map((child) => (
+                      <>
+                        <Details
+                          label={"Child Name"}
+                          fullName={child?.full_name}
+                        />
+                        <Details
+                          label={"Child Phone"}
+                          fullName={child?.phone}
+                        />
+                        <Details
+                          label={"Child Email"}
+                          fullName={child?.email}
+                        />
+                        <Details
+                          label={"Child Gender"}
+                          fullName={child?.gender}
+                        />
+                        <Details
+                          label={"Child Date Of Birth"}
+                          fullName={child?.date_of_birth}
+                        />
+                      </>
+                    ))}
+                </Box>
+              </Box>
+              <Box>
+                <p className="text-lg font-semibold mt-2 mb-[0px]">
+                  Next of Kin and Beneficiaries
+                </p>
+
+                <p className="mt-2 mb-0 text-gray-900 underline">
+                  Next of Kin 1
+                </p>
+                <Details
+                  label={"Full Name "}
+                  fullName={userDetails?.k1_full_name}
+                />
+                <Details
+                  label={"Phone Number  "}
+                  fullName={userDetails?.k1_phone}
+                />
+                <Details
+                  label={"Relationship To You  "}
+                  fullName={userDetails?.k1_relationship}
+                />
+
+                <p className="mt-2 mb-0 text-gray-900 underline">
+                  Next of Kin 2
+                </p>
+                <Details
+                  label={"Full Name "}
+                  fullName={userDetails?.k2_full_name}
+                />
+                <Details
+                  label={"Phone Number  "}
+                  fullName={userDetails?.k2_phone}
+                />
+                <Details
+                  label={"Relationship To You  "}
+                  fullName={userDetails?.k2_relationship}
+                />
+
+                <p className="mt-2 mb-0 text-gray-900 underline">
+                  Beneficiaries
+                </p>
+
+                {userDetails &&
+                  userDetails?.beneficiary?.map((ben, index) => (
                     <>
+                      <p className="mt-2 mb-0 text-gray-900">{index + 1}</p>
+                      <Details label={"Name"} fullName={ben?.full_name} />
+                      <Details label={"phone "} fullName={ben?.phone} />
+                      <Details label={"Email "} fullName={ben?.email} />
                       <Details
-                        label={"Child Name"}
-                        fullName={child?.full_name}
-                      />
-                      <Details label={"Child Phone"} fullName={child?.phone} />
-                      <Details label={"Child Email"} fullName={child?.email} />
-                      <Details
-                        label={"Child Gender"}
-                        fullName={child?.gender}
+                        label={"Relationship To You "}
+                        fullName={ben?.relationship}
                       />
                       <Details
-                        label={"Child Date Of Birth"}
-                        fullName={child?.date_of_birth}
+                        label={"Percentage (%) "}
+                        fullName={ben?.percentage}
                       />
                     </>
                   ))}
 
-                  <Details label={"Spouse "} fullName={userDetails?.phone} />
-                  <Details
-                    label={"E-mail Address "}
-                    fullName={userDetails?.email}
-                  />
-                  <Details
-                    label={"Home Address "}
-                    fullName={userDetails?.address}
-                  />
-
-                  <Details
-                    label={"Contact Address "}
-                    fullName={userDetails?.contact_address}
-                  />
-
-                  <p className="mt-2 mb-0 text-gray-900 underline">
-                    Work Details
-                  </p>
-                  <Details
-                    label={"Date of First Appointment"}
-                    fullName={userDetails?.date_of_first_appointment}
-                  />
-
-                  {userDetails?.unit && (
-                    <>
-                      <Details
-                        label={"Office"}
-                        fullName={userDetails?.unit?.name}
-                      />
-                    </>
-                  )}
-
-                  {userDetails?.department && (
-                    <>
-                      <Details
-                        label={"Department"}
-                        fullName={userDetails?.department?.name}
-                      />
-                      <Details
-                        label={"Faculty"}
-                        fullName={userDetails?.faculty?.name}
-                      />
-                    </>
-                  )}
-                  <Details label={"Level"} fullName={userDetails?.level} />
-
-                  <Details label={"Designation"} fullName={userDetails?.role} />
-                </Box>
-              </Box>
-              <Box>
-                <Details
-                  label={"Faculty "}
-                  fullName={userDetails?.department?.faculty?.name}
-                />
-                <Details
-                  label={"Department/Division "}
-                  fullName={userDetails?.department?.name}
-                />
+                  
                 {/* <Details
               label={'Level '}
               fullName={'14'}
             /> */}
                 <Details label={"Designation"} fullName={userDetails?.role} />
               </Box>
-            </Flex>
+            </div>
           </Box>
         </Box>
       )}

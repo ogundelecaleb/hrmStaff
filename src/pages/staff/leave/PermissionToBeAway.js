@@ -196,7 +196,7 @@ const PermissionToBeAway = ({ navigate }) =>  {
     formData.append('resumption_date', formattedResumptionDate);
     formData.append('leave_duration', durationInDays);
     formData.append('type', staffType);
-    formData.append('user_supervision_role', supervisorRole);
+    formData.append('user_supervision_role', supervisorRole  !== undefined ? supervisorRole : "");
 
 
     try {

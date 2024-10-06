@@ -203,7 +203,7 @@ const ResearchLeave = ({ navigate }) => {
     formData.append("leave_duration", leaveDuration);
     formData.append("type", staffType);
     formData.append("level", staffLevel);
-    formData.append('user_supervision_role', supervisorRole);
+    formData.append('user_supervision_role', supervisorRole  !== undefined ? supervisorRole : "");
 
 
     try {

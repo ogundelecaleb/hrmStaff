@@ -31,15 +31,16 @@ const ChangePassword = () => {
     };
 
     return (
-        <Box>
+        <Box           className="px-4 md:px-6"
+>
 
-            <Box py='2' pl='10' borderBottom='1px solid #EBEAED'>
+            <Box py='2'  borderBottom='1px solid #EBEAED'>
                 <Text color={'#2E2C34'} fontSize={'20px'} m='0' fontWeight='normal'>
                     Change Password
                 </Text>
             </Box>
             <form onSubmit={handleSubmit}>
-                <Box w='540px' pl='10' my='5'>
+                <Box   my='5'>
                     <FormControl>
                         <FormLabel>Enter Current Password</FormLabel>
                         <Input type={'password'} borderRadius='none' placeholder='Enter Current Password' value={currentPass} onChange={(e) => setCurretPass(e.target.value)}/>
