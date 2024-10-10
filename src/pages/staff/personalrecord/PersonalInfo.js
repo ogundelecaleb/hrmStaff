@@ -72,7 +72,8 @@ const PersonalInfo = () => {
     image: "",
     maidenName: "",
     title:"",
-    bloodGroup: ""
+    bloodGroup: "",
+    age: ""
   });
 
   useEffect(() => {
@@ -92,7 +93,8 @@ const PersonalInfo = () => {
         image: userDetails?.image,
         maidenName:  userDetails?.maiden_name,
         title: userDetails?.title,
-        bloodGroup: userDetails?.blood_group
+        bloodGroup: userDetails?.blood_group,
+        age: userDetails?.age
       });
     }
   }, [userDetails]);
@@ -114,6 +116,7 @@ const PersonalInfo = () => {
     formData.append('blood_group', formValues.bloodGroup);
     formData.append('birth_certificate', uploadedDocument1);
     formData.append('marriage_certificate', uploadedDocument2);
+    formData.append('age', formValues.age);
     try {
       const response = await api.updatePinfo(formData);
       console.log("Response: ", response);
@@ -359,7 +362,7 @@ const PersonalInfo = () => {
                       type="text"
                   id="dateInput"
                   required
-                  disabled
+                  // disabled
                   value={formValues.dateOfBirth}
                       onChange={(e) =>
                         setFormValues({
@@ -373,6 +376,33 @@ const PersonalInfo = () => {
                 />
                   </div>
                 </div>
+                <div className='col-lg-6'>
+                  <div class='form-group'>
+                    <label
+                      for='exampleFormControlSelect1'
+                      className='fw-semibold text-muted fs-6 mt-3 mb-2'>
+                      Age
+                      <sup className='text-danger'>*</sup>
+                    </label>
+                    <input
+                      className="border py-2 px-2 w-full rounded-0"
+                      type="text"
+                  id="dateInput"
+                  required
+                  // disabled
+                  value={formValues.age}
+                      onChange={(e) =>
+                        setFormValues({
+                          ...formValues,
+                          age: e.target.value,
+                        })
+                      }
+                  //min={new Date().toISOString().split("T")[0]}
+                  // Set max attribute to today's date
+                />
+                  </div>
+                </div>
+
                 <div className='col-lg-6'>
                   <div class='form-group'>
                     <label
