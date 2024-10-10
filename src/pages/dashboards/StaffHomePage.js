@@ -243,7 +243,7 @@ const StaffHomePage = ({ switchRoutes, navigate }) => {
               </div>
             </div>
           </div>
-          {progress > 1 && (
+          {progress < 100 && (
             <div
               className="flex rounded-1 py-3 md:py-5 px-3 mt-5 row border"
               style={{ border: "1px solid #EFF4F8", borderRadius: 10 }}
