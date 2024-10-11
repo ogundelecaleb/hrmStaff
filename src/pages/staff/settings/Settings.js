@@ -122,6 +122,10 @@ const Settings = ({ reuseableNavigation }) => {
                     label={"Date of Birth"}
                     fullName={userDetails?.date_of_birth}
                   />
+                   <Details
+                    label={"Age"}
+                    fullName={userDetails?.age}
+                  />
                   <Details label={"Gender"} fullName={userDetails?.gender} />
                   <Details
                     label={"Blood Group"}

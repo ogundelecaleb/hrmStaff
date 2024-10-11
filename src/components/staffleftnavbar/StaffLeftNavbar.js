@@ -95,7 +95,7 @@ const StaffLeftNavbar = ({ mobile, setMobile, display, staffNumber }) => {
           </div>
         </CustomLink>
         <Link
-          to={staffNumber === null ? "" :`https://lasucom.edu.ng/appslogin/index.php?session=${staffNumber}`}
+          to={staffNumber === null ? "" :`http://spadev.devapi.live?session=${staffNumber}`}
           id="hoverEffect"
           className="ps-3 ms-1 d-flex align-items-center rounded gap-2"
           style={{ height: "48px", width: "90%" }}

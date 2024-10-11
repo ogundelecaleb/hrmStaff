@@ -168,7 +168,7 @@ export default function Login() {
             </Text>
           </Box> */}
         </Box>
-        <a href="https://lasucom.edu.ng/appslogin/index.php" target="_blank" rel="noreferrer" className="text-[#fff] text-center underline md:text-[#984779]" >SPADEV</a>
+        <a href="http://spadev.devapi.live/" target="_blank" rel="noreferrer" className="text-[#fff] text-center underline md:text-[#984779]" >SPADEV</a>
 
         <Flex w='100%' justifyContent='space-between' px='5' mt='24'>
           <Text color={"#718096"}>Privacy Policy</Text>
