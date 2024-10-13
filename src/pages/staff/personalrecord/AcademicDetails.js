@@ -185,7 +185,7 @@ const AcademicDetails = () => {
                 </Text>
               </div>
               <div className="col-lg-6 pe-">
-                {academic.map((acad, index) => (
+                {academic?.map((acad, index) => (
                   <>
                     <div class="form-group">
                       <label
