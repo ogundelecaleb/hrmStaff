@@ -146,14 +146,14 @@ const Settings = ({ reuseableNavigation }) => {
                   />
                 </Box>
                 <Box mt="20" display={"flex"} flexDirection={"column"} gap={5}>
-                  <Link
+                  {/* <Link
                     fontSize={"16px"}
                     fontWeight={"medium"}
                     onClick={() => reuseableNavigation("edit-profile")}
                     color={"#984779"}
                   >
                     Edit Details
-                  </Link>
+                  </Link> */}
                   <Link
                     fontSize={"16px"}
                     fontWeight={"medium"}
@@ -162,7 +162,6 @@ const Settings = ({ reuseableNavigation }) => {
                   >
                     Change Password
                   </Link>
-                  {/* <Link fontSize={'16px'} fontWeight={'medium'} onClick={()=> reuseableNavigation('change-email')} color={'#984779'}>Change E-mail Address</Link> */}
                 </Box>
               </Box>
               <Box>
@@ -339,11 +338,32 @@ const Settings = ({ reuseableNavigation }) => {
                   ))}
 
                   
-                {/* <Details
-              label={'Level '}
-              fullName={'14'}
-            /> */}
+         
                 <Details label={"Designation"} fullName={userDetails?.role} />
+              </Box>
+              <Box>
+                <p className="text-lg font-semibold mt-2 mb-[0px]">
+                  Academic Qualification
+                </p>
+
+               
+                {userDetails &&
+                  userDetails?.staff_academic_qualification?.map((acad, index) => (
+                    <>
+                      <p className="mt-2 mb-0 text-gray-900">{index + 1}</p>
+                      <Details label={"Institution"} fullName={acad?.name_of_institution} />
+                      <Details label={"Qualification "} fullName={acad?.qualification} />
+                      <Details label={"Start Date "} fullName={acad?.start_year} />
+                      <Details
+                        label={"End Date "}
+                        fullName={acad?.end_year}
+                      />
+                    
+                    </>
+                  ))}
+
+                  
+         
               </Box>
             </div>
           </Box>
