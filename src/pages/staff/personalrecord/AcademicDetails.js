@@ -6,6 +6,7 @@ import api from "../../../api";
 import { MoonLoader } from "react-spinners";
 import DatePicker from "react-datepicker";
 import { getYear, getMonth } from "date-fns";
+import { Trash } from "iconsax-react";
 
 const AcademicDetails = () => {
   const [userDetails, setUserDetails] = useState([]);
@@ -54,6 +55,7 @@ const AcademicDetails = () => {
       setIsLoadinge(false);
     }
   }
+
   const [formValues, setFormValues] = useState({
     q1_name_of_institution: "",
     q1_qualification: "",
@@ -77,6 +79,36 @@ const AcademicDetails = () => {
 
   const onFileChanges = (e) => {
     setFiles(e.target.files[0]);
+  };
+  const [academic, setAcademic] = useState([
+    {
+      id: 0,
+      institution: "",
+      degree: "",
+      startDate: "",
+      endDate: "",
+      course: "",
+    },
+  ]);
+
+  const handleAcademic = () => {
+    setAcademic([
+      ...academic,
+      {
+        id: academic?.length + 1,
+        institution: "",
+        degree: "",
+        startDate: "",
+        endDate: "",
+        course: "",
+      },
+    ]);
+  };
+  const handleAcademicChange = (index, event) => {
+    const { name, value } = event.target;
+    const newAcademic = [...academic];
+    newAcademic[index][name] = value;
+    setAcademic(newAcademic);
   };
 
   useEffect(() => {
@@ -102,37 +134,13 @@ const AcademicDetails = () => {
   async function handleSubmit(e) {
     e.preventDefault();
     setIsLoading(true);
-    console.log("Form Values:", formValues);
-    const q1_start_year = formValues.q1_start_year
-      ? new Date(formValues.q1_start_year).getFullYear()
-      : "";
-    const q1_end_year = formValues.q1_end_year
-      ? new Date(formValues.q1_end_year).getFullYear()
-      : "";
-    const q2_start_year = formValues.q2_start_year
-      ? new Date(formValues.q2_start_year).getFullYear()
-      : "";
-    const q2_end_year = formValues.q2_end_year
-      ? new Date(formValues.q2_end_year).getFullYear()
-      : "";
+   
 
     const formData = new FormData();
-    formData.append("q1_document_file", file);
-    formData.append("q2_document_file", filesi);
-    formData.append(
-      "q1_name_of_institution",
-      formValues.q1_name_of_institution
-    );
-    formData.append("q1_qualification", formValues.q1_qualification);
-    formData.append("q1_start_year", q1_start_year);
-    formData.append("q1_end_year", q1_end_year);
-    formData.append(
-      "q2_name_of_institution",
-      formValues.q2_name_of_institution
-    );
-    formData.append("q2_qualification", formValues.q2_qualification);
-    formData.append("q2_start_year", q2_start_year);
-    formData.append("q2_end_year", q2_end_year);
+    // formData.append("q1_document_file", file);
+    // formData.append("q2_document_file", filesi);
+   
+    formData.append("staff_academic_qualification",  JSON.stringify(academic));
 
     try {
       const response = await api.updateAinfo(formData);
@@ -147,6 +155,11 @@ const AcademicDetails = () => {
       setIsLoading(false);
     }
   }
+
+  const removeItem = (idToRemove) => {
+    const updatedItems = academic.filter((item) => item.id !== idToRemove);
+    setAcademic(updatedItems); // Update state with the new array
+  };
 
   return (
     <div>
@@ -174,244 +187,108 @@ const AcademicDetails = () => {
             <div className="row mt-4 border-bottom pb-4">
               <div className="col-lg-4">
                 <Text color={"black"} className="fs-5 pt-2 fw-semibold">
-                  First Degree
+                  Academic Qualification
                 </Text>
               </div>
               <div className="col-lg-6 pe-">
-                <div class="form-group">
-                  <label
-                    for="exampleFormControlSelect1"
-                    className="fw-semibold text-muted fs-6 mt-3 mb-2"
-                  >
-                    Name of institution
-                  </label>
-                  <input
-                    type="text"
-                    style={{ height: "40px" }}
-                    class="form-control rounded-0"
-                    id="exampleFormControlInput1"
-                    placeholder=""
-                    required
-                    value={formValues.q1_name_of_institution}
-                    onChange={(e) =>
-                      setFormValues({
-                        ...formValues,
-                        q1_name_of_institution: e.target.value,
-                      })
-                    }
-                  />
-                </div>
-                <div class="form-group">
-                  <label
-                    for="exampleFormControlSelect1"
-                    className="fw-semibold text-muted fs-6 mt-3 mb-2"
-                  >
-                    Qualification
-                  </label>
-                  <input
-                    type="text"
-                    style={{ height: "40px" }}
-                    class="form-control rounded-0"
-                    id="exampleFormControlInput1"
-                    placeholder=""
-                    value={formValues.q1_qualification}
-                    onChange={(e) =>
-                      setFormValues({
-                        ...formValues,
-                        q1_qualification: e.target.value,
-                      })
-                    }
-                  />
-                </div>
-                <div class="row">
-                  <div className="col-lg-5">
+                {academic.map((acad, index) => (
+                  <>
                     <div class="form-group">
                       <label
                         for="exampleFormControlSelect1"
-                        className="fw-semibold text-muted fs-6 mt-3 mb-2"
+                        className="fw-semibold text-muted fs-6 mt-3 mb-2 flex justify-between"
                       >
-                        Start Date
-                      </label>
-                      <DatePicker
-                        renderCustomHeader={({
-                          date,
-                          changeYear,
-                          changeMonth,
-                          decreaseMonth,
-                          increaseMonth,
-                          prevMonthButtonDisabled,
-                          nextMonthButtonDisabled,
-                        }) => (
-                          <div
-                            style={{
-                              margin: 10,
-                              display: "flex",
-                              justifyContent: "center",
-                            }}
-                          >
-                            <button
-                              onClick={decreaseMonth}
-                              disabled={prevMonthButtonDisabled}
-                            >
-                              {"<"}
-                            </button>
-                            <select
-                              value={getYear(date)}
-                              onChange={({ target: { value } }) =>
-                                changeYear(value)
-                              }
-                            >
-                              {years.map((option) => (
-                                <option key={option} value={option}>
-                                  {option}
-                                </option>
-                              ))}
-                            </select>
-
-                            <select
-                              value={months[getMonth(date)]}
-                              onChange={({ target: { value } }) =>
-                                changeMonth(months.indexOf(value))
-                              }
-                            >
-                              {months.map((option) => (
-                                <option key={option} value={option}>
-                                  {option}
-                                </option>
-                              ))}
-                            </select>
-
-                            <button
-                              onClick={increaseMonth}
-                              disabled={nextMonthButtonDisabled}
-                            >
-                              {">"}
-                            </button>
-                          </div>
+                        Name of institution
+                        {acad.id > 0 && (
+                          <button onClick={() => removeItem(acad.id)}>
+                            <Trash size={15} />
+                          </button>
                         )}
-                        selected={
-                          formValues.q1_start_year
-                            ? new Date(formValues.q1_start_year)
-                            : null
-                        }
-                        onChange={(date) => {
-                          if (date instanceof Date && !isNaN(date)) {
-                            const formattedDate = date
-                              .toISOString()
-                              .split("T")[0];
-                            setFormValues({
-                              ...formValues,
-                              q1_start_year: formattedDate,
-                            });
-                          } else {
-                            setFormValues({
-                              ...formValues,
-                              q1_start_year: "",
-                            });
-                          }
-                        }}
-                        dateFormat="yyyy-MM-dd"
-                        className="form-control rounded-0"
-                        id="exampleFormControlInput1"
-                        placeholder=""
-                      />
-                    </div>
-                  </div>
-                  <div className="col-lg-5">
-                    <div class="form-group">
-                      <label
-                        for="exampleFormControlSelect1"
-                        className="fw-semibold text-muted fs-6 mt-3 mb-2"
-                      >
-                        End Date
                       </label>
-                      <DatePicker
-                        renderCustomHeader={({
-                          date,
-                          changeYear,
-                          changeMonth,
-                          decreaseMonth,
-                          increaseMonth,
-                          prevMonthButtonDisabled,
-                          nextMonthButtonDisabled,
-                        }) => (
-                          <div
-                            style={{
-                              margin: 10,
-                              display: "flex",
-                              justifyContent: "center",
-                            }}
-                          >
-                            <button
-                              onClick={decreaseMonth}
-                              disabled={prevMonthButtonDisabled}
-                            >
-                              {"<"}
-                            </button>
-                            <select
-                              value={getYear(date)}
-                              onChange={({ target: { value } }) =>
-                                changeYear(value)
-                              }
-                            >
-                              {years.map((option) => (
-                                <option key={option} value={option}>
-                                  {option}
-                                </option>
-                              ))}
-                            </select>
-
-                            <select
-                              value={months[getMonth(date)]}
-                              onChange={({ target: { value } }) =>
-                                changeMonth(months.indexOf(value))
-                              }
-                            >
-                              {months.map((option) => (
-                                <option key={option} value={option}>
-                                  {option}
-                                </option>
-                              ))}
-                            </select>
-
-                            <button
-                              onClick={increaseMonth}
-                              disabled={nextMonthButtonDisabled}
-                            >
-                              {">"}
-                            </button>
-                          </div>
-                        )}
-                        selected={
-                          formValues.q1_end_year
-                            ? new Date(formValues.q1_end_year)
-                            : null
-                        }
-                        onChange={(date) => {
-                          if (date instanceof Date && !isNaN(date)) {
-                            const formattedDate = date
-                              .toISOString()
-                              .split("T")[0];
-                            setFormValues({
-                              ...formValues,
-                              q1_end_year: formattedDate,
-                            });
-                          } else {
-                            setFormValues({
-                              ...formValues,
-                              q1_end_year: "",
-                            });
-                          }
-                        }}
-                        dateFormat="yyyy-MM-dd"
-                        className="form-control rounded-0"
+                      <input
+                        type="text"
                         style={{ height: "40px" }}
+                        class="form-control rounded-0"
                         id="exampleFormControlInput1"
                         placeholder=""
+                        required
+                        name="institution"
+                        value={acad.institution}
+                        onChange={(event) => handleAcademicChange(index, event)}
                       />
                     </div>
-                  </div>
-                </div>
+                    <div class="form-group">
+                      <label
+                        for="exampleFormControlSelect1"
+                        className="fw-semibold text-muted fs-6 mt-3 mb-2"
+                      >
+                        Degree
+                      </label>
+                      <input
+                        type="text"
+                        style={{ height: "40px" }}
+                        class="form-control rounded-0"
+                        id="exampleFormControlInput1"
+                        placeholder=""
+                        name="degree"
+                        value={acad.degree}
+                        onChange={(event) => handleAcademicChange(index, event)}
+                      />
+                    </div>
+                    <div className="flex flex-col md:flex-row justify-between">
+                      <div class="form-group">
+                        <label
+                          for="exampleFormControlSelect1"
+                          className="fw-semibold text-muted fs-6 mt-3 mb-2"
+                        >
+                          Start Date
+                        </label>
+                        <input
+                          type="date"
+                          style={{ height: "40px" }}
+                          class="form-control rounded-0"
+                          id="exampleFormControlInput1"
+                          placeholder=""
+                          name="startDate"
+                          value={acad.startDate}
+                          onChange={(event) =>
+                            handleAcademicChange(index, event)
+                          }
+                        />
+                      </div>
+                      <div class="form-group">
+                        <label
+                          for="exampleFormControlSelect1"
+                          className="fw-semibold text-muted fs-6 mt-3 mb-2"
+                        >
+                          End Date
+                        </label>
+                        <input
+                          type="date"
+                          style={{ height: "40px" }}
+                          class="form-control rounded-0"
+                          id="exampleFormControlInput1"
+                          placeholder=""
+                          name="endDate"
+                          value={acad.endDate}
+                          onChange={(event) =>
+                            handleAcademicChange(index, event)
+                          }
+                        />
+                      </div>
+                    </div>
+                  </>
+                ))}
+
+                <button
+                  type="button"
+                  className="btn py-1 px-4 mt-4  mb-2 text-white rounded-md"
+                  style={{ backgroundColor: "#17082d" }}
+                  onClick={handleAcademic}
+                >
+                  Add More Qualification
+                </button>
+
                 <div className=" h-90 w-100 d-flex align-items-center justify-content-space">
                   <div className="form-group">
                     <label
@@ -441,8 +318,40 @@ const AcademicDetails = () => {
                     ) : null}
                   </div>
                 </div>
+                <div className=" h-90 w-100 d-flex align-items-center justify-content-space">
+                  <div className="form-group">
+                    <label
+                      htmlFor={`q2_document`}
+                      className="fw-semibold text-muted fs-6 mt-3 mb-2"
+                    >
+                      Upload Document
+                    </label>
+                    <input
+                      type="file"
+                      className="form-control rounded-0"
+                      id={`q2_document`}
+                      onChange={onFileChanges}
+                    />
+                    {userDetails.q2_document_file &&
+                    userDetails.q2_document_file.trim() !== "" &&
+                    !userDetails.q2_document_file.endsWith("null") ? (
+                      <div className="mt-2">
+                        <a
+                          href={userDetails.q2_document_file}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          View Document
+                        </a>
+                      </div>
+                    ) : null}
+                  </div>
+                </div>
               </div>
             </div>
+
+            {/* 
+
             <div className="row mt-4 border-bottom pb-4">
               <div className="col-lg-4">
                 <p className="fs-5 pt-2 fw-semibold">Other Degrees</p>
@@ -712,7 +621,7 @@ const AcademicDetails = () => {
                 </div>
               </div>
               <div className="col-lg-2"></div>
-            </div>
+            </div> */}
 
             <div className="row pt-4">
               <div className="col-lg-9 d-flex gap-3">
