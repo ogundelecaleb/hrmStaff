@@ -113,16 +113,7 @@ const AcademicDetails = () => {
 
   useEffect(() => {
     if (userDetails) {
-      setFormValues({
-        q1_name_of_institution: userDetails?.q1_name_of_institution,
-        q1_qualification: userDetails?.q1_qualification,
-        q1_start_year: userDetails?.q1_start_year,
-        q1_end_year: userDetails?.q1_end_year,
-        q2_name_of_institution: userDetails?.q2_name_of_institution,
-        q2_qualification: userDetails?.q2_qualification,
-        q2_start_year: userDetails?.q2_start_year,
-        q2_end_year: userDetails?.q2_end_year,
-      });
+     setAcademic(userDetails?.staff_academic_qualification)
     }
   }, [userDetails]);
 
