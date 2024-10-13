@@ -140,7 +140,7 @@ const AcademicDetails = () => {
     // formData.append("q1_document_file", file);
     // formData.append("q2_document_file", filesi);
    
-    formData.append("staff_academic_qualification",  JSON.stringify(academic));
+    formData.append("qualifications",  JSON.stringify(academic));
 
     try {
       const response = await api.updateAinfo(formData);
