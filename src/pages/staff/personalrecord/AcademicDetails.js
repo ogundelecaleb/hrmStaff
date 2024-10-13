@@ -82,12 +82,12 @@ const AcademicDetails = () => {
   };
   const [academic, setAcademic] = useState([
     {
-      id: 0,
-      institution: "",
-      degree: "",
-      startDate: "",
-      endDate: "",
-      course: "",
+      id: "0",
+      name_of_institution: "",
+      qualification: "",
+      start_year: "",
+      end_year: "",
+      document_file: "",
     },
   ]);
 
@@ -95,12 +95,12 @@ const AcademicDetails = () => {
     setAcademic([
       ...academic,
       {
-        id: academic?.length + 1,
-        institution: "",
-        degree: "",
-        startDate: "",
-        endDate: "",
-        course: "",
+        id:  JSON.stringify( academic?.length + 1),
+       name_of_institution: "",
+       qualification: "",
+       start_year: "",
+       end_year: "",
+        document_file: "",
       },
     ]);
   };
@@ -140,10 +140,13 @@ const AcademicDetails = () => {
     // formData.append("q1_document_file", file);
     // formData.append("q2_document_file", filesi);
    
-    formData.append("qualifications",  JSON.stringify(academic));
+    // formData.append("qualifications",  academic);
+    academic.forEach((acad, index) => {
+      formData.append(`qualifications`, JSON.stringify(acad) ); // Send each item as "items[]"
+    });
 
     try {
-      const response = await api.updateAinfo(formData);
+      const response = await api.updateAinfo({qualifications: academic});
       console.log("responce==>>>>>", response);
       enqueueSnackbar("Information updated successfully", {
         variant: "success",
@@ -212,8 +215,8 @@ const AcademicDetails = () => {
                         id="exampleFormControlInput1"
                         placeholder=""
                         required
-                        name="institution"
-                        value={acad.institution}
+                        name="name_of_institution"
+                        value={acad.name_of_institution}
                         onChange={(event) => handleAcademicChange(index, event)}
                       />
                     </div>
@@ -230,8 +233,8 @@ const AcademicDetails = () => {
                         class="form-control rounded-0"
                         id="exampleFormControlInput1"
                         placeholder=""
-                        name="degree"
-                        value={acad.degree}
+                        name="qualification"
+                        value={acad.qualification}
                         onChange={(event) => handleAcademicChange(index, event)}
                       />
                     </div>
@@ -241,7 +244,7 @@ const AcademicDetails = () => {
                           for="exampleFormControlSelect1"
                           className="fw-semibold text-muted fs-6 mt-3 mb-2"
                         >
-                          Start Date
+                          Start Year
                         </label>
                         <input
                           type="date"
@@ -249,8 +252,8 @@ const AcademicDetails = () => {
                           class="form-control rounded-0"
                           id="exampleFormControlInput1"
                           placeholder=""
-                          name="startDate"
-                          value={acad.startDate}
+                          name="start_year"
+                          value={acad.start_year}
                           onChange={(event) =>
                             handleAcademicChange(index, event)
                           }
@@ -261,7 +264,7 @@ const AcademicDetails = () => {
                           for="exampleFormControlSelect1"
                           className="fw-semibold text-muted fs-6 mt-3 mb-2"
                         >
-                          End Date
+                          End Year
                         </label>
                         <input
                           type="date"
@@ -269,8 +272,8 @@ const AcademicDetails = () => {
                           class="form-control rounded-0"
                           id="exampleFormControlInput1"
                           placeholder=""
-                          name="endDate"
-                          value={acad.endDate}
+                          name="end_year"
+                          value={acad.end_year}
                           onChange={(event) =>
                             handleAcademicChange(index, event)
                           }
@@ -289,64 +292,6 @@ const AcademicDetails = () => {
                   Add More Qualification
                 </button>
 
-                <div className=" h-90 w-100 d-flex align-items-center justify-content-space">
-                  <div className="form-group">
-                    <label
-                      htmlFor={`q1_document`}
-                      className="fw-semibold text-muted fs-6 mt-3 mb-2"
-                    >
-                      Upload Document
-                    </label>
-                    <input
-                      type="file"
-                      id={`q1_document`}
-                      className="form-control rounded-0"
-                      onChange={onFileChange}
-                    />
-                    {userDetails.q1_document_file &&
-                    userDetails.q1_document_file.trim() !== "" &&
-                    !userDetails.q1_document_file.endsWith("null") ? (
-                      <div className="mt-2">
-                        <a
-                          href={userDetails.q1_document_file}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
-                          View Document
-                        </a>
-                      </div>
-                    ) : null}
-                  </div>
-                </div>
-                <div className=" h-90 w-100 d-flex align-items-center justify-content-space">
-                  <div className="form-group">
-                    <label
-                      htmlFor={`q2_document`}
-                      className="fw-semibold text-muted fs-6 mt-3 mb-2"
-                    >
-                      Upload Document
-                    </label>
-                    <input
-                      type="file"
-                      className="form-control rounded-0"
-                      id={`q2_document`}
-                      onChange={onFileChanges}
-                    />
-                    {userDetails.q2_document_file &&
-                    userDetails.q2_document_file.trim() !== "" &&
-                    !userDetails.q2_document_file.endsWith("null") ? (
-                      <div className="mt-2">
-                        <a
-                          href={userDetails.q2_document_file}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
-                          View Document
-                        </a>
-                      </div>
-                    ) : null}
-                  </div>
-                </div>
               </div>
             </div>
 
