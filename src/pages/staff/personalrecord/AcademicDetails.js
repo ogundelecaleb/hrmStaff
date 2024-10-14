@@ -87,7 +87,6 @@ const AcademicDetails = () => {
       qualification: "",
       start_year: "",
       end_year: "",
-      document_file: "",
     },
   ]);
 
@@ -100,7 +99,6 @@ const AcademicDetails = () => {
        qualification: "",
        start_year: "",
        end_year: "",
-        document_file: "",
       },
     ]);
   };

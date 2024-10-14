@@ -177,7 +177,7 @@ const AnnualLeave = ({ navigate }) => {
       setLastApproved(lastApproved?.message);
     } catch (error) {
       console.error("Error fetching last Approved", error);
-      enqueueSnackbar(error.message, { variant: "error" });
+      enqueueSnackbar(error.message, { variant: "warning" });
     }
   }
 
@@ -571,14 +571,14 @@ const AnnualLeave = ({ navigate }) => {
                   onChange={(e) => setSearchTerm(e.target.value)}
                 />
               </InputGroup>
+{/* //.filter((staff) =>
+                  //   staff?.first_name
+                  //     .toLowerCase()
+                  //     .includes(searchTerm.toLowerCase())
+                  // ) */}
+
               {staffs &&
-                staffs?.available_users
-                  ?.filter((staff) =>
-                    staff.first_name
-                      .toLowerCase()
-                      .includes(searchTerm.toLowerCase())
-                  )
-                  .map((staff) => (
+                staffs?.available_users?.map((staff) => (
                     <div
                       onClick={() => {
                         setStaffrep(staff.first_name + " " + staff.last_name);
