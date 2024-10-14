@@ -339,7 +339,6 @@ const Settings = ({ reuseableNavigation }) => {
 
                   
          
-                <Details label={"Designation"} fullName={userDetails?.role} />
               </Box>
               <Box>
                 <p className="text-lg font-semibold mt-2 mb-[0px]">

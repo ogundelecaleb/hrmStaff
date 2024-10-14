@@ -465,7 +465,7 @@ const PersonalInfo = () => {
                       id="exampleFormControlSelect1"
                       value={formValues.marital_status}
                       required
-                      disabled
+                      
                       onChange={(e) =>
                         setFormValues({
                           ...formValues,

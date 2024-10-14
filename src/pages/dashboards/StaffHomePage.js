@@ -138,7 +138,7 @@ const StaffHomePage = ({ switchRoutes, navigate }) => {
       "date_of_first_appointment",
       "k1_full_name",
       // "beneficiary_full_name",
-      "q1_name_of_institution",
+      "staff_academic_qualification",
     ];
     const filledFields = fieldsToCheck.reduce((count, field) => {
       if (userDetails[field] !== null && userDetails[field] !== undefined) {
