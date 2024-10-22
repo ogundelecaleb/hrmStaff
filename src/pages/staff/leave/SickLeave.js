@@ -640,12 +640,7 @@ const SickLeave = ({ navigate }) => {
                     </InputGroup>
                     {staffs &&
                       staffs?.available_users
-                        ?.filter((staff) =>
-                          (staff.first_name + staff.last_name)
-                            .toLowerCase()
-                            .includes(searchTerm.toLowerCase())
-                        )
-                        .map((staff) => (
+                        ?.map((staff) => (
                           <div
                             onClick={() => {
                               setStaffrep(

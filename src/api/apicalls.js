@@ -98,7 +98,8 @@ import {
   UNREADNOTIFICATION,
   MARKASREAD,
   GETLASTLEAVE,
-  STAFFONLEAVE
+  STAFFONLEAVE,
+  TRACKPROGRESS
 } from "../utils/config";
 import { apiGet, apiPost, apiPut, apiDelete } from "../utils/utils";
 
@@ -508,4 +509,7 @@ export function resumeLeave(data) {
 }
 export function staffOnLeave(data) {
   return apiGet(STAFFONLEAVE, data);
+}
+export function trackProgress(data) {
+  return apiPost(TRACKPROGRESS, data);
 }

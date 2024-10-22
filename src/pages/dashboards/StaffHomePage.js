@@ -151,6 +151,25 @@ const StaffHomePage = ({ switchRoutes, navigate }) => {
   };
 
   const progress = calculateProgress();
+
+  async function updateProgress() {
+    try {
+      const response = await api.trackProgress({
+        progress_bar: progress,
+        staff_id: userDetails?.id
+      });
+    } catch (error) {
+      console.error("Error updating progress");
+      // enqueueSnackbar(error.message, { variant: 'error' })
+    }
+  }
+
+  useEffect(() => {
+    if (progress < 100 && userDetails) {
+      updateProgress();
+    }
+  }, [progress, userDetails]);
+
   function formatDate(dateString) {
     const date = new Date(dateString);
     const year = date.getFullYear();
@@ -341,7 +360,7 @@ const StaffHomePage = ({ switchRoutes, navigate }) => {
                       className="px-2 md:px-5  border-b-[0.8px] border-[#E4E7EC] py-[12px] gap-[6px] md:gap-[12px] text-[14px] md:text-[16px] text-[#98A2B3]  font-medium leading-[20px] md:leading-[24px] tracking-[0.2%]"
                     >
                       <div className="flex justify-center gap-[6px] md:gap-[12px] items-center my-0">
-                      Action
+                        Action
                       </div>
                     </th>
                   </tr>

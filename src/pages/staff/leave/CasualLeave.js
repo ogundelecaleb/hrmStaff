@@ -501,14 +501,14 @@ const CasualLeave = ({ navigate }) => {
                         onChange={(e) => setSearchTerm(e.target.value)}
                       />
                     </InputGroup>
+                     {/* // .filter((staff) =>
+                        //   staff.first_name
+                        //     .toLowerCase()
+                        //     .includes(searchTerm.toLowerCase())
+                        // ) */}
                     {staffs &&
                       staffs?.available_users
-                        ?.filter((staff) =>
-                          staff.first_name
-                            .toLowerCase()
-                            .includes(searchTerm.toLowerCase())
-                        )
-                        .map((staff) => (
+                        ?.map((staff) => (
                           <div
                             onClick={() => {
                               setStaffrep(

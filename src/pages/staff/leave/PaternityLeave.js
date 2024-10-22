@@ -519,14 +519,16 @@ const PaternityLeave = ({ navigate }) => {
                   onChange={(e) => setSearchTerm(e.target.value)}
                 />
               </InputGroup>
-              {staffs &&
-                staffs?.available_users
-                  ?.filter((staff) =>
+              {/* .filter((staff) =>
                     (staff.first_name  + staff.last_name)
                       .toLowerCase()
                       .includes(searchTerm.toLowerCase())
-                  )
-                  .map((staff) => (
+                  ) */}
+                  
+
+              {staffs &&
+                staffs?.available_users
+                  ?.map((staff) => (
                     <div
                       onClick={() => {
                         setStaffrep(staff.first_name + " " + staff.last_name);

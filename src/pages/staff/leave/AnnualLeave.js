@@ -59,7 +59,7 @@ const AnnualLeave = ({ navigate }) => {
     department,
     unit,
     faculty,
-    supervisorRole
+    supervisorRole,
   } = location.state;
 
   const { enqueueSnackbar } = useSnackbar();
@@ -197,6 +197,17 @@ const AnnualLeave = ({ navigate }) => {
       setDateresumed(event.target.value);
     }
   };
+  const handleConvertDate = (date) => {
+    // const dateString = "2/5/2008"; // Input date in MM/DD/YYYY format
+    const [month, day, year] = date.split("/");
+
+    // Create a new Date object
+    const dateObject = new Date(`${year}-${month}-${day}`);
+
+    // Format the date in YYYY-MM-DD
+    const formattedDate = dateObject.toISOString().split("T")[0]; // Extracting date part of ISO string
+    return formattedDate;
+  };
 
   const handleStartDateChange = (event) => {
     const formattedStartDate = event.target.value;
@@ -301,7 +312,7 @@ const AnnualLeave = ({ navigate }) => {
         faculty_id: faculty,
         unit_id: unit,
         leave_type: selectedLeaveType,
-        date_of_first_appointment: dateOfFirstAppointment,
+        date_of_first_appointment: handleConvertDate(dateOfFirstAppointment),
         designation: rankDesignation,
         date_resumed: formattedDateResumed,
         start_date: formattedStartDate,
@@ -314,7 +325,8 @@ const AnnualLeave = ({ navigate }) => {
         type: staffType,
         level: staffLevel,
         replacement_on_duty_id: staffRepId,
-        user_supervision_role: supervisorRole  !== undefined ? supervisorRole : ""
+        user_supervision_role:
+          supervisorRole !== undefined ? supervisorRole : "",
       });
       console.log("responce==>>>>>", response);
       enqueueSnackbar("Leave Application successfull", { variant: "success" });
@@ -362,7 +374,9 @@ const AnnualLeave = ({ navigate }) => {
       <div className="row">
         <div class="border-bottom py-2" id="sec-padding-res">
           <h1 class="text-[18px] font-medium">Leave</h1>
-          <p class="text-gray-500 mb-0">Kindly fill in the required information</p>
+          <p class="text-gray-500 mb-0">
+            Kindly fill in the required information
+          </p>
         </div>
 
         <div className="col-md-6">
@@ -571,7 +585,7 @@ const AnnualLeave = ({ navigate }) => {
                   onChange={(e) => setSearchTerm(e.target.value)}
                 />
               </InputGroup>
-{/* //.filter((staff) =>
+              {/* //.filter((staff) =>
                   //   staff?.first_name
                   //     .toLowerCase()
                   //     .includes(searchTerm.toLowerCase())
@@ -579,32 +593,31 @@ const AnnualLeave = ({ navigate }) => {
 
               {staffs &&
                 staffs?.available_users?.map((staff) => (
-                    <div
-                      onClick={() => {
-                        setStaffrep(staff.first_name + " " + staff.last_name);
-                        setStaffRepId(staff?.id);
-                        setIsStaffModal(false);
-                      }}
-                      className="w-full "
-                    >
-                      {" "}
-                      <div className="px-2 py-2 border rounded-2 mb-2  flex justify-between">
-                        <p className="text-md md:text-base">
-                          {" "}
-                          {staff.first_name + " " + staff.last_name}
-                        </p>
+                  <div
+                    onClick={() => {
+                      setStaffrep(staff.first_name + " " + staff.last_name);
+                      setStaffRepId(staff?.id);
+                      setIsStaffModal(false);
+                    }}
+                    className="w-full "
+                  >
+                    {" "}
+                    <div className="px-2 py-2 border rounded-2 mb-2  flex justify-between">
+                      <p className="text-md md:text-base">
+                        {" "}
+                        {staff.first_name + " " + staff.last_name}
+                      </p>
 
-                        <p className="text-md md:text-base">{staff?.email}</p>
+                      <p className="text-md md:text-base">{staff?.email}</p>
 
-                        {staffRep ===
-                        staff.first_name + " " + staff.last_name ? (
-                          <div className="bg-[#32D583] h-4 w-4 rounded-full"></div>
-                        ) : (
-                          <div className="border-[#5F5F60] border-[1.5px] h-4 w-4 rounded-full"></div>
-                        )}
-                      </div>
+                      {staffRep === staff.first_name + " " + staff.last_name ? (
+                        <div className="bg-[#32D583] h-4 w-4 rounded-full"></div>
+                      ) : (
+                        <div className="border-[#5F5F60] border-[1.5px] h-4 w-4 rounded-full"></div>
+                      )}
                     </div>
-                  ))}
+                  </div>
+                ))}
             </ModalBody>
             <Divider />
           </ModalContent>

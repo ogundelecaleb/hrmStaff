@@ -56,18 +56,7 @@ const AcademicDetails = () => {
     }
   }
 
-  const [formValues, setFormValues] = useState({
-    q1_name_of_institution: "",
-    q1_qualification: "",
-    q1_start_year: "",
-    q1_end_year: "",
-    q1_document_file: "",
-    q2_name_of_institution: "",
-    q2_qualification: "",
-    q2_start_year: "",
-    q2_end_year: "",
-    q2_document_file: "",
-  });
+
 
   useEffect(() => {
     fetchUserDetails();
@@ -126,10 +115,7 @@ const AcademicDetails = () => {
    
 
     const formData = new FormData();
-    // formData.append("q1_document_file", file);
-    // formData.append("q2_document_file", filesi);
    
-    // formData.append("qualifications",  academic);
     academic.forEach((acad, index) => {
       formData.append(`qualifications`, JSON.stringify(acad) ); // Send each item as "items[]"
     });
@@ -179,7 +165,7 @@ const AcademicDetails = () => {
             <div className="row mt-4 border-bottom pb-4">
               <div className="col-lg-4">
                 <Text color={"black"} className="fs-5 pt-2 fw-semibold">
-                  Academic Qualification
+                  Academic/Proffesional Qualification
                 </Text>
               </div>
               <div className="col-lg-6 pe-">
@@ -214,7 +200,7 @@ const AcademicDetails = () => {
                         for="exampleFormControlSelect1"
                         className="fw-semibold text-muted fs-6 mt-3 mb-2"
                       >
-                        Degree
+                        Qualifications
                       </label>
                       <input
                         type="text"
@@ -228,26 +214,7 @@ const AcademicDetails = () => {
                       />
                     </div>
                     <div className="flex flex-col md:flex-row justify-between">
-                      <div class="form-group">
-                        <label
-                          for="exampleFormControlSelect1"
-                          className="fw-semibold text-muted fs-6 mt-3 mb-2"
-                        >
-                          Start Year
-                        </label>
-                        <input
-                          type="date"
-                          style={{ height: "40px" }}
-                          class="form-control rounded-0"
-                          id="exampleFormControlInput1"
-                          placeholder=""
-                          name="start_year"
-                          value={acad.start_year}
-                          onChange={(event) =>
-                            handleAcademicChange(index, event)
-                          }
-                        />
-                      </div>
+
                       <div class="form-group">
                         <label
                           for="exampleFormControlSelect1"
