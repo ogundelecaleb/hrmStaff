@@ -223,6 +223,7 @@ const Settings = ({ reuseableNavigation }) => {
                   <p className="text-lg font-semibold mt-2 mb-[0px]">
                     Family Details
                   </p>
+                  
 
                   {userDetails?.spouse?.full_name && (
                     <>
