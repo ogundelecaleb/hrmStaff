@@ -224,7 +224,7 @@ const Settings = ({ reuseableNavigation }) => {
                     Family Details
                   </p>
 
-                  {userDetails?.spouse_full_name && (
+                  {userDetails?.spouse?.full_name && (
                     <>
                       <Details
                         label={"Spouse Name"}
