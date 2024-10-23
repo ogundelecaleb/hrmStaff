@@ -53,36 +53,7 @@ const FamilyDetails = () => {
     spouse_current_address: "",
     spouse_phone: "",
     spouse_email: "",
-    c1_full_name: "",
-    c1_current_address: "",
-    c1_relationship: "",
-    c1_phone: "",
-    c1_date_of_birth: "",
-    c1_gender: "",
-    c1_email: "",
-    c2_full_name: "",
-    c2_current_address: "",
-    c2_relationship: "",
-    c2_phone: "",
-    c2_date_of_birth: "",
-    c2_gender: "",
-    c2_email: "",
-
-    c3_full_name: "",
-    c3_current_address: "",
-    c3_relationship: "",
-    c3_phone: "",
-    c3_date_of_birth: "",
-    c3_gender: "",
-    c3_email: "",
-
-    c4_full_name: "",
-    c4_current_address: "",
-    c4_relationship: "",
-    c4_phone: "",
-    c4_date_of_birth: "",
-    c4_gender: "",
-    c4_email: "",
+   
   });
 
   const [children, setChildren] = useState([
@@ -152,34 +123,7 @@ const FamilyDetails = () => {
         spouse_phone: formValues.spouse_phone,
         spouse_email: formValues.spouse_email,
         children: children,
-        // c1_full_name: formValues.c1_full_name,
-        // c1_current_address: formValues.c1_current_address,
-        // c1_relationship: formValues.c1_relationship,
-        // c1_phone: formValues.c1_phone,
-        // c1_date_of_birth: formValues.c1_date_of_birth,
-        // c1_gender: formValues.c1_gender,
-        // c1_email: formValues.c1_email,
-        // c2_full_name: formValues.c2_full_name,
-        // c2_current_address: formValues.c2_current_address,
-        // c2_relationship: formValues.c2_relationship,
-        // c2_phone: formValues.c2_phone,
-        // c2_date_of_birth: formValues.c2_date_of_birth,
-        // c2_gender: formValues.c2_gender,
-        // c2_email: formValues.c2_email,
-        // c3_full_name: formValues.c3_full_name,
-        // c3_current_address: formValues.c3_current_address,
-        // c3_relationship: formValues.c3_relationship,
-        // c3_phone: formValues.c3_phone,
-        // c3_date_of_birth: formValues.c3_date_of_birth,
-        // c3_gender: formValues.c3_gender,
-        // c3_email: formValues.c3_email,
-        // c4_full_name: formValues.c4_full_name,
-        // c4_current_address: formValues.c4_current_address,
-        // c4_relationship: formValues.c4_relationship,
-        // c4_phone: formValues.c4_phone,
-        // c4_date_of_birth: formValues.c4_date_of_birth,
-        // c4_gender: formValues.c2_gender,
-        // c4_email: formValues.c4_email,
+       
       });
       console.log("responce==>>>>>", response);
       enqueueSnackbar("Information updated successfully", {
@@ -445,7 +389,7 @@ const FamilyDetails = () => {
               style={{ backgroundColor: "#17082d" }}
               onClick={handleAcademic}
             >
-              Add More Child
+            {children?.length ===0 ? "Add First Child" : "Add a Child"}  
             </button>
           </div>
           <div className="col-lg-2"></div>

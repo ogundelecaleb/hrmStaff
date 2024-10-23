@@ -122,10 +122,7 @@ const Settings = ({ reuseableNavigation }) => {
                     label={"Date of Birth"}
                     fullName={userDetails?.date_of_birth}
                   />
-                   <Details
-                    label={"Age"}
-                    fullName={userDetails?.age}
-                  />
+                  <Details label={"Age"} fullName={userDetails?.age} />
                   <Details label={"Gender"} fullName={userDetails?.gender} />
                   <Details
                     label={"Blood Group"}
@@ -226,23 +223,24 @@ const Settings = ({ reuseableNavigation }) => {
                   <p className="text-lg font-semibold mt-2 mb-[0px]">
                     Family Details
                   </p>
+
                   {userDetails?.spouse_full_name && (
                     <>
                       <Details
                         label={"Spouse Name"}
-                        fullName={userDetails?.spouse_full_name}
+                        fullName={userDetails?.spouse?.full_name}
                       />
                       <Details
                         label={"Spouse Contact"}
-                        fullName={userDetails?.spouse_phone}
+                        fullName={userDetails?.spouse?.phone}
                       />
                       <Details
                         label={"Spouse Email"}
-                        fullName={userDetails?.spouse_email}
+                        fullName={userDetails?.spouse?.email}
                       />
                       <Details
                         label={"Spouse Address"}
-                        fullName={userDetails?.spouse_address}
+                        fullName={userDetails?.spouse?.address}
                       />
                     </>
                   )}
@@ -336,33 +334,36 @@ const Settings = ({ reuseableNavigation }) => {
                       />
                     </>
                   ))}
-
-                  
-         
               </Box>
               <Box>
                 <p className="text-lg font-semibold mt-2 mb-[0px]">
                   Academic Qualification
                 </p>
 
-               
                 {userDetails &&
-                  userDetails?.staff_academic_qualification?.map((acad, index) => (
-                    <>
-                      <p className="mt-2 mb-0 text-gray-900">{index + 1}</p>
-                      <Details label={"Institution"} fullName={acad?.name_of_institution} />
-                      <Details label={"Qualification "} fullName={acad?.qualification} />
-                      <Details label={"Start Date "} fullName={acad?.start_year} />
-                      <Details
-                        label={"End Date "}
-                        fullName={acad?.end_year}
-                      />
-                    
-                    </>
-                  ))}
-
-                  
-         
+                  userDetails?.staff_academic_qualification?.map(
+                    (acad, index) => (
+                      <>
+                        <p className="mt-2 mb-0 text-gray-900">{index + 1}</p>
+                        <Details
+                          label={"Institution"}
+                          fullName={acad?.name_of_institution}
+                        />
+                        <Details
+                          label={"Qualification "}
+                          fullName={acad?.qualification}
+                        />
+                        <Details
+                          label={"Start Date "}
+                          fullName={acad?.start_year}
+                        />
+                        <Details
+                          label={"End Date "}
+                          fullName={acad?.end_year}
+                        />
+                      </>
+                    )
+                  )}
               </Box>
             </div>
           </Box>
