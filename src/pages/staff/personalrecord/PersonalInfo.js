@@ -198,7 +198,7 @@ const PersonalInfo = () => {
         </Box>
       </Box>
       <form onSubmit={handleSubmit}>
-        <div className='row mt-4 border-bottom pb-4 pb-4'>
+        <div className='row mt-4 border-bottom pb-4'>
           <div className='col-lg-4'>
             <Text color='black' className='fs-5 pt-2 fw-semibold'>Personal Details</Text>
           </div>
@@ -489,7 +489,7 @@ const PersonalInfo = () => {
                   </label>
                   <input
                     type="file"
-                    className="border py-2 px-2 w-full rounded-0"
+                    className="flex mb-[20px] h-9 w-full  border-input bg-background  text-sm shadow-sm text-[#667185] border-[0.2px] border-[#98A2B3] transition-colors file:border-0 file:border-r-[0.2px] file:h-9 file:bg-[#F9FAFB] file:text-[#667185] file:border-[#D0D5DD] file:text-sm file:font-medium placeholder:text-muted-foreground focus:outline-none focus:ring-[#984779] focus:border-[#984779]  disabled:opacity-50"
                     id={`upload_document_1`}
                     onChange={(e) => onFileChanges(e, 1)}
                   />
@@ -505,7 +505,7 @@ const PersonalInfo = () => {
                   </label>
                   <input
                     type="file"
-                    className="form-control rounded-0"
+                    className="flex mb-[20px] h-9 w-full  border-input bg-background  text-sm shadow-sm text-[#667185] border-[0.2px] border-[#98A2B3] transition-colors file:border-0 file:border-r-[0.2px] file:h-9 file:bg-[#F9FAFB] file:text-[#667185] file:border-[#D0D5DD] file:text-sm file:font-medium placeholder:text-muted-foreground focus:outline-none focus:ring-[#984779] focus:border-[#984779]  disabled:opacity-50"
                     id={`upload_document_1`}
                     onChange={(e) => onFileChanges(e, 2)}
                   />

@@ -16,7 +16,7 @@ import AcademicDetails from "./AcademicDetails";
 
 const PersonalRecord = () => {
   return (
-    <Box className="px-4 md:px-5 xl:px-6">
+    <Box className="px-2 md:px-5 xl:px-6">
       <Tabs position="relative" variant="unstyled">
         <Box className="table-responsive pt-3">
           <TabList>

@@ -103,7 +103,7 @@ const ContactInfo = () => {
   };
 
   return (
-    <div className='container'>
+    <div className=''>
       <form onSubmit={handleSubmit}>
       <div className='row mt-4 border-bottom pb-4'>
         <div className='col-lg-4'>

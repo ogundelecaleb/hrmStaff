@@ -113,7 +113,7 @@ const NextOfKin = () => {
   }
 
   return (
-    <div className="container">
+    <div className="">
       <form onSubmit={handleSubmit}>
         <div className="row mt-4 pb-4 pb-4">
           <div className="col-lg-4">

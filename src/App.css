@@ -76,17 +76,17 @@ p {
   /* background-color: purple; */
   padding-left: 20px;
 }
-.tab-scroll::-webkit-scrollbar {
-  display: none; /* Safari and Chrome */
-}
-.tab {
+/* .tab-scroll::-webkit-scrollbar {
+  display: none; 
+} */
+/* .tab {
   background-color: #e9ebfd;
   width: 23%;
   color: #984779;
   cursor: pointer;
   transition: all 0.3s ease-in-out;
   transform: skew(-20deg);
-}
+} */
 .tab:hover {
   background-color: #984779;
   color: white;
