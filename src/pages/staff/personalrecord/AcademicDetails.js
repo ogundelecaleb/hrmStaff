@@ -219,16 +219,11 @@ const AcademicDetails = () => {
                         >
                           End Year
                         </label>
-                        {/* <DatePicker
-      selected={selectedYear}
-      onChange={(date) => setSelectedYear(date)}
-      showYearPicker
-      dateFormat="yyyy"
-    /> */}
+                   
 
                         <select
                           style={{ height: "40px" }}
-                          class="rounded-0"
+                          class="rounded-0 form-control"
                           id="exampleFormControlInput1"
                           placeholder=""
                           name="end_year"
