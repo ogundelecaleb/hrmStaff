@@ -7,6 +7,7 @@ import { MoonLoader } from "react-spinners";
 import DatePicker from "react-datepicker";
 import { getYear, getMonth } from "date-fns";
 import { Trash } from "iconsax-react";
+import "react-datepicker/dist/react-datepicker.css";
 
 const AcademicDetails = () => {
   const [userDetails, setUserDetails] = useState([]);
@@ -25,7 +26,7 @@ const AcademicDetails = () => {
     return result;
   }
 
-  const years = range(1990, getYear(new Date()) + 1, 1);
+  const years = range(1900, getYear(new Date()) + 1, 1);
 
   const months = [
     "January",
@@ -56,8 +57,6 @@ const AcademicDetails = () => {
     }
   }
 
-
-
   useEffect(() => {
     fetchUserDetails();
   }, []);
@@ -83,11 +82,11 @@ const AcademicDetails = () => {
     setAcademic([
       ...academic,
       {
-        id:  JSON.stringify( academic?.length + 1),
-       name_of_institution: "",
-       qualification: "",
-       start_year: "",
-       end_year: "",
+        id: JSON.stringify(academic?.length + 1),
+        name_of_institution: "",
+        qualification: "",
+        start_year: "",
+        end_year: "",
       },
     ]);
   };
@@ -100,7 +99,7 @@ const AcademicDetails = () => {
 
   useEffect(() => {
     if (userDetails) {
-     setAcademic(userDetails?.staff_academic_qualification)
+      setAcademic(userDetails?.staff_academic_qualification);
     }
   }, [userDetails]);
 
@@ -112,16 +111,15 @@ const AcademicDetails = () => {
   async function handleSubmit(e) {
     e.preventDefault();
     setIsLoading(true);
-   
 
     const formData = new FormData();
-   
+
     academic.forEach((acad, index) => {
-      formData.append(`qualifications`, JSON.stringify(acad) ); // Send each item as "items[]"
+      formData.append(`qualifications`, JSON.stringify(acad)); // Send each item as "items[]"
     });
 
     try {
-      const response = await api.updateAinfo({qualifications: academic});
+      const response = await api.updateAinfo({ qualifications: academic });
       console.log("responce==>>>>>", response);
       enqueueSnackbar("Information updated successfully", {
         variant: "success",
@@ -214,7 +212,6 @@ const AcademicDetails = () => {
                       />
                     </div>
                     <div className="flex flex-col md:flex-row justify-between">
-
                       <div class="form-group">
                         <label
                           for="exampleFormControlSelect1"
@@ -222,10 +219,16 @@ const AcademicDetails = () => {
                         >
                           End Year
                         </label>
-                        <input
-                          type="date"
+                        {/* <DatePicker
+      selected={selectedYear}
+      onChange={(date) => setSelectedYear(date)}
+      showYearPicker
+      dateFormat="yyyy"
+    /> */}
+
+                        <select
                           style={{ height: "40px" }}
-                          class="form-control rounded-0"
+                          class="rounded-0"
                           id="exampleFormControlInput1"
                           placeholder=""
                           name="end_year"
@@ -233,7 +236,26 @@ const AcademicDetails = () => {
                           onChange={(event) =>
                             handleAcademicChange(index, event)
                           }
-                        />
+                        >
+                          <option value="">Select Year</option>
+                          {years.map((year) => (
+                            <option key={year} value={year}>
+                              {year}
+                            </option>
+                          ))}
+                        </select>
+                        {/* <input
+                          type="year"
+                          style={{ height: "40px" }}
+                          class=" rounded-0"
+                          id="exampleFormControlInput1"
+                          placeholder=""
+                          name="end_year"
+                          value={acad.end_year}
+                          onChange={(event) =>
+                            handleAcademicChange(index, event)
+                          }
+                        /> */}
                       </div>
                     </div>
                   </>
@@ -247,7 +269,6 @@ const AcademicDetails = () => {
                 >
                   Add More Qualification
                 </button>
-
               </div>
             </div>
 

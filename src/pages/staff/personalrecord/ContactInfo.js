@@ -123,7 +123,7 @@ const ContactInfo = () => {
                     //style={{ height: "40px" }}
                     className="border py-2 px-2 w-full rounded-0"
                     required
-                    disabled
+                    
                     id='exampleFormControlInput1'
                     placeholder=''
                     
@@ -149,7 +149,7 @@ const ContactInfo = () => {
                     //style={{ height: "40px" }}
                     className="border py-2 px-2 w-full rounded-0"
                     id='exampleFormControlInput1'
-                    disabled
+                    
                     required
                     value={formValues.email}
                     onChange={(e) =>

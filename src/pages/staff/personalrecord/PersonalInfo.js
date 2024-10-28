@@ -73,7 +73,8 @@ const PersonalInfo = () => {
     maidenName: "",
     title:"",
     bloodGroup: "",
-    age: ""
+    age: "",
+    staffNumber: ""
   });
 
   useEffect(() => {
@@ -94,7 +95,8 @@ const PersonalInfo = () => {
         maidenName:  userDetails?.maiden_name,
         title: userDetails?.title,
         bloodGroup: userDetails?.blood_group,
-        age: userDetails?.age
+        age: userDetails?.age,
+        staffNumber : userDetails?.staff_number
       });
     }
   }, [userDetails]);
@@ -217,7 +219,7 @@ const PersonalInfo = () => {
                   id='exampleFormControlInput1'
                   placeholder=''
                   required
-                  disabled
+                  D
                   value={formValues.title}
                   onChange={(e) =>
                     setFormValues({
@@ -240,7 +242,7 @@ const PersonalInfo = () => {
                   id='exampleFormControlInput1'
                   placeholder=''
                   required
-                  disabled
+                  D
                   value={formValues.firstName}
                   onChange={(e) =>
                     setFormValues({
@@ -263,7 +265,7 @@ const PersonalInfo = () => {
                   id='exampleFormControlInput1'
                   placeholder=''
                   required
-                  disabled
+                  D
                   value={formValues.lastName}
                   onChange={(e) =>
                     setFormValues({
@@ -277,6 +279,29 @@ const PersonalInfo = () => {
                 <label
                   for='exampleFormControlSelect1'
                   className='fw-semibold text-muted fs-6 mt-3 mb-2'>
+                Staff Number
+                </label>
+                <input
+                  type='text'
+                  style={{ height: "40px" }}
+                  class='form-control rounded-0'
+                  id='exampleFormControlInput1'
+                  placeholder=''
+                  required
+                  D
+                  value={formValues.maidenName}
+                  onChange={(e) =>
+                    setFormValues({
+                      ...formValues,
+                      maidenName: e.target.value,
+                    })
+                  }
+                />
+              </div>
+              <div class='form-group'>
+                <label
+                  for='exampleFormControlSelect1'
+                  className='fw-semibold text-muted fs-6 mt-3 mb-2'>
                   Middle Name
                 </label>
                 <input
@@ -286,12 +311,12 @@ const PersonalInfo = () => {
                   id='exampleFormControlInput1'
                   placeholder=''
                   required
-                  disabled
-                  value={formValues.maidenName}
+                  D
+                  value={formValues.staffNumber}
                   onChange={(e) =>
                     setFormValues({
                       ...formValues,
-                      maidenName: e.target.value,
+                      staffNumber: e.target.value,
                     })
                   }
                 />
@@ -335,7 +360,7 @@ const PersonalInfo = () => {
                       id='exampleFormControlInput1'
                       placeholder=''
                       required
-                      disabled
+                      D
                       value={formValues.stateOfOrigin}
                       onChange={(e) =>
                         setFormValues({
@@ -362,7 +387,7 @@ const PersonalInfo = () => {
                       type="text"
                   id="dateInput"
                   required
-                  // disabled
+                  // D
                   value={formValues.dateOfBirth}
                       onChange={(e) =>
                         setFormValues({
@@ -389,7 +414,7 @@ const PersonalInfo = () => {
                       type="text"
                   id="dateInput"
                   required
-                  // disabled
+                  // D
                   value={formValues.age}
                       onChange={(e) =>
                         setFormValues({
@@ -415,7 +440,7 @@ const PersonalInfo = () => {
                       id="exampleFormControlSelect1"
                       value={formValues.gender}
                       required
-                      disabled
+                      D
                       onChange={(e) =>
                         setFormValues({
                           ...formValues,
@@ -489,7 +514,7 @@ const PersonalInfo = () => {
                   </label>
                   <input
                     type="file"
-                    className="flex mb-[20px] h-9 w-full  border-input bg-background  text-sm shadow-sm text-[#667185] border-[0.2px] border-[#98A2B3] transition-colors file:border-0 file:border-r-[0.2px] file:h-9 file:bg-[#F9FAFB] file:text-[#667185] file:border-[#D0D5DD] file:text-sm file:font-medium placeholder:text-muted-foreground focus:outline-none focus:ring-[#984779] focus:border-[#984779]  disabled:opacity-50"
+                    className="flex mb-[20px] h-9 w-full  border-input bg-background  text-sm shadow-sm text-[#667185] border-[0.2px] border-[#98A2B3] transition-colors file:border-0 file:border-r-[0.2px] file:h-9 file:bg-[#F9FAFB] file:text-[#667185] file:border-[#D0D5DD] file:text-sm file:font-medium placeholder:text-muted-foreground focus:outline-none focus:ring-[#984779] focus:border-[#984779]  D:opacity-50"
                     id={`upload_document_1`}
                     onChange={(e) => onFileChanges(e, 1)}
                   />
@@ -505,7 +530,7 @@ const PersonalInfo = () => {
                   </label>
                   <input
                     type="file"
-                    className="flex mb-[20px] h-9 w-full  border-input bg-background  text-sm shadow-sm text-[#667185] border-[0.2px] border-[#98A2B3] transition-colors file:border-0 file:border-r-[0.2px] file:h-9 file:bg-[#F9FAFB] file:text-[#667185] file:border-[#D0D5DD] file:text-sm file:font-medium placeholder:text-muted-foreground focus:outline-none focus:ring-[#984779] focus:border-[#984779]  disabled:opacity-50"
+                    className="flex mb-[20px] h-9 w-full  border-input bg-background  text-sm shadow-sm text-[#667185] border-[0.2px] border-[#98A2B3] transition-colors file:border-0 file:border-r-[0.2px] file:h-9 file:bg-[#F9FAFB] file:text-[#667185] file:border-[#D0D5DD] file:text-sm file:font-medium placeholder:text-muted-foreground focus:outline-none focus:ring-[#984779] focus:border-[#984779]  D:opacity-50"
                     id={`upload_document_1`}
                     onChange={(e) => onFileChanges(e, 2)}
                   />
@@ -530,7 +555,7 @@ const PersonalInfo = () => {
           <div>
             <button
               className='btn py-2 px-4 me-2  text-white rounded-0'
-              style={{ backgroundColor: "#984779" }} disabled={isLoading} type="submit">
+              style={{ backgroundColor: "#984779" }} D={isLoading} type="submit">
               {isLoading ? (
                 <MoonLoader color={"white"} size={20} />
               ) : (<>Submit</>

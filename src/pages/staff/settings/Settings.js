@@ -14,11 +14,13 @@ import { useSnackbar } from "notistack";
 import { getUserDetails } from "../../../utils/utils";
 import { RxAvatar } from "react-icons/rx";
 import { MoonLoader } from "react-spinners";
+import api from "../../../api";
 
 const Settings = ({ reuseableNavigation }) => {
   const [userDetails, setUserDetails] = useState([]);
   const { enqueueSnackbar } = useSnackbar();
   const [isLoadinge, setIsLoadinge] = useState(false);
+  const [roles, setRoles] = useState([]);
 
   async function fetchUserDetails() {
     setIsLoadinge(true);
@@ -33,14 +35,27 @@ const Settings = ({ reuseableNavigation }) => {
       setIsLoadinge(false);
     }
   }
+
+  async function fetchRoles() {
+    setIsLoadinge(true);
+    try {
+      const roless = await api.fetchRole();
+      setRoles(roless.data);
+      setIsLoadinge(false);
+    } catch (error) {
+      console.error("Error fetching your basic details", error);
+      setIsLoadinge(false);
+    }
+  }
   useEffect(() => {
     fetchUserDetails();
+    fetchRoles()
   }, []);
 
   const Details = ({ label, fullName }) => {
     return (
       <Box mt="3" className="flex items-center ">
-        <Text fontWeight={"medium"} m="0" color={"#7C8493"} fontSize={"16px"}>
+        <Text className="whitespace-nowrap" fontWeight={"medium"} m="0" color={"#7C8493"} fontSize={"16px"}>
           {label}
         </Text>
         <Text fontWeight={"medium"} m="0" color={"#7C8493"} fontSize={"16px"}>
@@ -103,7 +118,7 @@ const Settings = ({ reuseableNavigation }) => {
                 <RxAvatar size={130} color={"#25324B"} />
               )}
             </WrapItem>
-            <div className="grid grid-cols-2 sm:grid-cols-2  lg:grid-cols-3  gap-5">
+            <div className="grid grid-cols sm:grid-cols-2  lg:grid-cols-3  gap-5 py-4">
               <Box>
                 <Box>
                   <p className="text-lg font-semibold mt-2 mb-[0px]">
@@ -191,6 +206,10 @@ const Settings = ({ reuseableNavigation }) => {
                     label={"Date of First Appointment"}
                     fullName={userDetails?.date_of_first_appointment}
                   />
+                    <Details
+                    label={"Staff Number "}
+                    fullName={userDetails?.staff_number}
+                  />
 
                   {userDetails?.unit && (
                     <>
@@ -215,7 +234,7 @@ const Settings = ({ reuseableNavigation }) => {
                   )}
                   <Details label={"Level"} fullName={userDetails?.level} />
 
-                  <Details label={"Designation"} fullName={userDetails?.role} />
+                  <Details label={"Designation"} fullName={roles && roles?.map((role)=> role.name === userDetails?.role ?  role.description : "") } />
                 </Box>
               </Box>
               <Box>
@@ -223,7 +242,7 @@ const Settings = ({ reuseableNavigation }) => {
                   <p className="text-lg font-semibold mt-2 mb-[0px]">
                     Family Details
                   </p>
-                  
+
 
                   {userDetails?.spouse?.full_name && (
                     <>
