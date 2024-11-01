@@ -373,12 +373,12 @@ const Settings = ({ reuseableNavigation }) => {
                           label={"Qualification "}
                           fullName={acad?.qualification}
                         />
-                        <Details
+                        {/* <Details
                           label={"Start Date "}
                           fullName={acad?.start_year}
-                        />
+                        /> */}
                         <Details
-                          label={"End Date "}
+                          label={"End Year "}
                           fullName={acad?.end_year}
                         />
                       </>
