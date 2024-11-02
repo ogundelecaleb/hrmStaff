@@ -95,9 +95,9 @@ const Settings = ({ reuseableNavigation }) => {
           </div>
         </Box>
       ) : (
-        <Box
-          className="px-4 md:px-6"
-          style={{ width: "100%", height: "900px" }}
+        <div
+          className="px-4 md:px-6 h-screen overflow-y-auto"
+         // style={{ width: "100%", height: "900px" }}
         >
           <Box borderBottom="1px solid #EBEAED">
             <Text fontSize={28} py="3" m="0" fontWeight="medium">
@@ -387,7 +387,7 @@ const Settings = ({ reuseableNavigation }) => {
               </Box>
             </div>
           </Box>
-        </Box>
+        </div>
       )}
     </div>
   );
