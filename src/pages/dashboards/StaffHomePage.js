@@ -141,7 +141,7 @@ const StaffHomePage = ({ switchRoutes, navigate }) => {
       "staff_academic_qualification",
     ];
     const filledFields = fieldsToCheck.reduce((count, field) => {
-      if (userDetails[field] !== null && userDetails[field] !== undefined ) {
+      if (userDetails[field] !== null && userDetails[field] !== undefined  &&  userDetails[field] !== "") {
         count++;
       }
       return count;
