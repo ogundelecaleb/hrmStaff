@@ -62,7 +62,7 @@ const StaffHomePage = ({ switchRoutes, navigate }) => {
   }
   useEffect(() => {
     fetchUserDetails();
-    setIsDisabled(true);
+    // setIsDisabled(true);
   }, []);
 
   async function getLeaves(page) {

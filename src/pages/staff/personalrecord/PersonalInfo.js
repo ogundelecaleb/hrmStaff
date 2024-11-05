@@ -505,7 +505,7 @@ const PersonalInfo = () => {
                   </div>
                 </div>
               </div>
-              <div class='pb-2'>
+              {/* <div class='pb-2'>
                 <div className='mb-2'>
                   <label
                     style={{ marginBottom: '10px' }}
@@ -520,8 +520,8 @@ const PersonalInfo = () => {
                   />
                   <sup className='text-danger'>Format accepted: Jpeg/Pdf</sup>
                 </div>
-              </div>
-              {formValues.marital_status === "Married" && (<div class='pb-2'>
+              </div> */}
+              {/* {formValues.marital_status === "Married" && (<div class='pb-2'>
                 <div className='mb-3'>
                   <label
                     style={{ marginBottom: '10px' }}
@@ -536,7 +536,7 @@ const PersonalInfo = () => {
                   />
                   <sup className='text-danger'>Format accepted: Jpeg/Pdf</sup>
                 </div>
-              </div>)}
+              </div>)} */}
               
             </div>
           </div>
