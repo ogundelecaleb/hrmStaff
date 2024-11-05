@@ -28,7 +28,7 @@ import {
 
 const StaffHomePage = ({ switchRoutes, navigate }) => {
   // const navigate = useNavigate();
-  const [isDisabled, setIsDisabled] = useState(false)
+  const [isDisabled, setIsDisabled] = useState(false);
 
   const datar = [
     {
@@ -62,7 +62,7 @@ const StaffHomePage = ({ switchRoutes, navigate }) => {
   }
   useEffect(() => {
     fetchUserDetails();
-    setIsDisabled(true)
+    setIsDisabled(true);
   }, []);
 
   async function getLeaves(page) {
@@ -155,7 +155,11 @@ const StaffHomePage = ({ switchRoutes, navigate }) => {
       "staff_academic_qualification",
     ];
     const filledFields = fieldsToCheck.reduce((count, field) => {
-      if (userDetails[field] !== null && userDetails[field] !== undefined  &&  userDetails[field] !== "") {
+      if (
+        userDetails[field] !== null &&
+        userDetails[field] !== undefined &&
+        userDetails[field] !== ""
+      ) {
         count++;
       }
       return count;
@@ -170,7 +174,7 @@ const StaffHomePage = ({ switchRoutes, navigate }) => {
     try {
       const response = await api.trackProgress({
         progress_bar: progress,
-        staff_id: userDetails?.id
+        staff_id: userDetails?.id,
       });
     } catch (error) {
       console.error("Error updating progress");
@@ -193,28 +197,42 @@ const StaffHomePage = ({ switchRoutes, navigate }) => {
   }
   return (
     <div className="px-[16px] md:px-[28px]">
-       <Modal isOpen={isDisabled} onClose={()=> console.log("close")} >
-                <ModalOverlay />
-                <ModalContent>
-                    <ModalHeader>Site Disabled!</ModalHeader>
-                    <ModalCloseButton />
-                    <ModalBody>This site has been disabled temporarily, please reach out to the ICT Department for enquiry.</ModalBody>
+      <Modal isOpen={isDisabled} onClose={() => console.log("close")}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Site Disabled!</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            The deadline for submitting your information has now passed. Please
+            hold off on further submissions while awaiting confirmation of an
+            extension from the College Secretary. Once the extension is
+            approved, further instructions will be provided.
+            <br />
+            <br />  Thank you for yout patience{" "}
+          </ModalBody>
 
-                    <ModalFooter gap='5'>
-                        <Link to='/' >
-                            <Button  px={10} colorScheme='blue' onClick={() => {
-                                // onClose();
-                                api.logout();
-                                navigate("/login");}}>
-                                Logout
-                            </Button>
-                        </Link>
-                        {/* <Button  variant='ghost' width={"100px"}>
+          <ModalFooter gap="5">
+            <Link to="/">
+              <Button
+                px={10}
+                //colorScheme="purple"
+                bg={"#984779"}
+                textColor={"white"}
+                onClick={() => {
+                  // onClose();
+                  api.logout();
+                  navigate("/login");
+                }}
+              >
+                Logout
+              </Button>
+            </Link>
+            {/* <Button  variant='ghost' width={"100px"}>
                             {loading ? <Spinner /> : "No"}
                         </Button> */}
-                    </ModalFooter>
-                </ModalContent>
-            </Modal>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
       <p className="text-[#121212] text-[18px] md:text-[20px] font-semibold mt-4 ">
         Hello, {userDetails?.first_name} {userDetails?.last_name}
       </p>
