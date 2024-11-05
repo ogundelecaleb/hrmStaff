@@ -13,9 +13,22 @@ import {
   NoteRemove,
 } from "iconsax-react";
 import { useNavigate } from "react-router-dom";
+import {
+  Button,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
+  Spinner,
+  useDisclosure,
+} from "@chakra-ui/react";
 
 const StaffHomePage = ({ switchRoutes, navigate }) => {
   // const navigate = useNavigate();
+  const [isDisabled, setIsDisabled] = useState(false)
 
   const datar = [
     {
@@ -49,6 +62,7 @@ const StaffHomePage = ({ switchRoutes, navigate }) => {
   }
   useEffect(() => {
     fetchUserDetails();
+    setIsDisabled(true)
   }, []);
 
   async function getLeaves(page) {
@@ -179,6 +193,28 @@ const StaffHomePage = ({ switchRoutes, navigate }) => {
   }
   return (
     <div className="px-[16px] md:px-[28px]">
+       <Modal isOpen={isDisabled} onClose={()=> console.log("close")} >
+                <ModalOverlay />
+                <ModalContent>
+                    <ModalHeader>Site Disabled!</ModalHeader>
+                    <ModalCloseButton />
+                    <ModalBody>This site has been disabled temporarily, please reach out to the ICT Department for enquiry.</ModalBody>
+
+                    <ModalFooter gap='5'>
+                        <Link to='/' >
+                            <Button  px={10} colorScheme='blue' onClick={() => {
+                                // onClose();
+                                api.logout();
+                                navigate("/login");}}>
+                                Logout
+                            </Button>
+                        </Link>
+                        {/* <Button  variant='ghost' width={"100px"}>
+                            {loading ? <Spinner /> : "No"}
+                        </Button> */}
+                    </ModalFooter>
+                </ModalContent>
+            </Modal>
       <p className="text-[#121212] text-[18px] md:text-[20px] font-semibold mt-4 ">
         Hello, {userDetails?.first_name} {userDetails?.last_name}
       </p>
