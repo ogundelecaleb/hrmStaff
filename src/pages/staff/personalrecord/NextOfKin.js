@@ -4,23 +4,42 @@ import { useSnackbar } from "notistack";
 import { getUserDetails } from "../../../utils/utils";
 import api from "../../../api";
 import { MoonLoader } from "react-spinners";
+import { Trash } from "iconsax-react";
 
 const NextOfKin = () => {
   const [userDetails, setUserDetails] = useState([]);
   const { enqueueSnackbar } = useSnackbar();
   const [isLoading, setIsLoading] = useState(false);
   const [isDeclarationAccepted, setIsDeclarationAccepted] = useState(false);
-  const [beneficiaries, setBeneficiaries] = useState([ { full_name: "", relationship: "", phone: "", email: "", percentage: "" }]);
+  const [beneficiaries, setBeneficiaries] = useState([
+    {
+      id: "0",
+      full_name: "",
+      relationship: "",
+      phone: "",
+      email: "",
+      percentage: "",
+    },
+  ]);
 
   const handleAddBeneficiary = () => {
-    if (beneficiaries?.length >= 4){
-      enqueueSnackbar("Maximum number of beneficiaries reached", { variant: "warning" });
+    if (beneficiaries?.length >= 4) {
+      enqueueSnackbar("Maximum number of beneficiaries reached", {
+        variant: "warning",
+      });
       return;
     }
-    console.log("beneficiaries?.length", beneficiaries?.length)
+    console.log("beneficiaries?.length", beneficiaries?.length);
     setBeneficiaries([
       ...beneficiaries,
-      { full_name: "", relationship: "", phone: "", email: "", percentage: "" },
+      {
+        id: JSON.stringify(beneficiaries?.length + 1),
+        full_name: "",
+        relationship: "",
+        phone: "",
+        email: "",
+        percentage: "",
+      },
     ]);
   };
 
@@ -75,7 +94,7 @@ const NextOfKin = () => {
         beneficiary_relationship: userDetails?.beneficiary_relationship,
         beneficiary_phone: userDetails?.beneficiary_phone,
       });
-      setBeneficiaries(userDetails?.beneficiary || [])
+      setBeneficiaries(userDetails?.beneficiary || []);
     }
   }, [userDetails]);
 
@@ -111,7 +130,10 @@ const NextOfKin = () => {
       setIsLoading(false);
     }
   }
-
+  const removeItem = (idToRemove) => {
+    const updatedItems = beneficiaries.filter((item) => item.id !== idToRemove);
+    setBeneficiaries(updatedItems); // Update state with the new array
+  };
   return (
     <div className="">
       <form onSubmit={handleSubmit}>
@@ -278,133 +300,142 @@ const NextOfKin = () => {
           <div className=""></div>
         </div>
         <div className="flex gap-[24px]">
-        <div className="w-full md:w-[40%] pt-4">
-          <p className="fw-semibold fs-5">Beneficiary</p>
-          <p className="text-muted fs-6" style={{ marginTop: "-10px" }}>
-            In situation of Death, my benefits should be paid in favour of :
-          </p>
-        </div>
-        <div className="w-full md:w-[60%] mt-4 pb-4">
-         
-          {beneficiaries.map((beneficiary, index) => (
-            <div key={index} style={{ marginBottom: "10px" }}>
-              <div className=" pe-">
-                <div class="form-group">
-                  <label
-                    for="exampleFormControlSelect1"
-                    className="fw-semibold text-muted fs-6 mt-3 mb-2"
-                  >
-                    Full Name <sup className="text-danger">*</sup>
-                  </label>
-                  <input
-                    type="text"
-                    style={{ height: "40px" }}
-                    class="form-control rounded-0"
-                    id="exampleFormControlInput1"
-                    name="full_name"
-                    placeholder="Name"
-                    value={beneficiary.full_name}
-                    onChange={(event) => handleChange(index, event)}
-                  />
-                </div>
-                <div class="row">
-                  <div className="col-lg-6">
-                    <div class="form-group">
-                      <label
-                        for="exampleFormControlSelect1"
-                        className="fw-semibold text-muted fs-6 mt-3 mb-2"
-                      >
-                        Email <sup className="text-danger">*</sup>
-                      </label>
-                      <input
-                        type="text"
-                        style={{ height: "40px" }}
-                        class="form-control rounded-0"
-                        id="exampleFormControlInput1"
-                        name="email"
-                        placeholder="@gmail.com"
-                        value={beneficiary.email}
-                        onChange={(event) => handleChange(index, event)}
-                      />
+          <div className="w-full md:w-[40%] pt-4">
+            <p className="fw-semibold fs-5">Beneficiary</p>
+            <p className="text-muted fs-6" style={{ marginTop: "-10px" }}>
+              In situation of Death, my benefits should be paid in favour of :
+            </p>
+          </div>
+          <div className="w-full md:w-[60%] mt-4 pb-4">
+            {beneficiaries.map((beneficiary, index) => (
+              <div key={index} style={{ marginBottom: "30px" }}>
+                <div className=" pe-">
+                  <div class="form-group">
+                    <label
+                      for="exampleFormControlSelect1"
+                      className="fw-semibold  flex justify-between text-muted fs-6 mt-3 mb-2"
+                    >
+                    <span>  Full Name <sup className="text-danger">*</sup></span>
+                      {beneficiary.id > "1" && (
+                          <button onClick={() => removeItem(beneficiary.id)}>
+                            <Trash size={15} />
+                          </button>
+                        )}
+
+                     
+                    </label>
+                    <input
+                      type="text"
+                      style={{ height: "40px" }}
+                      class="form-control rounded-0"
+                      id="exampleFormControlInput1"
+                      name="full_name"
+                      placeholder="Name"
+                      value={beneficiary.full_name}
+                      onChange={(event) => handleChange(index, event)}
+                    />
+                  </div>
+                  <div class="row">
+                    <div className="col-lg-6">
+                      <div class="form-group">
+                        <label
+                          for="exampleFormControlSelect1"
+                          className="fw-semibold text-muted fs-6 mt-3 mb-2"
+                        >
+                          Email <sup className="text-danger">*</sup>
+                        </label>
+                        <input
+                          type="text"
+                          style={{ height: "40px" }}
+                          class="form-control rounded-0"
+                          id="exampleFormControlInput1"
+                          name="email"
+                          placeholder="@gmail.com"
+                          value={beneficiary.email}
+                          onChange={(event) => handleChange(index, event)}
+                        />
+                      </div>
+                    </div>
+                    <div className="col-lg-6">
+                      <div class="form-group">
+                        <label
+                          for="exampleFormControlSelect1"
+                          className="fw-semibold text-muted fs-6 mt-3 mb-2"
+                        >
+                          Phone Number<sup className="text-danger">*</sup>
+                        </label>
+                        <input
+                          type="text"
+                          style={{ height: "40px" }}
+                          class="form-control rounded-0"
+                          id="exampleFormControlInput1"
+                          name="phone"
+                          placeholder="phone"
+                          value={beneficiary.phone}
+                          onChange={(event) => handleChange(index, event)}
+                        />
+                      </div>
                     </div>
                   </div>
-                  <div className="col-lg-6">
-                    <div class="form-group">
-                      <label
-                        for="exampleFormControlSelect1"
-                        className="fw-semibold text-muted fs-6 mt-3 mb-2"
-                      >
-                        Phone Number<sup className="text-danger">*</sup>
-                      </label>
-                      <input
-                        type="text"
-                        style={{ height: "40px" }}
-                        class="form-control rounded-0"
-                        id="exampleFormControlInput1"
-                        name="phone"
-                        placeholder="phone"
-                        value={beneficiary.phone}
-                        onChange={(event) => handleChange(index, event)}
-                      />
+                  <div class="row">
+                    <div className="col-lg-6">
+                      <div class="form-group">
+                        <label
+                          for="exampleFormControlSelect1"
+                          className="fw-semibold text-muted fs-6 mt-3 mb-2"
+                        >
+                          Relationship to you{" "}
+                          <sup className="text-danger">*</sup>
+                        </label>
+                        <input
+                          type="text"
+                          style={{ height: "40px" }}
+                          class="form-control rounded-0"
+                          id="exampleFormControlInput1"
+                          name="relationship"
+                          placeholder="Brother"
+                          value={beneficiary.relation}
+                          onChange={(event) => handleChange(index, event)}
+                        />
+                      </div>
                     </div>
-                  </div>
-                </div>
-                <div class="row">
-                  <div className="col-lg-6">
-                    <div class="form-group">
-                      <label
-                        for="exampleFormControlSelect1"
-                        className="fw-semibold text-muted fs-6 mt-3 mb-2"
-                      >
-                        Relationship to you <sup className="text-danger">*</sup>
-                      </label>
-                      <input
-                        type="text"
-                        style={{ height: "40px" }}
-                        class="form-control rounded-0"
-                        id="exampleFormControlInput1"
-                        name="relationship"
-                        placeholder="Brother"
-                        value={beneficiary.relation}
-                        onChange={(event) => handleChange(index, event)}
-                      />
-                    </div>
-                  </div>
-                  <div className="col-lg-6">
-                    <div class="form-group">
-                      <label
-                        for="exampleFormControlSelect1"
-                        className="fw-semibold text-muted fs-6 mt-3 mb-2"
-                      >
-                        Percent<sup className="text-danger">*</sup>
-                      </label>
-                      <input
-                        type="text"
-                        style={{ height: "40px" }}
-                        class="form-control rounded-0"
-                        id="exampleFormControlInput1"
-                        name="percentage"
-                        placeholder="20"
-                        value={beneficiary.percentage}
-                        onChange={(event) => handleChange(index, event)}
-                      />
+                    <div className="col-lg-6">
+                      <div class="form-group">
+                        <label
+                          for="exampleFormControlSelect1"
+                          className="fw-semibold text-muted fs-6 mt-3 mb-2"
+                        >
+                          Percent<sup className="text-danger">*</sup>
+                        </label>
+                        <input
+                          type="text"
+                          style={{ height: "40px" }}
+                          class="form-control rounded-0"
+                          id="exampleFormControlInput1"
+                          name="percentage"
+                          placeholder="20"
+                          value={beneficiary.percentage}
+                          onChange={(event) => handleChange(index, event)}
+                        />
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
-          ))}
+            ))}
 
-          <button
-            type="button"
-            className="btn py-2 px-4 me-2  text-white rounded-0"
-            style={{ backgroundColor: "#984779" }}
-            onClick={handleAddBeneficiary}
-          >
-           {beneficiaries?.length === 0 ? "Add First Beneficiary" : "Add More Beneficiary"}
-          </button>
-          <div className="col-lg-2"></div>
-        </div>
+            <button
+              type="button"
+              className="btn py-2 px-4 me-2  text-white rounded-0"
+              style={{ backgroundColor: "#984779" }}
+              onClick={handleAddBeneficiary}
+            >
+              {beneficiaries?.length === 0
+                ? "Add First Beneficiary"
+                : "Add More Beneficiary"}
+            </button>
+            <div className="col-lg-2"></div>
+          </div>
         </div>
         <div className="row pt-4">
           <div className="col-lg-9 d-flex gap-3">
