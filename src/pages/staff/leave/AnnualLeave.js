@@ -96,7 +96,7 @@ const AnnualLeave = ({ navigate }) => {
     dateOfFirstAppointment,
     rankDesignation,
     selectedLeaveType,
-    dateResumed,
+    `date resumed : ${dateResumed} <<==`,
     startDate,
     addressLeave,
     leaveNumber,
@@ -258,7 +258,6 @@ const AnnualLeave = ({ navigate }) => {
     cacheTime: Infinity,
     retry: true,
   });
-  console.log("leave status====>>>", leaveStatusQuery.data);
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -312,9 +311,9 @@ const AnnualLeave = ({ navigate }) => {
         faculty_id: faculty,
         unit_id: unit,
         leave_type: selectedLeaveType,
-        date_of_first_appointment: handleConvertDate(dateOfFirstAppointment),
+        date_of_first_appointment: dateOfFirstAppointment,
         designation: rankDesignation,
-        date_resumed: formattedDateResumed,
+        date_resumed: dateResumed,
         start_date: formattedStartDate,
         end_date: endDate,
         resumption_date: resumptionDate,

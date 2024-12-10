@@ -22,6 +22,8 @@ const LeaveCertificate = () => {
       pdf.save("download.pdf");
     });
   };
+
+  
   const handleDownload = () => {
     const input = document.getElementById("certificate");
 

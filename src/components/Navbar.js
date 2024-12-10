@@ -57,15 +57,14 @@ const Navbar = ({ mobile, setMobile, display, reuseableNavigation }) => {
 
   if (userDetails?.data?.role === "HOD") {
     Heading = "HEAD OF DEPARTMENT(HOD)";
-  }if (userDetails?.data?.role === "HOU") {
-      Heading = "HEAD OF UNIT(HOU)";
-
-
-    } else if (userDetails?.data?.role === "HNASES") {
-      Heading = "OFFICE OF HEAD OF NASE SENIOR";
-    } else if (userDetails?.data?.role === "HNASEJ") {
-      Heading = "OFFICE OF HEAD OF NASE JUNIOR";
-    } else if (userDetails?.data?.role === "CS") {
+  }
+  if (userDetails?.data?.role === "HOU") {
+    Heading = "HEAD OF UNIT(HOU)";
+  } else if (userDetails?.data?.role === "HNASES") {
+    Heading = "OFFICE OF HEAD OF NASE SENIOR";
+  } else if (userDetails?.data?.role === "HNASEJ") {
+    Heading = "OFFICE OF HEAD OF NASE JUNIOR";
+  } else if (userDetails?.data?.role === "CS") {
     Heading = "OFFICE OF THE COLLEGE SECRETARY";
   } else if (userDetails?.data?.role === "PT") {
     Heading = "OFFICE OF THE PROVOST";
@@ -78,12 +77,12 @@ const Navbar = ({ mobile, setMobile, display, reuseableNavigation }) => {
   } else if (userDetails?.data?.role === "DPT") {
     Heading = "OFFICE OF THE DEPUTY PROVOST";
   }
-
+  let role = userDetails?.data?.role;
 
   return (
     <div
-    className='border text-dark flex justify-between items-center sticky-top'
-    style={{ width: "100%", backgroundColor: "white" }}
+      className="border text-dark flex justify-between items-center sticky-top"
+      style={{ width: "100%", backgroundColor: "white" }}
     >
       <div className="burger flex gap-3 items-center ">
         <div className={display ? "d-block " : "d-none"}>
@@ -150,26 +149,40 @@ const Navbar = ({ mobile, setMobile, display, reuseableNavigation }) => {
               </Box>
             </MenuButton>
             <MenuList>
-              <MenuItem
-                fontWeight={600}
-                fontSize="20px"
-                _hover={{ bg: "#984779", color: "white" }}
-                minH="48px"
-                onClick={() => reuseableNavigation("setting")}
-              >
-                Profile
-              </MenuItem>
+              {role === "HOD" ||
+              role === "DEAN" ||
+              role === "HOU" ||
+              role === "CS" ||
+              role === "PT" ||
+              role === "DPT" ||
+              role === "HNASES" ||
+              role === "HNASEJ" ? (
+                ""
+              ) : role === "RSWEP" || role === "NTSWEP" ? (
+                <MenuItem
+                  fontWeight={600}
+                  fontSize="20px"
+                  _hover={{ bg: "#984779", color: "white" }}
+                  minH="48px"
+                  onClick={() => reuseableNavigation("setting")}
+                >
+                  Profile
+                </MenuItem>
+              ) : (
+                ""
+              )}
             </MenuList>
           </Menu>
         </Box>
         <div className={display && !mobile ? "d-block " : "d-none"}>
-          <button className=" text-dark burger " onClick={() => setMobile(!mobile)}>
+          <button
+            className=" text-dark burger "
+            onClick={() => setMobile(!mobile)}
+          >
             <i className="ms-3 fa fa-bars"></i>
           </button>
         </div>
       </div>
-
-     
     </div>
   );
 };
