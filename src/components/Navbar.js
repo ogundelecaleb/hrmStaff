@@ -158,7 +158,7 @@ const Navbar = ({ mobile, setMobile, display, reuseableNavigation }) => {
               role === "HNASES" ||
               role === "HNASEJ" ? (
                 ""
-              ) : role === "RSWEP" || role === "NTSWEP" ? (
+              ) :  (
                 <MenuItem
                   fontWeight={600}
                   fontSize="20px"
@@ -168,8 +168,6 @@ const Navbar = ({ mobile, setMobile, display, reuseableNavigation }) => {
                 >
                   Profile
                 </MenuItem>
-              ) : (
-                ""
               )}
             </MenuList>
           </Menu>

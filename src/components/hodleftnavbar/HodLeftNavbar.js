@@ -210,7 +210,7 @@ const HodLeftNavbar = ({ mobile, setMobile, display, staffNumber }) => {
             Staffs On Leave
           </div>
         </CustomLink>
-        <CustomLink to="spadev">
+        {/* <CustomLink to="spadev">
           <div
             id="hoverEffect"
             className="ps-3 ms-1 d-flex align-items-center rounded gap-2"
@@ -219,8 +219,8 @@ const HodLeftNavbar = ({ mobile, setMobile, display, staffNumber }) => {
             <GiTeamUpgrade size="25" style={{ color: "#84818A" }} />
             SPADEV
           </div>
-        </CustomLink>
-        <CustomLink to="report">
+        </CustomLink> */}
+        {/* <CustomLink to="report">
           <div
             id="hoverEffect"
             className="ps-3 ms-2 d-flex align-items-center rounded gap-2"
@@ -229,12 +229,12 @@ const HodLeftNavbar = ({ mobile, setMobile, display, staffNumber }) => {
             <MdInsertChart size="25" style={{ color: "#84818A" }} />
             Report
           </div>
-        </CustomLink>
+        </CustomLink> */}
 
         <p className="text-muted ms-4 pb-1 mt-1" style={{ marginBottom: "0" }}>
           Others
         </p>
-        <CustomLink to="setting">
+        {/* <CustomLink to="setting">
           <div
             id="hoverEffect"
             className="ps-3 ms-1 d-flex align-items-center rounded gap-2"
@@ -243,7 +243,7 @@ const HodLeftNavbar = ({ mobile, setMobile, display, staffNumber }) => {
             <IoSettings size="25" style={{ color: "#84818A" }} />
             Settings
           </div>
-        </CustomLink>
+        </CustomLink> */}
         <LogoutModal />
         </div>
       </div>
