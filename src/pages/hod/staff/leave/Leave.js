@@ -175,33 +175,20 @@ const Leave = ({ id }) => {
       </div>
     ) : (
     <Box>
-      <Box>
-        <Box
-          display={"flex"}
-          alignItems={"center"}
-          borderBottom='1px solid #EBEAED'
-          px='10'
-          justifyContent='space-between'>
-          <Text fontSize={"2xl"}>Total Applicantions : {data?.meta?.total}</Text>{" "}
-          {/* <Link
-            to='/portal/leave-application'>
-            <CommonButton title={"Apply for Leave"} />
-          </Link> */}
-        </Box>
-      </Box>
+     
       <Box>
         <Tabs>
-          <TabList gap={"40"} px="20">
-            <Tab fontSize={"xl"} onClick={() => setSelectedStatus("All")}>
+          <TabList gap={"30"} px="20">
+            <Tab fontSize={"lg"} className="flex items-center gap-1" onClick={() => setSelectedStatus("All")} >
               All ({data?.meta?.total})
             </Tab>
-            <Tab fontSize={"xl"} onClick={() => setSelectedStatus("Pending")}>
+            <Tab fontSize={"lg"} onClick={() => setSelectedStatus("Pending")}>
               Pending
             </Tab>
-            <Tab fontSize={"xl"} onClick={() => setSelectedStatus("Approved")}>
+            <Tab fontSize={"lg"} onClick={() => setSelectedStatus("Approved")}>
               Approved
             </Tab>
-            <Tab fontSize={"xl"} onClick={() => setSelectedStatus("Declined")}>
+            <Tab fontSize={"lg"} onClick={() => setSelectedStatus("Declined")}>
               Declined
             </Tab>
           </TabList>
@@ -230,12 +217,8 @@ const Leave = ({ id }) => {
                   <Thead>
                     <Tr>
                       <Th>
-                        <InputGroup>
-                          <InputLeftElement pointerEvents='none'>
-                            <CiSearch color='gray.300' />
-                          </InputLeftElement>
-                          <Input placeholder='Search employee..' />
-                        </InputGroup>
+                      <Text>Staff Name</Text>
+
                       </Th>
                       <Th>
                         <Text>Leave type</Text>
@@ -261,10 +244,10 @@ const Leave = ({ id }) => {
                       <Tr key={item.id}>
                         <Td>
                           <Flex gap='3' alignItems={"center"}>
-                            {item.image ? (
+                            {item.user_image ? (
                               <Avatar
                                 size='sm'
-                                src={item.image}
+                                src={item.user_image}
                               />
                             ) : (
                               <RxAvatar size={30} color={'#25324B'}/>
@@ -280,7 +263,7 @@ const Leave = ({ id }) => {
                         <Td>{item.leave_type}</Td>
                         
                         <Td>
-                          <Button
+                          <button
                             h='8'
                             bg='white'
                             border={
@@ -292,17 +275,15 @@ const Leave = ({ id }) => {
                                 ? "1px solid #FC3400"
                                 : null
                             }
-                            color={
-                              item.status === "sucessful"
-                                ? "#388B41"
-                                : item.status === "pending"
-                                ? "#FFA043"
-                                : item.status === "declined"
-                                ? "#FC3400"
-                                : null
-                            }>
+                             className={`text-sm font-normal ${  item.status === "sucessful"
+                              ? "text-[#388B41]"
+                              : item.status === "pending"
+                              ? "text-[#FFA043]"
+                              : item.status === "declined"
+                              ? "text-[#FC3400]"
+                              : null}`}>
                             {item.status}
-                          </Button>
+                          </button>
                         </Td>
 
                         <Td>{formatDate(item.date)}</Td>
@@ -313,12 +294,12 @@ const Leave = ({ id }) => {
                             to={`${item.leave_type}/details/${item.id}`}
                              state={{ from: "occupation" }}
                             >
-                            <Button
-                              bg={"#EBEAED"}
-                              border={"1px solid #984779"}
-                              color='#984779'>
+                            <button
+                             
+                              className="text-sm bg-[#EBEAED] font-normal border px-3 py-2 border-[#984779] text-[#984779]"
+                              >
                               See Application
-                            </Button>
+                            </button>
                           </Link>
                          
                         </Td>

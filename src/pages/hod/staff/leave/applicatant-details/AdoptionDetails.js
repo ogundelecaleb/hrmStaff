@@ -224,11 +224,11 @@ const AdoptionDetails = () => {
             <Box p='5' border='1px solid #D6DDEB  ' h='fit-content'>
               <Box className='d-flex gap-3 my-4'>
                 <div>
-                {leaveDetails.image ? (
+                {leaveDetails.user_image ? (
                   <Avatar
                     h={'129.17px'}
                     w={'129.17px'}
-                    src={leaveDetails.image}
+                    src={leaveDetails.user_image}
                   />
                 ) : (
                   <RxAvatar size={80} color={'#25324B'} />
