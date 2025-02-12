@@ -46,7 +46,6 @@ export const BereavementDetails = () => {
       setComments([...comments, commentText]);
       setIsCommentDisplayed(true);
     }
-    console.log("commets", commentText);
   };
 
   useEffect(() => {
@@ -70,10 +69,8 @@ export const BereavementDetails = () => {
   async function fetchUserDetails() {
     try {
       const userDetails = await getUserDetails();
-      console.log("User Details:", userDetails);
       setUserDetails(userDetails);
     } catch (error) {
-      console.error("Error fetching your basic details", error);
       enqueueSnackbar(error.message, { variant: "error" });
     }
   }
@@ -124,7 +121,6 @@ export const BereavementDetails = () => {
         status: "approved",
         comment: commentText,
       });
-      console.log("responce==>>>>>", response);
       enqueueSnackbar("Application approved successfully", {
         variant: "success",
       });
@@ -152,7 +148,6 @@ export const BereavementDetails = () => {
         status: "declined",
         comment: commentText,
       });
-      console.log("responce==>>>>>", response);
       enqueueSnackbar("Application declined successfully", {
         variant: "success",
       });
@@ -167,8 +162,6 @@ export const BereavementDetails = () => {
 
   function getLastItem(array) {
 
-    console.log("appprovalls===>>>", leaveDetails?.approval_bodies)
-    // Check if the array is not empty
     if (array.length === 0) {
         return undefined; // Return undefined if the array is empty
     }
