@@ -200,8 +200,8 @@ const isApproved= leaveDetails?.status !== "approved"
               <div>
               {leaveDetails.user_image ? (
                   <Avatar
-                    h={'129.17px'}
-                    w={'129.17px'}
+                    h={'90.17px'}
+                    w={'90.17px'}
                     src={leaveDetails.user_image}
                   />
                 ) : (

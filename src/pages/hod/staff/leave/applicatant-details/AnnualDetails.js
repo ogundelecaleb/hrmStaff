@@ -207,8 +207,8 @@ const AnnualDetails = (props) => {
               <div>
                 {leaveDetails.user_image ? (
                   <Avatar
-                    h={'129.17px'}
-                    w={'129.17px'}
+                    h={'90.17px'}
+                    w={'90.17px'}
                     src={leaveDetails.user_image}
                   />
                 ) : (
@@ -333,7 +333,7 @@ const AnnualDetails = (props) => {
           h={"fit-content"}
           pb='20'
           px='5'
-          className='col-lg-7 border  tb-res-parent'>
+          className=' border  tb-res-parent'>
           {/* <div className='tb-res'> */}
           <Tabs position='relative' variant={"line"} pt={"2"}>
             <Box className='tab-scroll' overflowX={"auto"}>
@@ -363,41 +363,43 @@ const AnnualDetails = (props) => {
               <TabPanel>
                 <Grid templateColumns='repeat(2, 1fr)' gap={6}>
                   <GridItem w='100%' h='10'>
-                    <Text fontSize={"lg"} color='#7C8493' m='0'>
+                    <h2  className="text-base font-medium text-[#7C8493]">
                       Full Name
-                    </Text>
-                    <Text fontSize={"medium"} color='#25324B' fontWeight={"medium"}>
+                    </h2>
+                    <h3 className="text-sm font-medium text-[#000]">
                       {leaveDetails.full_name}
-                    </Text>
+                    </h3>
                   </GridItem>
                   <GridItem w='100%' h='10'>
-                    <Text fontSize={"lg"} color='#7C8493' m='0'>
-                      Leave Type
-                    </Text>
-                    <Text fontSize={"medium"} color='#25324B' fontWeight={"medium"}>
+                  <h2  className="text-base font-medium text-[#7C8493]">
+                  Leave Type
+                    </h2>
+                    <h3 className="text-sm font-medium text-[#000]">
                       Annual Leave
-                    </Text>
+                    </h3>
                   </GridItem>
                   <GridItem w='100%' h='10'>
-                    <Text fontSize={"lg"} color='#7C8493' m='0'>
+                  <h2  className="text-base font-medium text-[#7C8493]">
                       Marital Status{" "}
-                    </Text>
-                    <Text fontSize={"medium"} color='#25324B' fontWeight={"medium"}>
+                      </h2>
+                                        <h3 className="text-sm font-medium text-[#000]">
+
                       {leaveDetails.marital_status}
-                    </Text>
+                    </h3>
                   </GridItem>
                   <GridItem w='100%' h='10'>
-                    <Text fontSize={"lg"} color='#7C8493' m='0'>
+                  <h2  className="text-base font-medium text-[#7C8493]">
                       Date of First Appointment{" "}
-                    </Text>
-                    <Text fontSize={"medium"} color='#25324B' fontWeight={"medium"}>
+                      </h2>
+                                        <h3 className="text-sm font-medium text-[#000]">
+
                       {formatDate(leaveDetails.date_of_first_appointment)}
-                    </Text>
-                  </GridItem>
+                      </h3>
+                      </GridItem>
                   <GridItem w='100%' h='10'>
-                    <Text fontSize={"lg"} color='#7C8493' m='0'>
+                  <h2  className="text-base font-medium text-[#7C8493]">
                       Division/Department/Unit
-                    </Text>
+                      </h2>
                     <Text fontSize={"sm"} color='#25324B' fontWeight={"medium"}>
                     {leaveDetails.department?.name || leaveDetails.faculty?.name || leaveDetails.unit?.name}
                     </Text>
@@ -407,52 +409,56 @@ const AnnualDetails = (props) => {
                     <Text fontSize={"lg"} color='#7C8493' m='0'>
                       Leave due for Current year
                     </Text>
-                    <Text fontSize={"medium"} color='#25324B' fontWeight={"medium"}>
+                                        <h3 className="text-sm font-medium text-[#000]">
+
                       {leaveDetails.total_leave_due}
                     </Text>
                   </GridItem> */}
                   <GridItem w='100%' h='10' mt='4'>
-                      <Text fontSize={"lg"} color='#7C8493' m='0'>
+                  <h2  className="text-base font-medium text-[#7C8493]">
                       To be relived by (Name of Staff)
-                      </Text>
-                      <Text fontSize={"medium"} color='#25324B' fontWeight={"medium"}>
+                      </h2>
+                                          <h3 className="text-sm font-medium text-[#000]">
+
                         {leaveDetails.replacement_on_duty}
-                      </Text>
-                    </GridItem>
+                        </h3>
+                        </GridItem>
                   
                   
                   <GridItem w='100%' h='10'>
-                    <Text fontSize={"lg"} color='#7C8493' m='0'>
+                  <h2  className="text-base font-medium text-[#7C8493]">
                       Start Date
-                    </Text>
-                    <Text fontSize={"medium"} color='#25324B' fontWeight={"medium"}>
+                      </h2>
+                                        <h3 className="text-sm font-medium text-[#000]">
+
                       {formatDate(leaveDetails.start_date)}
-                    </Text>
-                  </GridItem>
+                      </h3>
+                      </GridItem>
                   <GridItem w='100%' h='10'>
-                    <Text fontSize={"medium"} color='#7C8493' m='0'>
+                  <h2  className="text-base font-medium text-[#7C8493]">
                       Address when on Leave{" "}
-                    </Text>
-                    <Text fontSize={"sm"} color='#25324B' fontWeight={"medium"}>
+                      </h2>
+                      <h3 className="text-sm font-medium text-[#000]">
                       {leaveDetails.leave_address}
-                    </Text>
+                    </h3>
                   </GridItem>
                   <GridItem w='100%' h='10'>
-                    <Text fontSize={"medium"} color='#7C8493' m='0'>
+                  <h2  className="text-base font-medium text-[#7C8493]">
                       End Date
-                    </Text>
-                    <Text fontSize={"lg"} color='#25324B' fontWeight={"medium"}>
+                      </h2>
+                      <h3 className="text-sm font-medium text-[#000]">
                       {formatDate(leaveDetails.end_date)}
-                    </Text>
+                    </h3>
                   </GridItem>
                   <GridItem w='100%' h='10' >
-                      <Text fontSize={"lg"} color='#7C8493' m='0'>
+                  <h2  className="text-base font-medium text-[#7C8493]">
                        Resumption Date
-                      </Text>
-                      <Text fontSize={"medium"} color='#25324B' fontWeight={"medium"}>
+                      </h2>
+                                          <h3 className="text-sm font-medium text-[#000]">
+
                       {formatDate(leaveDetails.resumption_date)}
-                      </Text>
-                    </GridItem>
+                      </h3>
+                      </GridItem>
                 </Grid>
               </TabPanel>
               <TabPanel>Document</TabPanel>

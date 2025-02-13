@@ -275,7 +275,7 @@ const Leave = ({ id }) => {
                                 ? "1px solid #FC3400"
                                 : null
                             }
-                             className={`text-sm font-normal ${  item.status === "sucessful"
+                             className={`text-sm font-normal ${  item.status === "approved"
                               ? "text-[#388B41]"
                               : item.status === "pending"
                               ? "text-[#FFA043]"

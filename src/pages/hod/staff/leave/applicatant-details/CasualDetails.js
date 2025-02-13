@@ -253,11 +253,11 @@ export const CasualDetails = (props) => {
               <Box className="d-flex gap-3 my-4">
                 <div>
                   {leaveDetails.user_image ? (
-                    <Avatar
-                      h={"129.17px"}
-                      w={"129.17px"}
-                      src={leaveDetails.user_image}
-                    />
+                     <Avatar
+                    h={'90.17px'}
+                    w={'90.17px'}
+                    src={leaveDetails.user_image}
+                  />
                   ) : (
                     <RxAvatar size={80} color={"#25324B"} />
                   )}
