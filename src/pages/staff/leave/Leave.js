@@ -812,34 +812,16 @@ const Leave = () => {
                     <sup className="text-danger">*</sup>
                   </label>
                 </div>
-                <DatePicker
-                  shouldCloseOnSelect={true}
-                  autoComplete="off"
-                  selected={
-                    formValues.date_of_first_appointment
-                      ? new Date(formValues.date_of_first_appointment)
-                      : null
-                  }
-                  onChange={(date) => {
-                    if (date instanceof Date && !isNaN(date)) {
-                      const formattedDate = date.toISOString().split("T")[0];
-                      setFormValues({
-                        ...formValues,
-                        date_of_first_appointment: formattedDate,
-                      });
-                    } else {
-                      setFormValues({
-                        ...formValues,
-                        date_of_first_appointment: "",
-                      });
-                    }
-                  }}
-                  dateFormat="yyyy-MM-dd"
-                  disabled
-                  className="form-control rounded-0"
+                <input
+                  type="text"
+                  style={{ height: "40px" }}
+                  class="form-control rounded-0"
                   id="exampleFormControlInput1"
-                  placeholder=""
+                  disabled
+                  value={formValues.date_of_first_appointment}
+                 
                 />
+                
               </div>
               <div class="mb-3">
                 <label
