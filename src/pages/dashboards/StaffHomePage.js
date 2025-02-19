@@ -30,20 +30,6 @@ const StaffHomePage = ({ switchRoutes, navigate }) => {
   // const navigate = useNavigate();
   const [isDisabled, setIsDisabled] = useState(false);
 
-  const datar = [
-    {
-      id: 1,
-      title: "Complete your Personal Records / Work Profile",
-      message:
-        "Go to your Personal records and fill out every Personal detail recquested",
-    },
-    {
-      id: 2,
-      title: "Fill the Certificate of Assumption Duty form",
-      message:
-        "filling out the assumption of duty form enables the verificationof your work status",
-    },
-  ];
 
   const { enqueueSnackbar } = useSnackbar();
   const [page, setPage] = useState(1);
@@ -52,7 +38,6 @@ const StaffHomePage = ({ switchRoutes, navigate }) => {
   async function fetchUserDetails() {
     try {
       const userDetails = await getUserDetails();
-      console.log("User Details:", userDetails);
       setUserDetails(userDetails.data);
       setRole(userDetails?.data?.role);
     } catch (error) {
@@ -150,7 +135,6 @@ const StaffHomePage = ({ switchRoutes, navigate }) => {
       "marital_status",
       "contact_address",
       "date_of_first_appointment",
-      "k1_full_name",
       // "beneficiary_full_name",
       "staff_academic_qualification",
     ];
@@ -177,8 +161,6 @@ const StaffHomePage = ({ switchRoutes, navigate }) => {
         staff_id: userDetails?.id,
       });
     } catch (error) {
-      console.error("Error updating progress");
-      // enqueueSnackbar(error.message, { variant: 'error' })
     }
   }
 
