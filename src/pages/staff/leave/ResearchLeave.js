@@ -208,7 +208,6 @@ const ResearchLeave = ({ navigate }) => {
 
     try {
       const response = await api.requestLeave(formData);
-      console.log("responce==>>>>>", response);
       enqueueSnackbar("Leave Application successfull", { variant: "success" });
       setIsLoading(false);
       navigate("submited");
@@ -219,31 +218,31 @@ const ResearchLeave = ({ navigate }) => {
     }
   }
 
-  if (conuassLevel === "Level 1" || staffType === "NASE") {
-    return (
-      <Box
-        w={"80vw"}
-        display="flex"
-        flexDirection="column"
-        h={"20vh"}
-        alignItems="center"
-        justifyContent="center"
-      >
-        <div className="row mt-5 " style={{ height: "10px", width: "80%" }}>
-          <Oops />
-          <h2 style={{ textAlign: "center", marginTop: 50 }}>
-            You are not Eligible for this Type of Leave.
-          </h2>
-          <p
-            class=" fs-5 fw-semibold"
-            style={{ textAlign: "center", marginTop: 20 }}
-          >
-            Research Leave is not entitled to NASE Staff and CONUASS level 1
-          </p>
-        </div>
-      </Box>
-    );
-  }
+  // if (conuassLevel === "Level 1" || staffType === "NASE") {
+  //   return (
+  //     <Box
+  //       w={"80vw"}
+  //       display="flex"
+  //       flexDirection="column"
+  //       h={"20vh"}
+  //       alignItems="center"
+  //       justifyContent="center"
+  //     >
+  //       <div className="row mt-5 " style={{ height: "10px", width: "80%" }}>
+  //         <Oops />
+  //         <h2 style={{ textAlign: "center", marginTop: 50 }}>
+  //           You are not Eligible for this Type of Leave.
+  //         </h2>
+  //         <p
+  //           class=" fs-5 fw-semibold"
+  //           style={{ textAlign: "center", marginTop: 20 }}
+  //         >
+  //           Research Leave is not entitled to NASE Staff and CONUASS level 1
+  //         </p>
+  //       </div>
+  //     </Box>
+  //   );
+  // }
 
   return (
     <div className="container-fluid">
