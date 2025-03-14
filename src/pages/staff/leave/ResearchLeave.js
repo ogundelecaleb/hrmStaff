@@ -116,18 +116,7 @@ const ResearchLeave = ({ navigate }) => {
     "December",
   ];
 
-  console.log(
-    fullName,
-    maritalStatus,
-    departmentOrUnitOrFacultyID,
-    dateOfFirstAppointment,
-    rankDesignation,
-    selectedLeaveType,
-    startDate,
-    endDate,
-    leaveDuration,
-    resumptionDate
-  );
+
 
   const calculateDates = (selectedStartDate) => {
     if (selectedStartDate instanceof Date && !isNaN(selectedStartDate)) {

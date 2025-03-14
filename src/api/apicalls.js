@@ -99,7 +99,9 @@ import {
   MARKASREAD,
   GETLASTLEAVE,
   STAFFONLEAVE,
-  TRACKPROGRESS
+  TRACKPROGRESS,
+  GETALLOFFICE,
+  SELECTSUPPERVISOR
 } from "../utils/config";
 import { apiGet, apiPost, apiPut, apiDelete } from "../utils/utils";
 
@@ -512,4 +514,14 @@ export function staffOnLeave(data) {
 }
 export function trackProgress(data) {
   return apiPost(TRACKPROGRESS, data);
+}
+
+
+
+export function fetchAllOffice(data) {
+  return apiGet(GETALLOFFICE, data);
+}
+
+export function selectSupervisor(data) {
+  return apiPost(SELECTSUPPERVISOR, data);
 }

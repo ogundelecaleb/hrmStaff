@@ -1,5 +1,5 @@
-//export const API_BASE_URL = 'https://hrmdev.devapi.live/api';
-export const API_BASE_URL = 'https://hrm.devapi.live/api';
+export const API_BASE_URL = 'https://hrmdev.devapi.live/api';
+//export const API_BASE_URL = 'https://hrm.devapi.live/api';
 export const getApiUrl = (endpoint) => API_BASE_URL + endpoint
 
 export const ADDUSER = getApiUrl('/staffs')
@@ -118,6 +118,9 @@ export const MARKASREAD = getApiUrl('/mark-all-read')
 export const GETLASTLEAVE = getApiUrl('/last-approved-leave')
 export const STAFFONLEAVE = getApiUrl('/user-leave-status')
 export const TRACKPROGRESS = getApiUrl('/track-progress-bar')
+export const GETALLOFFICE = getApiUrl('/supervisor-offices')
+export const SELECTSUPPERVISOR = getApiUrl('/select-immediate-supervisor')
+// export const ALL = getApiUrl('/select-immediate-supervisor')
 
 
 

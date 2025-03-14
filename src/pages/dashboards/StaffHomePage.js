@@ -25,16 +25,18 @@ import {
   Spinner,
   useDisclosure,
 } from "@chakra-ui/react";
+import { ClipLoader } from "react-spinners";
 
 const StaffHomePage = ({ switchRoutes, navigate }) => {
   // const navigate = useNavigate();
   const [isDisabled, setIsDisabled] = useState(false);
 
-
   const { enqueueSnackbar } = useSnackbar();
   const [page, setPage] = useState(1);
   const [userDetails, setUserDetails] = useState([]);
   const [role, setRole] = useState("");
+  const [supervisor, setSupervisor] = useState("");
+  const [loading, setLoading] = useState(false);
   async function fetchUserDetails() {
     try {
       const userDetails = await getUserDetails();
@@ -160,8 +162,7 @@ const StaffHomePage = ({ switchRoutes, navigate }) => {
         progress_bar: progress,
         staff_id: userDetails?.id,
       });
-    } catch (error) {
-    }
+    } catch (error) {}
   }
 
   useEffect(() => {
@@ -177,6 +178,70 @@ const StaffHomePage = ({ switchRoutes, navigate }) => {
     const day = String(date.getDate()).padStart(2, "0");
     return `${year}-${month}-${day}`;
   }
+
+  async function fetchAllOffice(page) {
+    const response = await api.fetchAllOffice({
+      params: {
+       search:""
+      },
+    });
+    return response;
+  }
+
+  const results = useQuery(["getOffices"], () => fetchAllOffice(page), {
+    keepPreviousData: true,
+    refetchOnWindowFocus: "always",
+  });
+  const offices = results.data?.data || [];
+
+  const submitSupervisor = async () => {
+    if (!supervisor) {
+      enqueueSnackbar("Please select a supervisor office", {
+        variant: "error",
+      });
+      return;
+    }
+    setLoading(true);
+    try {
+      const response = await api.selectSupervisor({
+        supervisor_office_id: supervisor,
+      });
+      enqueueSnackbar("Supervisor Update Successfully", { variant: "success" });
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+      enqueueSnackbar(error.message, { variant: "error" });
+    }
+  };
+
+  const DashbordBox = ({ title, total, icon, route, desc }) => {
+    const navigate = useNavigate();
+
+    const handleClick = () => {
+      navigate(route);
+    };
+
+    return (
+      <div className="border rounded-lg flex justify-between flex-col shadow overflow-hidden ">
+        <div className="flex justify-between  items-center  p-2">
+          <p className="text-sm md:text-base font-semibold ">{title}</p>
+          <div>{icon}</div>
+        </div>
+
+        <div className="mt-7 ">
+          {/* <p className="text-[#718096] p-2">
+            {desc}
+          </p> */}
+          <div className="p-2 bg-gray-100 flex justify-between items-center">
+            <p className="font-semibold">Total: </p>
+
+            <p className="text-lg font-semibold">{total}</p>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
   return (
     <div className="px-[16px] md:px-[28px]">
       <Modal isOpen={isDisabled} onClose={() => console.log("close")}>
@@ -190,7 +255,7 @@ const StaffHomePage = ({ switchRoutes, navigate }) => {
             extension from the College Secretary. Once the extension is
             approved, further instructions will be provided.
             <br />
-            <br />  Thank you for yout patience{" "}
+            <br /> Thank you for yout patience{" "}
           </ModalBody>
 
           <ModalFooter gap="5">
@@ -229,81 +294,98 @@ const StaffHomePage = ({ switchRoutes, navigate }) => {
         role === "HNASEJ"
       ) && (
         <>
-          <div className="grid grid-cols-2 mt-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 gap-5">
-            <div className="border-[0.2px] border-[#98a2b3] rounded-[8px] p-2 xl:p-3">
-              <div>
-                <div
-                  className="mt-4 border rounded-3 d-grid bg-[#984779] h-[32px] w-[32px] md:h-[40px] md:w-[40px]"
-                  style={{
-                    placeItems: "center",
-                  }}
+          <div className="grid grid-cols-1 mt-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-5">
+            <DashbordBox
+              title={"Leave Applications"}
+              total={data?.meta?.total ? data?.meta?.total : "0"}
+              // desc={"View, Create and Update Staff Details"}
+              icon={
+                <NoteRemove
+                  color="#984779"
+                  className="text-16 md:text-[20px]"
+                  variant="Bold"
+                />
+              }
+              route=""
+            />
+
+            <DashbordBox
+              title={"Total Leave Due"}
+              total={userDetails.total_leave_due}
+              // desc={"View, Create and Update Staff Details"}
+              icon={
+                <Ankr
+                  color="#984779"
+                  className="text-16 md:text-[20px]"
+                  variant="Bold"
+                />
+              }
+              route=""
+            />
+
+            <DashbordBox
+              title={"Leave From Previous Year"}
+              total={userDetails.last_year_leave}
+              // desc={"View, Create and Update Staff Details"}
+              icon={
+                <ArrowForwardSquare
+                  color="#984779"
+                  className="text-16 md:text-[20px]"
+                  variant="Bold"
+                />
+              }
+              route=""
+            />
+          </div>
+          <div className="w-full max-w-[520px] mt-[24px] rounded-md bg-[#984779] bg-opacity-50 py-3 px-2 flex flex-col">
+            <p className="text-center text-sm font-semibold">Quick Action</p>
+
+            <p className=" my-[18px] text-sm font-semibold">
+              Current Immediate Supervisor Office:{" "}
+              <span className="text-base">
+                {userDetails?.supervisor_office?.name}
+              </span>
+            </p>
+            <div className="">
+              <label className="text-[14px] text-[#242527] leading-[20px]   mb-[8px]">
+                Select Immediate Supervisor Office{" "}
+              </label>
+              <div className=" relative  flex items-center">
+                <select
+                  type="text"
+                  placeholder=""
+                  className="w-full h-[38px] pl-[24px] pr-[8px] py-[8px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
+                  name="supervisor"
+                  value={supervisor}
+                  onChange={(e) => setSupervisor(e.target.value)}
                 >
-                  <NoteRemove className="h-[20px] md:h-[32px]" color="white" />
-                </div>
-                <p className="fs-4  fw-semibold">
-                  {data?.meta?.total ? data?.meta?.total : "0"}
-                </p>
-                <p
-                  className="fs-6 text-muted fw-normal"
-                  style={{ marginTop: "-10px" }}
-                >
-                  Leave Applications
-                </p>
+                  <option value="">-- Select Immediate Suppervisor</option>
+                  {offices.map((office) => (
+                    <option key={office.id} value={office.id}>
+                      {office.name}
+                    </option>
+                  ))}
+                </select>
               </div>
             </div>
-            <div className="border-[0.2px] border-[#98a2b3] rounded-[8px] p-2 xl:p-3">
-              <div>
-                <div
-                  className="mt-4 border rounded-3 d-grid bg-[#984779] h-[32px] w-[32px] md:h-[40px] md:w-[40px]"
-                  style={{
-                    placeItems: "center",
-                  }}
-                >
-                  <Ankr className="h-[20px] md:h-[32px]" color="white" />
-                </div>
-                <p className="fs-4 mt-2 fw-semibold">
-                  {userDetails.total_leave_due}
-                </p>
-                <p
-                  className="fs-6 text-muted fw-normal"
-                  style={{ marginTop: "-10px" }}
-                >
-                  Total Leave Due
-                </p>
-              </div>
-            </div>{" "}
-            <div className="border-[0.2px] border-[#98a2b3] rounded-[8px] p-2 xl:p-3">
-              <div>
-                <div
-                  className="mt-4 border rounded-3 d-grid bg-[#984779] h-[32px] w-[32px] md:h-[40px] md:w-[40px]"
-                  style={{
-                    placeItems: "center",
-                  }}
-                >
-                  <ArrowForwardSquare
-                    className="h-[20px] md:h-[32px]"
-                    color="white"
-                  />
-                </div>
-                <p className="fs-4 mt-2 fw-semibold">
-                  {" "}
-                  {userDetails.last_year_leave}
-                </p>
-                <p
-                  className="fs-6 text-muted fw-normal"
-                  style={{ marginTop: "-10px" }}
-                >
-                  Leave From Previous Year
-                </p>
-              </div>
-            </div>
+
+            <button
+              onClick={submitSupervisor}
+              className="px-3 py-2 w-full text-center mt-8 rounded-md  bg-[#984779] hover:bg-opacity-70 text-white "
+            >
+              {loading ? (
+                <ClipLoader color={"white"} size={20} />
+              ) : (
+                <> Submit </>
+              )}
+            </button>
           </div>
           {progress < 100 && (
             <div
-              className="flex rounded-1 py-3 md:py-5 px-3 mt-5 row border"
+              className="shadow flex flex-wrap justify-between gap-[16px] md:gap-[24px] rounded-1 py-3 md:py-5 px-3 mt-5 flex-row border"
               style={{ border: "1px solid #EFF4F8", borderRadius: 10 }}
             >
-              <div className="col-lg-1 ">
+              <div className=" ">
                 {" "}
                 <CircularProgress
                   value={progress}
@@ -314,25 +396,22 @@ const StaffHomePage = ({ switchRoutes, navigate }) => {
                   <CircularProgressLabel>{progress}%</CircularProgressLabel>
                 </CircularProgress>
               </div>
-              <div className="col-lg-8 d-flex gap-3 align-items-center">
+              <div className=" gap-2 flex-1">
                 <div className=" ps-2" id="zero-padding">
-                  <p class="fs-4 mb-0  fw-semibold" id="res">
+                  <p className="text-sm md:text-lg font-semibold" id="res">
                     Complete all Process
                   </p>
 
-                  <p className="fs-6 text-muted" id="res">
+                  <p className="text-sm md:text-base" id="res">
                     Your personal records profile is
                     <span className="text-warning"> {progress}% </span>{" "}
                     completed
                   </p>
                 </div>
               </div>
-              <div className="col-lg-3 ">
+              <div className=" ">
                 <Link to={`personal-records`}>
-                  <button
-                    className="btn btn-primary"
-                    style={{ backgroundColor: "#984779", border: "none" }}
-                  >
+                  <button className="px-3 py-2 rounded-md border bg-[#984779] hover:bg-opacity-70 text-white ">
                     Complete Profile
                   </button>
                 </Link>
@@ -347,7 +426,7 @@ const StaffHomePage = ({ switchRoutes, navigate }) => {
               <Link to="/leave/my-leave-applications">
                 <button className="flex items-center gap-2">
                   {" "}
-                  <p className=" text-[14px] md:text-base mb-0  text-[#984779] leading-[24px] font-medium text-left ">
+                  <p className=" text-[12px] md:text-base mb-0  text-[#984779]  font-medium text-left ">
                     View all applications
                   </p>
                   <ArrowRight size="16" variant="Linear" color="#984779" />
@@ -360,7 +439,7 @@ const StaffHomePage = ({ switchRoutes, navigate }) => {
                   <tr className="">
                     <th
                       scope="col"
-                      className=" px-2 md:px-5 border-b-[0.8px] border-[#E4E7EC] py-[12px] gap-[6px] md:gap-[12px] text-[14px] md:text-[16px] text-[#98A2B3]  font-medium leading-[20px] md:leading-[24px] tracking-[0.2%]"
+                      className=" px-2 whitespace-nowrap md:px-5 border-b-[0.8px] border-[#E4E7EC] py-[12px] gap-[6px] md:gap-[12px] text-[14px] md:text-[16px] text-[#98A2B3]  font-medium leading-[20px] md:leading-[24px] tracking-[0.2%]"
                     >
                       <div className="flex pl-2  gap-[6px] md:gap-[12px] items-center my-0">
                         Leave Type
@@ -368,7 +447,7 @@ const StaffHomePage = ({ switchRoutes, navigate }) => {
                     </th>
                     <th
                       scope="col"
-                      className="px-2 md:px-5  border-b-[0.8px] border-[#E4E7EC] py-[12px] gap-[6px] md:gap-[12px] text-[14px] md:text-[16px] text-[#98A2B3]  font-medium leading-[20px] md:leading-[24px] tracking-[0.2%]"
+                      className="px-2 md:px-5 whitespace-nowrap  border-b-[0.8px] border-[#E4E7EC] py-[12px] gap-[6px] md:gap-[12px] text-[14px] md:text-[16px] text-[#98A2B3]  font-medium leading-[20px] md:leading-[24px] tracking-[0.2%]"
                     >
                       <div className="flex  gap-[6px] md:gap-[12px] items-center my-0">
                         Leave Duration
@@ -376,7 +455,7 @@ const StaffHomePage = ({ switchRoutes, navigate }) => {
                     </th>
                     <th
                       scope="col"
-                      className="px-2 md:px-5  border-b-[0.8px] border-[#E4E7EC] py-[12px] gap-[6px] md:gap-[12px] text-[14px] md:text-[16px] text-[#98A2B3]  font-medium leading-[20px] md:leading-[24px] tracking-[0.2%]"
+                      className="px-2 md:px-5 whitespace-nowrap  border-b-[0.8px] border-[#E4E7EC] py-[12px] gap-[6px] md:gap-[12px] text-[14px] md:text-[16px] text-[#98A2B3]  font-medium leading-[20px] md:leading-[24px] tracking-[0.2%]"
                     >
                       <div className="flex justify-center gap-[6px] md:gap-[12px] items-center my-0">
                         Start Date
@@ -384,7 +463,7 @@ const StaffHomePage = ({ switchRoutes, navigate }) => {
                     </th>
                     <th
                       scope="col"
-                      className="px-2 md:px-5  border-b-[0.8px] border-[#E4E7EC] py-[12px] gap-[6px] md:gap-[12px] text-[14px] md:text-[16px] text-[#98A2B3]  font-medium leading-[20px] md:leading-[24px] tracking-[0.2%]"
+                      className="px-2 md:px-5 whitespace-nowrap  border-b-[0.8px] border-[#E4E7EC] py-[12px] gap-[6px] md:gap-[12px] text-[14px] md:text-[16px] text-[#98A2B3]  font-medium leading-[20px] md:leading-[24px] tracking-[0.2%]"
                     >
                       <div className="flex justify-center gap-[6px] md:gap-[12px] items-center my-0">
                         Status
@@ -393,7 +472,7 @@ const StaffHomePage = ({ switchRoutes, navigate }) => {
 
                     <th
                       scope="col"
-                      className="px-2 md:px-5  border-b-[0.8px] border-[#E4E7EC] py-[12px] gap-[6px] md:gap-[12px] text-[14px] md:text-[16px] text-[#98A2B3]  font-medium leading-[20px] md:leading-[24px] tracking-[0.2%]"
+                      className="px-2 md:px-5 whitespace-nowrap  border-b-[0.8px] border-[#E4E7EC] py-[12px] gap-[6px] md:gap-[12px] text-[14px] md:text-[16px] text-[#98A2B3]  font-medium leading-[20px] md:leading-[24px] tracking-[0.2%]"
                     >
                       <div className="flex justify-center gap-[6px] md:gap-[12px] items-center my-0">
                         Action
@@ -411,7 +490,7 @@ const StaffHomePage = ({ switchRoutes, navigate }) => {
                           className="mx-auto mt-6 h-[70px] "
                           alt=""
                         />
-                        <h3 className="text-[30px] leading-[35px]  text-[#1A202C] font-extrabold mb-[6px]">
+                        <h3 className="text-base md:text-lg  xl:text-[30px] leading-[35px]  text-[#1A202C] font-extrabold mb-[6px]">
                           No Leave Application Avalable
                         </h3>
                       </td>
