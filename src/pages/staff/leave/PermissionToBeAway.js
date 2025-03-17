@@ -25,6 +25,7 @@ const PermissionToBeAway = ({ navigate }) =>  {
     rankDesignation,
     selectedLeaveType,
     staffType,
+    supervisor_id,
    
     supervisorRole,
   } = location.state;
@@ -55,7 +56,6 @@ const PermissionToBeAway = ({ navigate }) =>  {
     return result;
   }
 
-  console.log(fullName,maritalStatus,departmentOrUnitOrFacultyID,dateOfFirstAppointment,rankDesignation,selectedLeaveType,startDate,endDate,addressLeave, durationInDays);
 
   const years = range(1990, getYear(new Date()) + 1, 1);
   const months = [
@@ -196,6 +196,8 @@ const PermissionToBeAway = ({ navigate }) =>  {
     formData.append('resumption_date', formattedResumptionDate);
     formData.append('leave_duration', durationInDays);
     formData.append('type', staffType);
+    formData.append('supervisor_id', supervisor_id);
+
     formData.append('user_supervision_role', supervisorRole  !== undefined ? supervisorRole : "");
 
 

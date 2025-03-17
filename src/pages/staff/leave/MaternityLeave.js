@@ -61,6 +61,7 @@ const MaternityLeave = ({ navigate }) => {
     unit,
     faculty,
     supervisorRole,
+    supervisor_id
   } = location.state;
 
   const { enqueueSnackbar } = useSnackbar();
@@ -223,6 +224,8 @@ const MaternityLeave = ({ navigate }) => {
     formData.append("leave_duration", leaveDuration);
     formData.append("type", staffType);
     formData.append("level", staffLevel);
+    formData.append('supervisor_id', supervisor_id);
+
     formData.append('replacement_on_duty_id', staffRepId);
     formData.append('user_supervision_role', supervisorRole  !== undefined ? supervisorRole : "");
 

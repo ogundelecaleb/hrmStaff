@@ -174,7 +174,8 @@ const Leave = () => {
           department: userDetails?.department?.id,
           unit: userDetails?.unit?.id,
           faculty: userDetails?.faculty?.id,
-          supervisorRole: userDetails?.user_supervision_role
+          supervisorRole: userDetails?.user_supervision_role,
+          supervisor_id: userDetails?.supervisor_office?.id
         },
       });
     } else if (checkForCasualLeave) {
@@ -193,7 +194,9 @@ const Leave = () => {
           department: userDetails?.department?.id,
           unit: userDetails?.unit?.id,
           faculty: userDetails?.faculty?.id,
-          supervisorRole: userDetails?.user_supervision_role
+          supervisorRole: userDetails?.user_supervision_role,
+          supervisor_id: userDetails?.supervisor_office?.id
+
 
         },
       });
@@ -213,7 +216,9 @@ const Leave = () => {
           department: userDetails?.department?.id,
           unit: userDetails?.unit?.id,
           faculty: userDetails?.faculty?.id,
-          supervisorRole: userDetails?.user_supervision_role
+          supervisorRole: userDetails?.user_supervision_role,
+          supervisor_id: userDetails?.supervisor_office?.id
+
 
         },
       });
@@ -233,7 +238,9 @@ const Leave = () => {
           department: userDetails?.department?.id,
           unit: userDetails?.unit?.id,
           faculty: userDetails?.faculty?.id,
-          supervisorRole: userDetails?.user_supervision_role
+          supervisorRole: userDetails?.user_supervision_role,
+          supervisor_id: userDetails?.supervisor_office?.id
+
 
         },
       });
@@ -253,7 +260,9 @@ const Leave = () => {
           department: userDetails?.department?.id,
           unit: userDetails?.unit?.id,
           faculty: userDetails?.faculty?.id,
-          supervisorRole: userDetails?.user_supervision_role
+          supervisorRole: userDetails?.user_supervision_role,
+          supervisor_id: userDetails?.supervisor_office?.id
+
 
         },
       });
@@ -273,7 +282,9 @@ const Leave = () => {
           department: userDetails?.department?.id,
           unit: userDetails?.unit?.id,
           faculty: userDetails?.faculty?.id,
-          supervisorRole: userDetails?.user_supervision_role
+          supervisorRole: userDetails?.user_supervision_role,
+          supervisor_id: userDetails?.supervisor_office?.id
+
 
         },
       });
@@ -293,7 +304,9 @@ const Leave = () => {
           department: userDetails?.department?.id,
           unit: userDetails?.unit?.id,
           faculty: userDetails?.faculty?.id,
-          supervisorRole: userDetails?.user_supervision_role
+          supervisorRole: userDetails?.user_supervision_role,
+          supervisor_id: userDetails?.supervisor_office?.id
+
 
         },
       });
@@ -312,7 +325,9 @@ const Leave = () => {
           department: userDetails?.department?.id,
           unit: userDetails?.unit?.id,
           faculty: userDetails?.faculty?.id,
-          supervisorRole: userDetails?.user_supervision_role
+          supervisorRole: userDetails?.user_supervision_role,
+          supervisor_id: userDetails?.supervisor_office?.id
+
 
         },
       });
@@ -332,7 +347,9 @@ const Leave = () => {
           department: userDetails?.department?.id,
           unit: userDetails?.unit?.id,
           faculty: userDetails?.faculty?.id,
-          supervisorRole: userDetails?.user_supervision_role
+          supervisorRole: userDetails?.user_supervision_role,
+          supervisor_id: userDetails?.supervisor_office?.id
+
 
 
         },
@@ -354,7 +371,9 @@ const Leave = () => {
           department: userDetails?.department?.id,
           unit: userDetails?.unit?.id,
           faculty: userDetails?.faculty?.id,
-          supervisorRole: userDetails?.user_supervision_role
+          supervisorRole: userDetails?.user_supervision_role,
+          supervisor_id: userDetails?.supervisor_office?.id
+
 
         },
       });
@@ -375,7 +394,9 @@ const Leave = () => {
           department: userDetails?.department?.id,
           unit: userDetails?.unit?.id,
           faculty: userDetails?.faculty?.id,
-          supervisorRole: userDetails?.user_supervision_role
+          supervisorRole: userDetails?.user_supervision_role,
+          supervisor_id: userDetails?.supervisor_office?.id
+
 
         },
       });
@@ -395,7 +416,9 @@ const Leave = () => {
           department: userDetails?.department?.id,
           unit: userDetails?.unit?.id,
           faculty: userDetails?.faculty?.id,
-          supervisorRole: userDetails?.user_supervision_role
+          supervisorRole: userDetails?.user_supervision_role,
+          supervisor_id: userDetails?.supervisor_office?.id
+
 
         },
       });
@@ -414,7 +437,9 @@ const Leave = () => {
           department: userDetails?.department?.id,
           unit: userDetails?.unit?.id,
           faculty: userDetails?.faculty?.id,
-          supervisorRole: userDetails?.user_supervision_role
+          supervisorRole: userDetails?.user_supervision_role,
+          supervisor_id: userDetails?.supervisor_office?.id
+
 
         },
       });
@@ -433,7 +458,9 @@ const Leave = () => {
           department: userDetails?.department?.id,
           unit: userDetails?.unit?.id,
           faculty: userDetails?.faculty?.id,
-          supervisorRole: userDetails?.user_supervision_role
+          supervisorRole: userDetails?.user_supervision_role,
+          supervisor_id: userDetails?.supervisor_office?.id
+
 
         },
       });
@@ -452,7 +479,9 @@ const Leave = () => {
           department: userDetails?.department?.id,
           unit: userDetails?.unit?.id,
           faculty: userDetails?.faculty?.id,
-          supervisorRole: userDetails?.user_supervision_role
+          supervisorRole: userDetails?.user_supervision_role,
+          supervisor_id: userDetails?.supervisor_office?.id
+
 
 
         },
@@ -472,7 +501,9 @@ const Leave = () => {
           department: userDetails?.department?.id,
           unit: userDetails?.unit?.id,
           faculty: userDetails?.faculty?.id,
-          supervisorRole: userDetails?.user_supervision_role
+          supervisorRole: userDetails?.user_supervision_role,
+          supervisor_id: userDetails?.supervisor_office?.id
+
 
         },
       });
@@ -491,7 +522,9 @@ const Leave = () => {
           department: userDetails?.department?.id,
           unit: userDetails?.unit?.id,
           faculty: userDetails?.faculty?.id,
-          supervisorRole: userDetails?.user_supervision_role
+          supervisorRole: userDetails?.user_supervision_role,
+          supervisor_id: userDetails?.supervisor_office?.id
+
 
         },
       });
@@ -510,7 +543,9 @@ const Leave = () => {
           department: userDetails?.department?.id,
           unit: userDetails?.unit?.id,
           faculty: userDetails?.faculty?.id,
-          supervisorRole: userDetails?.user_supervision_role
+          supervisorRole: userDetails?.user_supervision_role,
+          supervisor_id: userDetails?.supervisor_office?.id
+
 
          
         },
@@ -530,7 +565,9 @@ const Leave = () => {
           department: userDetails?.department?.id,
           unit: userDetails?.unit?.id,
           faculty: userDetails?.faculty?.id,
-          supervisorRole: userDetails?.user_supervision_role
+          supervisorRole: userDetails?.user_supervision_role,
+          supervisor_id: userDetails?.supervisor_office?.id
+
 
 
         },
