@@ -354,98 +354,113 @@ const isApproved= leaveDetails?.status !== "approved"
             </Box>
             <TabPanels>
               <TabPanel>
-                <Grid templateColumns='repeat(2, 1fr)' gap={6}>
-                  <GridItem w='100%' h='10'>
+              <Grid templateColumns="repeat(2, 1fr)" gap={6}>
+                    <GridItem w="100%" h="10">
+                      <h2 className="text-base font-medium text-[#7C8493]">
+                        Full Name
+                      </h2>
+                      <h3 className="text-sm font-medium text-[#000]">
+                        {leaveDetails.full_name}
+                      </h3>
+                    </GridItem>
+                    <GridItem w="100%" h="10">
+                      <h2 className="text-base font-medium text-[#7C8493]">
+                        Leave Type
+                      </h2>
+                      <h3 className="text-sm font-medium text-[#000]">
+                        Annual Leave
+                      </h3>
+                    </GridItem>
+                    <GridItem w="100%" h="10">
+                      <h2 className="text-base font-medium text-[#7C8493]">
+                        Marital Status{" "}
+                      </h2>
+                      <h3 className="text-sm font-medium text-[#000]">
+                        {leaveDetails.marital_status}
+                      </h3>
+                    </GridItem>
+                    <GridItem w="100%" h="10">
+                      <h2 className="text-base font-medium text-[#7C8493]">
+                        Number Of Birth
+                      </h2>
+                      <h3 className="text-sm font-medium text-[#000]">
+                      {leaveDetails.number_of_births}
+                      </h3>
+                    </GridItem>
+                    <GridItem w="100%" h="10">
+                      <h2 className="text-base font-medium text-[#7C8493]">
+                        Date of First Appointment{" "}
+                      </h2>
+                      <h3 className="text-sm font-medium text-[#000]">
+                        {formatDate(leaveDetails.date_of_first_appointment)}
+                      </h3>
+                    </GridItem>
+                    <GridItem w="100%" h="10">
+                      <h2 className="text-base font-medium text-[#7C8493]">
+                        Division/Department/Unit
+                      </h2>
+                      <Text
+                        fontSize={"sm"}
+                        color="#25324B"
+                        fontWeight={"medium"}
+                      >
+                        {leaveDetails.department?.name ||
+                          leaveDetails.faculty?.name ||
+                          leaveDetails.unit?.name}
+                      </Text>
+                    </GridItem>
+
+                    {/* <GridItem w='100%' h='10'>
                     <Text fontSize={"lg"} color='#7C8493' m='0'>
-                      Full Name
+                      Leave due for Current year
                     </Text>
-                    <Text fontSize={"medium"} color='#25324B' fontWeight={"medium"}>
-                    {leaveDetails.full_name}
+                                        <h3 className="text-sm font-medium text-[#000]">
+
+                      {leaveDetails.total_leave_due}
                     </Text>
-                  </GridItem>
-                  <GridItem w='100%' h='10'>
-                    <Text fontSize={"lg"} color='#7C8493' m='0'>
-                      Leave Type
-                    </Text>
-                    <Text fontSize={"medium"} color='#25324B' fontWeight={"medium"}>
-                    Maternity Leave
-                    </Text>
-                  </GridItem>
-                  <GridItem w='100%' h='10'>
-                    <Text fontSize={"lg"} color='#7C8493' m='0'>
-                      Marital Status
-                    </Text>
-                    <Text fontSize={"medium"} color='#25324B' fontWeight={"medium"}>
-                    {leaveDetails.marital_status}
-                    </Text>
-                  </GridItem>
-                  <GridItem w='100%' h='10'>
-                    <Text fontSize={"lg"} color='#7C8493' m='0'>
-                      Number of Births
-                    </Text>
-                    <Text fontSize={"medium"} color='#25324B' fontWeight={"medium"}>
-                    {leaveDetails.number_of_births}
-                    </Text>
-                  </GridItem>
-                  <GridItem w='100%' h='10'>
-                    <Text fontSize={"lg"} color='#7C8493' m='0'>
-                      Division/Department/Unit
-                    </Text>
-                    <Text fontSize={"sm"} color='#25324B' fontWeight={"medium"}>
-                    {leaveDetails.department?.name || leaveDetails.faculty?.name || leaveDetails.unit?.name}                    
-                    </Text>
-                  </GridItem>
-                  <GridItem w='100%' h='10'>
-                    <Text fontSize={"lg"} color='#7C8493' m='0'>
-                      Leave Duration
-                    </Text>
-                    <Text fontSize={"medium"} color='#25324B' fontWeight={"medium"}>
-                    {leaveDetails.leave_duration} Days
-                    </Text>
-                  </GridItem>
-                  <GridItem w='100%' h='10'>
-                    <Text fontSize={"lg"} color='#7C8493' m='0'>
-                     Resumption Date
-                    </Text>
-                    <Text fontSize={"medium"} color='#25324B' fontWeight={"medium"}>
-                    {formatDate(leaveDetails.resumption_date)}
-                    </Text>
-                  </GridItem>
-                  <GridItem w='100%' h='10'>
-                    <Text fontSize={"lg"} color='#7C8493' m='0'>
-                      Start Date
-                    </Text>
-                    <Text fontSize={"medium"} color='#25324B' fontWeight={"medium"}>
-                    {formatDate(leaveDetails.start_date)}
-                    </Text>
-                  </GridItem>
-                  <GridItem w='100%' h='10'>
-                    <Text fontSize={"lg"} color='#7C8493' m='0'>
-                      End Date
-                    </Text>
-                    <Text fontSize={"medium"} color='#25324B' fontWeight={"medium"}>
-                    {formatDate(leaveDetails.end_date)}
-                    </Text>
-                  </GridItem>
-                  <GridItem w='100%' h='10'>
-                    <Text fontSize={"lg"} color='#7C8493' m='0'>
-                     Schedule of Duties
-                    </Text>
-                    <Text fontSize={"medium"} color='#25324B' fontWeight={"medium"}>
-                    {leaveDetails.replacement_on_duty}
-                    </Text>
-                  </GridItem>
-                  
-                  <GridItem w='100%' h='10'>
-                    <Text fontSize={"lg"} color='#7C8493' m='0'>
-                      Address when on Leave{" "}
-                    </Text>
-                    <Text fontSize={"medium"} color='#25324B' fontWeight={"medium"}>
-                    {leaveDetails.leave_address}
-                    </Text>
-                  </GridItem>
-                  
-                </Grid>
+                  </GridItem> */}
+                    <GridItem w="100%" h="10" mt="4">
+                      <h2 className="text-base font-medium text-[#7C8493]">
+                        To be relived by (Name of Staff)
+                      </h2>
+                      <h3 className="text-sm font-medium text-[#000]">
+                        {leaveDetails.replacement_on_duty}
+                      </h3>
+                    </GridItem>
+
+                    <GridItem w="100%" h="10">
+                      <h2 className="text-base font-medium text-[#7C8493]">
+                        Start Date
+                      </h2>
+                      <h3 className="text-sm font-medium text-[#000]">
+                        {formatDate(leaveDetails.start_date)}
+                      </h3>
+                    </GridItem>
+                    <GridItem w="100%" h="10">
+                      <h2 className="text-base font-medium text-[#7C8493]">
+                        Address when on Leave{" "}
+                      </h2>
+                      <h3 className="text-sm font-medium text-[#000]">
+                        {leaveDetails.leave_address}
+                      </h3>
+                    </GridItem>
+                    <GridItem w="100%" h="10">
+                      <h2 className="text-base font-medium text-[#7C8493]">
+                        End Date
+                      </h2>
+                      <h3 className="text-sm font-medium text-[#000]">
+                        {formatDate(leaveDetails.end_date)}
+                      </h3>
+                    </GridItem>
+                    <GridItem w="100%" h="10">
+                      <h2 className="text-base font-medium text-[#7C8493]">
+                        Resumption Date
+                      </h2>
+                      <h3 className="text-sm font-medium text-[#000]">
+                        {formatDate(leaveDetails.resumption_date)}
+                      </h3>
+                    </GridItem>
+                  </Grid>
               </TabPanel>
               <TabPanel>
                 <Box my='5' mx='5' bg='#F8F8FD' h={400} w={500} borderWidth={2}>
