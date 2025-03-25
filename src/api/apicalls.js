@@ -101,7 +101,8 @@ import {
   STAFFONLEAVE,
   TRACKPROGRESS,
   GETALLOFFICE,
-  SELECTSUPPERVISOR
+  SELECTSUPPERVISOR,
+  CREATEOFFICE
 } from "../utils/config";
 import { apiGet, apiPost, apiPut, apiDelete } from "../utils/utils";
 
@@ -525,3 +526,4 @@ export function fetchAllOffice(data) {
 export function selectSupervisor(data) {
   return apiPost(SELECTSUPPERVISOR, data);
 }
+

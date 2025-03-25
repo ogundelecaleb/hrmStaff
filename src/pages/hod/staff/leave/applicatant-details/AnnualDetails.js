@@ -98,13 +98,30 @@ const AnnualDetails = (props) => {
   function getLastItem(array) {
     // console.log("appprovalls===>>>", leaveDetails?.approval_bodies)
     // Check if the array is not empty
-    if (array.length === 0) {
+    if (array?.length === 0) {
       return undefined; // Return undefined if the array is empty
+    }else {
+// Return the last item in the array
+return array[array?.length - 1];
     }
 
-    // Return the last item in the array
-    return array[array.length - 1];
+    
   }
+
+  const getUserinFirstObject = ({})=> {
+    const firstObject = leaveDetails?.approval_bodies[0];
+const user =  userDetails?.data?.email
+const isUserIncludeObject = user?.include(firstObject)
+
+}
+const testCheck = ()=> {
+  const approvalsArray = leaveDetails?.approval_bodies[0];
+  const userEmail =  userDetails?.data?.email
+
+  if(approvalsArray> 1 && !approvalsArray.include(userEmail)) {
+
+  }
+}
 
   const formatshortDate = (dateString) => {
     const date = new Date(dateString);
@@ -179,7 +196,6 @@ const AnnualDetails = (props) => {
       setIsLoadingd(false);
     }
   }
-  console.log("approval bodies", getLastItem(leaveDetails?.approval_bodies) )
   return (
     <Stack className="px-4" pl="16" pb="10">
       <div
@@ -365,7 +381,7 @@ const AnnualDetails = (props) => {
                   ) : (
                     <>
                       {" "}
-                      {leaveDetails?.approval_bodies.length > 1
+                      {leaveDetails && leaveDetails?.approval_bodies?.length > 1
                         ? getLastItem(leaveDetails?.approval_bodies) ===
                           userDetails?.data?.role
                           ? "Approve"

@@ -120,7 +120,6 @@ export const STAFFONLEAVE = getApiUrl('/user-leave-status')
 export const TRACKPROGRESS = getApiUrl('/track-progress-bar')
 export const GETALLOFFICE = getApiUrl('/supervisor-offices')
 export const SELECTSUPPERVISOR = getApiUrl('/select-immediate-supervisor')
-// export const ALL = getApiUrl('/select-immediate-supervisor')
 
 
 
