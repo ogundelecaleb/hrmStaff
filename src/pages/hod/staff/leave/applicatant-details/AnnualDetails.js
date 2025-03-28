@@ -98,30 +98,30 @@ const AnnualDetails = (props) => {
   function getLastItem(array) {
     // console.log("appprovalls===>>>", leaveDetails?.approval_bodies)
     // Check if the array is not empty
+
+    if(!array) {
+      return
+    }
     if (array?.length === 0) {
       return undefined; // Return undefined if the array is empty
-    }else {
-// Return the last item in the array
-return array[array?.length - 1];
+    } else {
+      // Return the last item in the array
+      return array[array?.length - 1];
     }
-
-    
   }
 
-  const getUserinFirstObject = ({})=> {
+  const getUserinFirstObject = ({}) => {
     const firstObject = leaveDetails?.approval_bodies[0];
-const user =  userDetails?.data?.email
-const isUserIncludeObject = user?.include(firstObject)
+    const user = userDetails?.data?.email;
+    const isUserIncludeObject = user?.include(firstObject);
+  };
+  const testCheck = () => {
+    const approvalsArray = leaveDetails?.approval_bodies[0];
+    const userEmail = userDetails?.data?.email;
 
-}
-const testCheck = ()=> {
-  const approvalsArray = leaveDetails?.approval_bodies[0];
-  const userEmail =  userDetails?.data?.email
-
-  if(approvalsArray> 1 && !approvalsArray.include(userEmail)) {
-
-  }
-}
+    if (approvalsArray > 1 && !approvalsArray.include(userEmail)) {
+    }
+  };
 
   const formatshortDate = (dateString) => {
     const date = new Date(dateString);
