@@ -161,16 +161,47 @@ export const BereavementDetails = () => {
   }
 
   function getLastItem(array) {
-
     if (array.length === 0) {
-        return undefined; // Return undefined if the array is empty
+      return undefined; // Return undefined if the array is empty
     }
 
     // Return the last item in the array
     return array[array.length - 1];
-}
-const isApproved= leaveDetails?.status !== "approved"
+  }
+  const isApproved = leaveDetails?.status !== "approved";
 
+  const toggleApprove = () => {
+    const approvals = leaveDetails?.approval_bodies?.length;
+    const approves = leaveDetails?.approvals?.length;
+
+    let status = "Recommend";
+
+    if (approves < 1 && approvals > 1) {
+      const firstObject = leaveDetails?.approval_bodies[0];
+      const user = userDetails?.data?.email;
+      console.log("user-->>", user);
+      const isUserIncludeObject = user?.includes(firstObject);
+      if (isUserIncludeObject) {
+        status = "Recommend";
+      }
+    } else if (approves > 0 && approvals > 1) {
+      const bodies = leaveDetails?.approval_bodies;
+      const lastObject = bodies[bodies.length - 1];
+      const userRole = userDetails?.data?.role;
+      const isUserMatchRole = userRole === lastObject;
+      if (isUserMatchRole) {
+        status = "Approve";
+      }
+    } else if (approvals === 1) {
+      const firstObject = leaveDetails?.approval_bodies[0];
+      const user = userDetails?.data?.email;
+      const isUserIncludeObject = user?.includes(firstObject);
+      if (isUserIncludeObject) {
+        status = "Approve";
+      }
+    }
+    return status;
+  };
 
   return (
     <Stack className="px-4" pl="12">
@@ -212,11 +243,11 @@ const isApproved= leaveDetails?.status !== "approved"
               <Box className="d-flex gap-3 my-4">
                 <div>
                   {leaveDetails.user_image ? (
-                     <Avatar
-                    h={'90.17px'}
-                    w={'90.17px'}
-                    src={leaveDetails.user_image}
-                  />
+                    <Avatar
+                      h={"90.17px"}
+                      w={"90.17px"}
+                      src={leaveDetails.user_image}
+                    />
                   ) : (
                     <RxAvatar size={80} color={"#25324B"} />
                   )}
@@ -331,7 +362,8 @@ const isApproved= leaveDetails?.status !== "approved"
                 ))}
               </Box>
             )}
-          {shouldDisplayButtons && isApproved && (              <Flex pt="10" w="full" mb="10" justifyContent={"space-between"}>
+            {shouldDisplayButtons && isApproved && (
+              <Flex pt="10" w="full" mb="10" justifyContent={"space-between"}>
                 <Button
                   borderRadius={"0"}
                   color="#D02F44"
@@ -352,8 +384,15 @@ const isApproved= leaveDetails?.status !== "approved"
                 >
                   {isLoading ? (
                     <MoonLoader color={"white"} size={20} />
-                  ) : (<> { (leaveDetails?.approval_bodies && getLastItem(leaveDetails?.approval_bodies)) === userDetails?.data?.role ? "Approve" : "Recomemnd" } </>
-                    
+                  ) : (toggleApprove()
+                    // <>
+                    //   {" "}
+                    //   {(leaveDetails?.approval_bodies &&
+                    //     getLastItem(leaveDetails?.approval_bodies)) ===
+                    //   userDetails?.data?.role
+                    //     ? "Approve"
+                    //     : "Recomemnd"}{" "}
+                    // </>
                   )}
                 </Button>
               </Flex>

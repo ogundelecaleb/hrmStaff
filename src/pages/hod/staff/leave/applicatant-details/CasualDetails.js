@@ -194,7 +194,6 @@ console.log("array--->>", array)
         return true;
       }
     } else if (i === value) {
-      // If the current element matches the value, return true
       return true;
     }
 

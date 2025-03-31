@@ -177,6 +177,38 @@ export const ResearchDetails = () => {
   }
 
   const isApproved= leaveDetails?.status !== "approved"
+  const toggleApprove = () => {
+    const approvals = leaveDetails?.approval_bodies?.length;
+    const approves = leaveDetails?.approvals?.length;
+
+    let status = "Recommend";
+
+    if (approves < 1 && approvals > 1) {
+      const firstObject = leaveDetails?.approval_bodies[0];
+      const user = userDetails?.data?.email;
+      console.log("user-->>", user);
+      const isUserIncludeObject = user?.includes(firstObject);
+      if (isUserIncludeObject) {
+        status = "Recommend";
+      }
+    } else if (approves > 0 && approvals > 1) {
+      const bodies = leaveDetails?.approval_bodies;
+      const lastObject = bodies[bodies.length - 1];
+      const userRole = userDetails?.data?.role;
+      const isUserMatchRole = userRole === lastObject;
+      if (isUserMatchRole) {
+        status = "Approve";
+      }
+    } else if (approvals === 1) {
+      const firstObject = leaveDetails?.approval_bodies[0];
+      const user = userDetails?.data?.email;
+      const isUserIncludeObject = user?.includes(firstObject);
+      if (isUserIncludeObject) {
+        status = "Approve";
+      }
+    }
+    return status;
+  };
 
 
   return (
@@ -359,15 +391,15 @@ export const ResearchDetails = () => {
                 >
                   {isLoading ? (
                     <MoonLoader color={"white"} size={20} />
-                  ) : (
-                    <>
-                      {" "}
-                      {(leaveDetails?.approval_bodies &&
-                        getLastItem(leaveDetails?.approval_bodies)) ===
-                      userDetails?.data?.role
-                        ? "Approve"
-                        : "Recomemnd"}{" "}
-                    </>
+                  ) : ( toggleApprove()
+                    // <>
+                    //   {" "}
+                    //   {(leaveDetails?.approval_bodies &&
+                    //     getLastItem(leaveDetails?.approval_bodies)) ===
+                    //   userDetails?.data?.role
+                    //     ? "Approve"
+                    //     : "Recomemnd"}{" "}
+                    // </>
                   )}
                 </Button>
               </Flex>
