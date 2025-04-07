@@ -175,8 +175,6 @@ export const StudyWithoutPayDetails = () => {
     return array[array.length - 1];
   }
 
-  const isApproved = leaveDetails?.status !== "approved";
-
   const toggleApprove = () => {
     const approvals = leaveDetails?.approval_bodies?.length;
     const approves = leaveDetails?.approvals?.length;
@@ -186,7 +184,6 @@ export const StudyWithoutPayDetails = () => {
     if (approves < 1 && approvals > 1) {
       const firstObject = leaveDetails?.approval_bodies[0];
       const user = userDetails?.data?.email;
-      console.log("user-->>", user);
       const isUserIncludeObject = user?.includes(firstObject);
       if (isUserIncludeObject) {
         status = "Recommend";
@@ -194,12 +191,13 @@ export const StudyWithoutPayDetails = () => {
     } else if (approves > 0 && approvals > 1) {
       const bodies = leaveDetails?.approval_bodies;
       const lastObject = bodies[bodies.length - 1];
-      const userRole = userDetails?.data?.role;
+      const userRole = userDetails?.data?.email;
+    
       const isUserMatchRole = userRole === lastObject;
       if (isUserMatchRole) {
         status = "Approve";
       }
-    } else if (approvals === 1) {
+    } else if (approvals === 1 && approves === 1) {
       const firstObject = leaveDetails?.approval_bodies[0];
       const user = userDetails?.data?.email;
       const isUserIncludeObject = user?.includes(firstObject);
@@ -208,6 +206,27 @@ export const StudyWithoutPayDetails = () => {
       }
     }
     return status;
+  };
+  const displayButton = () => {
+    let result = false;
+
+    if(leaveDetails) {
+
+      const approvals = leaveDetails?.approval_bodies?.length;
+      const approves = leaveDetails?.approvals?.length;
+      if(approvals === approves ){
+      return result = false;
+      }
+     
+      //approval index
+      const currentApprovalIndex =  leaveDetails?.approval_bodies[approves];
+      if ( (currentApprovalIndex.includes(userDetails?.data?.email) ||   currentApprovalIndex === userDetails?.data?.email) && leaveDetails?.status === "pending") {
+        result = true;
+      }
+  
+      
+    }
+    return result
   };
 
   return (
@@ -369,7 +388,7 @@ export const StudyWithoutPayDetails = () => {
                 ))}
               </Box>
             )}
-            {shouldDisplayButtons && isApproved && (
+            {displayButton() && (
               <Flex pt="10" w="full" mb="10" justifyContent={"space-between"}>
                 <Button
                   borderRadius={"0"}
@@ -391,15 +410,8 @@ export const StudyWithoutPayDetails = () => {
                 >
                   {isLoading ? (
                     <MoonLoader color={"white"} size={20} />
-                  ) : (toggleApprove()
-                    // <>
-                    //   {" "}
-                    //   {(leaveDetails?.approval_bodies &&
-                    //     getLastItem(leaveDetails?.approval_bodies)) ===
-                    //   userDetails?.data?.role
-                    //     ? "Approve"
-                    //     : "Recomemnd"}{" "}
-                    // </>
+                  ) : (
+                    toggleApprove()
                   )}
                 </Button>
               </Flex>

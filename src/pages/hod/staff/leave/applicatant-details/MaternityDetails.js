@@ -34,7 +34,7 @@ export const MaternityDetails = () => {
   const { enqueueSnackbar } = useSnackbar();
   const [isLoading, setIsLoading] = useState(false);
   const [isLoadingd, setIsLoadingd] = useState(false);
-  const [leaveDetails, setLeaveDetails] = useState([]);
+  const [leaveDetails, setLeaveDetails] = useState(null);
   const [userDetails, setUserDetails] = useState([]);
   const [comments, setComments] = useState([]);
   const [commentText, setCommentText] = useState("");
@@ -57,7 +57,6 @@ export const MaternityDetails = () => {
         .then((response) => {
           const leaveData = response.data;
           setLeaveDetails(leaveData);
-          console.log(response.data);
           setIsLoadinge(false);
         })
         .catch((error) => {
@@ -101,13 +100,30 @@ export const MaternityDetails = () => {
     return date.toLocaleDateString(undefined, options);
   };
 
-  const shouldDisplayButtons =
-    !leaveDetails.approvals ||
-    !leaveDetails.approvals.some(
-      (approval) =>
-        approval.role === userDetails?.data?.role &&
-        (approval.status === "approved" || approval.status === "declined")
-    );
+  // const shouldDisplayButtons =
+  //   !leaveDetails.approvals ||
+  //   !leaveDetails.approvals.some(
+  //     (approval) =>
+  //       approval.role === userDetails?.data?.role &&
+  //       (approval.status === "approved" || approval.status === "declined")
+  //   );
+
+  const displayButton = () => {
+    let result = false;
+
+    if(leaveDetails !== null){
+      const approvals = leaveDetails?.approval_bodies?.length;
+      const approves = leaveDetails?.approvals?.length;
+      //approval index
+      const currentApprovalIndex =  leaveDetails?.approval_bodies[1];
+      if ( (currentApprovalIndex.includes(userDetails?.data?.email) ||   currentApprovalIndex === userDetails?.data?.email) && leaveDetails?.status === "pending") {
+        result = true;
+      }
+  
+      
+    }
+    return result
+  };
 
   async function handleApprovedBtn(e) {
     e.preventDefault();
@@ -193,12 +209,14 @@ export const MaternityDetails = () => {
     } else if (approves > 0 && approvals > 1) {
       const bodies = leaveDetails?.approval_bodies;
       const lastObject = bodies[bodies.length - 1];
-      const userRole = userDetails?.data?.role;
+      const userRole = userDetails?.data?.email;
+      console.log("userRoles-->>", userRole);
+      console.log("lastObject-->>", lastObject);
       const isUserMatchRole = userRole === lastObject;
       if (isUserMatchRole) {
         status = "Approve";
       }
-    } else if (approvals === 1) {
+    } else if (approvals === 1 && approves === 1) {
       const firstObject = leaveDetails?.approval_bodies[0];
       const user = userDetails?.data?.email;
       const isUserIncludeObject = user?.includes(firstObject);
@@ -210,7 +228,7 @@ export const MaternityDetails = () => {
   };
 
   return (
-    <Stack className="container" pl="16" pb="10">
+    <Stack className="" pl="16" pb="10">
       <div
         id="no-padding-res"
         className="d-flex flex-wrap mt-3 align-items-center justify-content-between"
@@ -248,11 +266,11 @@ export const MaternityDetails = () => {
             <Box p="5" border="1px solid #D6DDEB  " h="fit-content">
               <Box className="d-flex gap-3 my-4">
                 <div>
-                  {leaveDetails.user_image ? (
+                  {leaveDetails?.user_image ? (
                     <Avatar
                       h={"90.17px"}
                       w={"90.17px"}
-                      src={leaveDetails.user_image}
+                      src={leaveDetails?.user_image}
                     />
                   ) : (
                     <RxAvatar size={80} color={"#25324B"} />
@@ -260,14 +278,14 @@ export const MaternityDetails = () => {
                 </div>
                 <div>
                   <Text color="#25324B" className="fw-semibold fs-5">
-                    {leaveDetails.full_name}
+                    {leaveDetails?.full_name}
                   </Text>
                   <Text
                     color="#7C8493"
                     className="text-muted"
                     style={{ marginTop: "-17px" }}
                   >
-                    {leaveDetails.staffID}
+                    {leaveDetails?.staffID}
                   </Text>
                 </div>
               </Box>
@@ -281,7 +299,7 @@ export const MaternityDetails = () => {
                   </Text>
                   <Text m="0" color="#7C8493">
                     {formatshortDate(
-                      leaveDetails.date || "Leave Date not available"
+                      leaveDetails?.date || "Leave Date not available"
                     )}
                   </Text>
                 </Flex>
@@ -330,7 +348,7 @@ export const MaternityDetails = () => {
                 </>
               )}
             </Box>
-            {leaveDetails.approvals?.map((approval, index) => (
+            {leaveDetails?.approvals?.map((approval, index) => (
               <Box
                 key={index}
                 p="5"
@@ -340,14 +358,14 @@ export const MaternityDetails = () => {
               >
                 <Flex justifyContent={"space-between"}>
                   <Text m="0" color="#25324B" className="fw-semibold fs-8">
-                    {approval.role}
+                    {approval?.role}
                   </Text>
                   <Text m="0" color="#7C8493">
-                    {formatDate(approval.date)}
+                    {formatDate(approval?.date)}
                   </Text>
                 </Flex>
                 <Text color="#7C8493" className="text-muted">
-                  {approval.comment || "No comment available"}
+                  {approval?.comment || "No comment available"}
                 </Text>
               </Box>
             ))}
@@ -361,19 +379,17 @@ export const MaternityDetails = () => {
                     {formatDate(new Date())}
                   </Text>
                 </Flex>
-                {comments.map((comment, index) => (
+                {comments?.map((comment, index) => (
                   <Text key={index} color="#7C8493" className="text-muted">
                     {comment}
                   </Text>
                 ))}
               </Box>
             )}
-            {shouldDisplayButtons && isApproved && (
+            {displayButton() && (
               <Flex pt="10" w="full" mt="10" justifyContent={"space-between"}>
-                {!leaveDetails?.approvals?.some(
-                  (approval) => approval?.role === userDetails?.data?.role
-                ) && (
-                  <>
+                
+                  
                     <Button
                       borderRadius={"0"}
                       color="#D02F44"
@@ -394,7 +410,8 @@ export const MaternityDetails = () => {
                     >
                       {isLoading ? (
                         <MoonLoader color={"white"} size={20} />
-                      ) : (toggleApprove()
+                      ) : (
+                        toggleApprove()
                         // <>
                         //   {" "}
                         //   {(leaveDetails?.approval_bodies &&
@@ -405,8 +422,8 @@ export const MaternityDetails = () => {
                         // </>
                       )}
                     </Button>
-                  </>
-                )}
+                  
+              
               </Flex>
             )}
           </Box>
@@ -451,7 +468,7 @@ export const MaternityDetails = () => {
                         Full Name
                       </h2>
                       <h3 className="text-sm font-medium text-[#000]">
-                        {leaveDetails.full_name}
+                        {leaveDetails?.full_name}
                       </h3>
                     </GridItem>
                     <GridItem w="100%" h="10">
@@ -467,7 +484,7 @@ export const MaternityDetails = () => {
                         Marital Status{" "}
                       </h2>
                       <h3 className="text-sm font-medium text-[#000]">
-                        {leaveDetails.marital_status}
+                        {leaveDetails?.marital_status}
                       </h3>
                     </GridItem>
                     <GridItem w="100%" h="10">
@@ -475,7 +492,7 @@ export const MaternityDetails = () => {
                         Number Of Birth
                       </h2>
                       <h3 className="text-sm font-medium text-[#000]">
-                        {leaveDetails.number_of_births}
+                        {leaveDetails?.number_of_births}
                       </h3>
                     </GridItem>
                     <GridItem w="100%" h="10">
@@ -483,7 +500,7 @@ export const MaternityDetails = () => {
                         Date of First Appointment{" "}
                       </h2>
                       <h3 className="text-sm font-medium text-[#000]">
-                        {formatDate(leaveDetails.date_of_first_appointment)}
+                        {formatDate(leaveDetails?.date_of_first_appointment)}
                       </h3>
                     </GridItem>
                     <GridItem w="100%" h="10">
@@ -495,9 +512,9 @@ export const MaternityDetails = () => {
                         color="#25324B"
                         fontWeight={"medium"}
                       >
-                        {leaveDetails.department?.name ||
-                          leaveDetails.faculty?.name ||
-                          leaveDetails.unit?.name}
+                        {leaveDetails?.department?.name ||
+                          leaveDetails?.faculty?.name ||
+                          leaveDetails?.unit?.name}
                       </Text>
                     </GridItem>
 
@@ -515,7 +532,7 @@ export const MaternityDetails = () => {
                         To be relived by (Name of Staff)
                       </h2>
                       <h3 className="text-sm font-medium text-[#000]">
-                        {leaveDetails.replacement_on_duty}
+                        {leaveDetails?.replacement_on_duty}
                       </h3>
                     </GridItem>
 
@@ -524,7 +541,7 @@ export const MaternityDetails = () => {
                         Start Date
                       </h2>
                       <h3 className="text-sm font-medium text-[#000]">
-                        {formatDate(leaveDetails.start_date)}
+                        {formatDate(leaveDetails?.start_date)}
                       </h3>
                     </GridItem>
                     <GridItem w="100%" h="10">
@@ -532,7 +549,7 @@ export const MaternityDetails = () => {
                         Address when on Leave{" "}
                       </h2>
                       <h3 className="text-sm font-medium text-[#000]">
-                        {leaveDetails.leave_address}
+                        {leaveDetails?.leave_address}
                       </h3>
                     </GridItem>
                     <GridItem w="100%" h="10">
@@ -540,7 +557,7 @@ export const MaternityDetails = () => {
                         End Date
                       </h2>
                       <h3 className="text-sm font-medium text-[#000]">
-                        {formatDate(leaveDetails.end_date)}
+                        {formatDate(leaveDetails?.end_date)}
                       </h3>
                     </GridItem>
                     <GridItem w="100%" h="10">
@@ -548,7 +565,7 @@ export const MaternityDetails = () => {
                         Resumption Date
                       </h2>
                       <h3 className="text-sm font-medium text-[#000]">
-                        {formatDate(leaveDetails.resumption_date)}
+                        {formatDate(leaveDetails?.resumption_date)}
                       </h3>
                     </GridItem>
                   </Grid>
@@ -570,14 +587,14 @@ export const MaternityDetails = () => {
                       flexDirection="column"
                     >
                       <object
-                        data={leaveDetails.upload_documents}
+                        data={leaveDetails?.upload_documents}
                         type="application/pdf"
                         width="100%"
                         height="100%"
                       ></object>
                       <p className="text-muted fs-8 mt-20">
                         Click here
-                        <a href={leaveDetails.upload_documents}>
+                        <a href={leaveDetails?.upload_documents}>
                           {" "}
                           to view Document!
                         </a>

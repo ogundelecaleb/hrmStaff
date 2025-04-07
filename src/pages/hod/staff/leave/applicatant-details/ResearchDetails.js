@@ -34,7 +34,7 @@ export const ResearchDetails = () => {
   const { enqueueSnackbar } = useSnackbar();
   const [isLoading, setIsLoading] = useState(false);
   const [isLoadingd, setIsLoadingd] = useState(false);
-  const [leaveDetails, setLeaveDetails] = useState([]);
+  const [leaveDetails, setLeaveDetails] = useState("");
   const [userDetails, setUserDetails] = useState([]);
   const [comments, setComments] = useState([]);
   const [commentText, setCommentText] = useState("");
@@ -186,7 +186,6 @@ export const ResearchDetails = () => {
     if (approves < 1 && approvals > 1) {
       const firstObject = leaveDetails?.approval_bodies[0];
       const user = userDetails?.data?.email;
-      console.log("user-->>", user);
       const isUserIncludeObject = user?.includes(firstObject);
       if (isUserIncludeObject) {
         status = "Recommend";
@@ -194,12 +193,13 @@ export const ResearchDetails = () => {
     } else if (approves > 0 && approvals > 1) {
       const bodies = leaveDetails?.approval_bodies;
       const lastObject = bodies[bodies.length - 1];
-      const userRole = userDetails?.data?.role;
+      const userRole = userDetails?.data?.email;
+    
       const isUserMatchRole = userRole === lastObject;
       if (isUserMatchRole) {
         status = "Approve";
       }
-    } else if (approvals === 1) {
+    } else if (approvals === 1 && approves === 1) {
       const firstObject = leaveDetails?.approval_bodies[0];
       const user = userDetails?.data?.email;
       const isUserIncludeObject = user?.includes(firstObject);
@@ -209,6 +209,28 @@ export const ResearchDetails = () => {
     }
     return status;
   };
+  const displayButton = () => {
+    let result = false;
+
+    if(leaveDetails) {
+
+      const approvals = leaveDetails?.approval_bodies?.length;
+      const approves = leaveDetails?.approvals?.length;
+      if(approvals === approves ){
+      return result = false;
+      }
+     
+      //approval index
+      const currentApprovalIndex =  leaveDetails?.approval_bodies[approves];
+      if ( (currentApprovalIndex.includes(userDetails?.data?.email) ||   currentApprovalIndex === userDetails?.data?.email) && leaveDetails?.status === "pending") {
+        result = true;
+      }
+  
+      
+    }
+    return result
+  };
+
 
 
   return (
@@ -370,7 +392,8 @@ export const ResearchDetails = () => {
                 ))}
               </Box>
             )}
-          {shouldDisplayButtons && isApproved && (              <Flex pt="10" w="full" mt="10" justifyContent={"space-between"}>
+          {displayButton() && (
+              <Flex pt="10" w="full" mb="10" justifyContent={"space-between"}>
                 <Button
                   borderRadius={"0"}
                   color="#D02F44"
@@ -391,15 +414,8 @@ export const ResearchDetails = () => {
                 >
                   {isLoading ? (
                     <MoonLoader color={"white"} size={20} />
-                  ) : ( toggleApprove()
-                    // <>
-                    //   {" "}
-                    //   {(leaveDetails?.approval_bodies &&
-                    //     getLastItem(leaveDetails?.approval_bodies)) ===
-                    //   userDetails?.data?.role
-                    //     ? "Approve"
-                    //     : "Recomemnd"}{" "}
-                    // </>
+                  ) : (
+                    toggleApprove()
                   )}
                 </Button>
               </Flex>

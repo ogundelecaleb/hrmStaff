@@ -46,7 +46,7 @@ export const SickDetails = () => {
       setComments([...comments, commentText]);
       setIsCommentDisplayed(true);
     }
-    console.log("commets", commentText);
+    // console.log("commets", commentText);
   };
 
   useEffect(() => {
@@ -57,11 +57,11 @@ export const SickDetails = () => {
         .then((response) => {
           const leaveData = response.data;
           setLeaveDetails(leaveData);
-          console.log(response.data);
+          // console.log(response.data);
           setIsLoadinge(false);
         })
         .catch((error) => {
-          console.log(error);
+          // console.log(error);
           setIsLoadinge(false);
         });
     }
@@ -70,7 +70,7 @@ export const SickDetails = () => {
   async function fetchUserDetails() {
     try {
       const userDetails = await getUserDetails();
-      console.log("User Details:", userDetails);
+      // console.log("User Details:", userDetails);
       setUserDetails(userDetails);
     } catch (error) {
       console.error("Error fetching your basic details", error);
@@ -124,7 +124,7 @@ export const SickDetails = () => {
         status: "approved",
         comment: commentText,
       });
-      console.log("responce==>>>>>", response);
+      // console.log("responce==>>>>>", response);
       enqueueSnackbar("Application approved successfully", {
         variant: "success",
       });
@@ -152,7 +152,7 @@ export const SickDetails = () => {
         status: "declined",
         comment: commentText,
       });
-      console.log("responce==>>>>>", response);
+      // console.log("responce==>>>>>", response);
       enqueueSnackbar("Application declined successfully", {
         variant: "success",
       });
@@ -165,7 +165,7 @@ export const SickDetails = () => {
     }
   }
   function getLastItem(array) {
-    console.log("appprovalls===>>>", leaveDetails?.approval_bodies);
+    // console.log("appprovalls===>>>", leaveDetails?.approval_bodies);
     // Check if the array is not empty
     if (array.length === 0) {
       return undefined; // Return undefined if the array is empty
@@ -185,7 +185,6 @@ export const SickDetails = () => {
     if (approves < 1 && approvals > 1) {
       const firstObject = leaveDetails?.approval_bodies[0];
       const user = userDetails?.data?.email;
-      console.log("user-->>", user);
       const isUserIncludeObject = user?.includes(firstObject);
       if (isUserIncludeObject) {
         status = "Recommend";
@@ -193,12 +192,13 @@ export const SickDetails = () => {
     } else if (approves > 0 && approvals > 1) {
       const bodies = leaveDetails?.approval_bodies;
       const lastObject = bodies[bodies.length - 1];
-      const userRole = userDetails?.data?.role;
+      const userRole = userDetails?.data?.email;
+    
       const isUserMatchRole = userRole === lastObject;
       if (isUserMatchRole) {
         status = "Approve";
       }
-    } else if (approvals === 1) {
+    } else if (approvals === 1 && approves === 1) {
       const firstObject = leaveDetails?.approval_bodies[0];
       const user = userDetails?.data?.email;
       const isUserIncludeObject = user?.includes(firstObject);
@@ -208,9 +208,30 @@ export const SickDetails = () => {
     }
     return status;
   };
+  const displayButton = () => {
+    let result = false;
+
+    if(leaveDetails) {
+
+      const approvals = leaveDetails?.approval_bodies?.length;
+      const approves = leaveDetails?.approvals?.length;
+      if(approvals === approves ){
+      return result = false;
+      }
+     
+      //approval index
+      const currentApprovalIndex =  leaveDetails?.approval_bodies[approves];
+      if ( (currentApprovalIndex.includes(userDetails?.data?.email) ||   currentApprovalIndex === userDetails?.data?.email) && leaveDetails?.status === "pending") {
+        result = true;
+      }
+  
+      
+    }
+    return result
+  };
 
   return (
-    <Stack className="container" pl="12">
+    <Stack className="" px="12">
       <div
         id="no-padding-res"
         className="d-flex flex-wrap mt-3 align-items-center justify-content-between"
@@ -368,38 +389,31 @@ export const SickDetails = () => {
                 ))}
               </Box>
             )}
-            {shouldDisplayButtons && isApproved && (
-              <Flex pt="10" w="full" mt="10" justifyContent={"space-between"}>
-                <Button
-                  borderRadius={"0"}
-                  color="#D02F44"
-                  bg="#F8F8FD"
-                  onClick={handleDeclinedBtn}
-                >
-                  {isLoadingd ? (
-                    <MoonLoader color={"white"} size={20} />
-                  ) : (
-                    <> Declined </>
-                  )}
-                </Button>
-                <Button
-                  borderRadius={"0"}
-                  color="white"
-                  bg="#388B41"
-                  onClick={handleApprovedBtn}
-                >
-                  {isLoading ? (
-                    <MoonLoader color={"white"} size={20} />
-                  ) : (toggleApprove()
-                    // <>
-                    //   {" "}
-                    //   {(leaveDetails?.approval_bodies &&
-                    //     getLastItem(leaveDetails?.approval_bodies)) ===
-                    //   userDetails?.data?.role
-                    //     ? "Approve"
-                    //     : "Recomemnd"}{" "}
-                    // </>
-                  )}
+            {displayButton() && (
+                          <Flex pt="10" w="full" mb="10" justifyContent={"space-between"}>
+                            <Button
+                              borderRadius={"0"}
+                              color="#D02F44"
+                              bg="#F8F8FD"
+                              onClick={handleDeclinedBtn}
+                            >
+                              {isLoadingd ? (
+                                <MoonLoader color={"white"} size={20} />
+                              ) : (
+                                <> Declined </>
+                              )}
+                            </Button>
+                            <Button
+                              borderRadius={"0"}
+                              color="white"
+                              bg="#388B41"
+                              onClick={handleApprovedBtn}
+                            >
+                              {isLoading ? (
+                                <MoonLoader color={"white"} size={20} />
+                              ) : (
+                                toggleApprove()
+                              )}
                 </Button>
               </Flex>
             )}

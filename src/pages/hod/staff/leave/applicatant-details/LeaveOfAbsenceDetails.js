@@ -101,13 +101,7 @@ export const LeaveOfAbsenceDetails = () => {
     return date.toLocaleDateString(undefined, options);
   };
 
-  const shouldDisplayButtons =
-    !leaveDetails.approvals ||
-    !leaveDetails.approvals.some(
-      (approval) =>
-        approval.role === userDetails?.data?.role &&
-        (approval.status === "approved" || approval.status === "declined")
-    );
+
 
   async function handleApprovedBtn(e) {
     e.preventDefault();
@@ -185,7 +179,6 @@ export const LeaveOfAbsenceDetails = () => {
     if (approves < 1 && approvals > 1) {
       const firstObject = leaveDetails?.approval_bodies[0];
       const user = userDetails?.data?.email;
-      console.log("user-->>", user);
       const isUserIncludeObject = user?.includes(firstObject);
       if (isUserIncludeObject) {
         status = "Recommend";
@@ -193,12 +186,13 @@ export const LeaveOfAbsenceDetails = () => {
     } else if (approves > 0 && approvals > 1) {
       const bodies = leaveDetails?.approval_bodies;
       const lastObject = bodies[bodies.length - 1];
-      const userRole = userDetails?.data?.role;
+      const userRole = userDetails?.data?.email;
+    
       const isUserMatchRole = userRole === lastObject;
       if (isUserMatchRole) {
         status = "Approve";
       }
-    } else if (approvals === 1) {
+    } else if (approvals === 1 && approves === 1) {
       const firstObject = leaveDetails?.approval_bodies[0];
       const user = userDetails?.data?.email;
       const isUserIncludeObject = user?.includes(firstObject);
@@ -207,6 +201,27 @@ export const LeaveOfAbsenceDetails = () => {
       }
     }
     return status;
+  };
+  const displayButton = () => {
+    let result = false;
+
+    if(leaveDetails) {
+
+      const approvals = leaveDetails?.approval_bodies?.length;
+      const approves = leaveDetails?.approvals?.length;
+      if(approvals === approves ){
+      return result = false;
+      }
+     
+      //approval index
+      const currentApprovalIndex =  leaveDetails?.approval_bodies[approves];
+      if ( (currentApprovalIndex.includes(userDetails?.data?.email) ||   currentApprovalIndex === userDetails?.data?.email) && leaveDetails?.status === "pending") {
+        result = true;
+      }
+  
+      
+    }
+    return result
   };
 
   return (
@@ -368,38 +383,31 @@ export const LeaveOfAbsenceDetails = () => {
                 ))}
               </Box>
             )}
-            {shouldDisplayButtons && isApproved && (
-              <Flex pt="10" w="full" mb="10" justifyContent={"space-between"}>
-                <Button
-                  borderRadius={"0"}
-                  color="#D02F44"
-                  bg="#F8F8FD"
-                  onClick={handleDeclinedBtn}
-                >
-                  {isLoadingd ? (
-                    <MoonLoader color={"white"} size={20} />
-                  ) : (
-                    <> Declined </>
-                  )}
-                </Button>
-                <Button
-                  borderRadius={"0"}
-                  color="white"
-                  bg="#388B41"
-                  onClick={handleApprovedBtn}
-                >
-                  {isLoading ? (
-                    <MoonLoader color={"white"} size={20} />
-                  ) : (toggleApprove()
-                    // <>
-                    //   {" "}
-                    //   {(leaveDetails?.approval_bodies &&
-                    //     getLastItem(leaveDetails?.approval_bodies)) ===
-                    //   userDetails?.data?.role
-                    //     ? "Approve"
-                    //     : "Recomemnd"}{" "}
-                    // </>
-                  )}
+          {displayButton() && (
+                        <Flex pt="10" w="full" mb="10" justifyContent={"space-between"}>
+                          <Button
+                            borderRadius={"0"}
+                            color="#D02F44"
+                            bg="#F8F8FD"
+                            onClick={handleDeclinedBtn}
+                          >
+                            {isLoadingd ? (
+                              <MoonLoader color={"white"} size={20} />
+                            ) : (
+                              <> Declined </>
+                            )}
+                          </Button>
+                          <Button
+                            borderRadius={"0"}
+                            color="white"
+                            bg="#388B41"
+                            onClick={handleApprovedBtn}
+                          >
+                            {isLoading ? (
+                              <MoonLoader color={"white"} size={20} />
+                            ) : (
+                              toggleApprove()
+                            )}
                 </Button>
               </Flex>
             )}

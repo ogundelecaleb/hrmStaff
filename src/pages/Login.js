@@ -48,7 +48,7 @@ export default function Login() {
     setIsLoading(true);
     try {
       const response = await api.signIn({ identity, password });
-      console.log("res of login==>>>>>", response);
+      // console.log("res of login==>>>>>", response);
       const { role } = response;
       if (!role) {
         enqueueSnackbar('Access denied, contact HR Manager', { variant: 'error' });
@@ -66,7 +66,7 @@ export default function Login() {
         navigate('/dashboard');
       }
     } catch (error) {
-      console.log(error.message)
+      // console.log(error.message)
       enqueueSnackbar(error.message, { variant: 'error' })
       setIsLoading(false);
     }

@@ -3,11 +3,11 @@ import { GETUSERDETAILS } from "./AuthConfig";
 
 export async function getHeaders() {
   let userData = localStorage.getItem("userData");
-  // console.log(userData.data.accessToken, "header");
+  // // console.log(userData.data.accessToken, "header");
   if (userData) {
     userData = JSON.parse(userData);
     const token = "Bearer " + userData.token;
-    console.log(userData.token, "header");
+    // console.log(userData.token, "header");
     return {
       authorization: token,
       Accept: "application/json",
@@ -50,8 +50,8 @@ export async function apiReq(
         return res(data);
       })
       .catch((error) => {
-        console.log(error);
-        console.log(error && error.response, "the error respne");
+        // console.log(error);
+        // console.log(error && error.response, "the error respne");
         if (error && error.response && error.response.status === 401) {
           clearUserData();
 

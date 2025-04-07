@@ -35,7 +35,7 @@ export const CasualDetails = (props) => {
   const { enqueueSnackbar } = useSnackbar();
   const [isLoading, setIsLoading] = useState(false);
   const [isLoadingd, setIsLoadingd] = useState(false);
-  const [leaveDetails, setLeaveDetails] = useState([]);
+  const [leaveDetails, setLeaveDetails] = useState("");
   const [userDetails, setUserDetails] = useState([]);
   const [comments, setComments] = useState([]);
   const [commentText, setCommentText] = useState("");
@@ -47,7 +47,7 @@ export const CasualDetails = (props) => {
       setComments([...comments, commentText]);
       setIsCommentDisplayed(true);
     }
-    console.log("commets", commentText);
+    // console.log("commets", commentText);
   };
 
   useEffect(() => {
@@ -55,7 +55,7 @@ export const CasualDetails = (props) => {
     const val = "HOU";
     isValueInArray(val, arr);
 
-    console.log("check value=--->>", isValueInArray(val, arr));
+    // console.log("check value=--->>", isValueInArray(val, arr));
 
     setIsLoadinge(true);
     if (id) {
@@ -64,11 +64,11 @@ export const CasualDetails = (props) => {
         .then((response) => {
           const leaveData = response.data;
           setLeaveDetails(leaveData);
-          console.log(response.data);
+          // console.log(response.data);
           setIsLoadinge(false);
         })
         .catch((error) => {
-          console.log(error);
+          // console.log(error);
           setIsLoadinge(false);
         });
     }
@@ -77,7 +77,7 @@ export const CasualDetails = (props) => {
   async function fetchUserDetails() {
     try {
       const userDetails = await getUserDetails();
-      console.log("User Details:", userDetails);
+      // console.log("User Details:", userDetails);
       setUserDetails(userDetails);
     } catch (error) {
       console.error("Error fetching your basic details", error);
@@ -131,7 +131,7 @@ export const CasualDetails = (props) => {
         status: "approved",
         comment: commentText,
       });
-      console.log("responce==>>>>>", response);
+      // console.log("responce==>>>>>", response);
       enqueueSnackbar("Application approved successfully", {
         variant: "success",
       });
@@ -159,7 +159,7 @@ export const CasualDetails = (props) => {
         status: "declined",
         comment: commentText,
       });
-      console.log("responce==>>>>>", response);
+      // console.log("responce==>>>>>", response);
       enqueueSnackbar("Application declined successfully", {
         variant: "success",
       });
@@ -176,13 +176,11 @@ export const CasualDetails = (props) => {
     if (array?.length === 0) {
       return undefined; // Return undefined if the array is empty
     }
-console.log("array--->>", array)
     // Return the last item in the array
     return array[array?.length - 1];
   }
 
-  const isApproved= leaveDetails?.status !== "approved"
-
+  const isApproved = leaveDetails?.status !== "approved";
 
   function isValueInArray(value, arr) {
     const i = arr[arr.length - 1];
@@ -190,28 +188,68 @@ console.log("array--->>", array)
     if (Array.isArray(i)) {
       // Recursively check nested arrays
       if (i.includes(value)) {
-        console.log("lastarray to find value", i)
         return true;
       }
     } else if (i === value) {
       return true;
     }
 
-    // for (let i = 0; i < arr.length; i++) {
-    //   // Check if current element is an array
-    //   if (Array.isArray(arr[i])) {
-    //     // Recursively check nested arrays
-    //     if (isValueInArray(value, arr[i])) {
-    //       return true;
-    //     }
-    //   } else if (arr[i] === value) {
-    //     // If the current element matches the value, return true
-    //     return true;
-    //   }
-    // }
     return false;
   }
 
+  const toggleApprove = () => {
+    const approvals = leaveDetails?.approval_bodies?.length;
+    const approves = leaveDetails?.approvals?.length;
+
+    let status = "Recommend";
+
+    if (approves < 1 && approvals > 1) {
+      const firstObject = leaveDetails?.approval_bodies[0];
+      const user = userDetails?.data?.email;
+      const isUserIncludeObject = user?.includes(firstObject);
+      if (isUserIncludeObject) {
+        status = "Recommend";
+      }
+    } else if (approves > 0 && approvals > 1) {
+      const bodies = leaveDetails?.approval_bodies;
+      const lastObject = bodies[bodies.length - 1];
+      const userRole = userDetails?.data?.email;
+
+      const isUserMatchRole = userRole === lastObject;
+      if (isUserMatchRole) {
+        status = "Approve";
+      }
+    } else if (approvals === 1 && approves < 1) {
+      const firstObject = leaveDetails?.approval_bodies[0];
+      const user = userDetails?.data?.email;
+      const isUserIncludeObject = user?.includes(firstObject);
+      if (isUserIncludeObject) {
+        status = "Approve";
+      }
+    }
+    return status;
+  };
+  const displayButton = () => {
+    let result = false;
+
+    if(leaveDetails) {
+
+      const approvals = leaveDetails?.approval_bodies?.length;
+      const approves = leaveDetails?.approvals?.length;
+      if(approvals === approves ){
+      return result = false;
+      }
+     
+      //approval index
+      const currentApprovalIndex =  leaveDetails?.approval_bodies[approves];
+      if ( (currentApprovalIndex.includes(userDetails?.data?.email) ||   currentApprovalIndex === userDetails?.data?.email) && leaveDetails?.status === "pending") {
+        result = true;
+      }
+  
+      
+    }
+    return result
+  };
   return (
     <Stack className="px-4" pl="12">
       <div
@@ -252,11 +290,11 @@ console.log("array--->>", array)
               <Box className="d-flex gap-3 my-4">
                 <div>
                   {leaveDetails.user_image ? (
-                     <Avatar
-                    h={'90.17px'}
-                    w={'90.17px'}
-                    src={leaveDetails.user_image}
-                  />
+                    <Avatar
+                      h={"90.17px"}
+                      w={"90.17px"}
+                      src={leaveDetails.user_image}
+                    />
                   ) : (
                     <RxAvatar size={80} color={"#25324B"} />
                   )}
@@ -371,7 +409,8 @@ console.log("array--->>", array)
                 ))}
               </Box>
             )}
-          {shouldDisplayButtons && isApproved && (              <Flex pt="10" w="full" mb="10" justifyContent={"space-between"}>
+            {displayButton() && (
+              <Flex pt="10" w="full" mb="10" justifyContent={"space-between"}>
                 <Button
                   borderRadius={"0"}
                   color="#D02F44"
@@ -393,17 +432,7 @@ console.log("array--->>", array)
                   {isLoading ? (
                     <MoonLoader color={"white"} size={20} />
                   ) : (
-                    <>{leaveDetails?.approval_bodies && 
-                      (leaveDetails?.approval_bodies?.length > 1
-                        ? getLastItem(leaveDetails?.approval_bodies) ===
-                          userDetails?.data?.role
-                          ? "Approve"
-                          : "Recomemnd"
-                        : getLastItem(leaveDetails?.approval_bodies) ===
-                          userDetails?.data?.email
-                        ? "Approve"
-                        : "Recomemnd")}
-                    </>
+                    toggleApprove()
                   )}
                 </Button>
               </Flex>
@@ -444,55 +473,55 @@ console.log("array--->>", array)
               </Box>
               <TabPanels>
                 <TabPanel>
-                 <Grid templateColumns="repeat(2, 1fr)" gap={6}>
-                                     <GridItem w="100%" h="10">
-                                       <h2 className="text-base font-medium text-[#7C8493]">
-                                         Full Name
-                                       </h2>
-                                       <h3 className="text-sm font-medium text-[#000]">
-                                         {leaveDetails.full_name}
-                                       </h3>
-                                     </GridItem>
-                                     <GridItem w="100%" h="10">
-                                       <h2 className="text-base font-medium text-[#7C8493]">
-                                         Leave Type
-                                       </h2>
-                                       <h3 className="text-sm font-medium text-[#000]">
-                                         Annual Leave
-                                       </h3>
-                                     </GridItem>
-                                     <GridItem w="100%" h="10">
-                                       <h2 className="text-base font-medium text-[#7C8493]">
-                                         Marital Status{" "}
-                                       </h2>
-                                       <h3 className="text-sm font-medium text-[#000]">
-                                         {leaveDetails.marital_status}
-                                       </h3>
-                                     </GridItem>
-                                     <GridItem w="100%" h="10">
-                                       <h2 className="text-base font-medium text-[#7C8493]">
-                                         Date of First Appointment{" "}
-                                       </h2>
-                                       <h3 className="text-sm font-medium text-[#000]">
-                                         {formatDate(leaveDetails.date_of_first_appointment)}
-                                       </h3>
-                                     </GridItem>
-                                     <GridItem w="100%" h="10">
-                                       <h2 className="text-base font-medium text-[#7C8493]">
-                                         Division/Department/Unit
-                                       </h2>
-                                       <Text
-                                         fontSize={"sm"}
-                                         color="#25324B"
-                                         fontWeight={"medium"}
-                                       >
-                                         {leaveDetails.department?.name ||
-                                           leaveDetails.faculty?.name ||
-                                           leaveDetails.unit?.name}
-                                       </Text>
-                                     </GridItem>
-                 
-                                     {/* <GridItem w='100%' h='10'>
+                  <Grid templateColumns="repeat(2, 1fr)" gap={6}>
+                    <GridItem w="100%" h="10">
+                      <h2 className="text-base font-medium text-[#7C8493]">
+                        Full Name
+                      </h2>
+                      <h3 className="text-sm font-medium text-[#000]">
+                        {leaveDetails.full_name}
+                      </h3>
+                    </GridItem>
+                    <GridItem w="100%" h="10">
+                      <h2 className="text-base font-medium text-[#7C8493]">
+                        Leave Type
+                      </h2>
+                      <h3 className="text-sm font-medium text-[#000]">
+                        Annual Leave
+                      </h3>
+                    </GridItem>
+                    <GridItem w="100%" h="10">
+                      <h2 className="text-base font-medium text-[#7C8493]">
+                        Marital Status{" "}
+                      </h2>
+                      <h3 className="text-sm font-medium text-[#000]">
+                        {leaveDetails.marital_status}
+                      </h3>
+                    </GridItem>
+                    <GridItem w="100%" h="10">
+                      <h2 className="text-base font-medium text-[#7C8493]">
+                        Date of First Appointment{" "}
+                      </h2>
+                      <h3 className="text-sm font-medium text-[#000]">
+                        {formatDate(leaveDetails.date_of_first_appointment)}
+                      </h3>
+                    </GridItem>
+                    <GridItem w="100%" h="10">
+                      <h2 className="text-base font-medium text-[#7C8493]">
+                        Division/Department/Unit
+                      </h2>
+                      <Text
+                        fontSize={"sm"}
+                        color="#25324B"
+                        fontWeight={"medium"}
+                      >
+                        {leaveDetails.department?.name ||
+                          leaveDetails.faculty?.name ||
+                          leaveDetails.unit?.name}
+                      </Text>
+                    </GridItem>
+
+                    {/* <GridItem w='100%' h='10'>
                                      <Text fontSize={"lg"} color='#7C8493' m='0'>
                                        Leave due for Current year
                                      </Text>
@@ -501,48 +530,48 @@ console.log("array--->>", array)
                                        {leaveDetails.total_leave_due}
                                      </Text>
                                    </GridItem> */}
-                                     <GridItem w="100%" h="10" mt="4">
-                                       <h2 className="text-base font-medium text-[#7C8493]">
-                                         To be relived by (Name of Staff)
-                                       </h2>
-                                       <h3 className="text-sm font-medium text-[#000]">
-                                         {leaveDetails.replacement_on_duty}
-                                       </h3>
-                                     </GridItem>
-                 
-                                     <GridItem w="100%" h="10">
-                                       <h2 className="text-base font-medium text-[#7C8493]">
-                                         Start Date
-                                       </h2>
-                                       <h3 className="text-sm font-medium text-[#000]">
-                                         {formatDate(leaveDetails.start_date)}
-                                       </h3>
-                                     </GridItem>
-                                     <GridItem w="100%" h="10">
-                                       <h2 className="text-base font-medium text-[#7C8493]">
-                                         Address when on Leave{" "}
-                                       </h2>
-                                       <h3 className="text-sm font-medium text-[#000]">
-                                         {leaveDetails.leave_address}
-                                       </h3>
-                                     </GridItem>
-                                     <GridItem w="100%" h="10">
-                                       <h2 className="text-base font-medium text-[#7C8493]">
-                                         End Date
-                                       </h2>
-                                       <h3 className="text-sm font-medium text-[#000]">
-                                         {formatDate(leaveDetails.end_date)}
-                                       </h3>
-                                     </GridItem>
-                                     <GridItem w="100%" h="10">
-                                       <h2 className="text-base font-medium text-[#7C8493]">
-                                         Resumption Date
-                                       </h2>
-                                       <h3 className="text-sm font-medium text-[#000]">
-                                         {formatDate(leaveDetails.resumption_date)}
-                                       </h3>
-                                     </GridItem>
-                                   </Grid>
+                    <GridItem w="100%" h="10" mt="4">
+                      <h2 className="text-base font-medium text-[#7C8493]">
+                        To be relived by (Name of Staff)
+                      </h2>
+                      <h3 className="text-sm font-medium text-[#000]">
+                        {leaveDetails.replacement_on_duty}
+                      </h3>
+                    </GridItem>
+
+                    <GridItem w="100%" h="10">
+                      <h2 className="text-base font-medium text-[#7C8493]">
+                        Start Date
+                      </h2>
+                      <h3 className="text-sm font-medium text-[#000]">
+                        {formatDate(leaveDetails.start_date)}
+                      </h3>
+                    </GridItem>
+                    <GridItem w="100%" h="10">
+                      <h2 className="text-base font-medium text-[#7C8493]">
+                        Address when on Leave{" "}
+                      </h2>
+                      <h3 className="text-sm font-medium text-[#000]">
+                        {leaveDetails.leave_address}
+                      </h3>
+                    </GridItem>
+                    <GridItem w="100%" h="10">
+                      <h2 className="text-base font-medium text-[#7C8493]">
+                        End Date
+                      </h2>
+                      <h3 className="text-sm font-medium text-[#000]">
+                        {formatDate(leaveDetails.end_date)}
+                      </h3>
+                    </GridItem>
+                    <GridItem w="100%" h="10">
+                      <h2 className="text-base font-medium text-[#7C8493]">
+                        Resumption Date
+                      </h2>
+                      <h3 className="text-sm font-medium text-[#000]">
+                        {formatDate(leaveDetails.resumption_date)}
+                      </h3>
+                    </GridItem>
+                  </Grid>
                 </TabPanel>
                 <TabPanel>
                   <Box

@@ -34,7 +34,7 @@ const AnnualDetails = (props) => {
   const { enqueueSnackbar } = useSnackbar();
   const [isLoading, setIsLoading] = useState(false);
   const [isLoadingd, setIsLoadingd] = useState(false);
-  const [leaveDetails, setLeaveDetails] = useState([]);
+  const [leaveDetails, setLeaveDetails] = useState("");
   const [userDetails, setUserDetails] = useState([]);
   const [comments, setComments] = useState([]);
   const [commentText, setCommentText] = useState("");
@@ -119,7 +119,6 @@ const AnnualDetails = (props) => {
     if (approves < 1 && approvals > 1) {
       const firstObject = leaveDetails?.approval_bodies[0];
       const user = userDetails?.data?.email;
-      console.log("user-->>", user);
       const isUserIncludeObject = user?.includes(firstObject);
       if (isUserIncludeObject) {
         status = "Recommend";
@@ -127,12 +126,13 @@ const AnnualDetails = (props) => {
     } else if (approves > 0 && approvals > 1) {
       const bodies = leaveDetails?.approval_bodies;
       const lastObject = bodies[bodies.length - 1];
-      const userRole = userDetails?.data?.role;
+      const userRole = userDetails?.data?.email;
+    
       const isUserMatchRole = userRole === lastObject;
       if (isUserMatchRole) {
         status = "Approve";
       }
-    } else if (approvals === 1) {
+    } else if (approvals === 1 && approves === 1) {
       const firstObject = leaveDetails?.approval_bodies[0];
       const user = userDetails?.data?.email;
       const isUserIncludeObject = user?.includes(firstObject);
@@ -142,8 +142,6 @@ const AnnualDetails = (props) => {
     }
     return status;
   };
-
- 
 
   const formatshortDate = (dateString) => {
     const date = new Date(dateString);
@@ -155,15 +153,7 @@ const AnnualDetails = (props) => {
     return date.toLocaleDateString(undefined, options);
   };
 
-  const isApproved = leaveDetails?.status !== "approved";
 
-  const shouldDisplayButtons =
-    !leaveDetails.approvals ||
-    !leaveDetails.approvals.some(
-      (approval) =>
-        approval.role === userDetails?.data?.role &&
-        (approval.status === "approved" || approval.status === "declined")
-    );
 
   async function handleApprovedBtn(e) {
     e.preventDefault();
@@ -218,6 +208,28 @@ const AnnualDetails = (props) => {
       setIsLoadingd(false);
     }
   }
+
+  const displayButton = () => {
+    let result = false;
+
+    if(leaveDetails) {
+
+      const approvals = leaveDetails?.approval_bodies?.length;
+      const approves = leaveDetails?.approvals?.length;
+      if(approvals === approves ){
+      return result = false;
+      }
+     
+      //approval index
+      const currentApprovalIndex =  leaveDetails?.approval_bodies[approves];
+      if ( (currentApprovalIndex.includes(userDetails?.data?.email) ||   currentApprovalIndex === userDetails?.data?.email) && leaveDetails?.status === "pending") {
+        result = true;
+      }
+  
+      
+    }
+    return result
+  };
   return (
     <Stack className="px-4" pl="16" pb="10">
       <div
@@ -233,7 +245,7 @@ const AnnualDetails = (props) => {
           <p className=" fs-5 mt-3 ">Applicant Details</p>
         </Link>
       </div>
-      {isLoadinge ? (
+      {(isLoadinge && !leaveDetails) ? (
         <Box
           w={"70vw"}
           display="flex"
@@ -379,6 +391,7 @@ const AnnualDetails = (props) => {
               </Box>
             )}
             {/* {shouldDisplayButtons && !isApproved && ( */}
+            {displayButton() && (
             <Flex pt="10" w="full" mb="10" justifyContent={"space-between"}>
               <Button
                 borderRadius={"0"}
@@ -404,22 +417,11 @@ const AnnualDetails = (props) => {
                   ) : (
                     toggleApprove()
                   )
-                  // <>
-                  //   {" "}
-                  //   {/* {leaveDetails && leaveDetails?.approval_bodies?.length > 1
-                  //     ? getLastItem(leaveDetails?.approval_bodies) ===
-                  //       userDetails?.data?.role
-                  //       ? "Approve"
-                  //       : "Recomemnd"
-                  //     : getLastItem(leaveDetails?.approval_bodies) ===
-                  //       userDetails?.data?.email
-                  //     ? "Approve"
-                  //     : "Recomemnd"}{" "} */}
-                  // </>
+                
                 }
               </Button>
             </Flex>
-            {/* )} */}
+            )}
           </Box>
           <Box
             h={"fit-content"}
