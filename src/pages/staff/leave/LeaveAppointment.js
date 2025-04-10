@@ -3,84 +3,103 @@ import { BsCheckCircle } from "react-icons/bs";
 import { MdPeople } from "react-icons/md";
 import { TbFileImport } from "react-icons/tb";
 import HodStaffCard from "../../../components/staffcard/HodStaffCard";
-import { ArrowForwardSquare, BoxTick, Category2, ColorSwatch } from "iconsax-react";
+import {
+  ArrowForwardSquare,
+  BoxTick,
+  Category2,
+  ColorSwatch,
+} from "iconsax-react";
 import { Link } from "react-router-dom";
 
 const LeaveAppointment = ({ navigate }) => {
+
+  const Card = ({ icon, title, desc }) => {
+    return(
+    <div className="border rounded-lg flex justify-between flex-col shadow overflow-hidden ">
+      <div className="flex justify-between  items-center  p-2">
+        <p className="text-sm md:text-lg font-semibold ">{title}</p>
+        <div>{icon}</div>
+      </div>
+      <p className="mt-7 text-gray-500 p-2">{desc}</p>
+      <div className="mt-1 ">
+        {/* <">
+      {desc}
+    </p> */}
+        <div className="p-2 bg-[#984779] bg-opacity-50 h-10 "></div>
+      </div>
+    </div>);
+  };
   return (
-    <div  className="bg-[#F7F7F7] px-4 md:px-6 min-h-screen" >
-      <SimpleGrid columns={{ base: 1, md: 2 }} spacing={{ base: 3, md: 5 }}>
-        {/* <HodStaffCard
-          label={"My Leave Applications"}
-          Icon={<MdPeople size={24} color="#EDF2F7" />}
-          CardBgColor={"#6aa84f"}
-          labelColor={"#EDF2F7"}
-          IconBorderColor={"#EDF2F7"}
-          Action={() => navigate("my-leave-applications")}
-        /> */}
-        <Link to="/leave/my-leave-applications" className="border bg-[#FEFEFE] h-[280px] md:h-[302px] w-full md:w-[420px] border-[#98a2b3] rounded-lg my-4  p-3 md:p-6 flex flex-col justify-center">
-          <div className=" h-[48px] md:h-[62px] w-[48px] md:w-[62px] border border-[#EDF2F7] rounded-lg flex justify-center items-center  ">
-            <ColorSwatch variant="Bold" color="#741b47" className=" h-[32px] md:h-[48px]" />
-          </div>
-          <p className="mb-0 text-gray-600 text-lg md:text-xl font-medium mt-4 ">
-            {" "}
-            My Leave Applications
-          </p>
-        </Link>
-        <Link to="/leave/leave-application" className="border bg-[#FEFEFE] h-[280px] md:h-[302px] w-full md:w-[420px] border-[#98a2b3] my-4 rounded-lg  p-3 md:p-6 flex flex-col justify-center">
-          <div className="bg-[#FEFEFE] h-[48px] md:h-[62px] w-[48px] md:w-[62px] border border-[#EDF2F7] rounded-lg flex justify-center items-center  ">
-            <Category2 variant="Bold" color="#741b47" className=" h-[32px] md:h-[48px]" />
+    <div className="bg-[#F7F7F7] p-4 md:p-6 min-h-screen">
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <Link
+          to="/leave/my-leave-applications"
+        >
+          <Card
+          icon={<ColorSwatch
+            variant="Bold"
+            color="#741b47"
+            className=" h-[32px] md:h-[48px]"
+          />}
+          title="My Leave Applications"
+          desc="View all your leave applications"
+          
+          />
          
-          </div>
-          <p className="mb-0 text-grey-400 text-lg md:text-xl font-medium mt-4 ">
-            {" "}
-            Apply for Leave
-          </p>
         </Link>
-        <Link to="/leave/leave-resumption" className="border bg-[#FEFEFE] h-[280px] md:h-[302px] w-full md:w-[420px] border-[#98a2b3] my-4 rounded-lg  p-3 md:p-6 flex flex-col justify-center">
-          <div className="bg-[#FEFEFE] h-[48px] md:h-[62px] w-[48px] md:w-[62px] border border-[#EDF2F7] rounded-lg flex justify-center items-center  ">
-            <ArrowForwardSquare variant="Bold" color="#741b47" className=" h-[32px] md:h-[48px]" />
+
+        <Link
+          to="/leave/leave-application"
+          >
+          <Card
+          icon={ <Category2
+            variant="Bold"
+            color="#741b47"
+            className=" h-[32px] md:h-[48px]"
+          />}
+          title="Apply for Leave"
+          desc="Create a new leave application"
+          
+          />
          
-          </div>
-          <p className="mb-0 text-gray-600 text-lg md:text-xl font-medium mt-4 ">
-            {" "}
-            Resumption of Duty Certificate          </p>
         </Link>
-        <Link to="/leave/my-leave-resumption" className="border bg-[#FEFEFE] h-[280px] md:h-[302px] w-full md:w-[420px] border-[#98a2b3] my-4 rounded-lg  p-3 md:p-6 flex flex-col justify-center">
-          <div className="bg-[#FEFEFE] h-[48px] md:h-[62px] w-[48px] md:w-[62px] border border-[#EDF2F7] rounded-lg flex justify-center items-center  ">
-            <BoxTick variant="Bold" color="#741b47" className=" h-[32px] md:h-[48px]" />
+        {/* <Link
+          to="/leave/leave-resumption"
+          > */}
+          <Card
+          icon={   <ArrowForwardSquare
+            variant="Bold"
+            color="#741b47"
+            className=" h-[32px] md:h-[48px]"
+          />}
+          title="Resumption of Duty Certificate"
+          desc="Update your leave resumption details"
+          
+          />
          
-          </div>
-          <p className="mb-0 text-gray-600 text-lg md:text-xl font-medium mt-4 ">
-            {" "}
-            Resumption Applications
-          </p>
-        </Link>
-        {/* <HodStaffCard
-          label={"Apply for Leave"}
-          Icon={<MdPeople size={24} color="EDF2F7" />}
-          CardBgColor={"#741b47"}
-          labelColor={"#EDF2F7"}
-          IconBorderColor={"#EDF2F7"}
-          Action={() => navigate("leave-application")}
-        /> */}
-        {/* <HodStaffCard
-          label={"Resumption of Duty Certificate"}
-          Icon={<MdPeople size={24} color="#984779" />}
-          CardBgColor={"#E4C0D3"}
-          labelColor={"#984779"}
-          IconBorderColor={"#984779"}
-          Action={() => navigate("leave-resumption")}
-        />
-        <HodStaffCard
-          label={"Resumption Applications"}
-          Icon={<MdPeople size={24} color="EDF2F7" />}
-          CardBgColor={"#17082DF0"}
-          labelColor={"#EDF2F7"}
-          IconBorderColor={"#EDF2F7"}
-          Action={() => navigate("my-leave-resumption")}
-        /> */}
-      </SimpleGrid>
+        {/* </Link> */}
+
+        {/* <Link
+          to="/leave/my-leave-resumption"
+          >
+          <Card
+          icon={   <BoxTick
+            variant="Bold"
+            color="#741b47"
+            className=" h-[32px] md:h-[48px]"
+          />}
+          title="Resumption Applications"
+          desc="Update your leave resumption details"
+          
+          />
+         
+        </Link> */}
+
+
+
+       
+      </div>
     </div>
   );
 };

@@ -1,10 +1,6 @@
 import React, { useState, useEffect, useCallback } from "react";
-import {
-  Skeleton,Box
-} from "@chakra-ui/react";
-import {
-  Text,
-} from "@chakra-ui/layout";
+import { Skeleton, Box } from "@chakra-ui/react";
+import { Text } from "@chakra-ui/layout";
 import { AiOutlineMenu, AiOutlinePlus } from "react-icons/ai";
 import { TbDirection, TbGridDots } from "react-icons/tb";
 import { MdSearch } from "react-icons/md";
@@ -13,23 +9,22 @@ import CommonButton from "../../../../components/commonbutton/Button";
 import api from "../../../../api";
 import { useNavigate, Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import NoData from "../../../../components/NoData"
-
+import NoData from "../../../../components/NoData";
 
 const CustomSkeletonLoader = ({ count }) => {
   const skeletonRows = Array.from({ length: count }, (_, index) => (
     <tr key={index}>
-      <td className='text-center' style={{ height: "65px" }}>
+      <td className="text-center" style={{ height: "65px" }}>
         <Skeleton width="100%" height="50px" />
       </td>
-      <td className='fs-6 text-center '>
+      <td className="fs-6 text-center ">
         <Skeleton width="100%" height="50px" />
       </td>
-      <td className='fs-6 text-center '>
+      <td className="fs-6 text-center ">
         <Skeleton width="100%" height="50px" />
       </td>
-      <td className='text-center' style={{ cursor: "pointer", width:'40px' }}>
-        <Skeleton width="60%" height="25px"  />
+      <td className="text-center" style={{ cursor: "pointer", width: "40px" }}>
+        <Skeleton width="60%" height="25px" />
         <Skeleton width="60%" height="25px" marginTop="10px" />
       </td>
     </tr>
@@ -39,30 +34,29 @@ const CustomSkeletonLoader = ({ count }) => {
 };
 
 const LeaveApplicantions = () => {
-
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
   const [page, setPage] = useState(1);
 
-
   async function getLeaves(page) {
-    const response = await api.fetchMyLeaves({ params: { page } })
+    const response = await api.fetchMyLeaves({ params: { page } });
     return response;
   }
 
-  const { isLoading, isError, data, error, isPreviousData, refetch } = useQuery(['leaveRequests', page], () =>
-    getLeaves(page),
+  const { isLoading, isError, data, error, isPreviousData, refetch } = useQuery(
+    ["leaveRequests", page],
+    () => getLeaves(page),
     {
-      keepPreviousData: true, refetchOnWindowFocus: "always",
+      keepPreviousData: true,
+      refetchOnWindowFocus: "always",
     }
-
   );
-  
+
   function formatDate(dateString) {
     const date = new Date(dateString);
     const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0'); // Adding 1 to month since it's zero-based
-    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, "0"); // Adding 1 to month since it's zero-based
+    const day = String(date.getDate()).padStart(2, "0");
     return `${year}-${month}-${day}`;
   }
 
@@ -88,18 +82,18 @@ const LeaveApplicantions = () => {
       ) : (
         <div>
           <div className=" px-4 md:px-6">
-            <div className="row mt-4 pa-res px-3">
+            <div className="flex  justify-between mt-4  px-3">
               <div className="col-lg-4 pt-3 " style={{ height: "70px" }}>
                 <p className="fs-5 ">
                   Total Leave Applied : {data?.meta?.total}
                 </p>
               </div>
-              <div className="col-lg-3 " style={{ height: "70px" }}>
+              <div className=" " style={{ height: "70px" }}>
                 <div style={{ position: "relative" }}>
                   <div style={{ position: "absolute" }}>
                     <input
                       type="text"
-                      className="form-control mt-2 ps-5"
+                      className="form-control mt-2 "
                       style={{ height: "45px" }}
                       placeholder="Search for staff"
                     />
@@ -111,156 +105,120 @@ const LeaveApplicantions = () => {
                   </div>
                 </div>
               </div>
-              <div
-                className="col-lg-5 d-flex flex-wrap gap-3 align-items-center justify-content-end"
-                style={{ cursor: "pointer", height: "70px" }}
-              >
-                {/* <Link
-                to={`/leave/leave-application`}>
-                <CommonButton title={"Apply for Leave"} />
-              </Link> */}
-                <div></div>
-              </div>
+             
             </div>
-            <div className="px-3 tb-res-parent mt-4 ">
-              <div className="tb-res">
-                <table class="table table-hover">
-                  {/* Filter Table start */}
+            <div className="overflow-x-auto">
+              <div class="sm:-mx-6 lg:-mx-8 mt-5">
+                <div class="inline-block min-w-full  sm:px-6 lg:px-8">
+                  <div class="overflow-x-auto rounded-lg">
+                    <table className="min-w-full mb-6 border-[0.8px] border-r-[0.8px]  border-l-[0.8px] border-[#E4E7EC] rounded-lg">
+                      <thead className="bg-[#F9FAFB]">
+                        <tr className="">
+                          <th
+                            scope="col"
+                            className="  border-b-[0.8px] border-[#E4E7EC] py-[12px] px-5  gap-[6px] md:gap-[12px] text-[14px] md:text-[16px] text-[#98A2B3]  font-medium leading-[20px] md:leading-[24px] tracking-[0.2%]"
+                          >
+                              Staff Name
+                          </th>
+                          <th
+                            scope="col"
+                            className="  border-b-[0.8px] border-[#E4E7EC] py-[12px] px-5  gap-[6px] md:gap-[12px] text-[14px] md:text-[16px] text-[#98A2B3]  font-medium leading-[20px] md:leading-[24px] tracking-[0.2%]"
+                          >
+                              Leave Type{" "}
+                          </th>
+                          <th
+                            scope="col"
+                            className="  border-b-[0.8px] border-[#E4E7EC] py-[12px] px-5  gap-[6px] md:gap-[12px] text-[14px] md:text-[16px] text-[#98A2B3]  font-medium leading-[20px] md:leading-[24px] tracking-[0.2%]"
+                          >
+                              Status{" "}
+                          </th>
+                          <th
+                            scope="col"
+                            className="  border-b-[0.8px] border-[#E4E7EC] py-[12px] px-5  gap-[6px] md:gap-[12px] text-[14px] md:text-[16px] text-[#98A2B3]  font-medium leading-[20px] md:leading-[24px] tracking-[0.2%]"
+                          >
+                              Date Applied{" "}
+                          </th>
 
-                  <thead>
-                    <tr className="border">
-                      <th scope="col" className="py-3">
-                        <input
-                          type="checkbox"
-                          style={{ border: "10px solid grey" }}
-                        />
-                      </th>
-                      <th scope="col" className="fw-light py-3 text-muted fs-6">
-                        Staff Name{" "}
-                        <label style={{ marginBottom: "-8px" }}>
-                          <TbDirection size={"25"} />
-                        </label>
-                      </th>
-                      <th scope="col" className="fw-light py-3 text-muted fs-6">
-                        Leave Type{" "}
-                        <label style={{ marginBottom: "-8px" }}>
-                          <TbDirection size={"25"} />
-                        </label>
-                      </th>
-                      <th scope="col" className="fw-light py-3 text-muted fs-6">
-                        Status{" "}
-                        <label style={{ marginBottom: "-8px" }}>
-                          <TbDirection size={"25"} />
-                        </label>
-                      </th>
-                      <th scope="col" className="fw-light py-3 text-muted fs-6">
-                        Date Applied{" "}
-                        <label style={{ marginBottom: "-8px" }}>
-                          <TbDirection size={"25"} />
-                        </label>
-                      </th>
-                      <th scope="col" className="fw-light py-3 text-muted fs-6">
-                        Department{" "}
-                        <label style={{ marginBottom: "-8px" }}>
-                          <TbDirection size={"25"} />
-                        </label>
-                      </th>
-                      <th scope="col" className="fw-light py-3 text-muted fs-6">
-                        Action{" "}
-                        <label style={{ marginBottom: "-8px" }}>
-                          <TbDirection size={"25"} />
-                        </label>
-                      </th>
-                    </tr>
-                  </thead>
+                          <th
+                            scope="col"
+                            className="  border-b-[0.8px] border-[#E4E7EC] py-[12px] px-5  gap-[6px] md:gap-[12px] text-[14px] md:text-[16px] text-[#98A2B3]  font-medium leading-[20px] md:leading-[24px] tracking-[0.2%]"
+                          >
+                              Department{" "}
+                          </th>
 
-                  <br />
+                          <th
+                            scope="col"
+                            className="  border-b-[0.8px] border-[#E4E7EC] py-[12px] gap-[6px] md:gap-[12px] text-[14px] md:text-[16px] text-[#98A2B3]  font-medium leading-[20px] md:leading-[24px] tracking-[0.2%]"
+                          >
+                              Action{" "}
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {isLoading && !isPreviousData && (
+                          <div className="text-base">Loading...</div>
+                        )}
+                        {data && data.data && data?.data?.length === 0 && (
+                          <tr className="mt-4">
+                          <td
+                            className="
+                          "
+                            colspan={6}
+                          >
+                              <NoData />
+                           </td>
+                           </tr>
+                        )}
 
-                  {isLoading && !isPreviousData && <div>Loading...</div>}
+                        {data?.data?.map((item) => (
+                          <tr key={item?.id} className="mb-2 hover:bg-light-gray">
+                            <td className="whitespace-nowrap py-[16px] bg-white  px-5  border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px] text-[#667185] font-medium text-center ">
+                              <div className="flex items-center gap-1 ">
+                                
+                                <div className="">{item.full_name}</div>
+                              </div>
+                            </td>
+                            <td className="whitespace-nowrap py-[16px] bg-white  px-5  border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px] text-[#667185] font-medium text-center  ">
+                              {item.leave_type}
+                            </td>
+                            <td className="whitespace-nowrap py-[16px] bg-white  px-5  border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px] text-[#667185] font-medium text-center  ">
+                              {item.status}
+                            </td>
+                            <td className="whitespace-nowrap py-[16px] bg-white  px-5  border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px] text-[#667185] font-medium text-center  ">
+                              {formatDate(item.date)}
+                            </td>
 
-                  {data?.data?.map((item) => (
-                    <tbody key={item.id} className="border">
-                      <tr>
-                        <th scope="row">
-                          {/* {index + 1} */}
-                          <input type="checkbox" className="mt-4" />
-                        </th>
-                        <td>
-                          <div className="d-flex gap-4">
-                            <img
-                              src={item.user_image}
-                              style={{
-                                borderRadius: "50%",
-                                width: "40px",
-                                height: "40px",
-                              }}
-                             
-                              alt="/"
-                            />
-                            <div className="pt-4"> 
-                              
-                                {item.full_name}
-                            
-                              {/* <p className='fw-bold text-muted'>{item.full_name}</p> */}
-                            </div>
-                          </div>
-                        </td>
-                        <td className="pt-4">
-                         {item.leave_type}
-                        </td>
-                        <td>
-                          <button className="btn fw-semibold btn-outline-primary mt-3  h-8 btn-sm rounded-2">
-                            {item.status}
-                          </button>
-                        </td>
-                        <td className="fw-semibold pt-4">
-                        {formatDate(item.date)}
-                        </td>
-                        <td className="pt-4">
-                          <Text fontSize={"smaller"} color="#25324B">
-                            {item.department?.name ||
-                              item.faculty?.name ||
-                              item.unit?.name}
-                          </Text>
-                        </td>
-                        <td className="fw-semibold ">
-                          <Link to={`leave-applicant-details/${item.id}`}>
-                            <button
-                              className="btn py-1 px-3 rounded-0 mt-3 btn-sm rounded-0 fw-semibold"
-                              style={{
-                                border: "1px solid #984779",
-                                color: "#987779",
-                                backgroundColor: "#E9EBFD",
-                              }}
-                            >
-                              View Application
-                            </button>
-                          </Link>
-                        </td>
-                      </tr>
-                    </tbody>
-                  ))}
-                </table>
-              </div>
-            </div>
+                            <td className="whitespace-nowrap py-[16px] bg-white  px-5  border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px] text-[#667185] font-medium text-center  ">
+                              <p className="text-sm mb-0 text-[#25324B]">
+                                {item.department?.name ||
+                                  item.faculty?.name ||
+                                  item.unit?.name}
+                              </p>{" "}
+                            </td>
 
-            {data && data.data && data?.data?.length === 0 && (
-              <Box
-                w={"80vw"}
-                display="flex"
-                flexDirection="column"
-                h={"20vh"}
-                alignItems="center"
-                justifyContent="center"
-              >
-                <div
-                  className="row mt-5 "
-                  style={{ height: "10px", width: "80%" }}
-                >
-                  <NoData />
+                            <td className="whitespace-nowrap py-[16px]  gap-2 bg-white  px-5  border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px] text-[#1A202C] font-medium text-center  ">
+                              <Link to={`leave-applicant-details/${item.id}`}>
+                                <button
+                                  className="btn py-1 px-3 rounded-lg mt-3 btn-sm"
+                                  style={{
+                                    border: "1px solid #984779",
+                                    color: "#987779",
+                                    backgroundColor: "#E9EBFD",
+                                  }}
+                                >
+                                  View Application
+                                </button>
+                              </Link>
+                            </td>
+                          </tr>
+                        ))}
+                        {/* ))} */}
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
-              </Box>
-            )}
+              </div>
+            </div>
 
             {data && data.data && data?.data?.length > 0 && (
               <div className="row px-4">
