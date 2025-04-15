@@ -64,9 +64,9 @@ const LeaveAppointment = ({ navigate }) => {
           />
          
         </Link>
-        {/* <Link
+        <Link
           to="/leave/leave-resumption"
-          > */}
+          >
           <Card
           icon={   <ArrowForwardSquare
             variant="Bold"
@@ -78,7 +78,7 @@ const LeaveAppointment = ({ navigate }) => {
           
           />
          
-        {/* </Link> */}
+        </Link>
 
         {/* <Link
           to="/leave/my-leave-resumption"
