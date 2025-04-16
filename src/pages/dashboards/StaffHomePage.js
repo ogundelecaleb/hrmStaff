@@ -208,6 +208,8 @@ const StaffHomePage = ({ switchRoutes, navigate }) => {
       });
       enqueueSnackbar("Supervisor Update Successfully", { variant: "success" });
       setLoading(false);
+      fetchUserDetails();
+
     } catch (error) {
       setLoading(false);
       enqueueSnackbar(error.message, { variant: "error" });
