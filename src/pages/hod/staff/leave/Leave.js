@@ -642,7 +642,7 @@ const Leave = ({ id }) => {
                     
                       <nav aria-label='Page navigation example'>
                         <ul class='pagination'>
-                          <li className={`page-item ${data?.meta?.current_page === 1 ? 'disabled' : ''}`}>
+                          <li className={`page-item cursor-pointer ${data?.meta?.current_page === 1 ? 'disabled' : ''}`}>
                             <p className='page-link'  onClick={() => setPage(prev => Math.max(prev - 1, 1))} disabled={data.links.prev === null || data?.meta?.current_page === 1 || isPreviousData}>
                               <span aria-hidden='true'>Prev</span>
                             </p>
@@ -650,7 +650,7 @@ const Leave = ({ id }) => {
 
                           
 
-                          <li className={`page-item ${data?.meta?.current_page === data?.meta?.last_page ? 'disabled' : ''}`}>
+                          <li className={`page-item cursor-pointer ${data?.meta?.current_page === data?.meta?.last_page ? 'disabled' : ''}`}>
                             <p className='page-link' onClick={() => setPage(prev => prev + 1)}
                       disabled={data.links.next === null || data?.meta?.current_page === data?.meta?.last_page || isPreviousData}>
                               <span aria-hidden='true'>Next</span>
