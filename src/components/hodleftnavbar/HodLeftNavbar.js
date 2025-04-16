@@ -19,7 +19,7 @@ import { BsInboxes } from "react-icons/bs";
 
 import LogoutModal from "../../pages/hod/logout/Logout";
 
-const HodLeftNavbar = ({ mobile, setMobile, display, staffNumber }) => {
+const HodLeftNavbar = ({ mobile, setMobile, display, staffNumber, staffRole }) => {
   const [staffDropDown, setStaffDropDown] = useState(false);
   const [leaveDropDown, setLeaveDropDown] = useState(false);
 
@@ -200,6 +200,8 @@ const HodLeftNavbar = ({ mobile, setMobile, display, staffNumber }) => {
             Leave Matters
           </div>
         </CustomLink>
+
+        {(staffRole !== "HOD" && staffRole !== "HOU") && (
         <CustomLink to="staffsonleave">
           <div
             id="hoverEffect"
@@ -209,7 +211,7 @@ const HodLeftNavbar = ({ mobile, setMobile, display, staffNumber }) => {
             <BsInboxes size="25" style={{ color: "#84818A" }} />
             Staffs On Leave
           </div>
-        </CustomLink>
+        </CustomLink>)}
         {/* <CustomLink to="spadev">
           <div
             id="hoverEffect"

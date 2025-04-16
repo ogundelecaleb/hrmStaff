@@ -51,7 +51,7 @@ fetchUserDetails();
   return (
     <Box style={{ fontSize: "14px" }}>
       <Box className='flex text-white'>
-      <HodLeftNavbar mobile={mobile} setMobile={setMobile} display={display}  staffNumber={userStaffNumber}/>
+      <HodLeftNavbar mobile={mobile} setMobile={setMobile} display={display} staffRole={userDetails?.data?.role}  staffNumber={userStaffNumber}/>
         <HodDashboardRoute mobile={mobile} setMobile={setMobile} display={display} />
       </Box>
     </Box>
