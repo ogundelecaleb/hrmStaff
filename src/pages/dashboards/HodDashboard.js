@@ -11,6 +11,7 @@ const [mobile, setMobile] = useState(true);
 const [display, setDisplay] = useState(true);
 const [width, setWidth] = useState(window.innerWidth);
 const [userStaffNumber, setUserStaffNumber] = useState(null);
+const [userDetails, setUserDetails] = useState(null);
 
 
 useEffect(() => {
@@ -38,6 +39,7 @@ async function fetchUserDetails() {
     console.log("User Details:", userDetails);
     if (userDetails){
       setUserStaffNumber(userDetails?.data?.staff_number + randomNumber);
+      setUserDetails(userDetails);
     }
   } catch (error) {
     console.error("Error fetching your user details");

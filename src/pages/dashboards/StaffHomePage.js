@@ -26,6 +26,7 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import { ClipLoader } from "react-spinners";
+import StaffListModal from "../../components/OfficeList";
 
 const StaffHomePage = ({ switchRoutes, navigate }) => {
   // const navigate = useNavigate();
@@ -37,6 +38,7 @@ const StaffHomePage = ({ switchRoutes, navigate }) => {
   const [role, setRole] = useState("");
   const [supervisor, setSupervisor] = useState("");
   const [loading, setLoading] = useState(false);
+  const [selectedOffice, setSelectedOffice] = useState("")
   async function fetchUserDetails() {
     try {
       const userDetails = await getUserDetails();
@@ -179,23 +181,10 @@ const StaffHomePage = ({ switchRoutes, navigate }) => {
     return `${year}-${month}-${day}`;
   }
 
-  async function fetchAllOffice(page) {
-    const response = await api.fetchAllOffice({
-      params: {
-       search:""
-      },
-    });
-    return response;
-  }
 
-  const results = useQuery(["getOffices"], () => fetchAllOffice(page), {
-    keepPreviousData: true,
-    refetchOnWindowFocus: "always",
-  });
-  const offices = results.data?.data || [];
 
   const submitSupervisor = async () => {
-    if (!supervisor) {
+    if (!selectedOffice) {
       enqueueSnackbar("Please select a supervisor office", {
         variant: "error",
       });
@@ -204,7 +193,7 @@ const StaffHomePage = ({ switchRoutes, navigate }) => {
     setLoading(true);
     try {
       const response = await api.selectSupervisor({
-        supervisor_office_id: supervisor,
+        supervisor_office_id: selectedOffice?.id,
       });
       enqueueSnackbar("Supervisor Update Successfully", { variant: "success" });
       setLoading(false);
@@ -349,26 +338,15 @@ const StaffHomePage = ({ switchRoutes, navigate }) => {
               </span>
             </p>
             <div className="">
+
               <label className="text-[14px] text-[#242527] leading-[20px]   mb-[8px]">
                 Select Immediate Supervisor Office{" "}
               </label>
-              <div className=" relative  flex items-center">
-                <select
-                  type="text"
-                  placeholder=""
-                  className="w-full h-[38px] pl-[24px] pr-[8px] py-[8px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
-                  name="supervisor"
-                  value={supervisor}
-                  onChange={(e) => setSupervisor(e.target.value)}
-                >
-                  <option value="">-- Select Immediate Suppervisor</option>
-                  {offices.map((office) => (
-                    <option key={office.id} value={office.id}>
-                      {office.name}
-                    </option>
-                  ))}
-                </select>
-              </div>
+             
+            <StaffListModal
+              selectedOffice={selectedOffice}
+              setSelectedOffice={setSelectedOffice}
+            />
             </div>
 
             <button

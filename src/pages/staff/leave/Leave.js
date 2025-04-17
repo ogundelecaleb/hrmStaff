@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { useSnackbar } from "notistack";
-import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { getUserDetails } from "../../../utils/utils";
 import { useNavigate } from "react-router-dom";
@@ -11,13 +10,13 @@ import { getYear, getMonth } from "date-fns";
 import { Box } from "@chakra-ui/react";
 import "intl";
 import "intl/locale-data/jsonp/en";
+import { Danger } from "iconsax-react";
 
 const Leave = () => {
   const navigate = useNavigate();
   const [userDetails, setUserDetails] = useState([]);
   const { enqueueSnackbar } = useSnackbar();
   const [isLoading, setIsLoading] = useState(true);
-  const [durationInDays, setDurationInDays] = useState(0);
 
   function range(start, end, step) {
     const result = [];
@@ -595,6 +594,20 @@ const Leave = () => {
         </div>
       </Box>
     );
+  }
+
+  if( !userDetails?.supervisor_office?.name){
+    return(
+      <div className="h-[80vh] w-full flex flex-col justify-center items-center">
+
+        <Danger size={30} color={"gray"}/>
+        <h1 className="text-center text-danger mt-4 text-base  font-semibold">You have not been assigned an immediate supervisor</h1>
+        <h1 className="text-center text-gray-400 mt-2 text-sm">Go to your dashboard and select your immediate supervisor's office</h1>
+
+        <Link to="/dashboard" className="bg-[#984779] px-2 py-1 text-sm text-white mt-4 rounded-lg animate-pulse duration-150 transition-transform ease-in-out">Dashboard</Link>
+      </div>
+
+    )
   }
 
   if (progress !== 100) {
