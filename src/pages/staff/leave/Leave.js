@@ -589,7 +589,7 @@ const Leave = () => {
           style={{ zIndex: 9999 }}
         >
           <div className="inline-block">
-            <MoonLoader color={"#984779"} size={80} />
+            <MoonLoader color={"#984779"} size={50} />
           </div>
         </div>
       </Box>
@@ -653,19 +653,19 @@ const Leave = () => {
 
   return (
     <div className="container-fluid">
-      <div class="border-bottom ps-5" id="no-padding-res">
-        <h1 class="fs-3 fw-semibold">Leave Application</h1>
-        <p class="fs-5">Kindly fill in the required information</p>
+      <div class="border-bottom x-4 md:px-5" id="no-padding-res">
+        <h1 className="text-base md:text-lg font-medium mt-2">Leave Application</h1>
+        <p className="text-sm  ">Kindly fill in the required information</p>
       </div>
       <div className="row">
         <form
-          class=" px-5 pt-5 col-md-6 "
+          class="px-4 md:px-5 pt-2 col-md-6 "
           id="sec-padding-res"
           style={{ paddingBottom: "100px" }}
         >
           <div class="pb-5">
             <div class="mb-3">
-              <label class="form-label fs-6 fw-semibold h-10">Full Name</label>
+              <label class="form-label text-base md:text-lg fw-semibold ">Full Name</label>
               <input
                 type="text"
                 style={{ height: "40px" }}
@@ -677,9 +677,9 @@ const Leave = () => {
               />
             </div>
             <div className="mb-3">
-              <label class="form-label fs-6 fw-semibold">Marital Status</label>
+              <label class="form-label text-base md:text-lg fw-semibold">Marital Status</label>
               <select
-                className="form-select rounded-0"
+                className="form-select h-[40px] rounded-0"
                 disabled
                 id="exampleFormControlSelect1"
                 value={formValues.marital_status}
@@ -702,7 +702,7 @@ const Leave = () => {
               <div class="mb-3">
                 <label
                   for="exampleInputEmail1"
-                  class="form-label fs-6 fw-semibold"
+                  class="form-label text-base md:text-lg fw-semibold"
                 >
                   Faculty
                 </label>
@@ -729,7 +729,7 @@ const Leave = () => {
                 <div class="mb-3">
                   <label
                     for="exampleInputEmail1"
-                    class="form-label fs-6 fw-semibold"
+                    class="form-label text-base md:text-lg fw-semibold"
                   >
                     Department
                   </label>
@@ -755,7 +755,7 @@ const Leave = () => {
               <div class="mb-3">
                 <label
                   for="exampleInputEmail1"
-                  class="form-label fs-6 fw-semibold"
+                  class="form-label text-base md:text-lg fw-semibold"
                 >
                   Department
                 </label>
@@ -780,7 +780,7 @@ const Leave = () => {
               <div class="mb-3">
                 <label
                   for="exampleInputEmail1"
-                  class="form-label fs-6 fw-semibold"
+                  class="form-label text-base md:text-lg fw-semibold"
                 >
                   Unit
                 </label>
@@ -805,13 +805,13 @@ const Leave = () => {
             <div class="mb-3">
               <label
                 for="exampleInputEmail1"
-                class="form-label fs-6 fw-semibold"
+                class="form-label text-base md:text-lg fw-semibold"
               >
                 Leave Type<sup className="text-danger">*</sup>
               </label>
               <select
                 onChange={(e) => setLeaveType(e.target.value)}
-                class="form-select rounded-0"
+                className="form-select rounded-0 h-[40px] "
                 aria-label="Default select example"
               >
                 <option selected>Leave Type</option>
@@ -856,7 +856,7 @@ const Leave = () => {
                 <div class="form-group">
                   <label
                     for="exampleFormControlSelect1"
-                    className="form-label fs-6 fw-semibold"
+                    className="form-label text-base md:text-lg fw-semibold"
                   >
                     Date of First Appointment{" "}
                     <sup className="text-danger">*</sup>
@@ -876,7 +876,7 @@ const Leave = () => {
               <div class="mb-3">
                 <label
                   for="exampleInputEmail1"
-                  class="form-label fs-6 fw-semibold"
+                  class="form-label text-base md:text-lg fw-semibold"
                 >
                   Rank/Designation<sup className="text-danger">*</sup>
                 </label>
@@ -907,7 +907,7 @@ const Leave = () => {
               right: 50,
               position: "absolute",
             }}
-            class="my-10 p-2 text-md-start text-white fs-6 fw-semibold"
+            class="my-10 py-2 px-5 text-md-start text-white fs-6 fw-semibold"
           >
             Proceed to Next
           </button>
