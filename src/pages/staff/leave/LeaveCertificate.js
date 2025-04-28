@@ -8,49 +8,74 @@ const LeaveCertificate = () => {
   const location = useLocation();
 
   const result = location.state;
-
-
-  console.log("resullllltttt====>>>>", result)
+  console.log("result",result )
 
   const contentRef = useRef();
-  const generatePdf = () => {
-    const input = contentRef.current;
-    html2canvas(input, { scale: 1 }).then((canvas) => {
-      const imgData = canvas.toDataURL("image/png");
-      const pdf = new jsPDF();
-      pdf.addImage(imgData, "PNG", 0, 0);
-      pdf.save("download.pdf");
-    });
-  };
 
-  
   const handleDownload = () => {
     const input = document.getElementById("certificate");
 
-    html2canvas(input).then((canvas) => {
-      const imgData = canvas.toDataURL("image/png");
-      const pdf = new jsPDF();
-      const imgWidth = 210; // Adjust width according to your requirement
-      const pageHeight = pdf.internal.pageSize.height;
+    // Optimization options
+    const options = {
+      scale: 2, // Lower than default (devicePixelRatio)
+      quality: 0.8, // Reduce quality slightly
+      logging: false,
+      useCORS: true,
+      allowTaint: true,
+    };
+
+    html2canvas(input, options).then((canvas) => {
+      const imgData = canvas.toDataURL("image/jpeg", 0.8); // Use JPEG with quality setting
+      const pdf = new jsPDF("p", "mm", "a4"); // Specify A4 size
+
+      const imgWidth = 210; // A4 width in mm
       const imgHeight = (canvas.height * imgWidth) / canvas.width;
-      let heightLeft = imgHeight;
 
-      let position = 0;
+      // Check if content fits on one page
+      if (imgHeight < 297) {
+        // A4 height in mm
+        pdf.addImage(imgData, "JPEG", 0, 0, imgWidth, imgHeight);
+      } else {
+        // Handle multi-page only if necessary
+        let heightLeft = imgHeight;
+        let position = 0;
 
-      pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
-      heightLeft -= pageHeight;
+        pdf.addImage(imgData, "JPEG", 0, position, imgWidth, imgHeight);
+        heightLeft -= 297;
 
-      while (heightLeft >= 0) {
-        position = heightLeft - imgHeight;
-        pdf.addPage();
-        pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
-        heightLeft -= pageHeight;
+        while (heightLeft >= 0) {
+          position = heightLeft - imgHeight;
+          pdf.addPage();
+          pdf.addImage(imgData, "JPEG", 0, position, imgWidth, imgHeight);
+          heightLeft -= 297;
+        }
       }
 
       pdf.save("leave_certificate.pdf");
     });
   };
 
+  const leaveTypeMap = {
+    "annual-leave": "Annual Leave",
+    "casual-leave": "Casual Leave",
+    "examination-leave": "Examination Leave",
+    "conference-leave": "Conference/Seminar/Workshop Leave",
+    "sporting-leave": "Leave for Approved Sporting Events",
+    "compassionate-leave": "Compassionate Leave",
+    "adoption-leave": "Adoption Leave",
+    "sick-leave": "Sick Leave",
+    "leave-for-trade": "Leave for Trade Union Conference And Business",
+    "maternity-leave": "Maternity Leave",
+    "paternity-leave": "Paternity Leave",
+    "research-leave": "Research Leave",
+    "sabbatical-leave": "Sabbatical Leave",
+    "study-leave-with-pay": "Study Leave With Pay",
+    "short-term-study-leave-with-pay": "Short Term Study Leave With Pay",
+    "study-leave-without-pay": "Study Leave Without Pay",
+    "training-leave": "Training Leave",
+    "leave-of-absence": "Leave of Absence",
+    "bereavement-leave": "Bereavement Leave"
+  };
   function formatDate(dateString) {
     const date = new Date(dateString);
     const year = date.getFullYear();
@@ -88,42 +113,75 @@ const LeaveCertificate = () => {
             </h2>
           </div>
         </div>
-        
 
         <div className="px-4 md:px-5 lg:px-7 pt-4 md:pt-6 pb-7">
           <p className="text-lg  font-semibold text-center">
             This is to certify that
           </p>
           <h2 className="text-center">{result?.full_name}</h2>
-          <p className="text-center">has been granted approval to proceed on leave from</p>
+          <p className="text-center">
+            has been granted approval to proceed on leave from
+          </p>
           <p className="text-center text-lg">
             <strong>{formatDate(result?.start_date)}</strong> to{" "}
             <strong>{formatDate(result?.end_date)}</strong>
           </p>
           <p className="text-lg font-semibold mt-6 ">
             Leave Type:{" "}
-            <span className="text-base font-medium">{result?.leave_type}</span>
+            <span className="text-base font-medium">{leaveTypeMap[result?.leave_type] || "Leave"}
+            </span>
           </p>
           <p className="text-lg font-semibold ">
-            Department/Unit: <span className="text-base font-medium">{result?.unit?.name}</span>
+            Department/Unit:{" "}
+            <span className="text-base font-medium">{result?.unit?.name}</span>
           </p>
           <p className="text-lg font-semibold ">
-            Resumption Date: <span className="text-base font-medium">{formatDate(result?.resumption_date)}</span>
+            Current Designation:{" "}
+            <span className="text-base font-medium">{result?.designation}</span>
           </p>
           <p className="text-lg font-semibold ">
-            Leave Duration: <span className="text-base font-medium">{formatDate(result?.leave_duration)}</span>
+            Start Date:{" "}
+            <span className="text-base font-medium">
+              {formatDate(result?.start_date)}
+            </span>
           </p>
           <p className="text-lg font-semibold ">
-            Current Designation: <span className="text-base font-medium">{result?.designation}</span>
+            Resumption Date:{" "}
+            <span className="text-base font-medium">
+              {formatDate(result?.resumption_date)}
+            </span>
           </p>
           <p className="text-lg font-semibold ">
-            Address While on Leave:{" "}
-            <span className="text-base font-medium">{result?.leave_address}</span>
+            Leave Duration:{" "}
+            <span className="text-base font-medium">
+              {result?.leave_duration} Days
+            </span>
           </p>
           <p className="text-lg font-semibold ">
-            Staff to Relieve: <span className="text-base font-medium">{result?.replacement_on_duty}</span>
+            Total Leave Balance:{" "}
+            <span className="text-base font-medium">
+              {result?.total_leave_due} Days
+            </span>
           </p>
         
+          <p className="text-lg font-semibold ">
+            Address While on Leave:{" "}
+            <span className="text-base font-medium">
+              {result?.leave_address}
+            </span>
+          </p>
+          <p className="text-lg font-semibold ">
+            Staff to Relieve:{" "}
+            <span className="text-base font-medium">
+              {result?.replacement_on_duty}
+            </span>
+          </p>
+          <p className="text-lg font-semibold ">
+            Approval Bodies:{" "}
+            <span className="text-base font-medium">
+              {result?.approvals?.map((item)=> (<>{item?.email} || </>))}
+            </span>
+          </p>
 
           {/* <p>
           Issued on: <strong>{new Date().toLocaleDateString()}</strong>
@@ -138,7 +196,7 @@ const LeaveCertificate = () => {
         <button
           onClick={handleDownload}
           style={{ marginTop: "20px" }}
-          className="text-red px-3 py-1 rounded-md border mx-auto hover:bg-gray-300 self-center"
+          className="text-red px-3 py-1 text-red-400 rounded-md border mx-auto hover:bg-gray-300 self-center"
         >
           Download
         </button>

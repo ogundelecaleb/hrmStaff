@@ -514,7 +514,7 @@ const StaffHomePage = ({ switchRoutes, navigate }) => {
                                 //     state: result?.leave_type
                                 //   })
                                 // }
-                                onClick={() => console.log("------>>>", result)}
+                                // onClick={() => console.log("------>>>", result)}
                                 className="text-[#984779] px-3 py-1 rounded-md border hover:bg-gray-300  "
                               >
                                 View Certificate
