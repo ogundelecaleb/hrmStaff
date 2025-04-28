@@ -154,13 +154,13 @@ const LeaveCertificate = () => {
           <p className="text-lg font-semibold ">
             Leave Duration:{" "}
             <span className="text-base font-medium">
-              {result?.leave_duration} Days
+              {result?.leave_duration} Day(s)
             </span>
           </p>
           <p className="text-lg font-semibold ">
             Total Leave Balance:{" "}
             <span className="text-base font-medium">
-              {result?.total_leave_due} Days
+              {result?.total_leave_due} Day(s)
             </span>
           </p>
         
