@@ -201,7 +201,6 @@ export const MaternityDetails = () => {
     if (approves < 1 && approvals > 1) {
       const firstObject = leaveDetails?.approval_bodies[0];
       const user = userDetails?.data?.email;
-      console.log("user-->>", user);
       const isUserIncludeObject = user?.includes(firstObject);
       if (isUserIncludeObject) {
         status = "Recommend";
