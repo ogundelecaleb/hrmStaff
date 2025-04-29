@@ -107,15 +107,19 @@ export const MaternityDetails = () => {
   //       approval.role === userDetails?.data?.role &&
   //       (approval.status === "approved" || approval.status === "declined")
   //   );
-
   const displayButton = () => {
     let result = false;
 
-    if(leaveDetails !== null){
+    if(leaveDetails) {
+
       const approvals = leaveDetails?.approval_bodies?.length;
       const approves = leaveDetails?.approvals?.length;
+      if(approvals === approves ){
+      return result = false;
+      }
+     
       //approval index
-      const currentApprovalIndex =  leaveDetails?.approval_bodies[1];
+      const currentApprovalIndex =  leaveDetails?.approval_bodies[approves];
       if ( (currentApprovalIndex.includes(userDetails?.data?.email) ||   currentApprovalIndex === userDetails?.data?.email) && leaveDetails?.status === "pending") {
         result = true;
       }
@@ -209,8 +213,7 @@ export const MaternityDetails = () => {
       const bodies = leaveDetails?.approval_bodies;
       const lastObject = bodies[bodies.length - 1];
       const userRole = userDetails?.data?.email;
-      console.log("userRoles-->>", userRole);
-      console.log("lastObject-->>", lastObject);
+    
       const isUserMatchRole = userRole === lastObject;
       if (isUserMatchRole) {
         status = "Approve";
@@ -385,45 +388,36 @@ export const MaternityDetails = () => {
                 ))}
               </Box>
             )}
-            {displayButton() && (
-              <Flex pt="10" w="full" mt="10" justifyContent={"space-between"}>
+           {displayButton() && (
+            <Flex pt="10" w="full" mb="10" justifyContent={"space-between"}>
+              <Button
+                borderRadius={"0"}
+                color="#D02F44"
+                bg="#F8F8FD"
+                onClick={handleDeclinedBtn}
+              >
+                {isLoadingd ? (
+                  <MoonLoader color={"white"} size={20} />
+                ) : (
+                  <> Decline </>
+                )}
+              </Button>
+              <Button
+                borderRadius={"0"}
+                color="white"
+                bg="#388B41"
+                onClick={handleApprovedBtn}
+              >
+                {
+                  isLoading ? (
+                    <MoonLoader color={"white"} size={20} />
+                  ) : (
+                    toggleApprove()
+                  )
                 
-                  
-                    <Button
-                      borderRadius={"0"}
-                      color="#D02F44"
-                      bg="#F8F8FD"
-                      onClick={handleDeclinedBtn}
-                    >
-                      {isLoadingd ? (
-                        <MoonLoader color={"white"} size={20} />
-                      ) : (
-                        <> Decline </>
-                      )}
-                    </Button>
-                    <Button
-                      borderRadius={"0"}
-                      color="white"
-                      bg="#388B41"
-                      onClick={handleApprovedBtn}
-                    >
-                      {isLoading ? (
-                        <MoonLoader color={"white"} size={20} />
-                      ) : (
-                        toggleApprove()
-                        // <>
-                        //   {" "}
-                        //   {(leaveDetails?.approval_bodies &&
-                        //     getLastItem(leaveDetails?.approval_bodies)) ===
-                        //   userDetails?.data?.role
-                        //     ? "Approve"
-                        //     : "Recomemnd"}{" "}
-                        // </>
-                      )}
-                    </Button>
-                  
-              
-              </Flex>
+                }
+              </Button>
+            </Flex>
             )}
           </Box>
           <Box
