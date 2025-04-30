@@ -102,7 +102,8 @@ import {
   TRACKPROGRESS,
   GETALLOFFICE,
   SELECTSUPPERVISOR,
-  CREATEOFFICE
+  CREATEOFFICE,
+  GETROLES
 } from "../utils/config";
 import { apiGet, apiPost, apiPut, apiDelete } from "../utils/utils";
 
@@ -218,6 +219,9 @@ export function getLeavebyID(data) {
 }
 export function fetchCsLeaves(data) {
   return apiGet(CSLEAVE, data);
+}
+export function getRoless(data) {
+  return apiGet(GETROLES, data);
 }
 
 export function fetchPtLeaves(data) {
