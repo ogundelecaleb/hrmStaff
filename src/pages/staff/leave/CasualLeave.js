@@ -159,7 +159,7 @@ const CasualLeave = ({ navigate }) => {
         day: "2-digit",
       });
 
-      const leaveAmountValue = parseInt(leaveAmount, 10) || 0;
+      const leaveAmountValue = parseInt(leaveAmount, 10) - 1 || 0;
 
       let currentDate = new Date(selectedStartDate);
       let addedDays = 0;

@@ -211,7 +211,7 @@ const AnnualLeave = ({ navigate }) => {
 
   const handleStartDateChange = (event) => {
     const formattedStartDate = event.target.value;
-    const leaveAmountValue = parseInt(leaveAmount, 10) || 0;
+    const leaveAmountValue = parseInt(leaveAmount, 10) - 1 || 0;
     console.log("start ate", formattedStartDate);
     if (leaveAmountValue > totalLeave) {
       enqueueSnackbar("Leave amount cannot exceed the total leave due", {
@@ -227,7 +227,7 @@ const AnnualLeave = ({ navigate }) => {
     let addedDays = 0;
 
     while (addedDays < leaveAmountValue) {
-      currentDate.setDate(currentDate.getDate() + 1);
+      currentDate.setDate(currentDate.getDate() +1 );
 
       // Check if the current day is not a Saturday (6) or Sunday (0)
       if (currentDate.getDay() !== 6 && currentDate.getDay() !== 0) {
