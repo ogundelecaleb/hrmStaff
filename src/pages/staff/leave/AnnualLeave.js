@@ -209,41 +209,52 @@ const AnnualLeave = ({ navigate }) => {
     return formattedDate;
   };
 
-  const handleStartDateChange = (event) => {
-    const formattedStartDate = event.target.value;
-    const leaveAmountValue = parseInt(leaveAmount, 10) - 1 || 0;
-    console.log("start ate", formattedStartDate);
-    if (leaveAmountValue > totalLeave) {
-      enqueueSnackbar("Leave amount cannot exceed the total leave due", {
-        variant: "error",
-      });
-      setStartDate("");
-      setEndDate("");
-      setResumptionDate("");
-      return;
+ const handleStartDateChange = (event) => {
+  const formattedStartDate = event.target.value;
+  const leaveAmountValue = parseInt(leaveAmount, 10) - 1 || 0;
+  console.log("start date", formattedStartDate);
+  
+  if (leaveAmountValue > totalLeave) {
+    enqueueSnackbar("Leave amount cannot exceed the total leave due", {
+      variant: "error",
+    });
+    setStartDate("");
+    setEndDate("");
+    setResumptionDate("");
+    return;
+  }
+  
+  let currentDate = new Date(formattedStartDate);
+  let addedDays = 0;
+  
+  while (addedDays < leaveAmountValue) {
+    currentDate.setDate(currentDate.getDate() + 1);
+    
+    // Check if the current day is not a Saturday (6) or Sunday (0)
+    if (currentDate.getDay() !== 6 && currentDate.getDay() !== 0) {
+      addedDays++;
     }
-
-    let currentDate = new Date(formattedStartDate);
-    let addedDays = 0;
-
-    while (addedDays < leaveAmountValue) {
-      currentDate.setDate(currentDate.getDate() +1 );
-
-      // Check if the current day is not a Saturday (6) or Sunday (0)
-      if (currentDate.getDay() !== 6 && currentDate.getDay() !== 0) {
-        addedDays++;
-      }
-    }
-
-    const formattedEndDate = currentDate.toISOString().split("T")[0];
-    const resumptionDate = new Date(currentDate);
-    resumptionDate.setDate(resumptionDate.getDate() + 1);
-    const formattedResumptionDate = resumptionDate.toISOString().split("T")[0];
-
-    setStartDate(formattedStartDate);
-    setEndDate(formattedEndDate);
-    setResumptionDate(formattedResumptionDate);
-  };
+  }
+  
+  const formattedEndDate = currentDate.toISOString().split("T")[0];
+  
+  // Calculate resumption date and check if it falls on a weekend
+  const resumptionDate = new Date(currentDate);
+  resumptionDate.setDate(resumptionDate.getDate() + 1);
+  
+  // If resumption date is on Saturday (6) or Sunday (0), move to Monday
+  if (resumptionDate.getDay() === 6) { // Saturday
+    resumptionDate.setDate(resumptionDate.getDate() + 2); // Move to Monday
+  } else if (resumptionDate.getDay() === 0) { // Sunday
+    resumptionDate.setDate(resumptionDate.getDate() + 1); // Move to Monday
+  }
+  
+  const formattedResumptionDate = resumptionDate.toISOString().split("T")[0];
+  
+  setStartDate(formattedStartDate);
+  setEndDate(formattedEndDate);
+  setResumptionDate(formattedResumptionDate);
+};
 
   const areAllFieldsValid = () => {
     return startDate && addressLeave && leaveNumber && staffRep;
