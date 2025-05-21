@@ -195,6 +195,12 @@ const LeaveCertificate = () => {
                 {formatDate(result?.start_date)}
               </span>
             </p>
+               <p className="text-lg font-semibold ">
+              End Date:{" "}
+              <span className="text-base font-medium">
+                {formatDate(result?.end_date)}
+              </span>
+            </p>
             <p className="text-lg font-semibold ">
               Resumption Date:{" "}
               <span className="text-base font-medium">
