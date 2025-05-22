@@ -133,46 +133,54 @@ const MaternityLeave = ({ navigate }) => {
     }
   };
 
- const calculateDates = (selectedStartDate) => {
-  // First, validate that we have a proper date
-  if (selectedStartDate instanceof Date && !isNaN(selectedStartDate)) {
-    let leaveDuration = 0;
+  const calculateDates = (selectedStartDate) => {
+    // First, validate that we have a proper date
+    if (selectedStartDate instanceof Date && !isNaN(selectedStartDate)) {
+      let leaveDuration = 0;
 
-    // Set leave duration based on number of children
-    if (children?.length <= 2) {
-      leaveDuration = 84; // 84 days for first two deliveries
-    } else {
-      leaveDuration = 168; // 168 days for more than two deliveries
+      // Set leave duration based on number of children
+      if (children?.length <= 2) {
+        leaveDuration = 168; // 168 days for more than two deliveries
+      } else {
+        leaveDuration = 84; // 84 days for first two deliveries
+      }
+
+      // Calculate end date by adding leave duration to start date
+      const calculatedEndDate = new Date(selectedStartDate);
+      calculatedEndDate.setDate(selectedStartDate.getDate() + leaveDuration);
+
+      // Create resumption date (day after end date)
+      const calculatedResumptionDate = new Date(calculatedEndDate);
+      calculatedResumptionDate.setDate(calculatedEndDate.getDate() + 1);
+
+      // Adjust resumption date if it falls on a weekend
+      const resumptionDay = calculatedResumptionDate.getDay();
+      if (resumptionDay === 6) {
+        // Saturday
+        calculatedResumptionDate.setDate(
+          calculatedResumptionDate.getDate() + 2
+        ); // Move to Monday
+        console.log("Resumption date was on Saturday, moved to Monday");
+      } else if (resumptionDay === 0) {
+        // Sunday
+        calculatedResumptionDate.setDate(
+          calculatedResumptionDate.getDate() + 1
+        ); // Move to Monday
+        console.log("Resumption date was on Sunday, moved to Monday");
+      }
+
+      // Format dates for state setting
+      const formattedEndDate = calculatedEndDate.toISOString().split("T")[0];
+      const formattedResumptionDate = calculatedResumptionDate
+        .toISOString()
+        .split("T")[0];
+
+      // Update state values
+      setEndDate(formattedEndDate);
+      setResumptionDate(formattedResumptionDate);
+      setLeaveDuration(leaveDuration);
     }
-
-    // Calculate end date by adding leave duration to start date
-    const calculatedEndDate = new Date(selectedStartDate);
-    calculatedEndDate.setDate(selectedStartDate.getDate() + leaveDuration);
-    
-    // Create resumption date (day after end date)
-    const calculatedResumptionDate = new Date(calculatedEndDate);
-    calculatedResumptionDate.setDate(calculatedEndDate.getDate() + 1);
-
-    // Adjust resumption date if it falls on a weekend
-    const resumptionDay = calculatedResumptionDate.getDay();
-    if (resumptionDay === 6) { // Saturday
-      calculatedResumptionDate.setDate(calculatedResumptionDate.getDate() + 2); // Move to Monday
-      console.log("Resumption date was on Saturday, moved to Monday");
-    } else if (resumptionDay === 0) { // Sunday
-      calculatedResumptionDate.setDate(calculatedResumptionDate.getDate() + 1); // Move to Monday
-      console.log("Resumption date was on Sunday, moved to Monday");
-    }
-
-    // Format dates for state setting
-    const formattedEndDate = calculatedEndDate.toISOString().split("T")[0];
-    const formattedResumptionDate = calculatedResumptionDate.toISOString().split("T")[0];
-
-    // Update state values
-    setEndDate(formattedEndDate);
-    setResumptionDate(formattedResumptionDate);
-    setLeaveDuration(leaveDuration);
-  }
-};
+  };
   const onFileChanges = (e) => {
     const selectedFile = e.target.files[0];
     if (selectedFile) {
