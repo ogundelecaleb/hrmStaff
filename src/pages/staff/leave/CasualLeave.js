@@ -454,6 +454,7 @@ const CasualLeave = ({ navigate }) => {
                       placeholder="Select start date"
                       // minDate={new Date()} // Prevent selecting past dates
                     />
+                    
                   </div>
                 </div>
                 <div class="mb-3 flex flex-col">
