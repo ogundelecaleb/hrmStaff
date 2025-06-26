@@ -212,7 +212,6 @@ const AnnualLeave = ({ navigate }) => {
  const handleStartDateChange = (event) => {
   const formattedStartDate = event.target.value;
   const leaveAmountValue = parseInt(leaveAmount, 10) - 1 || 0;
-  console.log("start date", formattedStartDate);
   
   if (leaveAmountValue > totalLeave) {
     enqueueSnackbar("Leave amount cannot exceed the total leave due", {

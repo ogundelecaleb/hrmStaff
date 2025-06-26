@@ -64,7 +64,7 @@ const CasualLeave = ({ navigate }) => {
 
   const { enqueueSnackbar } = useSnackbar();
   const [isLoading, setIsLoading] = useState(false);
-  const [startDate, setStartDate] = useState("");
+  const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
   const [resumptionDate, setResumptionDate] = useState(null);
   const [addressLeave, setAddressLeave] = useState("");
@@ -80,15 +80,11 @@ const CasualLeave = ({ navigate }) => {
   const [staffRepId, setStaffRepId] = useState("")
   const [page, setPage] = useState("1");
 
-
-
   async function fetchStaffs() {
     try {
       const staffs = await api.fetchStaffs();
-      console.log("Staff Details:", staffs);
       setStaffs(staffs);
     } catch (error) {
-      console.error("Error fetching your basic details", error);
       enqueueSnackbar(error.message, { variant: "error" });
     } finally {
       setIsLoading(false);
@@ -106,6 +102,124 @@ const CasualLeave = ({ navigate }) => {
     }
     return result;
   }
+
+  // Helper function to check if a date is a weekend
+  const isWeekend = (date) => {
+    const day = date.getDay();
+    return day === 0 || day === 6; // Sunday = 0, Saturday = 6
+  };
+
+  // Helper function to format date to YYYY-MM-DD
+  const formatDate = (date) => {
+    if (!date) return '';
+    
+    // Handle both Date objects and date strings
+    let dateObj;
+    if (date instanceof Date) {
+      dateObj = date;
+    } else if (typeof date === 'string') {
+      dateObj = new Date(date);
+    } else {
+      return '';
+    }
+    
+    // Check if date is valid
+    if (isNaN(dateObj.getTime())) return '';
+    
+    // Format to YYYY-MM-DD
+    const year = dateObj.getFullYear();
+    const month = String(dateObj.getMonth() + 1).padStart(2, '0');
+    const day = String(dateObj.getDate()).padStart(2, '0');
+    
+    return `${year}-${month}-${day}`;
+  };
+
+  // Calculate end date and resumption date based on start date and leave amount
+  const calculateDates = (selectedStartDate, days) => {
+    if (!selectedStartDate || !(selectedStartDate instanceof Date) || isNaN(selectedStartDate)) {
+      setEndDate(null);
+      setResumptionDate(null);
+      return;
+    }
+
+    const leaveDays = parseInt(days, 10);
+    if (!leaveDays || leaveDays <= 0) {
+      setEndDate(null);
+      setResumptionDate(null);
+      return;
+    }
+
+    // Start from the selected start date
+    let currentDate = new Date(selectedStartDate);
+
+    // If start date is a weekend, move to next Monday
+    while (isWeekend(currentDate)) {
+      currentDate.setDate(currentDate.getDate() + 1);
+    }
+
+    // Update start date if it was moved due to weekend
+    const adjustedStartDate = new Date(currentDate);
+    setStartDate(adjustedStartDate);
+
+    // For calculating end date, we need to add (leaveDays - 1) working days
+    // because the start date itself counts as day 1
+    let workingDaysToAdd = leaveDays - 1;
+    let endDateCalculation = new Date(adjustedStartDate);
+    
+    // Add the required working days
+    while (workingDaysToAdd > 0) {
+      endDateCalculation.setDate(endDateCalculation.getDate() + 1);
+      
+      // Only count non-weekend days
+      if (!isWeekend(endDateCalculation)) {
+        workingDaysToAdd--;
+      }
+    }
+
+    const calculatedEndDate = new Date(endDateCalculation);
+    
+    // Calculate resumption date (next working day after end date)
+    const resumptionDate = new Date(calculatedEndDate);
+    resumptionDate.setDate(resumptionDate.getDate() + 1);
+    
+    // If resumption date falls on weekend, move to next Monday
+    while (isWeekend(resumptionDate)) {
+      resumptionDate.setDate(resumptionDate.getDate() + 1);
+    }
+
+    setEndDate(calculatedEndDate);
+    setResumptionDate(resumptionDate);
+  };
+
+  // Effect to recalculate dates when leave amount changes
+  useEffect(() => {
+    if (startDate && leaveAmount) {
+      calculateDates(startDate, leaveAmount);
+    }
+  }, [leaveAmount]);
+
+  // Handle start date change
+  const handleStartDateChange = (date) => {
+    if (date && leaveAmount) {
+      calculateDates(date, leaveAmount);
+    } else {
+      setStartDate(date);
+      setEndDate(null);
+      setResumptionDate(null);
+    }
+  };
+
+  // Handle leave amount change
+  const handleLeaveAmountChange = (e) => {
+    const value = e.target.value;
+    setLeaveAmount(value);
+    
+    // Clear dates if no value
+    if (!value) {
+      setEndDate(null);
+      setResumptionDate(null);
+    }
+  };
 
   console.log(
     fullName,
@@ -144,65 +258,9 @@ const CasualLeave = ({ navigate }) => {
     }
   };
 
-  const isWeekend = (date) => {
-    const day = date.getDay();
-    return day === 0 || day === 6;
-  };
-
-  const calculateDates = (selectedStartDate) => {
-    if (selectedStartDate instanceof Date && !isNaN(selectedStartDate)) {
-      // let calculatedEndDate = new Date(selectedStartDate);
-      // let calculatedResumptionDate = new Date(calculatedEndDate);
-      const formattedDate = selectedStartDate.toLocaleDateString("en-US", {
-        year: "numeric",
-        month: "2-digit",
-        day: "2-digit",
-      });
-
-      const leaveAmountValue = parseInt(leaveAmount, 10) - 1 || 0;
-
-      let currentDate = new Date(selectedStartDate);
-      let addedDays = 0;
-
-      while (addedDays < leaveAmountValue) {
-        currentDate.setDate(currentDate.getDate() + 1);
-
-        // Check if the current day is not a Saturday (6) or Sunday (0)
-        if (currentDate.getDay() !== 6 && currentDate.getDay() !== 0) {
-          addedDays++;
-        }
-      }
-      // calculatedResumptionDate.setDate(calculatedEndDate.getDate() + 1);
-      const resumptionDate = new Date(currentDate);
-      resumptionDate.setDate(resumptionDate.getDate() + 1);
-      const formattedResumptionDate = resumptionDate
-        .toISOString()
-        .split("T")[0];
-
-      setEndDate(currentDate.toISOString().split("T")[0]);
-      setResumptionDate(formattedResumptionDate);
-      // setLeaveDuration(leaveAmountValue);
-      setStartDate(formattedDate);
-    }
-  };
-
-  // const onFileChanges = (e) => {
-  //   const selectedFile = e.target.files[0];
-  //   if (selectedFile) {
-  //     const fileType = selectedFile.type;
-  //     if (fileType === 'application/pdf' || fileType === 'image/jpeg') {
-  //       setUploadedDocuments(selectedFile);
-  //       setIsDocumentUploaded(true);
-  //     } else {
-  //       enqueueSnackbar('Please select a valid PDF or JPEG file.', { variant: 'error' });
-  //     }
-  //   =
-  // };
-
   async function handleSubmit(e) {
     e.preventDefault();
     setIsLoading(true);
-    console.log("casuall leave department====>>>> ", department)
 
     if (leaveAmount > parseInt(totalLeave, 10)) {
       enqueueSnackbar(
@@ -218,62 +276,36 @@ const CasualLeave = ({ navigate }) => {
       setIsLoading(false);
       return;
     }
-    console.log(
-      fullName,
-      maritalStatus,
-      departmentOrUnitOrFacultyID,
-      dateOfFirstAppointment,
-      rankDesignation,
-      selectedLeaveType,
-      startDate,
-      endDate,
-      addressLeave
-    );
 
-    const formattedStartDate = startDate
-      ? new Date(startDate).toISOString().split("T")[0]
-      : null;
-
-    // let departmentId = "";
-    // let facultyId = "";
-    // let unitId = "";
-
-    // if (rankDesignation === "HOD" || rankDesignation === "RSWEP") {
-    //   departmentId = departmentOrUnitOrFacultyID;
-    // } else if (rankDesignation === "DEAN") {
-    //   facultyId = departmentOrUnitOrFacultyID;
-    // } else if (rankDesignation === "HOU" || rankDesignation === "NTSWEP") {
-    //   unitId = departmentOrUnitOrFacultyID;
-    // }
+    const formattedStartDate = formatDate(startDate);
+    const formattedEndDate = formatDate(endDate);
+    const formattedResumptionDate = formatDate(resumptionDate);
 
     let formattedData = department !== undefined ? department : "";
     let facultyId = faculty !== undefined ? faculty : "";
     let unitId = unit !== undefined ? unit : "";
     const formData = new FormData();
-    // formData.append('upload_documents', uploadedDocuments);
+    
     formData.append("full_name", fullName);
     formData.append("marital_status", maritalStatus);
-    formData.append("department_id", formattedData );
+    formData.append("department_id", formattedData);
     formData.append("faculty_id", facultyId);
     formData.append("unit_id", unitId);
     formData.append("leave_type", selectedLeaveType);
     formData.append("date_of_first_appointment", dateOfFirstAppointment);
     formData.append("designation", rankDesignation);
     formData.append("start_date", formattedStartDate);
-    formData.append("end_date", endDate);
+    formData.append("end_date", formattedEndDate);
     formData.append("leave_address", addressLeave);
     formData.append("leave_phone", leaveNumber);
     formData.append("replacement_on_duty", staffRep);
-    formData.append("resumption_date", resumptionDate);
+    formData.append("resumption_date", formattedResumptionDate);
     formData.append("leave_duration", leaveAmount);
     formData.append("type", staffType);
     formData.append("level", staffLevel);
     formData.append('replacement_on_duty_id', staffRepId);
     formData.append('supervisor_id', supervisor_id);
-
-    formData.append('user_supervision_role', supervisorRole  !== undefined ? supervisorRole : "");
-
-
+    formData.append('user_supervision_role', supervisorRole !== undefined ? supervisorRole : "");
 
     try {
       const response = await api.requestLeave(formData);
@@ -317,7 +349,7 @@ const CasualLeave = ({ navigate }) => {
   return (
     <div className="container-fluid">
       <div className="row">
-      <div class="border-bottom py-2" id="sec-padding-res">
+        <div class="border-bottom py-2" id="sec-padding-res">
           <h1 class="text-[18px] font-medium">Leave</h1>
           <p class="text-gray-500 mb-0">Kindly fill in the required information</p>
         </div>
@@ -331,228 +363,216 @@ const CasualLeave = ({ navigate }) => {
           >
             {/* Annual Leave form  start */}
             {page === "1" && (
-              <div
-                class="pb-5"
-                // style={{ display: !showAdditionalInfo ? "block" : "none" }}
-              >
-              <div class="pb-2 pt-2">
+              <div class="pb-5">
+                <div class="pb-2 pt-2">
+                  <div class="mb-3">
+                    <label
+                      for="exampleInputEmail1"
+                      class="form-label fs-6 fw-semibold h-10"
+                    >
+                      Specify the number of days you want to apply for
+                    </label>
+                    <input
+                      type="number"
+                      class="form-control rounded-0"
+                      required
+                      min="1"
+                      value={leaveAmount}
+                      onChange={handleLeaveAmountChange}
+                    />
+                  </div>
+                  <div class="mb-3 flex flex-col">
+                    <div>
+                      <label class="form-label fs-6 fw-semibold">
+                        Start Date<sup className="text-danger">*</sup>
+                      </label>
+                    </div>
+                    <DatePicker
+                      shouldCloseOnSelect={true}
+                      autoComplete="off"
+                      renderCustomHeader={({
+                        date,
+                        changeYear,
+                        changeMonth,
+                        decreaseMonth,
+                        increaseMonth,
+                        prevMonthButtonDisabled,
+                        nextMonthButtonDisabled,
+                      }) => (
+                        <div
+                          style={{
+                            margin: 10,
+                            display: "flex",
+                            justifyContent: "center",
+                          }}
+                        >
+                          <button
+                            onClick={decreaseMonth}
+                            disabled={prevMonthButtonDisabled}
+                          >
+                            {"<"}
+                          </button>
+                          <select
+                            value={getYear(date)}
+                            onChange={({ target: { value } }) =>
+                              changeYear(value)
+                            }
+                          >
+                            {years.map((option) => (
+                              <option key={option} value={option}>
+                                {option}
+                              </option>
+                            ))}
+                          </select>
+
+                          <select
+                            value={months[getMonth(date)]}
+                            onChange={({ target: { value } }) =>
+                              changeMonth(months.indexOf(value))
+                            }
+                          >
+                            {months.map((option) => (
+                              <option key={option} value={option}>
+                                {option}
+                              </option>
+                            ))}
+                          </select>
+
+                          <button
+                            onClick={increaseMonth}
+                            disabled={nextMonthButtonDisabled}
+                          >
+                            {">"}
+                          </button>
+                        </div>
+                      )}
+                      selected={startDate}
+                      onChange={handleStartDateChange}
+                      dateFormat="yyyy-MM-dd"
+                      className="form-control rounded-0 "
+                      id="exampleFormControlInput1"
+                      placeholder="Select start date"
+                      // minDate={new Date()} // Prevent selecting past dates
+                    />
+                  </div>
+                </div>
+                <div class="mb-3 flex flex-col">
+                  <div>
+                    <label class="form-label fs-6 fw-semibold">
+                      End Date: {endDate ? formatDate(endDate) : 'Please select start date and number of days'}
+                    </label>
+                  </div>
+                </div>
+                <div class="mb-3 flex flex-col">
+                  <div>
+                    <label class="form-label fs-6 fw-semibold">
+                      Resumption Date: {resumptionDate ? formatDate(resumptionDate) : 'Please select start date and number of days'}
+                    </label>
+                  </div>
+                </div>
+
                 <div class="mb-3">
                   <label
                     for="exampleInputEmail1"
                     class="form-label fs-6 fw-semibold h-10"
                   >
-                    Specify the number of days you want to apply for
+                    Phone Number while on Leave
                   </label>
                   <input
-                    type="number"
                     class="form-control rounded-0"
-                    required
-                    value={leaveAmount}
-                    onChange={(e) => setLeaveAmount(e.target.value)}
+                    value={leaveNumber}
+                    onChange={(e) => setLeaveumber(e.target.value)}
                   />
                 </div>
-                <div class="mb-3 flex flex-col">
-                  <div>
-                    <label class="form-label fs-6 fw-semibold">
-                      Start Date<sup className="text-danger">*</sup>
-                    </label>
-                  </div>
-                  <DatePicker
-                    shouldCloseOnSelect={true}
-                    autoComplete="off"
-                    renderCustomHeader={({
-                      date,
-                      changeYear,
-                      changeMonth,
-                      decreaseMonth,
-                      increaseMonth,
-                      prevMonthButtonDisabled,
-                      nextMonthButtonDisabled,
-                    }) => (
-                      <div
-                        style={{
-                          margin: 10,
-                          display: "flex",
-                          justifyContent: "center",
-                        }}
-                      >
-                        <button
-                          onClick={decreaseMonth}
-                          disabled={prevMonthButtonDisabled}
-                        >
-                          {"<"}
-                        </button>
-                        <select
-                          value={getYear(date)}
-                          onChange={({ target: { value } }) =>
-                            changeYear(value)
-                          }
-                        >
-                          {years.map((option) => (
-                            <option key={option} value={option}>
-                              {option}
-                            </option>
-                          ))}
-                        </select>
-
-                        <select
-                          value={months[getMonth(date)]}
-                          onChange={({ target: { value } }) =>
-                            changeMonth(months.indexOf(value))
-                          }
-                        >
-                          {months.map((option) => (
-                            <option key={option} value={option}>
-                              {option}
-                            </option>
-                          ))}
-                        </select>
-
-                        <button
-                          onClick={increaseMonth}
-                          disabled={nextMonthButtonDisabled}
-                        >
-                          {">"}
-                        </button>
-                      </div>
+                <div class="mb-3">
+                  <label class="form-label fs-6 fw-semibold">
+                    To be relived by (Name of Staff)
+                  </label>
+                  <div
+                    onClick={() => setIsStaffModal(true)}
+                    className="border px-3 py-2 rounded-0"
+                  >
+                    {staffRep ? (
+                      <p className="mb-0  fs-6">{staffRep}</p>
+                    ) : (
+                      <p className="mb-0">Select a staff</p>
                     )}
-                    selected={startDate ? new Date(startDate) : null}
-                    onChange={(date) => {
-                      calculateDates(date);
-                    }}
-                    dateFormat="yyyy-MM-dd"
-                    className="form-control rounded-0 "
-                    id="exampleFormControlInput1"
-                    placeholder=""
-                  />
+                  </div>
                 </div>
-              </div>
-              <div class="mb-3 flex flex-col">
-                <div>
-                  <label class="form-label fs-6 fw-semibold">
-                    End Date: {endDate}
-                  </label>
-                </div>
-              </div>
-              <div class="mb-3 flex flex-col">
-                <div>
-                  <label class="form-label fs-6 fw-semibold">
-                    Resumption Date: {resumptionDate}
-                  </label>
-                </div>
-              </div>
-
-              <div class="mb-3">
-                <label
-                  for="exampleInputEmail1"
-                  class="form-label fs-6 fw-semibold h-10"
+                <Modal
+                  isCentered
+                  isOpen={isStaffModal}
+                  onClose={() => setIsStaffModal(false)}
+                  size="2xl"
+                  className="max-h-[80vh]"
                 >
-                  Phone Number while on Leave
-                </label>
-                <input
-                  class="form-control rounded-0"
-                  value={leaveNumber}
-                  onChange={(e) => setLeaveumber(e.target.value)}
-                />
-              </div>
-              <div class="mb-3">
-                <label class="form-label fs-6 fw-semibold">
-                  To be relived by (Name of Staff)
-                </label>
-                <div
-                  onClick={() => setIsStaffModal(true)}
-                  className="border px-3 py-2 rounded-0"
-                >
-                  {staffRep ? (
-                    <p className="mb-0  fs-6">{staffRep}</p>
-                  ) : (
-                    <p className="mb-0">Select a staff</p>
-                  )}
-                </div>
-                {/* <input
-                  required
-                  class="form-control rounded-0"
-                  value={staffRep}
-                  onChange={(e) => setStaffrep(e.target.value)}
-                /> */}
-              </div>
-              <Modal
-                isCentered
-                isOpen={isStaffModal}
-                onClose={() => setIsStaffModal(false)}
-                size="2xl"
-                className="max-h-[80vh]"
-              >
-                <ModalOverlay />
-                <ModalContent>
-                  <ModalHeader fontSize={"sm"} py="3" color="#002240">
-                    Select Staff
-                  </ModalHeader>
-                  <ModalCloseButton size={"sm"} />
-                  <Divider />
-                  <ModalBody py="2">
-                    <InputGroup mb="6">
-                      <InputLeftElement>
-                        <FiSearch color="#1A202C" />
-                      </InputLeftElement>
-                      <Input
-                        borderRadius={"6px"}
-                        w="60"
-                        fontSize={"sm"}
-                        placeholder="Search Staffs..."
-                        value={searchTerm}
-                        onChange={(e) => setSearchTerm(e.target.value)}
-                      />
-                    </InputGroup>
-                     {/* // .filter((staff) =>
-                        //   staff.first_name
-                        //     .toLowerCase()
-                        //     .includes(searchTerm.toLowerCase())
-                        // ) */}
-                    {staffs &&
-                      staffs?.available_users
-                        ?.map((staff) => (
-                          <div
-                            onClick={() => {
-                              setStaffrep(
-                                staff.first_name + " " + staff.last_name
-                              );
-                              setStaffRepId(staff?.id)
-
-                              setIsStaffModal(false);
-                            }}
-                            className="w-full "
-                          >
-                            {" "}
-                            <div className="px-2 py-2 border rounded-2 mb-2  flex justify-between">
-                              <p className="text-md md:text-base">
-                                {" "}
-                                {staff.first_name + " " + staff.last_name}
-                              </p>
-
-                              <p className="text-md md:text-base">
-                                {staff?.email}
-                              </p>
-
-                              {staffRep ===
-                              staff.first_name + " " + staff.last_name ? (
-                                <div className="bg-[#32D583] h-4 w-4 rounded-full"></div>
-                              ) : (
-                                <div className="border-[#5F5F60] border-[1.5px] h-4 w-4 rounded-full"></div>
-                              )}
+                  <ModalOverlay />
+                  <ModalContent>
+                    <ModalHeader fontSize={"sm"} py="3" color="#002240">
+                      Select Staff
+                    </ModalHeader>
+                    <ModalCloseButton size={"sm"} />
+                    <Divider />
+                    <ModalBody py="2">
+                      <InputGroup mb="6">
+                        <InputLeftElement>
+                          <FiSearch color="#1A202C" />
+                        </InputLeftElement>
+                        <Input
+                          borderRadius={"6px"}
+                          w="60"
+                          fontSize={"sm"}
+                          placeholder="Search Staffs..."
+                          value={searchTerm}
+                          onChange={(e) => setSearchTerm(e.target.value)}
+                        />
+                      </InputGroup>
+                      {staffs &&
+                        staffs?.available_users
+                          ?.filter((staff) =>
+                            `${staff.first_name} ${staff.last_name}`
+                              .toLowerCase()
+                              .includes(searchTerm.toLowerCase())
+                          )
+                          ?.map((staff) => (
+                            <div
+                              key={staff.id}
+                              onClick={() => {
+                                setStaffrep(
+                                  staff.first_name + " " + staff.last_name
+                                );
+                                setStaffRepId(staff?.id);
+                                setIsStaffModal(false);
+                              }}
+                              className="w-full cursor-pointer"
+                            >
+                              <div className="px-2 py-2 border rounded-2 mb-2 flex justify-between hover:bg-gray-50">
+                                <p className="text-md md:text-base">
+                                  {staff.first_name + " " + staff.last_name}
+                                </p>
+                                <p className="text-md md:text-base">
+                                  {staff?.email}
+                                </p>
+                                {staffRep ===
+                                staff.first_name + " " + staff.last_name ? (
+                                  <div className="bg-[#32D583] h-4 w-4 rounded-full"></div>
+                                ) : (
+                                  <div className="border-[#5F5F60] border-[1.5px] h-4 w-4 rounded-full"></div>
+                                )}
+                              </div>
                             </div>
-                          </div>
-                        ))}
-                  </ModalBody>
-                  <Divider />
-                </ModalContent>
-              </Modal>
+                          ))}
+                    </ModalBody>
+                    <Divider />
+                  </ModalContent>
+                </Modal>
 
-              <button
+                <button
                   type="button"
                   onClick={() => setPage("2")}
+                  disabled={!startDate || !endDate || !leaveAmount || !staffRepId}
                   style={{
-                    backgroundColor: " #984779",
+                    backgroundColor: (!startDate || !endDate || !leaveAmount || !staffRepId) ? "#ccc" : "#984779",
                     borderColor: "white",
                     right: 50,
                     position: "absolute",
@@ -568,58 +588,40 @@ const CasualLeave = ({ navigate }) => {
 
             {/* Additional info start*/}
             {page === "2" && (
-              <div
-                class="pb-5"
-                // style={{ display: showAdditionalInfo ? "block" : "none" }}
-              >
+              <div class="pb-5">
                 <button onClick={() => setPage("1")} className="mb-2">
                   <ArrowLeft size="20" variant="Linear" color="#000" />
                 </button>
-              <div class="mb-3">
-                <label for="address" class="form-label fs-6 fw-semibold">
-                  Address while on Leave
-                </label>
-                <textarea
-                  class="form-control"
-                  aria-label="With textarea"
-                  value={addressLeave}
-                  onChange={(e) => setAddressLeave(e.target.value)}
-                ></textarea>
-              </div>
-              {/* <div class='pb-2'>
-                <div className='mb-3'>
-                  <label
-                    style={{ marginBottom: '10px' }}
-                    className='form-label fs-6 fw-semibold h-10'>
-                    Upload your documents<sup className='text-danger'>*</sup>
+                <div class="mb-3">
+                  <label for="address" class="form-label fs-6 fw-semibold">
+                    Address while on Leave
                   </label>
-                  <input
-                    type="file"
-                    className="form-control rounded-0"
-                    id={`upload_documents`}
-                    onChange={onFileChanges}
-                  />
-                  <sup className='text-danger'>Format accepted: Jpeg/Pdf</sup>
+                  <textarea
+                    class="form-control"
+                    aria-label="With textarea"
+                    value={addressLeave}
+                    onChange={(e) => setAddressLeave(e.target.value)}
+                  ></textarea>
                 </div>
-              </div> */}
-              <button
-                disabled={isLoading}
-                type="submit"
-                style={{
-                  backgroundColor: " #984779",
-                  borderColor: "white",
-                  right: 50,
-                  position: "absolute",
-                }}
-                className="my-10 p-2 text-md-start text-white fs-6 fw-semibold"
-              >
-                {isLoading ? (
-                  <MoonLoader color={"white"} size={20} />
-                ) : (
-                  <>Submit</>
-                )}
-              </button>
-            </div>)}
+                <button
+                  disabled={isLoading}
+                  type="submit"
+                  style={{
+                    backgroundColor: " #984779",
+                    borderColor: "white",
+                    right: 50,
+                    position: "absolute",
+                  }}
+                  className="my-10 p-2 text-md-start text-white fs-6 fw-semibold"
+                >
+                  {isLoading ? (
+                    <MoonLoader color={"white"} size={20} />
+                  ) : (
+                    <>Submit</>
+                  )}
+                </button>
+              </div>
+            )}
           </form>
         </div>
       </div>
