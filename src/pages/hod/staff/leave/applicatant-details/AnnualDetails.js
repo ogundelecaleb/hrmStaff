@@ -95,21 +95,6 @@ const AnnualDetails = (props) => {
     return date.toLocaleDateString(undefined, options);
   };
 
-  function getLastItem(array) {
-    // console.log("appprovalls===>>>", leaveDetails?.approval_bodies)
-    // Check if the array is not empty
-
-    if (!array) {
-      return;
-    }
-    if (array?.length === 0) {
-      return undefined; // Return undefined if the array is empty
-    } else {
-      // Return the last item in the array
-      return array[array?.length - 1];
-    }
-  }
-
   const toggleApprove = () => {
     const approvals = leaveDetails?.approval_bodies?.length;
     const approves = leaveDetails?.approvals?.length;
@@ -127,7 +112,7 @@ const AnnualDetails = (props) => {
       const bodies = leaveDetails?.approval_bodies;
       const lastObject = bodies[bodies.length - 1];
       const userRole = userDetails?.data?.email;
-    
+
       const isUserMatchRole = userRole === lastObject;
       if (isUserMatchRole) {
         status = "Approve";
@@ -152,8 +137,6 @@ const AnnualDetails = (props) => {
     };
     return date.toLocaleDateString(undefined, options);
   };
-
-
 
   async function handleApprovedBtn(e) {
     e.preventDefault();
@@ -212,23 +195,24 @@ const AnnualDetails = (props) => {
   const displayButton = () => {
     let result = false;
 
-    if(leaveDetails) {
-
+    if (leaveDetails) {
       const approvals = leaveDetails?.approval_bodies?.length;
       const approves = leaveDetails?.approvals?.length;
-      if(approvals === approves ){
-      return result = false;
+      if (approvals === approves) {
+        return (result = false);
       }
-     
+
       //approval index
-      const currentApprovalIndex =  leaveDetails?.approval_bodies[approves];
-      if ( (currentApprovalIndex.includes(userDetails?.data?.email) ||   currentApprovalIndex === userDetails?.data?.email) && leaveDetails?.status === "pending") {
+      const currentApprovalIndex = leaveDetails?.approval_bodies[approves];
+      if (
+        (currentApprovalIndex.includes(userDetails?.data?.email) ||
+          currentApprovalIndex === userDetails?.data?.email) &&
+        leaveDetails?.status === "pending"
+      ) {
         result = true;
       }
-  
-      
     }
-    return result
+    return result;
   };
   return (
     <Stack className="px-4" pl="16" pb="10">
@@ -245,7 +229,7 @@ const AnnualDetails = (props) => {
           <p className=" fs-5 mt-3 ">Applicant Details</p>
         </Link>
       </div>
-      {(isLoadinge && !leaveDetails) ? (
+      {isLoadinge && !leaveDetails ? (
         <Box
           w={"70vw"}
           display="flex"
@@ -392,35 +376,32 @@ const AnnualDetails = (props) => {
             )}
             {/* {shouldDisplayButtons && !isApproved && ( */}
             {displayButton() && (
-            <Flex pt="10" w="full" mb="10" justifyContent={"space-between"}>
-              <Button
-                borderRadius={"0"}
-                color="#D02F44"
-                bg="#F8F8FD"
-                onClick={handleDeclinedBtn}
-              >
-                {isLoadingd ? (
-                  <MoonLoader color={"white"} size={20} />
-                ) : (
-                  <> Decline </>
-                )}
-              </Button>
-              <Button
-                borderRadius={"0"}
-                color="white"
-                bg="#388B41"
-                onClick={handleApprovedBtn}
-              >
-                {
-                  isLoading ? (
+              <Flex pt="10" w="full" mb="10" justifyContent={"space-between"}>
+                <Button
+                  borderRadius={"0"}
+                  color="#D02F44"
+                  bg="#F8F8FD"
+                  onClick={handleDeclinedBtn}
+                >
+                  {isLoadingd ? (
+                    <MoonLoader color={"white"} size={20} />
+                  ) : (
+                    <> Decline </>
+                  )}
+                </Button>
+                <Button
+                  borderRadius={"0"}
+                  color="white"
+                  bg="#388B41"
+                  onClick={handleApprovedBtn}
+                >
+                  {isLoading ? (
                     <MoonLoader color={"white"} size={20} />
                   ) : (
                     toggleApprove()
-                  )
-                
-                }
-              </Button>
-            </Flex>
+                  )}
+                </Button>
+              </Flex>
             )}
           </Box>
           <Box

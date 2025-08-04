@@ -27,6 +27,7 @@ import {
 } from "@chakra-ui/react";
 import { ClipLoader } from "react-spinners";
 import StaffListModal from "../../components/OfficeList";
+import HodLeaveResumption from "../../components/resumptionleave/HodLeaveResumption";
 
 const StaffHomePage = ({ switchRoutes, navigate }) => {
   // const navigate = useNavigate();
@@ -34,11 +35,11 @@ const StaffHomePage = ({ switchRoutes, navigate }) => {
 
   const { enqueueSnackbar } = useSnackbar();
   const [page, setPage] = useState(1);
-  const [userDetails, setUserDetails] = useState([]);
+  const [userDetails, setUserDetails] = useState("");
   const [role, setRole] = useState("");
   const [supervisor, setSupervisor] = useState("");
   const [loading, setLoading] = useState(false);
-  const [selectedOffice, setSelectedOffice] = useState("")
+  const [selectedOffice, setSelectedOffice] = useState("");
   async function fetchUserDetails() {
     try {
       const userDetails = await getUserDetails();
@@ -65,14 +66,13 @@ const StaffHomePage = ({ switchRoutes, navigate }) => {
     {
       keepPreviousData: true,
       refetchOnWindowFocus: "always",
+     enabled: !!userDetails,
+
     }
   );
 
   async function getdLeaves(page) {
     try {
-      const userDetails = await getUserDetails();
-      const role = userDetails.data.role;
-
       if (["CS"].includes(role)) {
         // Fetch data for 'DEAN', 'CS', role
         const response = await api.fetchCsLeaves({ params: { page } });
@@ -122,8 +122,44 @@ const StaffHomePage = ({ switchRoutes, navigate }) => {
     {
       keepPreviousData: true,
       refetchOnWindowFocus: "always",
+     enabled: !!userDetails,
     }
   );
+
+  async function getResumption(page) {
+    try {
+      if (["HNASEJ"]?.includes(role)) {
+        // Fetch data for 'HOD' or 'HNASEJ' role
+        const response = await api.getNasejResumption({ params: { page } });
+        return response;
+      } else if (["HNASES"]?.includes(role)) {
+        // Fetch data for 'HOD' or 'HNASES' role
+        const response = await api.getNasesResumption({ params: { page } });
+        return response;
+      } else if (["HOU"]?.includes(role)) {
+        // Fetch data for 'HOD' or 'HOU' role
+        const response = await api.getHouResumption({ params: { page } });
+        return response;
+      } else {
+        // Handle other roles or scenarios
+        return { data: [] }; // Return empty data or handle differently
+      }
+    } catch (error) {
+      enqueueSnackbar(error.message, { variant: "error" });
+      throw error; // Rethrow the error to be caught by react-query
+    }
+  }
+
+  const resumeQuery = useQuery(
+    ["getResumption", page],
+    () => getResumption(page),
+    {
+      keepPreviousData: true,
+      refetchOnWindowFocus: "always",
+      enabled: !!userDetails,
+    }
+  );
+  const resumeData = resumeQuery?.data?.data || [];
 
   const calculateProgress = () => {
     const fieldsToCheck = [
@@ -181,8 +217,6 @@ const StaffHomePage = ({ switchRoutes, navigate }) => {
     return `${year}-${month}-${day}`;
   }
 
-
-
   const submitSupervisor = async () => {
     if (!selectedOffice) {
       enqueueSnackbar("Please select a supervisor office", {
@@ -198,7 +232,6 @@ const StaffHomePage = ({ switchRoutes, navigate }) => {
       enqueueSnackbar("Supervisor Update Successfully", { variant: "success" });
       setLoading(false);
       fetchUserDetails();
-
     } catch (error) {
       setLoading(false);
       enqueueSnackbar(error.message, { variant: "error" });
@@ -235,42 +268,6 @@ const StaffHomePage = ({ switchRoutes, navigate }) => {
 
   return (
     <div className="px-[16px] md:px-[28px]">
-      <Modal isOpen={isDisabled} onClose={() => console.log("close")}>
-        <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>Site Disabled!</ModalHeader>
-          <ModalCloseButton />
-          <ModalBody>
-            The deadline for submitting your information has now passed. Please
-            hold off on further submissions while awaiting confirmation of an
-            extension from the College Secretary. Once the extension is
-            approved, further instructions will be provided.
-            <br />
-            <br /> Thank you for yout patience{" "}
-          </ModalBody>
-
-          <ModalFooter gap="5">
-            <Link to="/">
-              <Button
-                px={10}
-                //colorScheme="purple"
-                bg={"#984779"}
-                textColor={"white"}
-                onClick={() => {
-                  // onClose();
-                  api.logout();
-                  navigate("/login");
-                }}
-              >
-                Logout
-              </Button>
-            </Link>
-            {/* <Button  variant='ghost' width={"100px"}>
-                            {loading ? <Spinner /> : "No"}
-                        </Button> */}
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
       <p className="text-[#121212] text-[18px] md:text-[20px] font-semibold mt-4 ">
         Hello, {userDetails?.first_name} {userDetails?.last_name}
       </p>
@@ -338,15 +335,14 @@ const StaffHomePage = ({ switchRoutes, navigate }) => {
               </span>
             </p>
             <div className="">
-
               <label className="text-[14px] text-[#242527] leading-[20px]   mb-[8px]">
                 Select Immediate Supervisor Office{" "}
               </label>
-             
-            <StaffListModal
-              selectedOffice={selectedOffice}
-              setSelectedOffice={setSelectedOffice}
-            />
+
+              <StaffListModal
+                selectedOffice={selectedOffice}
+                setSelectedOffice={setSelectedOffice}
+              />
             </div>
 
             <button
@@ -608,13 +604,13 @@ const StaffHomePage = ({ switchRoutes, navigate }) => {
           </div>
           <div className="rounded-lg overflow-hidden border-[0.8px] border-[#E4E7EC] mt-5 md:mt-9">
             <div className="flex items-center justify-between bg-white p-3">
-              <p className=" text-[16px] md:text-lg mb-0 text-[#000] leading-[24px] font-medium text-left ">
+              <p className=" text-[14px] mb-0 text-[#000]  font-medium text-left ">
                 Recent Leave Applications
               </p>
               <Link to="/portal/leave">
                 <button className="flex items-center gap-2">
                   {" "}
-                  <p className=" text-[14px] md:text-base mb-0  text-[#984779] leading-[24px] font-medium text-left ">
+                  <p className=" text-[14px]  mb-0  text-[#984779] leading-[24px] font-medium text-left ">
                     View all applications
                   </p>
                   <ArrowRight size="16" variant="Linear" color="#984779" />
@@ -665,15 +661,6 @@ const StaffHomePage = ({ switchRoutes, navigate }) => {
                         Status
                       </div>
                     </th>
-
-                    {/* <th
-                  scope="col"
-                  className="px-2 md:px-5  border-b-[0.8px] border-[#E4E7EC] py-[12px] gap-[6px] md:gap-[12px] text-[14px] md:text-[16px] text-[#98A2B3]  font-medium leading-[20px] md:leading-[24px] tracking-[0.2%]"
-                >
-                  <div className="flex gap-[6px] md:gap-[12px] items-center my-0">
-                    Action
-                  </div>
-                </th> */}
                   </tr>
                 </thead>
                 <tbody>
@@ -732,6 +719,22 @@ const StaffHomePage = ({ switchRoutes, navigate }) => {
               </table>
             </div>
           </div>{" "}
+          <div className="flex justify-between items-center mt-3">
+            <div className="font-semibold">Leave Resumption Application</div>
+            <Link to="/portal/resumption">
+              <button className="flex items-center gap-2">
+                {" "}
+                <p className=" text-[14px]  mb-0  text-[#984779] leading-[24px] font-medium text-left ">
+                  View all
+                </p>
+                <ArrowRight size="16" variant="Linear" color="#984779" />
+              </button>
+            </Link>
+          </div>
+          <HodLeaveResumption
+            resumeData={resumeData}
+            isLoading={resumeQuery?.isLoading}
+          />
         </>
       )}
 

@@ -25,6 +25,8 @@ import Inbox from "../pages/staff/inbox/Inbox";
 import { Notification } from "../pages/hod/notification/Notification";
 import HodSpaDevRoute from "./HodSpaDevRoute";
 import StaffOnLeave from "../pages/hod/staff/leave/StaffOnLeave";
+import Resumption from "../pages/hod/staff/leave/Resumption";
+import ResumptionDetails from "../pages/hod/staff/leave/ResumptionDetails";
 
 const HodDashboardRoute = ({ mobile, setMobile, display }) => {
 
@@ -54,6 +56,14 @@ const HodDashboardRoute = ({ mobile, setMobile, display }) => {
         <Route
           path='staffsonleave'
           element={<StaffOnLeave navigate={navigate} />}
+        />
+         <Route
+          path='resumption'
+          element={<Resumption  />}
+        />
+          <Route
+          path='resumption-details'
+          element={<ResumptionDetails  />}
         />
         <Route
           path='/leave-application/*'

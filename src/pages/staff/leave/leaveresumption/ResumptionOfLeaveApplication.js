@@ -111,8 +111,11 @@ const ResumptionOfLeaveApplication = ({ navigate }) => {
       const response = await api.resumeLeave({
         leave_id: lastLeaveDetails?.id,
         date_resumed: lastLeaveDetails?.resumption_date,
+        leave_type: lastLeaveDetails?.leave_type,
+        level: lastLeaveDetails?.level,
+        type: lastLeaveDetails?.type,
       });
-      console.log("responce==>>>>>", response);
+      // console.log("responce==>>>>>", response);
       enqueueSnackbar("Application successfull", { variant: "success" });
       setIsLoadingd(false);
       navigate("submited");
@@ -315,7 +318,7 @@ const ResumptionOfLeaveApplication = ({ navigate }) => {
             </label>
             <select
               value={lastLeaveDetails?.leave_type}
-              disabled
+              // disabled
               onChange={(e) => setConcludedLeave(e.target.value)}
               class="form-select rounded-0"
               aria-label="Default select example"

@@ -103,7 +103,13 @@ import {
   GETALLOFFICE,
   SELECTSUPPERVISOR,
   CREATEOFFICE,
-  GETROLES
+  GETROLES,
+  GETRESUMPTION,
+  NASEJRESUMPTION,
+  NASESRESUMPTION,
+  HOURESUMPTION,
+  APPROVERESUME,
+  MYRESUMPTION
 } from "../utils/config";
 import { apiGet, apiPost, apiPut, apiDelete } from "../utils/utils";
 
@@ -529,5 +535,24 @@ export function fetchAllOffice(data) {
 
 export function selectSupervisor(data) {
   return apiPost(SELECTSUPPERVISOR, data);
+}
+
+export function getResumption(data) {
+  return apiGet(GETRESUMPTION +  data);
+}
+export function getNasejResumption(data) {
+  return apiGet(NASEJRESUMPTION, data);
+}
+export function getNasesResumption(data) {
+  return apiGet(NASESRESUMPTION, data);
+}
+export function getHouResumption(data) {
+  return apiGet(HOURESUMPTION, data);
+}
+export function approveResume(data) {
+  return apiPost(APPROVERESUME + data.id, data);
+}
+export function myResumption(data) {
+  return apiGet(MYRESUMPTION, data);
 }
 

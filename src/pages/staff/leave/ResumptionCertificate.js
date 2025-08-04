@@ -5,8 +5,9 @@ import logo from "../../../asset/logo(small).svg";
 import { useLocation } from "react-router-dom";
 import api from "../../../api";
 import { useQuery } from "@tanstack/react-query";
+import { useReactToPrint } from "react-to-print";
 
-const LeaveCertificate = () => {
+const LeaveResumptionCertificate = () => {
   const location = useLocation();
 
   const result = location.state;
@@ -22,53 +23,13 @@ const LeaveCertificate = () => {
         margin: 0;
       }
     `,
-    documentTitle: "Leave-Certificate",
+    documentTitle: "Resumption-Certificate",
     onAfterPrint: () => {
       // console.log("Printed successfully");
     },
   });
-  const handleDownload = () => {
-    const input = document.getElementById("certificate");
 
-    // Optimization options
-    const options = {
-      scale: 2, // Lower than default (devicePixelRatio)
-      quality: 0.8, // Reduce quality slightly
-      logging: false,
-      useCORS: true,
-      allowTaint: true,
-    };
-
-    html2canvas(input, options).then((canvas) => {
-      const imgData = canvas.toDataURL("image/jpeg", 0.8); // Use JPEG with quality setting
-      const pdf = new jsPDF("p", "mm", "a4"); // Specify A4 size
-
-      const imgWidth = 210; // A4 width in mm
-      const imgHeight = (canvas.height * imgWidth) / canvas.width;
-
-      // Check if content fits on one page
-      if (imgHeight < 297) {
-        // A4 height in mm
-        pdf.addImage(imgData, "JPEG", 0, 0, imgWidth, imgHeight);
-      } else {
-        // Handle multi-page only if necessary
-        let heightLeft = imgHeight;
-        let position = 0;
-
-        pdf.addImage(imgData, "JPEG", 0, position, imgWidth, imgHeight);
-        heightLeft -= 297;
-
-        while (heightLeft >= 0) {
-          position = heightLeft - imgHeight;
-          pdf.addPage();
-          pdf.addImage(imgData, "JPEG", 0, position, imgWidth, imgHeight);
-          heightLeft -= 297;
-        }
-      }
-
-      pdf.save("leave_certificate.pdf");
-    });
-  };
+ 
 
   const leaveTypeMap = {
     "annual-leave": "Annual Leave",
@@ -114,13 +75,13 @@ const LeaveCertificate = () => {
   );
 
   return (
-    <div>
+    <div className="p-0">
       <div
-        id="certificate"
+        // id="certificate"
         ref={contentRef}
        
       >
-        <div className="flex items-center py-2 px-4 md:px-[40px] xl:px-[80px] md:py-3 bg-slate-100 border-b border-gray-100">
+        <div className="flex items-center py-2 px-2  md:px-[40px] xl:px-[80px] md:py-3 bg-slate-100 border-b border-gray-100">
           <img
             className="h-[34px] w-[34px] md:h-[60px] md:w-[60px]"
             src={logo}
@@ -132,7 +93,7 @@ const LeaveCertificate = () => {
               Lagos State University College of Medicine
             </h2>
             <h2 className="text-[16px] md:text-[20px]  text-center font-semibold  text-[#984779] ">
-              Leave Certificate{" "}
+              Leave Resumption Certificate{" "}
             </h2>
           </div>
         </div>
@@ -143,7 +104,7 @@ const LeaveCertificate = () => {
             style={{ opacity: 40 / 100 }}
           />
 
-          <div className="px-4 md:px-5 lg:px-7 pt-4 md:pt-6 pb-7">
+          <div className="px-2 md:px-5 lg:px-7 pt-4 md:pt-6 pb-7">
             {/* <p className="text-lg  font-semibold text-center">
             This is to certify that
           </p>
@@ -155,28 +116,28 @@ const LeaveCertificate = () => {
             <strong>{formatDate(result?.start_date)}</strong> to{" "}
             <strong>{formatDate(result?.end_date)}</strong>
           </p> */}
-            <p className="text-lg font-semibold mt-3 ">
+            <p className="text-base font-semibold mt-3 ">
               Full Name:{" "}
               <span className="text-base font-medium uppercase">
-                {result?.full_name}
+                {result?.leave?.full_name}
               </span>
             </p>
-            <p className="text-lg font-semibold mt-3 ">
+            <p className="text-base font-semibold mt-3 ">
               PF Number:{" "}
               <span className="text-base font-medium">
-                {result?.staff_number}
+                {result?.leave?.staff_number}
               </span>
             </p>
-            <p className="text-lg font-semibold mt-3 ">
+            <p className="text-base font-semibold mt-3 ">
               Leave Type:{" "}
               <span className="text-base font-medium">
-                {leaveTypeMap[result?.leave_type] || "Leave"}
+                {leaveTypeMap[result?.leave?.leave_type] || "Leave"}
               </span>
             </p>
             <p className="text-lg font-semibold ">
               Department/Unit:{" "}
               <span className="text-base font-medium">
-                {result?.unit?.name}
+                {result?.leave?.unit?.name}
               </span>
             </p>
             <p className="text-lg font-semibold ">
@@ -186,68 +147,78 @@ const LeaveCertificate = () => {
                   data?.data?.find(
                     (item) =>
                       item?.name.toLowerCase() ===
-                      result?.designation.toLowerCase()
+                      result?.leave?.designation.toLowerCase()
                   )?.description
                 }
               </span>
             </p>
             <p className="text-lg font-semibold ">
               Current Level:{" "}
-              <span className="text-base font-medium">{result?.level}</span>
+              <span className="text-base font-medium">
+                {result?.leave?.level}
+              </span>
             </p>
 
             <p className="text-lg font-semibold ">
               Start Date:{" "}
               <span className="text-base font-medium">
-                {formatDate(result?.start_date)}
+                {formatDate(result?.leave?.start_date)}
               </span>
             </p>
-               <p className="text-lg font-semibold ">
+            <p className="text-lg font-semibold ">
               End Date:{" "}
               <span className="text-base font-medium">
-                {formatDate(result?.end_date)}
+                {formatDate(result?.leave?.end_date)}
               </span>
             </p>
             <p className="text-lg font-semibold ">
               Resumption Date:{" "}
               <span className="text-base font-medium">
-                {formatDate(result?.resumption_date)}
+                {formatDate(result?.leave?.resumption_date)}
               </span>
             </p>
             <p className="text-lg font-semibold ">
               Leave Duration:{" "}
               <span className="text-base font-medium">
-                {result?.leave_duration} Day(s)
+                {result?.leave?.leave_duration} Day(s)
               </span>
             </p>
             <p className="text-lg font-semibold ">
               Total Leave Balance:{" "}
               <span className="text-base font-medium">
-                {result?.total_leave_due} Day(s)
+                {result?.leave?.total_leave_due} Day(s)
               </span>
             </p>
 
             <p className="text-lg font-semibold ">
               Address While on Leave:{" "}
               <span className="text-base font-medium">
-                {result?.leave_address}
+                {result?.leave?.leave_address}
               </span>
             </p>
             <p className="text-lg font-semibold ">
               Staff to Relieve:{" "}
               <span className="text-base font-medium">
-                {result?.replacement_on_duty}
+                {result?.leave?.replacement_on_duty}
               </span>
             </p>
             <p className="text-lg font-semibold ">
               Approval Bodies:{" "}
               <span className="text-base font-medium">
                 {result?.approvals?.map((item) => (
-                  <>{item?.email} || </>
+                  <>
+                    {item?.email} date: {formatDate(item?.date)} ||{" "}
+                  </>
                 ))}
               </span>
             </p>
 
+            {/* <p>
+          Issued on: <strong>{new Date().toLocaleDateString()}</strong>
+        </p>
+        <p style={{ marginTop: "40px", fontWeight: "bold" }}>
+          Authorized Signature
+        </p> */}
           </div>
         </div>
       </div>
@@ -265,4 +236,4 @@ const LeaveCertificate = () => {
   );
 };
 
-export default LeaveCertificate;
+export default LeaveResumptionCertificate;

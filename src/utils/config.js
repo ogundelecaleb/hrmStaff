@@ -1,5 +1,5 @@
-//export const API_BASE_URL = 'https://hrmdev.devapi.live/api';
-export const API_BASE_URL = 'https://hrm.devapi.live/api';
+export const API_BASE_URL = 'https://hrmdev.devapi.live/api';
+//export const API_BASE_URL = 'https://hrm.devapi.live/api';
 export const getApiUrl = (endpoint) => API_BASE_URL + endpoint
 
 export const ADDUSER = getApiUrl('/staffs')
@@ -108,7 +108,7 @@ export const CREATEJOB = getApiUrl('/jobs')
 export const FETCHJOBS = getApiUrl('/all-jobs')
 export const LEAVECOUNT = getApiUrl('/training-leaves-count')
 export const LASTLEAVE = getApiUrl('/last-approved-leave')
-export const RESUMELEAVE = getApiUrl('/resumption/duty')
+export const RESUMELEAVE = getApiUrl('/resumption/apply')
 
 
 
@@ -121,6 +121,12 @@ export const STAFFONLEAVE = getApiUrl('/user-leave-status')
 export const TRACKPROGRESS = getApiUrl('/track-progress-bar')
 export const GETALLOFFICE = getApiUrl('/supervisor-offices')
 export const SELECTSUPPERVISOR = getApiUrl('/select-immediate-supervisor')
+export const HOURESUMPTION = getApiUrl('/resumption/resumption-hou')
+export const NASESRESUMPTION = getApiUrl('/resumption/resumption-hnases')
+export const NASEJRESUMPTION = getApiUrl('/resumption/resumption-hnasej')
+export const MYRESUMPTION = getApiUrl('/resumption/my-records')
+export const GETRESUMPTION = getApiUrl('/resumption/records/')
+export const APPROVERESUME = getApiUrl('/resumption/approve-resumption/')
 
 
 

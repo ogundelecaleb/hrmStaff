@@ -19,7 +19,13 @@ import { BsInboxes } from "react-icons/bs";
 
 import LogoutModal from "../../pages/hod/logout/Logout";
 
-const HodLeftNavbar = ({ mobile, setMobile, display, staffNumber, staffRole }) => {
+const HodLeftNavbar = ({
+  mobile,
+  setMobile,
+  display,
+  staffNumber,
+  staffRole,
+}) => {
   const [staffDropDown, setStaffDropDown] = useState(false);
   const [leaveDropDown, setLeaveDropDown] = useState(false);
 
@@ -45,17 +51,17 @@ const HodLeftNavbar = ({ mobile, setMobile, display, staffNumber, staffRole }) =
           <img src={schLogo} alt="schhol_image" />
         </div>
         <div className="overflow-auto">
-        <CustomLink to="dashboard">
-          <div
-            id="hoverEffect"
-            className="ps-3 ms-1 d-flex align-items-center rounded gap-2"
-            style={{ height: "48px", width: "90%" }}
-          >
-            <MdDashboard size="25" style={{ color: "#84818A" }} />
-            Dashboard
-          </div>
-        </CustomLink>
-        {/* <CustomLink to="calender">
+          <CustomLink to="dashboard">
+            <div
+              id="hoverEffect"
+              className="ps-3 ms-1 d-flex align-items-center rounded gap-2"
+              style={{ height: "48px", width: "90%" }}
+            >
+              <MdDashboard size="25" style={{ color: "#84818A" }} />
+              Dashboard
+            </div>
+          </CustomLink>
+          {/* <CustomLink to="calender">
           <div
             id="hoverEffect"
             className="d-flex ps-3 ms-1 align-items-center rounded gap-2"
@@ -65,7 +71,7 @@ const HodLeftNavbar = ({ mobile, setMobile, display, staffNumber, staffRole }) =
             Calender & Schedule
           </div>
         </CustomLink> */}
-        {/* <CustomLink to="inbox">
+          {/* <CustomLink to="inbox">
           <div
             id="hoverEffect"
             className="ps-3 ms-1 d-flex align-items-center rounded gap-2"
@@ -75,7 +81,7 @@ const HodLeftNavbar = ({ mobile, setMobile, display, staffNumber, staffRole }) =
             Inbox
           </div>
         </CustomLink> */}
-        {/* <CustomLink to="event">
+          {/* <CustomLink to="event">
           <div
             id="hoverEffect"
             className="ps-3 ms-1 d-flex align-items-center rounded gap-2"
@@ -85,10 +91,10 @@ const HodLeftNavbar = ({ mobile, setMobile, display, staffNumber, staffRole }) =
             Events/Training
           </div>
         </CustomLink> */}
-        {/* <p className="text-muted ms-4 mt-2" style={{ marginBottom: "-2px" }}>
+          {/* <p className="text-muted ms-4 mt-2" style={{ marginBottom: "-2px" }}>
           Recruitments
         </p> */}
-        {/* <CustomLink to='job-openings'>
+          {/* <CustomLink to='job-openings'>
           <div
             id='hoverEffect'
             className='ps-3 ms-1 d-flex align-items-center rounded gap-2'
@@ -97,7 +103,7 @@ const HodLeftNavbar = ({ mobile, setMobile, display, staffNumber, staffRole }) =
             Job Openings
           </div>
         </CustomLink> */}
-        {/* <CustomLink to="job-applicants">
+          {/* <CustomLink to="job-applicants">
           <div
             id="hoverEffect"
             className="ps-3 ms-1 d-flex align-items-center rounded gap-2"
@@ -107,19 +113,17 @@ const HodLeftNavbar = ({ mobile, setMobile, display, staffNumber, staffRole }) =
             Job Applicants
           </div>
         </CustomLink> */}
-        {/* <p className="text-muted ms-4 mt-2" style={{ marginBottom: "-2px" }}>
+          {/* <p className="text-muted ms-4 mt-2" style={{ marginBottom: "-2px" }}>
           Organization
         </p> */}
-        <CustomLink to="staff">
-          <div
-            onClick={() => setStaffDropDown(!staffDropDown)}
-            id="hoverEffect"
+          <button
+            onClick={() => setLeaveDropDown(!leaveDropDown)}
             className="ps-3 ms-1 d-flex align-items-center rounded gap-2 position-relative"
             style={{ height: "48px", width: "90%" }}
           >
-            {<GiMatterStates size="25" style={{ color: "#84818A" }} />}
-            Staff Matters
-            {staffDropDown ? (
+            <IoTimerSharp size="25" style={{ color: "#84818A" }} />
+            Leave Matters
+            {leaveDropDown ? (
               <AiOutlineUp className="position-absolute end-0 me-3" />
             ) : (
               <AiOutlineDown
@@ -127,13 +131,50 @@ const HodLeftNavbar = ({ mobile, setMobile, display, staffNumber, staffRole }) =
                 className="position-absolute end-0 me-3"
               />
             )}
+          </button>
+          <div className={leaveDropDown ? "d-block" : "d-none"}>
+            <div className="d-flex flex-column align-items-center px-4">
+              <Link
+                style={{ borderBottom: "1px solid #2D1460" }}
+                to="leave"
+                className="w-100 py-2 px-2"
+              >
+                Leave Applications
+              </Link>
+
+              <Link
+                style={{ borderBottom: "1px solid #2D1460" }}
+                to="resumption"
+                className="w-100 py-2 px-2"
+              >
+                Leave Resumption
+              </Link>
+            </div>
           </div>
-        </CustomLink>
-        <div
-          className={staffDropDown ? "d-block" : "d-none"}
-          // style={{ fontSize: "14px" }}
-        >
-          {/* <div className='d-flex flex-column align-items-center px-4'>
+          <CustomLink to="staff">
+            <div
+              onClick={() => setStaffDropDown(!staffDropDown)}
+              id="hoverEffect"
+              className="ps-3 ms-1 d-flex align-items-center rounded gap-2 position-relative"
+              style={{ height: "48px", width: "90%" }}
+            >
+              {<GiMatterStates size="25" style={{ color: "#84818A" }} />}
+              Staff Matters
+              {staffDropDown ? (
+                <AiOutlineUp className="position-absolute end-0 me-3" />
+              ) : (
+                <AiOutlineDown
+                  color="white"
+                  className="position-absolute end-0 me-3"
+                />
+              )}
+            </div>
+          </CustomLink>
+          <div
+            className={staffDropDown ? "d-block" : "d-none"}
+            // style={{ fontSize: "14px" }}
+          >
+            {/* <div className='d-flex flex-column align-items-center px-4'>
             <Link
               to='staff/permanent-staff'
               className='w-100 py-2 ps-2'
@@ -147,72 +188,64 @@ const HodLeftNavbar = ({ mobile, setMobile, display, staffNumber, staffRole }) =
               Temporary Staff
             </Link>
           </div> */}
-          <div className="d-flex flex-column align-items-center px-4">
-            <Link
-              style={{ borderBottom: "1px solid #2D1460" }}
-              to="staff/assumption-of-Duty"
-              className="w-100 py-2 px-2"
-            >
-              Certification of Assumption of Duty
-            </Link>
-            <Link
-              style={{ borderBottom: "1px solid #2D1460" }}
-              className="w-100 py-2 px-2"
-              to="staff/temporary-regularized-appointment"
-            >
-              Temporary regularized appointment
-            </Link>
-            <Link
-              style={{ borderBottom: "1px solid #2D1460" }}
-              className="w-100 py-2 px-2"
-              to="staff/confirmed-appointments"
-            >
-              Confirmation of Appointment
-            </Link>
-            <Link
-              style={{ borderBottom: "1px solid #2D1460" }}
-              className="w-100 py-2 px-2"
-              to="staff/withdrawal-appointments"
-            >
-              Withdrawal of Appointment
-            </Link>
-            {/* <Link
+            <div className="d-flex flex-column align-items-center px-4">
+              <Link
+                style={{ borderBottom: "1px solid #2D1460" }}
+                to="staff/assumption-of-Duty"
+                className="w-100 py-2 px-2"
+              >
+                Certification of Assumption of Duty
+              </Link>
+              <Link
+                style={{ borderBottom: "1px solid #2D1460" }}
+                className="w-100 py-2 px-2"
+                to="staff/temporary-regularized-appointment"
+              >
+                Temporary regularized appointment
+              </Link>
+              <Link
+                style={{ borderBottom: "1px solid #2D1460" }}
+                className="w-100 py-2 px-2"
+                to="staff/confirmed-appointments"
+              >
+                Confirmation of Appointment
+              </Link>
+              <Link
+                style={{ borderBottom: "1px solid #2D1460" }}
+                className="w-100 py-2 px-2"
+                to="staff/withdrawal-appointments"
+              >
+                Withdrawal of Appointment
+              </Link>
+              {/* <Link
               style={{ borderBottom: "1px solid #2D1460" }}
               className='w-100 py-2 px-2'
               to='staff/staff-appraisal'>
               Staff Appraisal
             </Link> */}
-            {/* <Link
+              {/* <Link
               style={{ borderBottom: "1px solid #2D1460" }}
               className='w-100 py-2 px-2'
               to='staff/spadev-applications'>
               Spadev Applications
             </Link> */}
+            </div>
           </div>
-        </div>
-        <CustomLink to="leave">
-          <div
-            id="hoverEffect"
-            className="ps-3 ms-1 d-flex align-items-center rounded gap-2 position-relative"
-            style={{ height: "48px", width: "90%" }}
-          >
-            <IoTimerSharp size="25" style={{ color: "#84818A" }} />
-            Leave Matters
-          </div>
-        </CustomLink>
+       
 
-        {(staffRole !== "HOD" && staffRole !== "HOU") && (
-        <CustomLink to="staffsonleave">
-          <div
-            id="hoverEffect"
-            className="ps-3 ms-1 d-flex align-items-center rounded gap-2 position-relative"
-            style={{ height: "48px", width: "90%" }}
-          >
-            <BsInboxes size="25" style={{ color: "#84818A" }} />
-            Staffs On Leave
-          </div>
-        </CustomLink>)}
-        {/* <CustomLink to="spadev">
+          {staffRole !== "HOD" && staffRole !== "HOU" && (
+            <CustomLink to="staffsonleave">
+              <div
+                id="hoverEffect"
+                className="ps-3 ms-1 d-flex align-items-center rounded gap-2 position-relative"
+                style={{ height: "48px", width: "90%" }}
+              >
+                <BsInboxes size="25" style={{ color: "#84818A" }} />
+                Staffs On Leave
+              </div>
+            </CustomLink>
+          )}
+          {/* <CustomLink to="spadev">
           <div
             id="hoverEffect"
             className="ps-3 ms-1 d-flex align-items-center rounded gap-2"
@@ -222,7 +255,7 @@ const HodLeftNavbar = ({ mobile, setMobile, display, staffNumber, staffRole }) =
             SPADEV
           </div>
         </CustomLink> */}
-        {/* <CustomLink to="report">
+          {/* <CustomLink to="report">
           <div
             id="hoverEffect"
             className="ps-3 ms-2 d-flex align-items-center rounded gap-2"
@@ -233,10 +266,13 @@ const HodLeftNavbar = ({ mobile, setMobile, display, staffNumber, staffRole }) =
           </div>
         </CustomLink> */}
 
-        <p className="text-muted ms-4 pb-1 mt-1" style={{ marginBottom: "0" }}>
-          Others
-        </p>
-        {/* <CustomLink to="setting">
+          <p
+            className="text-muted ms-4 pb-1 mt-1"
+            style={{ marginBottom: "0" }}
+          >
+            Others
+          </p>
+          {/* <CustomLink to="setting">
           <div
             id="hoverEffect"
             className="ps-3 ms-1 d-flex align-items-center rounded gap-2"
@@ -246,7 +282,7 @@ const HodLeftNavbar = ({ mobile, setMobile, display, staffNumber, staffRole }) =
             Settings
           </div>
         </CustomLink> */}
-        <LogoutModal />
+          <LogoutModal />
         </div>
       </div>
     </div>

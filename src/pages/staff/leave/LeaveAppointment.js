@@ -8,76 +8,86 @@ import {
   BoxTick,
   Category2,
   ColorSwatch,
+  RotateLeft,
 } from "iconsax-react";
 import { Link } from "react-router-dom";
+import { RxResume } from "react-icons/rx";
 
 const LeaveAppointment = ({ navigate }) => {
-
   const Card = ({ icon, title, desc }) => {
-    return(
-    <div className="border rounded-lg flex justify-between flex-col shadow overflow-hidden ">
-      <div className="flex justify-between  items-center  p-2">
-        <p className="text-sm md:text-lg font-semibold ">{title}</p>
-        <div>{icon}</div>
-      </div>
-      <p className="mt-7 text-gray-500 p-2">{desc}</p>
-      <div className="mt-1 ">
-        {/* <">
+    return (
+      <div className="border rounded-lg flex justify-between flex-col shadow overflow-hidden ">
+        <div className="flex justify-between  items-center  p-2">
+          <p className="text-sm md:text-lg font-semibold ">{title}</p>
+          <div>{icon}</div>
+        </div>
+        <p className="mt-7 text-gray-500 p-2">{desc}</p>
+        <div className="mt-1 ">
+          {/* <">
       {desc}
     </p> */}
-        <div className="p-2 bg-[#984779] bg-opacity-50 h-10 "></div>
+          <div className="p-2 bg-[#984779] bg-opacity-50 h-10 "></div>
+        </div>
       </div>
-    </div>);
+    );
   };
   return (
     <div className="bg-[#F7F7F7] p-4 md:p-6 min-h-screen">
-
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <Link
-          to="/leave/my-leave-applications"
-        >
+        <Link to="/leave/my-leave-applications">
           <Card
-          icon={<ColorSwatch
-            variant="Bold"
-            color="#741b47"
-            className=" h-[32px] md:h-[48px]"
-          />}
-          title="My Leave Applications"
-          desc="View all your leave applications"
-          
+            icon={
+              <ColorSwatch
+                variant="Bold"
+                color="#741b47"
+                className=" h-[32px] md:h-[48px]"
+              />
+            }
+            title="My Leave Applications"
+            desc="View all your leave applications"
           />
-         
         </Link>
 
-        <Link
-          to="/leave/leave-application"
-          >
+        <Link to="/leave/leave-application">
           <Card
-          icon={ <Category2
-            variant="Bold"
-            color="#741b47"
-            className=" h-[32px] md:h-[48px]"
-          />}
-          title="Apply for Leave"
-          desc="Create a new leave application"
-          
+            icon={
+              <Category2
+                variant="Bold"
+                color="#741b47"
+                className=" h-[32px] md:h-[48px]"
+              />
+            }
+            title="Apply for Leave"
+            desc="Create a new leave application"
           />
-         
         </Link>
-        <Link
-          to="/leave/leave-resumption"
-          >
+
+        <Link to="/leave/leave-resumption">
           <Card
-          icon={   <ArrowForwardSquare
-            variant="Bold"
-            color="#741b47"
-            className=" h-[32px] md:h-[48px]"
-          />}
-          title="Resumption of Duty Certificate"
-          desc="Update your leave resumption details"
-          
+            icon={
+              <ArrowForwardSquare
+                variant="Bold"
+                color="#741b47"
+                className=" h-[32px] md:h-[48px]"
+              />
+            }
+            title="Apply for Leave Resumption"
+            desc="Application for Leave Resumption"
           />
-         
+        </Link>
+
+        <Link to="/leave/my-leave-resumption">
+          <Card
+            icon={
+              <RotateLeft
+                variant="Bold"
+                color="#741b47"
+                className=" h-[32px] md:h-[48px]"
+              />
+            }
+            title="Resumption of Duty Applications"
+            desc="Get Resumption of Duty Applications and Certifcate"
+          />
         </Link>
 
         {/* <Link
@@ -95,10 +105,6 @@ const LeaveAppointment = ({ navigate }) => {
           />
          
         </Link> */}
-
-
-
-       
       </div>
     </div>
   );

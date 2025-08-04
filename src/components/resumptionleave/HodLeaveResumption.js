@@ -1,32 +1,9 @@
-import React, { useState, useEffect, useCallback } from "react";
-import { TbDirection } from "react-icons/tb";
-import api from "../../../../api";
-import { Link, useNavigate } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
-import { Box } from "@chakra-ui/react";
-import { MoonLoader } from "react-spinners";
-import { ArrowLeft } from "iconsax-react";
+import { Note1 } from "iconsax-react";
+import React from "react";
+import { useNavigate } from "react-router-dom";
 
-const ResumptionOfLeave = () => {
-  const [page, setPage] = useState(1);
+const HodLeaveResumption = ({ isLoading, resumeData }) => {
   const navigate = useNavigate();
-
-  async function myResumption(page) {
-    const response = await api.myResumption({ params: { page } });
-    return response;
-  }
-
-  const { isLoading, isError, data, error, isPreviousData, refetch } = useQuery(
-    ["myResumption", page],
-    () => myResumption(page),
-    {
-      keepPreviousData: true,
-      refetchOnWindowFocus: "always",
-    }
-  );
-
-  const resumeData = data?.data || [];
-
   function formatDate(dateString) {
     const date = new Date(dateString);
     const year = date.getFullYear();
@@ -34,38 +11,9 @@ const ResumptionOfLeave = () => {
     const day = String(date.getDate()).padStart(2, "0");
     return `${year}-${month}-${day}`;
   }
-
-  if (isLoading) {
-    return (
-      <Box
-        w={"80vw"}
-        display="flex"
-        flexDirection="column"
-        h={"80vh"}
-        alignItems="center"
-        justifyContent="center"
-      >
-        <div
-          className="fixed inset-0 flex items-center justify-center bg-white bg-opacity-70"
-          style={{ zIndex: 9999 }}
-        >
-          <div className="inline-block">
-            <MoonLoader color={"#984779"} size={40} />
-          </div>
-        </div>
-      </Box>
-    );
-  }
-
   return (
-    <div className="p-4 md:p-6">
-      <h3
-        onClick={() => navigate(-1)}
-        className="text-lg font-semibold flex items-center gap-1"
-      >
-        <ArrowLeft size={14} />
-        Leave Resumption
-      </h3>
+    <div>
+      {" "}
       <div className="sm:-mx-6 lg:-mx-8 mt-3 ">
         <div className="inline-block min-w-full sm:px-6 lg:px-8">
           <div className="overflow-x-auto rounded-lg">
@@ -74,37 +22,37 @@ const ResumptionOfLeave = () => {
                 <tr className="">
                   <th
                     scope="col"
-                    className="whitespace-nowrap border-b-[0.8px] border-[#E4E7EC] py-[12px] text-center px-3 gap-[6px] md:gap-[12px] text-[14px] md:text-[16px] text-[#98A2B3] font-medium leading-[20px] md:leading-[24px] tracking-[0.2%]"
+                    className="whitespace-nowrap border-b-[0.8px] border-[#E4E7EC] py-[12px] px-3 gap-[6px] md:gap-[12px] text-[14px] md:text-[16px] text-[#98A2B3] font-medium leading-[20px] md:leading-[24px] tracking-[0.2%]"
                   >
                     Staff Name
                   </th>
                   <th
                     scope="col"
-                    className="border-b-[0.8px] whitespace-nowrap border-[#E4E7EC] py-[12px] px-3 gap-[6px] text-center md:gap-[12px] text-[14px] md:text-[16px] text-[#98A2B3] font-medium leading-[20px] md:leading-[24px] tracking-[0.2%]"
+                    className="border-b-[0.8px] border-[#E4E7EC] py-[12px] px-3 gap-[6px] md:gap-[12px] text-[14px] md:text-[16px] text-[#98A2B3] font-medium leading-[20px] md:leading-[24px] tracking-[0.2%]"
                   >
                     Leave type
                   </th>
                   <th
                     scope="col"
-                    className="border-b-[0.8px] border-[#E4E7EC] py-[12px] px-3 gap-[6px] text-center md:gap-[12px] text-[14px] md:text-[16px] text-[#98A2B3] font-medium leading-[20px] md:leading-[24px] tracking-[0.2%]"
+                    className="border-b-[0.8px] border-[#E4E7EC] py-[12px] px-3 gap-[6px] md:gap-[12px] text-[14px] md:text-[16px] text-[#98A2B3] font-medium leading-[20px] md:leading-[24px] tracking-[0.2%]"
                   >
                     Stage
                   </th>
                   <th
                     scope="col"
-                    className="border-b-[0.8px] whitespace-nowrap border-[#E4E7EC] py-[12px] px-3 gap-[6px] text-center md:gap-[12px] text-[14px] md:text-[16px] text-[#98A2B3] font-medium leading-[20px] md:leading-[24px] tracking-[0.2%]"
+                    className="border-b-[0.8px] border-[#E4E7EC] py-[12px] px-3 gap-[6px] md:gap-[12px] text-[14px] md:text-[16px] text-[#98A2B3] font-medium leading-[20px] md:leading-[24px] tracking-[0.2%]"
                   >
                     Start Date
                   </th>
                   <th
                     scope="col"
-                    className="border-b-[0.8px] whitespace-nowrap border-[#E4E7EC] py-[12px] px-3 gap-[6px] text-center md:gap-[12px] text-[14px] md:text-[16px] text-[#98A2B3] font-medium leading-[20px] md:leading-[24px] tracking-[0.2%]"
+                    className="border-b-[0.8px] border-[#E4E7EC] py-[12px] px-3 gap-[6px] md:gap-[12px] text-[14px] md:text-[16px] text-[#98A2B3] font-medium leading-[20px] md:leading-[24px] tracking-[0.2%]"
                   >
                     No. of Days
                   </th>
                   <th
                     scope="col"
-                    className="border-b-[0.8px] border-[#E4E7EC] py-[12px] px-3 gap-[6px] text-center md:gap-[12px] text-[14px] md:text-[16px] text-[#98A2B3] font-medium leading-[20px] md:leading-[24px] tracking-[0.2%]"
+                    className="border-b-[0.8px] border-[#E4E7EC] py-[12px] px-3 gap-[6px] md:gap-[12px] text-[14px] md:text-[16px] text-[#98A2B3] font-medium leading-[20px] md:leading-[24px] tracking-[0.2%]"
                   >
                     Action
                   </th>
@@ -112,14 +60,14 @@ const ResumptionOfLeave = () => {
               </thead>
               <tbody>
                 {isLoading && <>loading ...</>}
-                {/* {results?.data && results?.data?.data?.length === 0 && (
-                  <EmptyWallet
-                    cols={8}
-                    action={"Invoice"}
-                    subheading={"Your invoices will appear here."}
-                    paymentlinkbutton={true}
-                  />
-                )} */}
+                {resumeData?.length === 0 && (
+                  <td cols={6} className="text-center py-12">
+                    <Note1 className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+                    <div className="text-sm text-muted-foreground">
+                      No Resumption Application Available
+                    </div>
+                  </td>
+                )}
 
                 {resumeData &&
                   resumeData?.map((result) => (
@@ -159,22 +107,13 @@ const ResumptionOfLeave = () => {
                           {result?.approval_status}
                         </button>
                       </td>
-                      <td className="whitespace-nowrap text-center py-[16px] bg-white px-3 border-b-[0.8px] border-[#E4E7EC] text-[14px]  tracking-[0.2px] text-[#667185] font-medium">
+                      <td className="whitespace-nowrap text-center py-[16px] bg-white px-3 border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px] text-[#667185] font-medium">
                         {formatDate(result?.leave?.start_date)}
                       </td>
-                      <td className="whitespace-nowrap text-center py-[16px] bg-white px-3 border-b-[0.8px] border-[#E4E7EC] text-[14px]  tracking-[0.2px] text-[#667185] font-medium">
+                      <td className="whitespace-nowrap text-center py-[16px] bg-white px-3 border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px] text-[#667185] font-medium">
                         {result?.leave?.leave_duration}
                       </td>
-                      <td className="whitespace-nowrap text-center py-[16px] gap-2 bg-white px-3 border-b-[0.8px] border-[#E4E7EC] text-[14px]  text-[#667185] font-medium">
-                        {result?.approval_status === "approved" && (
-                          <Link to="/leave-resumption-certificate" state={result}>
-                            {" "}
-                            <button className="text-[#984779] px-2 py-1 rounded-md border hover:bg-gray-300  ">
-                              View Certificate
-                            </button>
-                          </Link>
-                        )}
-
+                      <td className="whitespace-nowrap text-center py-[16px] bg-white px-3 border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px] text-[#667185] font-medium">
                         <button
                           onClick={() =>
                             navigate("/portal/resumption-details", {
@@ -183,7 +122,7 @@ const ResumptionOfLeave = () => {
                               },
                             })
                           }
-                          className="px-2 py-[6px] ml-2 bg-purple-800 hover:bg-purple-700 text-white rounded-md"
+                          className="px-2 py-[6px] bg-purple-800 hover:bg-purple-700 text-white rounded-md"
                         >
                           View Details
                         </button>
@@ -199,4 +138,4 @@ const ResumptionOfLeave = () => {
   );
 };
 
-export default ResumptionOfLeave;
+export default HodLeaveResumption;
