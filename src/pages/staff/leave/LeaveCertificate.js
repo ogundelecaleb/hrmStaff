@@ -5,6 +5,8 @@ import logo from "../../../asset/logo(small).svg";
 import { useLocation } from "react-router-dom";
 import api from "../../../api";
 import { useQuery } from "@tanstack/react-query";
+import { useReactToPrint } from "react-to-print";
+
 
 const LeaveCertificate = () => {
   const location = useLocation();

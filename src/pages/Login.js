@@ -27,7 +27,7 @@ export default function Login() {
   const [identity, setIdentity] = useState('');
   const [password, setPassword] = useState('');
   const userRef = useRef();
-  const userData = localStorage.getItem('userData');
+  const userData = sessionStorage.getItem('userData');
   const toggle = () => {
     setOpen(!open);
   };
@@ -57,7 +57,7 @@ export default function Login() {
       }
       enqueueSnackbar(response.message, { variant: 'success' })
       const userData = { role, firstLogin: response.firstLogin };
-      localStorage.setItem('userData', JSON.stringify(userData));
+      sessionStorage.setItem('userData', JSON.stringify(userData));
       setUserData(response);
       setIsLoading(false);
       if (role === 'HOD' || role === 'DEAN' || role === 'HOU' || role === 'CS' || role === 'PT' || role === 'DPT' || role === 'HNASES' || role === 'HNASEJ') {
