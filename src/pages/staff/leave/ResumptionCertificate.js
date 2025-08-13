@@ -29,6 +29,32 @@ const LeaveResumptionCertificate = () => {
     },
   });
 
+  const handleDownload = async () => {
+    const element = contentRef.current;
+    const canvas = await html2canvas(element);
+    const imgData = canvas.toDataURL('image/png');
+    
+    const pdf = new jsPDF();
+    const imgWidth = 210;
+    const pageHeight = 295;
+    const imgHeight = (canvas.height * imgWidth) / canvas.width;
+    let heightLeft = imgHeight;
+    
+    let position = 0;
+    
+    pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+    heightLeft -= pageHeight;
+    
+    while (heightLeft >= 0) {
+      position = heightLeft - imgHeight;
+      pdf.addPage();
+      pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+      heightLeft -= pageHeight;
+    }
+    
+    pdf.save('Resumption-Certificate.pdf');
+  };
+
  
 
   const leaveTypeMap = {
@@ -222,14 +248,20 @@ const LeaveResumptionCertificate = () => {
           </div>
         </div>
       </div>
-      <div className="w-full flex justify-center my-7">
-        {" "}
+      <div className="w-full flex justify-center my-7 gap-4">
         <button
           onClick={handleReactPrint}
           style={{ marginTop: "20px" }}
           className="bg-purple-500 px-3 py-1 text-white rounded-md border mx-auto hover:bg-gray-300 self-center"
         >
-          Download
+          Print
+        </button>
+        <button
+          onClick={handleDownload}
+          style={{ marginTop: "20px" }}
+          className="bg-blue-500 px-3 py-1 text-white rounded-md border mx-auto hover:bg-blue-600 self-center"
+        >
+          Download PDF
         </button>
       </div>
     </div>
