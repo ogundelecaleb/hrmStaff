@@ -1,5 +1,5 @@
-//export const API_BASE_URL = 'https://hrmdev.devapi.live/api';
-export const API_BASE_URL = 'https://hrm.devapi.live/api';
+export const API_BASE_URL = 'https://hrmdev.devapi.live/api';
+//export const API_BASE_URL = 'https://hrm.devapi.live/api';
 export const getApiUrl = (endpoint) => API_BASE_URL + endpoint
 
 export const ADDUSER = getApiUrl('/staffs')
@@ -56,7 +56,6 @@ export const WITHDRAWALBYID = getApiUrl('/withdrawal/')
 export const SPADEVBYID = getApiUrl('/spadev-applications/')
 export const MYSPADEV = getApiUrl('/my-spadev-application')
 export const SPADEVAPPLICATION = getApiUrl('/spadev-applications')
-
 export const CSASSUMPTION = getApiUrl("/cs-certification");
 export const DEANASSUMPTION = getApiUrl("/dean-certification");
 export const PROVOSTASSUMPTION = getApiUrl("/provost-certification");
