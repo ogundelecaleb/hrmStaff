@@ -1,76 +1,103 @@
-import React, { useRef } from "react";
-import jsPDF from "jspdf";
-import html2canvas from "html2canvas";
-import logo from "../../../asset/logo(small).svg";
+import React from "react";
+import {
+  Page,
+  Text,
+  View,
+  Document,
+  StyleSheet,
+  Image,
+  pdf,
+} from "@react-pdf/renderer";
 import { useLocation } from "react-router-dom";
 import api from "../../../api";
 import { useQuery } from "@tanstack/react-query";
-import { useReactToPrint } from "react-to-print";
+import logo from "../../../asset/logo(large).png";
 
+// Create styles for the PDF
+const styles = StyleSheet.create({
+  page: {
+    flexDirection: "column",
+    backgroundColor: "#FFFFFF",
+    padding: 0,
+    fontFamily: "Helvetica",
+  },
+  header: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "#f1f5f9",
+    padding: 20,
+    borderBottom: "1px solid #e2e8f0",
+  },
+  logo: {
+    width: 60,
+    height: 60,
+  },
+  headerTextContainer: {
+    flex: 1,
+    alignItems: "center",
+  },
+  universityName: {
+    fontSize: 20,
+    fontWeight: "bold",
+    color: "#17082D",
+    textAlign: "center",
+    marginBottom: 5,
+  },
+  certificateTitle: {
+    fontSize: 16,
+    fontWeight: "medium",
+    color: "#984779",
+    textAlign: "center",
+  },
+  content: {
+    position: "relative",
+    flex: 1,
+    padding: 30,
+  },
+  watermarkContainer: {
+    position: "absolute",
+    top: "20%",
+    left: "40%",
+    transform: "translate(-50%, -50%)",
+    zIndex: -1,
+  },
+  watermark: {
+    width: 200,
+    height: 200,
+    opacity: 0.1,
+  },
+  fieldRow: {
+    marginBottom: 12,
+    flexDirection: "row",
+  },
+  fieldLabel: {
+    fontSize: 13,
+    fontWeight: "semibold",
+    color: "#1f2937",
+    width: 140,
+  },
+  fieldValue: {
+    fontSize: 12,
+    color: "#374151",
+    flex: 1,
+    textTransform: "capitalize",
+  },
+  fieldValueUppercase: {
+    fontSize: 12,
+    color: "#374151",
+    flex: 1,
+    textTransform: "uppercase",
+  },
+  approvalsList: {
+    fontSize: 12,
+    color: "#374151",
+    flex: 1,
+  },
+});
 
 const LeaveCertificate = () => {
   const location = useLocation();
-
   const result = location.state;
-
-  const contentRef = useRef();
-
-  const handleReactPrint = useReactToPrint({
-    // content: contentRef.current,
-    contentRef: contentRef,
-    pageStyle: `
-      @page {
-        size: A4;
-        margin: 0;
-      }
-    `,
-    documentTitle: "Leave-Certificate",
-    onAfterPrint: () => {
-      // console.log("Printed successfully");
-    },
-  });
-  const handleDownload = () => {
-    const input = document.getElementById("certificate");
-
-    // Optimization options
-    const options = {
-      scale: 2, // Lower than default (devicePixelRatio)
-      quality: 0.8, // Reduce quality slightly
-      logging: false,
-      useCORS: true,
-      allowTaint: true,
-    };
-
-    html2canvas(input, options).then((canvas) => {
-      const imgData = canvas.toDataURL("image/jpeg", 0.8); // Use JPEG with quality setting
-      const pdf = new jsPDF("p", "mm", "a4"); // Specify A4 size
-
-      const imgWidth = 210; // A4 width in mm
-      const imgHeight = (canvas.height * imgWidth) / canvas.width;
-
-      // Check if content fits on one page
-      if (imgHeight < 297) {
-        // A4 height in mm
-        pdf.addImage(imgData, "JPEG", 0, 0, imgWidth, imgHeight);
-      } else {
-        // Handle multi-page only if necessary
-        let heightLeft = imgHeight;
-        let position = 0;
-
-        pdf.addImage(imgData, "JPEG", 0, position, imgWidth, imgHeight);
-        heightLeft -= 297;
-
-        while (heightLeft >= 0) {
-          position = heightLeft - imgHeight;
-          pdf.addPage();
-          pdf.addImage(imgData, "JPEG", 0, position, imgWidth, imgHeight);
-          heightLeft -= 297;
-        }
-      }
-
-      pdf.save("leave_certificate.pdf");
-    });
-  };
 
   const leaveTypeMap = {
     "annual-leave": "Annual Leave",
@@ -93,10 +120,11 @@ const LeaveCertificate = () => {
     "leave-of-absence": "Leave of Absence",
     "bereavement-leave": "Bereavement Leave",
   };
+
   function formatDate(dateString) {
     const date = new Date(dateString);
     const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, "0"); // Adding 1 to month since it's zero-based
+    const month = String(date.getMonth() + 1).padStart(2, "0");
     const day = String(date.getDate()).padStart(2, "0");
     return `${year}-${month}-${day}`;
   }
@@ -106,7 +134,7 @@ const LeaveCertificate = () => {
     return response;
   }
 
-  const { isLoading, isError, data, error, isPreviousData, refetch } = useQuery(
+  const { isLoading, isError, data, error } = useQuery(
     ["getRoless"],
     () => getRoless(),
     {
@@ -115,153 +143,348 @@ const LeaveCertificate = () => {
     }
   );
 
-  return (
-    <div>
-      <div
-        id="certificate"
-        ref={contentRef}
-       
-      >
-        <div className="flex items-center py-2 px-4 md:px-[40px] xl:px-[80px] md:py-3 bg-slate-100 border-b border-gray-100">
-          <img
-            className="h-[34px] w-[34px] md:h-[60px] md:w-[60px]"
-            src={logo}
-            alt="logo"
-          />
-          <div className="flex-1">
-            {" "}
-            <h2 className="text-[18px] md:text-[24px] xl:text-[28px] text-center font-bold leading-[35px] text-[#17082D] ">
+  // PDF Document Component
+  const LeaveCertificateDocument = () => (
+    <Document>
+      <Page size="A4" style={styles.page}>
+        {/* Header */}
+        <View style={styles.header}>
+          <Image style={styles.logo} src={logo} />
+          <View style={styles.headerTextContainer}>
+            <Text style={styles.universityName}>
               Lagos State University College of Medicine
-            </h2>
-            <h2 className="text-[16px] md:text-[20px]  text-center font-semibold  text-[#984779] ">
-              Leave Certificate{" "}
-            </h2>
-          </div>
-        </div>
-        <div className=" relative w-full h-full overflow-hidden">
-          <img
-            src={logo}
-            className={`absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2  h-[250px] inset-0 flex items-center justify-center pointer-events-none select-none`}
-            style={{ opacity: 40 / 100 }}
-          />
+            </Text>
+            <Text style={styles.certificateTitle}>Leave Certificate</Text>
+          </View>
+        </View>
 
-          <div className="px-4 md:px-5 lg:px-7 pt-4 md:pt-6 pb-7">
-            {/* <p className="text-lg  font-semibold text-center">
-            This is to certify that
-          </p>
-          <h2 className="text-center">{result?.full_name}</h2>
-          <p className="text-center">
-            has been granted approval to proceed on leave from
-          </p>
-          <p className="text-center text-lg">
-            <strong>{formatDate(result?.start_date)}</strong> to{" "}
-            <strong>{formatDate(result?.end_date)}</strong>
-          </p> */}
-            <p className="text-lg font-semibold mt-3 ">
-              Full Name:{" "}
-              <span className="text-base font-medium uppercase">
-                {result?.full_name}
-              </span>
-            </p>
-            <p className="text-lg font-semibold mt-3 ">
-              PF Number:{" "}
-              <span className="text-base font-medium">
-                {result?.staff_number}
-              </span>
-            </p>
-            <p className="text-lg font-semibold mt-3 ">
-              Leave Type:{" "}
-              <span className="text-base font-medium">
-                {leaveTypeMap[result?.leave_type] || "Leave"}
-              </span>
-            </p>
-            <p className="text-lg font-semibold ">
-              Department/Unit:{" "}
-              <span className="text-base font-medium">
-                {result?.unit?.name}
-              </span>
-            </p>
-            <p className="text-lg font-semibold ">
-              Current Designation:{" "}
-              <span className="text-base font-medium">
-                {
-                  data?.data?.find(
-                    (item) =>
-                      item?.name.toLowerCase() ===
-                      result?.designation.toLowerCase()
-                  )?.description
-                }
-              </span>
-            </p>
-            <p className="text-lg font-semibold ">
-              Current Level:{" "}
-              <span className="text-base font-medium">{result?.level}</span>
-            </p>
+        {/* Content with Watermark */}
+        <View style={styles.content}>
+          {/* Watermark */}
+          <View style={styles.watermarkContainer}>
+            <Image style={styles.watermark} src={logo} />
+          </View>
 
-            <p className="text-lg font-semibold ">
-              Start Date:{" "}
-              <span className="text-base font-medium">
-                {formatDate(result?.start_date)}
-              </span>
-            </p>
-               <p className="text-lg font-semibold ">
-              End Date:{" "}
-              <span className="text-base font-medium">
-                {formatDate(result?.end_date)}
-              </span>
-            </p>
-            <p className="text-lg font-semibold ">
-              Resumption Date:{" "}
-              <span className="text-base font-medium">
-                {formatDate(result?.resumption_date)}
-              </span>
-            </p>
-            <p className="text-lg font-semibold ">
-              Leave Duration:{" "}
-              <span className="text-base font-medium">
-                {result?.leave_duration} Day(s)
-              </span>
-            </p>
-            <p className="text-lg font-semibold ">
-              Total Leave Balance:{" "}
-              <span className="text-base font-medium">
-                {result?.total_leave_due} Day(s)
-              </span>
-            </p>
+          {/* Certificate Details */}
+          <View style={styles.fieldRow}>
+            <Text style={styles.fieldLabel}>Full Name:</Text>
+            <Text style={styles.fieldValueUppercase}>
+              {result?.full_name || "N/A"}
+            </Text>
+          </View>
 
-            <p className="text-lg font-semibold ">
-              Address While on Leave:{" "}
-              <span className="text-base font-medium">
-                {result?.leave_address}
-              </span>
-            </p>
-            <p className="text-lg font-semibold ">
-              Staff to Relieve:{" "}
-              <span className="text-base font-medium">
-                {result?.replacement_on_duty}
-              </span>
-            </p>
-            <p className="text-lg font-semibold ">
-              Approval Bodies:{" "}
-              <span className="text-base font-medium">
-                {result?.approvals?.map((item) => (
-                  <>{item?.email} || </>
-                ))}
-              </span>
-            </p>
+          <View style={styles.fieldRow}>
+            <Text style={styles.fieldLabel}>PF Number:</Text>
+            <Text style={styles.fieldValue}>
+              {result?.staff_number || "N/A"}
+            </Text>
+          </View>
 
-          </div>
+          <View style={styles.fieldRow}>
+            <Text style={styles.fieldLabel}>Leave Type:</Text>
+            <Text style={styles.fieldValue}>
+              {leaveTypeMap[result?.leave_type] || "Leave"}
+            </Text>
+          </View>
+
+          <View style={styles.fieldRow}>
+            <Text style={styles.fieldLabel}>Department/Unit:</Text>
+            <Text style={styles.fieldValue}>{result?.unit?.name || "N/A"}</Text>
+          </View>
+
+          <View style={styles.fieldRow}>
+            <Text style={styles.fieldLabel}>Current Designation:</Text>
+            <Text style={styles.fieldValue}>
+              {data?.data?.find(
+                (item) =>
+                  item?.name.toLowerCase() ===
+                  result?.designation?.toLowerCase()
+              )?.description ||
+                result?.designation ||
+                "N/A"}
+            </Text>
+          </View>
+
+          <View style={styles.fieldRow}>
+            <Text style={styles.fieldLabel}>Current Level:</Text>
+            <Text style={styles.fieldValue}>{result?.level || "N/A"}</Text>
+          </View>
+
+          <View style={styles.fieldRow}>
+            <Text style={styles.fieldLabel}>Start Date:</Text>
+            <Text style={styles.fieldValue}>
+              {result?.start_date ? formatDate(result.start_date) : "N/A"}
+            </Text>
+          </View>
+
+          <View style={styles.fieldRow}>
+            <Text style={styles.fieldLabel}>End Date:</Text>
+            <Text style={styles.fieldValue}>
+              {result?.end_date ? formatDate(result.end_date) : "N/A"}
+            </Text>
+          </View>
+
+          <View style={styles.fieldRow}>
+            <Text style={styles.fieldLabel}>Resumption Date:</Text>
+            <Text style={styles.fieldValue}>
+              {result?.resumption_date
+                ? formatDate(result.resumption_date)
+                : "N/A"}
+            </Text>
+          </View>
+
+          <View style={styles.fieldRow}>
+            <Text style={styles.fieldLabel}>Leave Duration:</Text>
+            <Text style={styles.fieldValue}>
+              {result?.leave_duration || "0"} Day(s)
+            </Text>
+          </View>
+
+          <View style={styles.fieldRow}>
+            <Text style={styles.fieldLabel}>Total Leave Balance:</Text>
+            <Text style={styles.fieldValue}>
+              {result?.total_leave_due || "0"} Day(s)
+            </Text>
+          </View>
+
+          <View style={styles.fieldRow}>
+            <Text style={styles.fieldLabel}>Address While on Leave:</Text>
+            <Text style={styles.fieldValue}>
+              {result?.leave_address || "N/A"}
+            </Text>
+          </View>
+
+          <View style={styles.fieldRow}>
+            <Text style={styles.fieldLabel}>Staff to Relieve:</Text>
+            <Text style={styles.fieldValue}>
+              {result?.replacement_on_duty || "N/A"}
+            </Text>
+          </View>
+
+          <View style={styles.fieldRow}>
+            <Text style={styles.fieldLabel}>Approval Bodies:</Text>
+            <Text style={styles.approvalsList}>
+              {/* {result?.approvals?.length > 0
+                ? result.approvals.map((item, index) => 
+                    `${item?.email || "N/A"}${index < result.approvals.length - 1 ? " || " : ""}`
+                  ).join("")
+                : "N/A"} */}
+              {result?.approvals?.map((item) => (
+                <>
+                  {item?.email} date: {formatDate(item?.date)} ||{" "}
+                </>
+              ))}
+            </Text>
+          </View>
+        </View>
+      </Page>
+    </Document>
+  );
+
+  const handleDownload = async () => {
+    try {
+      const blob = await pdf(<LeaveCertificateDocument />).toBlob();
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = `leave_certificate_${
+        result?.full_name?.replace(/\s+/g, "_") || "certificate"
+      }.pdf`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error("Error generating PDF:", error);
+      alert("Error generating PDF. Please try again.");
+    }
+  };
+
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center min-h-screen">
+        <div className="text-lg text-gray-600">Loading certificate data...</div>
+      </div>
+    );
+  }
+
+  if (isError) {
+    return (
+      <div className="flex justify-center items-center min-h-screen">
+        <div className="text-lg text-red-600">
+          Error loading data: {error?.message}
         </div>
       </div>
-      <div className="w-full flex justify-center my-7">
-        {" "}
-        <button
-          onClick={handleReactPrint}
-          style={{ marginTop: "20px" }}
-          className="bg-purple-500 px-3 py-1 text-white rounded-md border mx-auto hover:bg-gray-300 self-center"
-        >
-          Download
-        </button>
+    );
+  }
+
+  return (
+    <div className="min-h-screen bg-gray-50 pb-8 md:py-8">
+      <div className="max-w-4xl mx-auto md:px-4">
+        {/* Preview Section */}
+        <div className="bg-white shadow-lg rounded-lg overflow-hidden mb-8">
+          <div className="flex items-center py-4 px-6 bg-slate-100 border-b border-gray-200">
+            <img className="h-8 w-9 md:h-16 md:w-16" src={logo} alt="logo" />
+            <div className="flex-1 ml-4">
+              <h2 className="text-base md:text-2xl xl:text-3xl text-center font-bold text-[#17082D]">
+                Lagos State University College of Medicine
+              </h2>
+              <h2 className="text-xs md:text-xl text-center font-semibold text-[#984779]">
+                Leave Certificate Preview
+              </h2>
+            </div>
+          </div>
+
+          {/* Certificate Preview Content */}
+          <div className="p-4 md:p-8 relative">
+            <img
+              src={logo}
+              className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 h-64 opacity-10 pointer-events-none select-none"
+              alt="watermark"
+            />
+
+            <div className="relative z-10 space-y-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <span className="font-semibold text-gray-800">
+                    Full Name:{" "}
+                  </span>
+                  <span className="text-gray-600 uppercase">
+                    {result?.full_name || "N/A"}
+                  </span>
+                </div>
+                <div>
+                  <span className="font-semibold text-gray-800">
+                    PF Number:{" "}
+                  </span>
+                  <span className="text-gray-600">
+                    {result?.staff_number || "N/A"}
+                  </span>
+                </div>
+                <div>
+                  <span className="font-semibold text-gray-800">
+                    Leave Type:{" "}
+                  </span>
+                  <span className="text-gray-600">
+                    {leaveTypeMap[result?.leave_type] || "Leave"}
+                  </span>
+                </div>
+                <div>
+                  <span className="font-semibold text-gray-800">
+                    Department:{" "}
+                  </span>
+                  <span className="text-gray-600">
+                    {result?.unit?.name || "N/A"}
+                  </span>
+                </div>
+                <div>
+                  <span className="font-semibold text-gray-800">
+                    Current Designation:{" "}
+                  </span>
+                  <span className="text-gray-600">
+                    {data?.data?.find(
+                      (item) =>
+                        item?.name.toLowerCase() ===
+                        result?.designation?.toLowerCase()
+                    )?.description ||
+                      result?.designation ||
+                      "N/A"}
+                  </span>
+                </div>
+
+                <div>
+                  <span className="font-semibold text-gray-800">
+                    Current Level:{" "}
+                  </span>
+                  <span className="text-gray-600">
+                    {result?.level || "N/A"}
+                  </span>
+                </div>
+
+                <div>
+                  <span className="font-semibold text-gray-800">
+                    Start Date:{" "}
+                  </span>
+                  <span className="text-gray-600">
+                    {result?.start_date ? formatDate(result.start_date) : "N/A"}
+                  </span>
+                </div>
+                <div>
+                  <span className="font-semibold text-gray-800">
+                    End Date:{" "}
+                  </span>
+                  <span className="text-gray-600">
+                    {result?.end_date ? formatDate(result.end_date) : "N/A"}
+                  </span>
+                </div>
+                <div>
+                  <span className="font-semibold text-gray-800">
+                    Duration:{" "}
+                  </span>
+                  <span className="text-gray-600">
+                    {result?.leave_duration || "0"} Day(s)
+                  </span>
+                </div>
+                <div>
+                  <span className="font-semibold text-gray-800">Balance: </span>
+                  <span className="text-gray-600">
+                    {result?.total_leave_due || "0"} Day(s)
+                  </span>
+                </div>
+                <div>
+                  <span className="font-semibold text-gray-800">Address: </span>
+                  <span className="text-gray-600">
+                    {result?.leave_address || "N/A"}
+                  </span>
+                </div>
+                <div>
+                  <span className="font-semibold text-gray-800">
+                    Reliever:{" "}
+                  </span>
+                  <span className="text-gray-600">
+                    {result?.replacement_on_duty || "N/A"}
+                  </span>
+                </div>
+                <div>
+                  <span className="font-semibold text-gray-800">
+                    Approval Bodies:{" "}
+                  </span>
+                  <span className="text-gray-600">
+                    {result?.approvals?.map((item) => (
+                      <>
+                        {item?.email} date: {formatDate(item?.date)} ||{" "}
+                      </>
+                    ))}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Download Section */}
+        <div className="text-center">
+          <button
+            onClick={handleDownload}
+            className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-purple-600 to-purple-700 text-white font-semibold rounded-lg shadow-lg hover:from-purple-700 hover:to-purple-800 transform hover:scale-105 transition-all duration-200 focus:outline-none focus:ring-4 focus:ring-purple-300"
+            disabled={isLoading}
+          >
+            <svg
+              className="w-5 h-5 mr-2"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+              />
+            </svg>
+            Download PDF Certificate
+          </button>
+        </div>
       </div>
     </div>
   );

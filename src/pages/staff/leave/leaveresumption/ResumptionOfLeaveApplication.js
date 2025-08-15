@@ -16,8 +16,7 @@ const ResumptionOfLeaveApplication = ({ navigate }) => {
   const [concludedLeave, setConcludedLeave] = useState("");
   const [dateResumed, setDateresumed] = useState("");
   const [leaveDuration, setLeaveDuration] = useState("");
-  const [leaveLocation, setLeaveLocation] = useState("");
-  const [pfNumber, setPfNumber] = useState("");
+
   const [formValues, setFormValues] = useState({});
   const [lastLeaveDetails, setLastLeaveDetails] = useState([]);
 
@@ -114,6 +113,8 @@ const ResumptionOfLeaveApplication = ({ navigate }) => {
         leave_type: lastLeaveDetails?.leave_type,
         level: lastLeaveDetails?.level,
         type: lastLeaveDetails?.type,
+        supervisor_id: lastLeaveDetails?.supervisor_id,
+       
       });
       // console.log("responce==>>>>>", response);
       enqueueSnackbar("Application successfull", { variant: "success" });
