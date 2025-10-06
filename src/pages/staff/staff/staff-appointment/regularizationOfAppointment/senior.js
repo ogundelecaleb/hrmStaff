@@ -131,17 +131,23 @@ const RegularizationAppointmentSenior = ({ data, datas }) => {
         <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-3 md:p-8">
           <div className="grid grid-cols-1 lg:grid-cols-2  gap-4 md:gap-8">
             <div className="space-y-3 md:space-y-6">
-              <InputField 
-                label="Grade on Temporary Appointment" 
-                required 
-                icon={<User size={16} />}
-              >
-                <CustomInput
-                  value={grade}
-                  onChange={(e) => setGrade(e.target.value)}
-                  placeholder="Enter your grade on temporary appointment"
-                />
-              </InputField>
+               <div className="mb-6">
+                            <label className="flex items-center gap-2 text-sm font-semibold text-gray-700 mb-2">
+                              <span className="text-purple-600">
+                                <User size={16} />
+                              </span>
+                              Grade on Temporary Appointment
+                              <span className="text-red-500">*</span>
+                            </label>
+                            <input
+                              type="text"
+                              value={grade}
+                              onChange={(e) => setGrade(e.target.value)}
+                              placeholder="Enter grade on temporary appointment"
+                              className="w-full px-4 py-3 border border-gray-300 rounded-xl bg-white text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200 hover:border-gray-400"
+                              required
+                            />
+                          </div>
 
               <InputField 
                 label="Date on Temporary Appointment" 
@@ -222,18 +228,23 @@ const RegularizationAppointmentSenior = ({ data, datas }) => {
                 </div>
               </InputField>
 
-              <InputField 
-                label="Details of work done since Appointment" 
-                required 
-                icon={<DocumentText size={16} />}
-              >
-                <CustomInput
-                  value={workDone}
-                  onChange={(e) => setWorkDone(e.target.value)}
-                  placeholder="Provide detailed description of work accomplished since your appointment..."
-                  multiline
-                />
-              </InputField>
+             <div className="mb-6">
+                           <label className="flex items-center gap-2 text-sm font-semibold text-gray-700 mb-2">
+                             <span className="text-purple-600">
+                               <DocumentText size={16} />
+                             </span>
+                             Details of work done since Appointment
+                             <span className="text-red-500">*</span>
+                           </label>
+                           <textarea
+                             value={workDone}
+                             onChange={(e) => setWorkDone(e.target.value)}
+                             placeholder="Describe the work done since appointment..."
+                             rows={4}
+                             className="w-full px-4 py-3 border border-gray-300 rounded-xl bg-white text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200 hover:border-gray-400 resize-none"
+                             required
+                           />
+                         </div>
             </div>
 
             {/* Right column - Application Summary */}
