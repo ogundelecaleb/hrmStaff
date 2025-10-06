@@ -1,19 +1,21 @@
-import {
-  Box,
-  FormControl,
-  FormLabel,
-  Input,
-  Select,
-  Text,
-} from "@chakra-ui/react";
 import React, { useState, useEffect } from "react";
-import CommonButton from "../../../../../components/commonbutton/Button";
+import { Spinner } from "@chakra-ui/react";
 import { getUserDetails } from "../../../../../utils/utils";
 import { useSnackbar } from "notistack";
-import { MoonLoader } from "react-spinners";
 import ConfirmationOfAppointmentJunior from "./junior";
 import ConfirmationOfAppointmentSenior from "./senior";
-import CustomDatePicker from  "../../../../../components/CustomDatePicker";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import { getYear, getMonth } from 'date-fns';
+import { 
+  User, 
+  Calendar, 
+  Briefcase, 
+  DocumentText, 
+  Building,
+  ArrowRight2
+} from "iconsax-react";
+
 const ConfirmationOfAppointment = ({ navigate }) => {
   const { enqueueSnackbar } = useSnackbar();
   const [isLoading, setIsLoading] = useState(false);
@@ -25,6 +27,20 @@ const ConfirmationOfAppointment = ({ navigate }) => {
   const [showSection, setShowSection] = useState(null);
   const [pfNumber, setPfNumber] = useState('');
 
+  function range(start, end, step) {
+    const result = [];
+    for (let i = start; i <= end; i += step) {
+      result.push(i);
+    }
+    return result;
+  }
+
+  const years = range(1990, getYear(new Date()) + 1, 1);
+  const months = [
+    "January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December",
+  ];
+
   useEffect(() => {
     if (userDetails) {
       fetchUserDetails();
@@ -33,15 +49,14 @@ const ConfirmationOfAppointment = ({ navigate }) => {
 
   async function fetchUserDetails() {
     try {
-        setIsLoading(true);
-        const userDetails = await getUserDetails();
-        console.log("User Details:", userDetails);
-        setUserDetails(userDetails.data)
+      setIsLoading(true);
+      const userDetails = await getUserDetails();
+      setUserDetails(userDetails.data);
     } catch (error) {
-        console.error("Error fetching your basic details", error);
-        enqueueSnackbar(error.message, { variant: 'error' })
-    }finally {
-        setIsLoading(false);
+      console.error("Error fetching your basic details", error);
+      enqueueSnackbar(error.message, { variant: 'error' });
+    } finally {
+      setIsLoading(false);
     }
   }
 
@@ -55,8 +70,8 @@ const ConfirmationOfAppointment = ({ navigate }) => {
     }
     return null;
   };
-  const departmentOrUnitOrFacultyID = getRoleBasedID(userDetails.role);
 
+  const departmentOrUnitOrFacultyID = getRoleBasedID(userDetails.role);
   const rankDesignation = userDetails?.role;
 
   let departmentId = "";
@@ -72,12 +87,12 @@ const ConfirmationOfAppointment = ({ navigate }) => {
   }
 
   const formattedAppointDate = appointDate
-  ? new Date(appointDate).toISOString().split('T')[0]
-  : null;
+    ? new Date(appointDate).toISOString().split('T')[0]
+    : null;
 
   const formattedPresentDate = presentDate
-  ? new Date(presentDate).toISOString().split('T')[0]
-  : null;
+    ? new Date(presentDate).toISOString().split('T')[0]
+    : null;
   
   useEffect(() => {
     if (userDetails) {
@@ -91,7 +106,6 @@ const ConfirmationOfAppointment = ({ navigate }) => {
         type: userDetails?.type,
         staffType: userDetails?.type,
         staffLevel: userDetails?.level,
-         
       });
     }
   }, [userDetails]);
@@ -110,6 +124,15 @@ const ConfirmationOfAppointment = ({ navigate }) => {
   };
 
   const handleNavigate = () => {
+    if (!staffTypes) {
+      enqueueSnackbar('Please select appointment type', { variant: 'error' });
+      return;
+    }
+    if (!appointDate || !presentDate || !pfNumber) {
+      enqueueSnackbar('Please fill in all required fields', { variant: 'error' });
+      return;
+    }
+
     let staffSenior = staffTypes === "senior_staff";
     let staffJunior = staffTypes === "junior_staff";
 
@@ -120,25 +143,13 @@ const ConfirmationOfAppointment = ({ navigate }) => {
     }
   };
 
+
+
   if (isLoading) {
     return (
-      <Box
-        w={"80vw"}
-        display="flex"
-        flexDirection="column"
-        h={"80vh"}
-        alignItems="center"
-        justifyContent="center"
-        >
-        <div
-            className="fixed inset-0 flex items-center justify-center bg-white bg-opacity-70"
-            style={{ zIndex: 9999 }}
-        >
-            <div className="inline-block">
-            <MoonLoader color={"#984779"} size={80} />
-            </div>
-        </div>
-      </Box>
+      <div className="flex justify-center items-center h-screen">
+        <Spinner size="xl" color="purple.500" />
+      </div>
     );
   }
 
@@ -154,149 +165,343 @@ const ConfirmationOfAppointment = ({ navigate }) => {
   }
 
   return (
-    <Box>
+    <div>
       {showSection ? (
-                renderSelectedComponent()
-            ) : (
-            <div className='container'>
-              <div className='border-bottom pt-2 px-5'>
-                <p className='fs-3 fw-semibold'>Confirmation of Appointment</p>
-                <p className='fs-5' style={{ marginTop: "-19px" }}>
-                  Kindly fill in the required information
-                </p>
+        renderSelectedComponent()
+      ) : (
+        <div className="min-h-screen bg-gray-50">
+          {/* Header */}
+          <div className="bg-white border-b border-gray-200 px-4 md:px-8 py-6">
+            <div className="max-w-4xl mx-auto">
+              <div className="flex items-center gap-3 mb-2">
+                <div className="p-2 bg-purple-100 rounded-lg">
+                  <DocumentText className="text-purple-600" size={24} />
+                </div>
+                <h1 className="text-lg md:text-2xl font-bold text-gray-900">
+                  Confirmation of Appointment
+                </h1>
               </div>
-              <div className='px-5 row'>
-                <div className='col-lg-6'>
-                  <form>
-                    <div className='form-group mt-2'>
-                      <label
-                        for='exampleFormControlSelect1'
-                        className='fw-semibold text-muted fs-6 mt-3 mb-2'>
-                        Appointment Type<sup className='text-danger'>*</sup>
-                      </label>
-                      <select
-                      onChange={handlestaffTypesChange}
+              <p className="text-gray-600">
+                Kindly fill in the required information to proceed
+              </p>
+            </div>
+          </div>
+
+          {/* Form Content */}
+          <div className="max-w-4xl mx-auto px-4 md:px-8 py-8">
+            <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-3 md:p-6 md:p-8">
+              <div className="grid grid-cols-1 lg:grid-cols-2  gap-4 md:gap-8">
+                <div className="space-y-3 md:space-y-6">
+                  <div className="mb-6">
+                    <label className="flex items-center gap-2 text-sm font-semibold text-gray-700 mb-2">
+                      <span className="text-purple-600"><Briefcase size={16} /></span>
+                      Appointment Type
+                      <span className="text-red-500">*</span>
+                    </label>
+                    <select
                       value={staffTypes}
-                        className='form-select rounded-0'
-                        aria-label='Default select example'>
-                        <option selected>Staff Type</option>
-                        <option value='junior_staff'>Junior Staff</option>
-                        <option value='senior_staff'>Senior Staff</option>
-                      
-                      </select>
-                    </div>
-                    <FormControl  my='5'>
-                      <label 
-                        for='exampleFormControlSelect1'
-                        className='fw-semibold text-muted fs-6 mt-3 mb-2'>
-                        Full Name
+                      onChange={handlestaffTypesChange}
+                      className="w-full px-4 py-3 border border-gray-300 rounded-xl bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200 hover:border-gray-400"
+                      required
+                    >
+                      <option value="">Select Staff Type</option>
+                      <option value="junior_staff">Junior Staff</option>
+                      <option value="senior_staff">Senior Staff</option>
+                    </select>
+                  </div>
+
+                  <div className="mb-6">
+                    <label className="flex items-center gap-2 text-sm font-semibold text-gray-700 mb-2">
+                      <span className="text-purple-600"><User size={16} /></span>
+                      Full Name
+                    </label>
+                    <input
+                      type="text"
+                      value={formValues.full_name}
+                      placeholder="Full Name"
+                      disabled={true}
+                      className="w-full px-4 py-3 border border-gray-300 rounded-xl bg-gray-50 text-gray-500 cursor-not-allowed placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200 hover:border-gray-400"
+                      required
+                    />
+                  </div>
+
+                  {formValues.type === 'ASE' && formValues.role === 'DEAN' && (
+                    <div className="mb-6">
+                      <label className="flex items-center gap-2 text-sm font-semibold text-gray-700 mb-2">
+                        <span className="text-purple-600"><Building size={16} /></span>
+                        Faculty
                       </label>
                       <input
-                        type='text'
-                        style={{ height: "40px" }}
-                        class='form-control rounded-0'
-                        id='exampleFormControlInput1'
-                        value={formValues.full_name} disabled
-                        />
-                    </FormControl>
-
-                    {formValues.type === 'ASE' && formValues.role === 'DEAN' && (
-                    <FormControl  my='5'>
-                        <FormLabel color={"#515B6F"}>Faculty</FormLabel>
-                        <Input class='form-control rounded-0' type='text' disabled
+                        type="text"
                         value={formValues.faculty}
-                        onChange={(e) =>
-                            setFormValues({
-                            ...formValues,
-                            faculty: e.target.value,
-                            })
-                        }/>
-                    </FormControl>
-                    )}
-                    {formValues.type === 'NASE' && (
-                      <FormControl  my='5'>
-                          <FormLabel color={"#515B6F"}>Unit</FormLabel>
-                          <Input disabled class='form-control rounded-0'
-                              value={formValues.unit}
-                              id='exampleFormControlInput1'
-                              style={{ height: "40px" }}
-                              />
-                      </FormControl>
-                    )}
-                    {(formValues.type === 'ASE' && (formValues.role === 'HOD' || formValues.role === 'RSWEP')) && (
-                    <FormControl my='5' >
-                        <FormLabel color={"#515B6F"}>Department</FormLabel>
-                        <Input  disabled
-                        value={formValues.department}
-                        onChange={(e) =>
-                            setFormValues({
-                            ...formValues,
-                            department: e.target.value,
-                            })
-                        }/>
-                    </FormControl>
-                    )}
-                    <FormControl class='flex flex-col' my='5' isRequired >
-                      <div>
-                        <label class='form-label fs-6 fw-semibold'>Date of First Appointment<sup className='text-danger'>*</sup></label>
-                      </div>
-                      <CustomDatePicker
-                        selectedDate={appointDate}
-                        onChange={(date) => {
-                          if (date instanceof Date && !isNaN(date)) {
-                            const formattedDate = date.toLocaleDateString('en-US', {
-                              year: 'numeric',
-                              month: '2-digit',
-                              day: '2-digit',
-                            });
-                            setAppointDate(formattedDate);
-                          } else {
-                            setAppointDate('');
-                          }
-                        }}
+                        placeholder="Faculty"
+                        disabled={true}
+                        className="w-full px-4 py-3 border border-gray-300 rounded-xl bg-gray-50 text-gray-500 cursor-not-allowed placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200 hover:border-gray-400"
+                        required
                       />
-                    </FormControl>
-                    <FormControl class='flex flex-col' my='5' isRequired >
-                       <div>
-                          <label
-                            class='form-label fs-6 fw-semibold'>
-                            Date of present appointment<sup className='text-danger'>*</sup>
-                          </label>
-                        </div>
-                        <CustomDatePicker
-                          selectedDate={presentDate}
-                          onChange={(date) => {
-                            if (date instanceof Date && !isNaN(date)) {
-                              const formattedDate = date.toLocaleDateString('en-US', {
-                                year: 'numeric',
-                                month: '2-digit',
-                                day: '2-digit',
-                              });
-                              setPresentDate(formattedDate);
-                            } else {
-                              setPresentDate('');
+                    </div>
+                  )}
+
+                  {formValues.type === 'NASE' && (
+                    <div className="mb-6">
+                      <label className="flex items-center gap-2 text-sm font-semibold text-gray-700 mb-2">
+                        <span className="text-purple-600"><Building size={16} /></span>
+                        Unit
+                      </label>
+                      <input
+                        type="text"
+                        value={formValues.unit}
+                        placeholder="Unit"
+                        disabled={true}
+                        className="w-full px-4 py-3 border border-gray-300 rounded-xl bg-gray-50 text-gray-500 cursor-not-allowed placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200 hover:border-gray-400"
+                        required
+                      />
+                    </div>
+                  )}
+
+                  {(formValues.type === 'ASE' && (formValues.role === 'HOD' || formValues.role === 'RSWEP')) && (
+                    <div className="mb-6">
+                      <label className="flex items-center gap-2 text-sm font-semibold text-gray-700 mb-2">
+                        <span className="text-purple-600"><Building size={16} /></span>
+                        Department
+                      </label>
+                      <input
+                        type="text"
+                        value={formValues.department}
+                        placeholder="Department"
+                        disabled={true}
+                        className="w-full px-4 py-3 border border-gray-300 rounded-xl bg-gray-50 text-gray-500 cursor-not-allowed placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200 hover:border-gray-400"
+                        required
+                      />
+                    </div>
+                  )}
+
+                  <div className="mb-6">
+                    <label className="flex items-center gap-2 text-sm font-semibold text-gray-700 mb-2">
+                      <span className="text-purple-600"><Calendar size={16} /></span>
+                      Date of First Appointment
+                      <span className="text-red-500">*</span>
+                    </label>
+                    <DatePicker
+                      autoComplete="off"
+                      renderCustomHeader={({
+                        date,
+                        changeYear,
+                        changeMonth,
+                        decreaseMonth,
+                        increaseMonth,
+                        prevMonthButtonDisabled,
+                        nextMonthButtonDisabled,
+                      }) => (
+                        <div className="flex justify-center items-center gap-2 p-2">
+                          <button 
+                            onClick={decreaseMonth} 
+                            disabled={prevMonthButtonDisabled}
+                            className="p-1 hover:bg-gray-100 rounded transition-colors"
+                          >
+                            {"<"}
+                          </button>
+                          <select
+                            value={getYear(date)}
+                            onChange={({ target: { value } }) => changeYear(value)}
+                            className="px-2 py-1 border border-gray-300 rounded focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                          >
+                            {years.map((option) => (
+                              <option key={option} value={option}>
+                                {option}
+                              </option>
+                            ))}
+                          </select>
+                          <select
+                            value={months[getMonth(date)]}
+                            onChange={({ target: { value } }) =>
+                              changeMonth(months.indexOf(value))
                             }
-                          }}
-                        />
-                    </FormControl>
-                    <FormControl isRequired my='5'>
-                      <FormLabel color={"#515B6F"}>PF/CM No</FormLabel>
-                      <Input placeholder='PF/CM No'required value={pfNumber}
-                      onChange={(e) => setPfNumber(e.target.value)} />
-                    </FormControl>
-                  </form>
+                            className="px-2 py-1 border border-gray-300 rounded focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                          >
+                            {months.map((option) => (
+                              <option key={option} value={option}>
+                                {option}
+                              </option>
+                            ))}
+                          </select>
+                          <button 
+                            onClick={increaseMonth} 
+                            disabled={nextMonthButtonDisabled}
+                            className="p-1 hover:bg-gray-100 rounded transition-colors"
+                          >
+                            {">"}
+                          </button>
+                        </div>
+                      )}
+                      selected={appointDate ? new Date(appointDate) : null}
+                      onChange={(date) => {
+                        if (date instanceof Date && !isNaN(date)) {
+                          const formattedDate = date.toLocaleDateString('en-US', {
+                            year: 'numeric',
+                            month: '2-digit',
+                            day: '2-digit',
+                          });
+                          setAppointDate(formattedDate);
+                        } else {
+                          setAppointDate('');
+                        }
+                      }}
+                      dateFormat='yyyy-MM-dd'
+                      className="w-full px-4 py-3 border border-gray-300 rounded-xl bg-white text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200 hover:border-gray-400"
+                      placeholderText="Select first appointment date"
+                      shouldCloseOnSelect={true}
+                    />
+                  </div>
+
+                  <div className="mb-6">
+                    <label className="flex items-center gap-2 text-sm font-semibold text-gray-700 mb-2">
+                      <span className="text-purple-600"><Calendar size={16} /></span>
+                      Date of Present Appointment
+                      <span className="text-red-500">*</span>
+                    </label>
+                    <DatePicker
+                      autoComplete="off"
+                      renderCustomHeader={({
+                        date,
+                        changeYear,
+                        changeMonth,
+                        decreaseMonth,
+                        increaseMonth,
+                        prevMonthButtonDisabled,
+                        nextMonthButtonDisabled,
+                      }) => (
+                        <div className="flex justify-center items-center gap-2 p-2">
+                          <button 
+                            onClick={decreaseMonth} 
+                            disabled={prevMonthButtonDisabled}
+                            className="p-1 hover:bg-gray-100 rounded transition-colors"
+                          >
+                            {"<"}
+                          </button>
+                          <select
+                            value={getYear(date)}
+                            onChange={({ target: { value } }) => changeYear(value)}
+                            className="px-2 py-1 border border-gray-300 rounded focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                          >
+                            {years.map((option) => (
+                              <option key={option} value={option}>
+                                {option}
+                              </option>
+                            ))}
+                          </select>
+                          <select
+                            value={months[getMonth(date)]}
+                            onChange={({ target: { value } }) =>
+                              changeMonth(months.indexOf(value))
+                            }
+                            className="px-2 py-1 border border-gray-300 rounded focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                          >
+                            {months.map((option) => (
+                              <option key={option} value={option}>
+                                {option}
+                              </option>
+                            ))}
+                          </select>
+                          <button 
+                            onClick={increaseMonth} 
+                            disabled={nextMonthButtonDisabled}
+                            className="p-1 hover:bg-gray-100 rounded transition-colors"
+                          >
+                            {">"}
+                          </button>
+                        </div>
+                      )}
+                      selected={presentDate ? new Date(presentDate) : null}
+                      onChange={(date) => {
+                        if (date instanceof Date && !isNaN(date)) {
+                          const formattedDate = date.toLocaleDateString('en-US', {
+                            year: 'numeric',
+                            month: '2-digit',
+                            day: '2-digit',
+                          });
+                          setPresentDate(formattedDate);
+                        } else {
+                          setPresentDate('');
+                        }
+                      }}
+                      dateFormat='yyyy-MM-dd'
+                      className="w-full px-4 py-3 border border-gray-300 rounded-xl bg-white text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200 hover:border-gray-400"
+                      placeholderText="Select present appointment date"
+                      shouldCloseOnSelect={true}
+                    />
+                  </div>
+
+                  <div className="mb-6">
+                    <label className="flex items-center gap-2 text-sm font-semibold text-gray-700 mb-2">
+                      <span className="text-purple-600"><DocumentText size={16} /></span>
+                      PF/CM No
+                      <span className="text-red-500">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      value={pfNumber}
+                      onChange={(e) => setPfNumber(e.target.value)}
+                      placeholder="Enter PF/CM Number"
+                      className="w-full px-4 py-3 border border-gray-300 rounded-xl bg-white text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200 hover:border-gray-400"
+                      required
+                    />
+                  </div>
                 </div>
-                <div className='col-lg-6'> </div>
+
+                {/* Right column - Application Summary */}
+                <div className="lg:pl-8">
+                  <div className="bg-purple-50 rounded-xl p-3 md:p-6 border border-purple-200">
+                    <h3 className="text-lg font-semibold text-purple-900 mb-4">
+                      Application Summary
+                    </h3>
+                    <div className="space-y-3 text-sm">
+                      <div className="flex justify-between">
+                        <span className="text-gray-600">Staff Name:</span>
+                        <span className="font-medium text-gray-900">{formValues?.full_name || 'Not specified'}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-gray-600">Staff Type:</span>
+                        <span className="font-medium text-gray-900">{formValues?.type || 'Not specified'}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-gray-600">Staff Level:</span>
+                        <span className="font-medium text-gray-900">{formValues?.staffLevel || 'Not specified'}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-gray-600">Role:</span>
+                        <span className="font-medium text-gray-900">{formValues?.role || 'Not specified'}</span>
+                      </div>
+                    </div>
+                    
+                    <div className="mt-6 p-4 bg-white rounded-lg border border-purple-100">
+                      <h4 className="font-semibold text-purple-900 mb-2">Next Steps</h4>
+                      <p className="text-xs text-gray-600">
+                        After completing this form, you'll proceed to the specific appointment confirmation 
+                        form based on your selected staff type.
+                      </p>
+                    </div>
+                  </div>
+                </div>
               </div>
-              <div className='py-5'>
-                <CommonButton
-                  title={"Proceed to Next"}
-                  action={handleNavigate}
-                />
+
+              {/* Submit Button */}
+              <div className="mt-8 pt-6 border-t border-gray-200">
+                <div className="flex justify-end">
+                  <button
+                    onClick={handleNavigate}
+                    className="flex items-center gap-2 px-8 py-3 bg-purple-600 text-white rounded-xl hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 transition-all duration-200 font-medium"
+                  >
+                    Proceed to Next
+                    <ArrowRight2 size={16} />
+                  </button>
+                </div>
               </div>
             </div>
-             )}
-      </Box>
+          </div>
+        </div>
+      )}
+    </div>
   );
 };
 

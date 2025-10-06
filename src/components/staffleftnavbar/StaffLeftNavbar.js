@@ -10,6 +10,7 @@ import { HiUpload } from "react-icons/hi";
 import { MdInsertChart } from "react-icons/md";
 import { Link, useMatch, useResolvedPath } from "react-router-dom";
 import LogoutModal from "../../pages/staff/logout/Logout";
+import { User } from "iconsax-react";
 
 const StaffLeftNavbar = ({ mobile, setMobile, display, staffNumber }) => {
   const dash1Style = { flexDirection: "column" };
@@ -123,8 +124,8 @@ const StaffLeftNavbar = ({ mobile, setMobile, display, staffNumber }) => {
             className="ps-3 ms-1 d-flex align-items-center rounded gap-2"
             style={{ height: "48px", width: "90%", marginTop: "0px" }}
           >
-            <MdMoveToInbox size="25" style={{ color: "#84818A" }} />
-            Settings
+            <User size="25" style={{ color: "#84818A" }} />
+            Profile
           </div>
         </CustomLink>
         <LogoutModal />

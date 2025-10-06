@@ -282,7 +282,8 @@ const StaffHomePage = ({ switchRoutes, navigate }) => {
         role === "HNASEJ"
       ) && (
         <>
-          <div className="grid grid-cols-1 mt-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-5">
+          <div className="grid grid-cols-1 mt-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4">
+
             <DashbordBox
               title={"Leave Applications"}
               total={data?.meta?.total ? data?.meta?.total : "0"}
@@ -325,6 +326,7 @@ const StaffHomePage = ({ switchRoutes, navigate }) => {
               route=""
             />
           </div>
+
           <div className="w-full max-w-[520px] mt-[24px] rounded-md bg-[#984779] bg-opacity-50 py-3 px-2 flex flex-col">
             <p className="text-center text-sm font-semibold">Quick Action</p>
 
@@ -403,127 +405,122 @@ const StaffHomePage = ({ switchRoutes, navigate }) => {
                 <button className="flex items-center gap-2">
                   {" "}
                   <p className=" text-[12px] md:text-base mb-0  text-[#984779]  font-medium text-left ">
-                    View all applications
+                    View all
                   </p>
                   <ArrowRight size="16" variant="Linear" color="#984779" />
                 </button>
               </Link>
             </div>
-            <div class="overflow-x-auto rounded-lg">
+            {/* Desktop Table */}
+            <div className="hidden md:block overflow-x-auto rounded-lg">
               <table className="min-w-full mb-6 border-[0.8px] border-r-[0.8px]  border-l-[0.8px] border-[#E4E7EC] rounded-lg">
                 <thead className="bg-light-gray">
-                  <tr className="">
-                    <th
-                      scope="col"
-                      className=" px-2 whitespace-nowrap md:px-5 border-b-[0.8px] border-[#E4E7EC] py-[12px] gap-[6px] md:gap-[12px] text-[14px] md:text-[16px] text-[#98A2B3]  font-medium leading-[20px] md:leading-[24px] tracking-[0.2%]"
-                    >
-                      <div className="flex pl-2  gap-[6px] md:gap-[12px] items-center my-0">
-                        Leave Type
-                      </div>
+                  <tr>
+                    <th className="px-5 border-b-[0.8px] border-[#E4E7EC] py-[12px] text-[16px] text-[#98A2B3] font-medium">
+                      Leave Type
                     </th>
-                    <th
-                      scope="col"
-                      className="px-2 md:px-5 whitespace-nowrap  border-b-[0.8px] border-[#E4E7EC] py-[12px] gap-[6px] md:gap-[12px] text-[14px] md:text-[16px] text-[#98A2B3]  font-medium leading-[20px] md:leading-[24px] tracking-[0.2%]"
-                    >
-                      <div className="flex  gap-[6px] md:gap-[12px] items-center my-0">
-                        Leave Duration
-                      </div>
+                    <th className="px-5 border-b-[0.8px] border-[#E4E7EC] py-[12px] text-[16px] text-[#98A2B3] font-medium">
+                      Duration
                     </th>
-                    <th
-                      scope="col"
-                      className="px-2 md:px-5 whitespace-nowrap  border-b-[0.8px] border-[#E4E7EC] py-[12px] gap-[6px] md:gap-[12px] text-[14px] md:text-[16px] text-[#98A2B3]  font-medium leading-[20px] md:leading-[24px] tracking-[0.2%]"
-                    >
-                      <div className="flex justify-center gap-[6px] md:gap-[12px] items-center my-0">
-                        Start Date
-                      </div>
+                    <th className="px-5 border-b-[0.8px] border-[#E4E7EC] py-[12px] text-[16px] text-[#98A2B3] font-medium text-center">
+                      Start Date
                     </th>
-                    <th
-                      scope="col"
-                      className="px-2 md:px-5 whitespace-nowrap  border-b-[0.8px] border-[#E4E7EC] py-[12px] gap-[6px] md:gap-[12px] text-[14px] md:text-[16px] text-[#98A2B3]  font-medium leading-[20px] md:leading-[24px] tracking-[0.2%]"
-                    >
-                      <div className="flex justify-center gap-[6px] md:gap-[12px] items-center my-0">
-                        Status
-                      </div>
+                    <th className="px-5 border-b-[0.8px] border-[#E4E7EC] py-[12px] text-[16px] text-[#98A2B3] font-medium text-center">
+                      Status
                     </th>
-
-                    <th
-                      scope="col"
-                      className="px-2 md:px-5 whitespace-nowrap  border-b-[0.8px] border-[#E4E7EC] py-[12px] gap-[6px] md:gap-[12px] text-[14px] md:text-[16px] text-[#98A2B3]  font-medium leading-[20px] md:leading-[24px] tracking-[0.2%]"
-                    >
-                      <div className="flex justify-center gap-[6px] md:gap-[12px] items-center my-0">
-                        Action
-                      </div>
+                    <th className="px-5 border-b-[0.8px] border-[#E4E7EC] py-[12px] text-[16px] text-[#98A2B3] font-medium text-center">
+                      Action
                     </th>
                   </tr>
                 </thead>
                 <tbody>
-                  {isLoading && <div>Loading...</div>}
-                  {data?.data?.length === 0 && (
-                    <tr>
-                      <td className="text-center" colspan="6">
-                        <img
-                          src="./nodata.gif"
-                          className="mx-auto mt-6 h-[70px] "
-                          alt=""
-                        />
-                        <h3 className="text-base md:text-lg  xl:text-[30px] leading-[35px]  text-[#1A202C] font-extrabold mb-[6px]">
-                          No Leave Application Avalable
-                        </h3>
+                  {data?.data?.map((result, index) => (
+                    <tr key={index} className="hover:bg-gray-50">
+                      <td className="py-4 px-5 border-b border-[#E4E7EC] text-[14px] text-[#667185] font-medium">
+                        {result?.leave_type}
+                      </td>
+                      <td className="py-4 px-5 border-b border-[#E4E7EC] text-[14px] text-[#667185] font-medium">
+                        {result?.leave_duration} days
+                      </td>
+                      <td className="py-4 px-5 border-b border-[#E4E7EC] text-[14px] text-[#667185] font-medium text-center">
+                        {formatDate(result?.start_date)}
+                      </td>
+                      <td className="py-4 px-5 border-b border-[#E4E7EC] text-center">
+                        <span className={`px-3 py-1 rounded-full text-xs font-semibold ${
+                          result?.status === "declined"
+                            ? "bg-red-100 text-red-600"
+                            : result?.status === "pending"
+                            ? "bg-yellow-100 text-yellow-600"
+                            : "bg-green-100 text-green-600"
+                        }`}>
+                          {result?.status}
+                        </span>
+                      </td>
+                      <td className="py-4 px-5 border-b border-[#E4E7EC] text-center">
+                        {result?.status === "approved" ? (
+                          <Link to="/leave-certificate" state={result}>
+                            <button className="text-[#984779] px-3 py-1 rounded-md border hover:bg-gray-100">
+                              View Certificate
+                            </button>
+                          </Link>
+                        ) : (
+                          <span className="text-gray-400">...</span>
+                        )}
                       </td>
                     </tr>
-                  )}
-                  {data &&
-                    data?.data?.map((result, index) => (
-                      <tr key={index} className="mb-2 hover:bg-light-gray">
-                        <td className="whitespace-nowrap py-[16px] bg-white pl-2 pr-5  border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px] text-[#667185] font-medium text-left  ">
-                          {result?.leave_type}
-                        </td>
-
-                        <td className="whitespace-nowrap py-[16px] bg-white  px-5  border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px] text-[#667185] font-medium text-left  ">
-                          {result?.leave_duration}
-                        </td>
-                        <td className="whitespace-nowrap py-[16px] bg-white  px-5 text-center   border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px] text-[#667185] font-medium   ">
-                          {formatDate(result?.start_date)}
-                        </td>
-
-                        <td className="whitespace-nowrap py-[16px] bg-white flex justify-center   px-5  border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px] text-[#667185] font-medium text-left  ">
-                          {" "}
-                          <button
-                            className={`rounded-[20px] md:rounded-[40px] flex justify-center items-center gap-2 px-[12px]  py-[4px] md:py-[4px] border-[0.5px] ${
-                              result?.status === "declined"
-                                ? "bg-[#FEECEB] text-[#F44336] border-[#F44336]"
-                                : result?.status === "pending"
-                                ? "bg-[#FFF5E6] text-[#F44336] border-[#FF9800]"
-                                : "bg-[#EDF7EE] text-[#4CAF50] border-[#4CAF50]"
-                            }  text-[10px] md:text-[12px]  font-semibold leading-[16px] md:leading-[18px] `}
-                          >
-                            <p className="mb-0">{result?.status}</p>
-                          </button>{" "}
-                        </td>
-                        <td className="whitespace-nowrap py-[16px] bg-white  px-5  border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px] text-[#667185] font-medium text-left  ">
-                          {result?.status === "approved" ? (
-                            <Link to="/leave-certificate" state={result}>
-                              {" "}
-                              <button
-                                // onClick={() =>
-                                //   navigate("leave-certificate", {
-                                //     state: result?.leave_type
-                                //   })
-                                // }
-                                // onClick={() => console.log("------>>>", result)}
-                                className="text-[#984779] px-3 py-1 rounded-md border hover:bg-gray-300  "
-                              >
-                                View Certificate
-                              </button>
-                            </Link>
-                          ) : (
-                            <p className="text-center">...</p>
-                          )}
-                        </td>
-                      </tr>
-                    ))}
+                  ))}
                 </tbody>
               </table>
+            </div>
+
+            {/* Mobile Cards */}
+            <div className="md:hidden space-y-3">
+              {isLoading ? (
+                <div className="flex justify-center py-8">
+                  <Spinner size="lg" color="purple.500" />
+                </div>
+              ) : data?.data?.length === 0 ? (
+                <div className="text-center py-8">
+                  <img src="./nodata.gif" className="mx-auto h-[70px]" alt="" />
+                  <h3 className="text-lg font-bold text-[#1A202C] mt-4">
+                    No Leave Applications Available
+                  </h3>
+                </div>
+              ) : (
+                data?.data?.map((result, index) => (
+                  <div key={index} className="bg-white border border-[#E4E7EC] rounded-lg p-4 shadow-sm">
+                    <div className="flex justify-between items-start mb-3">
+                      <div className="flex-1">
+                        <h4 className="font-semibold text-[#1A202C] text-sm">{result?.leave_type}</h4>
+                        <p className="text-xs text-[#667185] mt-1">{result?.leave_duration} days</p>
+                      </div>
+                      <span className={`px-2 py-1 rounded-full text-xs font-semibold ${
+                        result?.status === "declined"
+                          ? "bg-red-100 text-red-600"
+                          : result?.status === "pending"
+                          ? "bg-yellow-100 text-yellow-600"
+                          : "bg-green-100 text-green-600"
+                      }`}>
+                        {result?.status}
+                      </span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-xs text-[#667185]">
+                        Start: {formatDate(result?.start_date)}
+                      </span>
+                      {result?.status === "approved" ? (
+                        <Link to="/leave-certificate" state={result}>
+                          <button className="text-[#984779] text-xs px-2 py-1 rounded border hover:bg-gray-100">
+                            View Certificate
+                          </button>
+                        </Link>
+                      ) : (
+                        <span className="text-gray-400 text-xs">...</span>
+                      )}
+                    </div>
+                  </div>
+                ))
+              )}
             </div>
           </div>{" "}
         </>
@@ -617,106 +614,98 @@ const StaffHomePage = ({ switchRoutes, navigate }) => {
                 </button>
               </Link>
             </div>
-            <div class="overflow-x-auto rounded-lg">
+            {/* Desktop Table */}
+            <div className="hidden md:block overflow-x-auto rounded-lg">
               <table className="min-w-full mb-6 border-[0.8px] border-r-[0.8px]  border-l-[0.8px] border-[#E4E7EC] rounded-lg">
                 <thead className="bg-light-gray">
-                  <tr className="">
-                    <th
-                      scope="col"
-                      className=" px-2 md:px-5 border-b-[0.8px] border-[#E4E7EC] py-[12px] gap-[6px] md:gap-[12px] text-[14px] md:text-[16px] text-[#98A2B3]  font-medium leading-[20px] md:leading-[24px] tracking-[0.2%]"
-                    >
-                      <div className="flex pl-2  gap-[6px] md:gap-[12px] items-center my-0">
-                        Staff Name
-                      </div>
+                  <tr>
+                    <th className="px-5 border-b-[0.8px] border-[#E4E7EC] py-[12px] text-[16px] text-[#98A2B3] font-medium">
+                      Staff Name
                     </th>
-                    <th
-                      scope="col"
-                      className="px-2 md:px-5  border-b-[0.8px] border-[#E4E7EC] py-[12px] gap-[6px] md:gap-[12px] text-[14px] md:text-[16px] text-[#98A2B3]  font-medium leading-[20px] md:leading-[24px] tracking-[0.2%]"
-                    >
-                      <div className="flex  gap-[6px] md:gap-[12px] items-center my-0">
-                        Leave Type
-                      </div>
+                    <th className="px-5 border-b-[0.8px] border-[#E4E7EC] py-[12px] text-[16px] text-[#98A2B3] font-medium">
+                      Leave Type
                     </th>
-                    <th
-                      scope="col"
-                      className="px-2 md:px-5  border-b-[0.8px] border-[#E4E7EC] py-[12px] gap-[6px] md:gap-[12px] text-[14px] md:text-[16px] text-[#98A2B3]  font-medium leading-[20px] md:leading-[24px] tracking-[0.2%]"
-                    >
-                      <div className="flex  gap-[6px] md:gap-[12px] items-center my-0">
-                        Leave Duration
-                      </div>
+                    <th className="px-5 border-b-[0.8px] border-[#E4E7EC] py-[12px] text-[16px] text-[#98A2B3] font-medium">
+                      Duration
                     </th>
-                    <th
-                      scope="col"
-                      className="px-2 md:px-5  border-b-[0.8px] border-[#E4E7EC] py-[12px] gap-[6px] md:gap-[12px] text-[14px] md:text-[16px] text-[#98A2B3]  font-medium leading-[20px] md:leading-[24px] tracking-[0.2%]"
-                    >
-                      <div className="flex justify-center gap-[6px] md:gap-[12px] items-center my-0">
-                        Start Date
-                      </div>
+                    <th className="px-5 border-b-[0.8px] border-[#E4E7EC] py-[12px] text-[16px] text-[#98A2B3] font-medium text-center">
+                      Start Date
                     </th>
-                    <th
-                      scope="col"
-                      className="px-2 md:px-5  border-b-[0.8px] border-[#E4E7EC] py-[12px] gap-[6px] md:gap-[12px] text-[14px] md:text-[16px] text-[#98A2B3]  font-medium leading-[20px] md:leading-[24px] tracking-[0.2%]"
-                    >
-                      <div className="flex justify-center gap-[6px] md:gap-[12px] items-center my-0">
-                        Status
-                      </div>
+                    <th className="px-5 border-b-[0.8px] border-[#E4E7EC] py-[12px] text-[16px] text-[#98A2B3] font-medium text-center">
+                      Status
                     </th>
                   </tr>
                 </thead>
                 <tbody>
-                  {supervisorLeaves?.isLoading && <div>Loading...</div>}
-                  {supervisorLeaves?.data?.data?.length === 0 && (
-                    <tr>
-                      <td className="text-center" colspan="6">
-                        <img
-                          src="./nodata.gif"
-                          className="mx-auto mt-6 h-[70px] "
-                          alt=""
-                        />
-                        <h3 className="text-[30px] leading-[35px]  text-[#1A202C] font-extrabold mb-[6px]">
-                          No Leave Application Avalable
-                        </h3>
+                  {supervisorLeaves?.data?.data?.map((item, index) => (
+                    <tr key={index} className="hover:bg-gray-50">
+                      <td className="py-4 px-5 border-b border-[#E4E7EC] text-[14px] text-[#667185] font-medium">
+                        {item.full_name}
+                      </td>
+                      <td className="py-4 px-5 border-b border-[#E4E7EC] text-[14px] text-[#667185] font-medium">
+                        {item.leave_type}
+                      </td>
+                      <td className="py-4 px-5 border-b border-[#E4E7EC] text-[14px] text-[#667185] font-medium">
+                        {item?.leave_duration} days
+                      </td>
+                      <td className="py-4 px-5 border-b border-[#E4E7EC] text-[14px] text-[#667185] font-medium text-center">
+                        {formatDate(item?.start_date)}
+                      </td>
+                      <td className="py-4 px-5 border-b border-[#E4E7EC] text-center">
+                        <span className={`px-3 py-1 rounded-full text-xs font-semibold ${
+                          item?.status === "declined"
+                            ? "bg-red-100 text-red-600"
+                            : item?.status === "pending"
+                            ? "bg-yellow-100 text-yellow-600"
+                            : "bg-green-100 text-green-600"
+                        }`}>
+                          {item?.status}
+                        </span>
                       </td>
                     </tr>
-                  )}
-                  {supervisorLeaves?.data &&
-                    supervisorLeaves?.data?.data?.map((item, index) => (
-                      <tr key={index} className="mb-2 hover:bg-light-gray">
-                        <td className="whitespace-nowrap py-[16px] bg-white pl-2 pr-5  border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px] text-[#667185] font-medium text-left  ">
-                          {item.full_name}{" "}
-                        </td>
-                        <td className="whitespace-nowrap py-[16px] bg-white  px-5  border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px] text-[#667185] font-medium text-left  ">
-                          {item.leave_type}{" "}
-                        </td>
-
-                        <td className="whitespace-nowrap py-[16px] bg-white  px-5  border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px] text-[#667185] font-medium text-left  ">
-                          {item?.leave_duration}
-                        </td>
-                        <td className="whitespace-nowrap py-[16px] bg-white  px-5 text-center   border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px] text-[#667185] font-medium   ">
-                          {formatDate(item?.start_date)}
-                        </td>
-
-                        <td className="whitespace-nowrap py-[16px] bg-white flex justify-center   px-5  border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px] text-[#667185] font-medium text-left  ">
-                          {" "}
-                          <button
-                            className={`rounded-[20px] md:rounded-[40px] flex justify-center items-center gap-2 px-[12px]  py-[4px] md:py-[4px] border-[0.5px] ${
-                              item?.status === "declined"
-                                ? "bg-[#FEECEB] text-[#F44336] border-[#F44336]"
-                                : item?.status === "pending"
-                                ? "bg-[#FFF5E6] text-[#F44336] border-[#FF9800]"
-                                : "bg-[#EDF7EE] text-[#4CAF50] border-[#4CAF50]"
-                            }  text-[10px] md:text-[12px]  font-semibold leading-[16px] md:leading-[18px] `}
-                          >
-                            <p className="mb-0">{item?.status}</p>
-                          </button>{" "}
-                        </td>
-                        {/* <td className="whitespace-nowrap py-[16px] bg-white  px-5  border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px] text-[#667185] font-medium text-left  ">
-                      <More variant="Linear" color="#667185" size="20" />
-                    </td> */}
-                      </tr>
-                    ))}
+                  ))}
                 </tbody>
               </table>
+            </div>
+
+            {/* Mobile Cards */}
+            <div className="md:hidden space-y-3">
+              {supervisorLeaves?.isLoading ? (
+                <div className="flex justify-center py-8">
+                  <Spinner size="lg" color="purple.500" />
+                </div>
+              ) : supervisorLeaves?.data?.data?.length === 0 ? (
+                <div className="text-center py-8">
+                  <img src="./nodata.gif" className="mx-auto h-[70px]" alt="" />
+                  <h3 className="text-lg font-bold text-[#1A202C] mt-4">
+                    No Leave Applications Available
+                  </h3>
+                </div>
+              ) : (
+                supervisorLeaves?.data?.data?.map((item, index) => (
+                  <div key={index} className="bg-white border border-[#E4E7EC] rounded-lg p-4 shadow-sm">
+                    <div className="flex justify-between items-start mb-3">
+                      <div className="flex-1">
+                        <h4 className="font-semibold text-[#1A202C] text-sm">{item.full_name}</h4>
+                        <p className="text-xs text-[#667185] mt-1">{item.leave_type}</p>
+                      </div>
+                      <span className={`px-2 py-1 rounded-full text-xs font-semibold ${
+                        item?.status === "declined"
+                          ? "bg-red-100 text-red-600"
+                          : item?.status === "pending"
+                          ? "bg-yellow-100 text-yellow-600"
+                          : "bg-green-100 text-green-600"
+                      }`}>
+                        {item?.status}
+                      </span>
+                    </div>
+                    <div className="flex justify-between items-center text-xs text-[#667185]">
+                      <span>Duration: {item?.leave_duration} days</span>
+                      <span>Start: {formatDate(item?.start_date)}</span>
+                    </div>
+                  </div>
+                ))
+              )}
             </div>
           </div>{" "}
           <div className="flex justify-between items-center mt-3">

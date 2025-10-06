@@ -1,15 +1,17 @@
-import { Box, Flex, Text } from '@chakra-ui/react'
-import React, { useState , useEffect} from "react";
-import { HiUpload } from 'react-icons/hi'
-import { MdOutlineRestore } from 'react-icons/md'
+import React, { useState, useEffect } from "react";
+import { Spinner } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import { useSnackbar } from "notistack";
-import { MoonLoader } from "react-spinners";
 import NotificationAnimation from "../../../components/NotificationAnimation";
 import api from "../../../api";
+import { 
+  Notification as NotificationIcon, 
+  Clock, 
+  ArrowLeft2, 
+  ArrowRight2 
+} from "iconsax-react";
 
-export const Notification = () => {
-
+const Notification = () => {
   const navigate = useNavigate();
   const [message, setMessage] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -22,15 +24,14 @@ export const Notification = () => {
       setIsLoading(true);
       const message = await api.fetchNotification();
       console.log("Notification Messages:", message);
-      setMessage(message.data)
+      setMessage(message.data);
     } catch (error) {
       console.error("Error fetching notifications", error);
-      enqueueSnackbar(error.message, { variant: 'error' })
-    }finally {
+      enqueueSnackbar(error.message, { variant: 'error' });
+    } finally {
       setIsLoading(false);
     }
   }
-
 
   useEffect(() => {
     fetchUserNotification();
@@ -46,81 +47,166 @@ export const Notification = () => {
 
   if (isLoading) {
     return (
-      <Box
-        w={"80vw"}
-        display="flex"
-        flexDirection="column"
-        h={"80vh"}
-        alignItems="center"
-        justifyContent="center"
-      >
-        <div
-          className="fixed inset-0 flex items-center justify-center bg-white bg-opacity-70"
-          style={{ zIndex: 9999 }}
-        >
-          <div className="inline-block">
-            <MoonLoader color={"#984779"} size={80} />
-          </div>
-        </div>
-      </Box>
+      <div className="flex justify-center items-center h-screen">
+        <Spinner size="xl" color="purple.500" />
+      </div>
     );
   }
 
   if (!Array.isArray(message) || message.length === 0) {
     return (
-      <Box
-        w={"80vw"}
-        display="flex"
-        flexDirection="column"
-        h={"20vh"}
-        alignItems="center"
-        justifyContent="center"
-      >
-        <div className='row mt-5 ' style={{ height: "10px", width:"80%"}}>
-          <NotificationAnimation/>
+      <div className="min-h-screen bg-gray-50">
+        {/* Header */}
+        <div className="bg-white border-b border-gray-200 px-4 md:px-8 py-4 md:py-6">
+          <div className="max-w-4xl mx-auto">
+            <div className="flex items-center gap-3 mb-2">
+              <div className="p-2 bg-purple-100 rounded-lg">
+                <NotificationIcon className="text-purple-600" size={24} />
+              </div>
+              <h1 className="text-2xl md:text-3xl font-bold text-gray-900">
+                Notifications
+              </h1>
+            </div>
+            <p className="text-gray-600">
+              Stay updated with your latest notifications
+            </p>
+          </div>
         </div>
 
-      </Box>
+        {/* Empty State */}
+        <div className="max-w-4xl mx-auto px-4 md:px-8 py-7 md:py-12">
+          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-8 text-center">
+            <div className="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <NotificationIcon className="text-purple-600" size={32} />
+            </div>
+            <h3 className="text-lg font-semibold text-gray-900 mb-2">No notifications yet</h3>
+            <p className="text-gray-600 mb-6">You'll see your notifications here when you receive them.</p>
+            <NotificationAnimation />
+          </div>
+        </div>
+      </div>
     );
   }
 
-  const NotificationMessage = ({ icon, desc, mins }) => {
+  const NotificationMessage = ({ desc, mins }) => {
     return (
-      <Flex  px='10' p='5' alignItems={'center'} justifyContent={'space-between'} border='1px solid #2D394C33'>
-        <Flex alignItems={'center'} gap='10'>
-          {icon}
-          <Flex alignItems={'center'} gap='1'>
-          {/* <Text fontSize={'16'} fontWeight={'medium'} m='0'>{name}</Text> */}
-          <Text m='0'>{desc}</Text>
-          </Flex>
-        </Flex>
-        <Text m='0'>{mins} mins ago</Text>
-      </Flex>
-    )
-  }
+      <div className="bg-white rounded-xl border border-gray-200 p-4 md:p-6  hover:shadow-md transition-all duration-200">
+        <div className="flex items-start gap-4">
+          <div className="p-2 bg-purple-100 rounded-lg flex-shrink-0">
+            <NotificationIcon className="text-purple-600" size={20} />
+          </div>
+          <div className="flex-1 min-w-0">
+            <p className="text-gray-900 text-sm md:text-base leading-relaxed">
+              {desc}
+            </p>
+            <div className="flex items-center gap-2 mt-3 text-xs text-gray-500">
+              <Clock size={14} />
+              <span>{mins} mins ago</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  const totalPages = Math.ceil(message.length / notificationsPerPage);
 
   return (
-    <Flex gap={5} flexDirection={'column'} p='20'>
-      <Text m='0' fontSize={'20'}>Recent</Text>
-      {currentNotifications.map((msg, index) => (
-        <NotificationMessage
-          key={index}
-          icon={<MdOutlineRestore color='#984779' size={32}/>}
-          desc={msg.message}
-          mins={msg.date}
-        />
-      ))}
+    <div className="min-h-screen bg-gray-50">
+      {/* Header */}
+      <div className="bg-white border-b border-gray-200 px-4 md:px-8 py-6">
+        <div className="max-w-4xl mx-auto">
+          <div className="flex items-center gap-3 mb-2">
+            <div className="p-2 bg-purple-100 rounded-lg">
+              <NotificationIcon className="text-purple-600" size={24} />
+            </div>
+            <h1 className="text-2xl md:text-3xl font-bold text-gray-900">
+              Notifications
+            </h1>
+          </div>
+          <p className="text-gray-600">
+            Stay updated with your latest notifications
+          </p>
+        </div>
+      </div>
 
+      {/* Content */}
+      <div className="max-w-4xl mx-auto px-4 md:px-8 py-4 md:py-8">
+        {/* Stats Card */}
+        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-8">
+          <div className="flex items-center justify-between">
+            <div>
+              <h3 className="text-lg font-semibold text-gray-900 mb-1">Recent Notifications</h3>
+              <p className="text-sm text-gray-600">
+                {message.length} total notification{message.length !== 1 ? 's' : ''}
+              </p>
+            </div>
+            <div className="text-right">
+              <p className="text-sm text-gray-600">Page {currentPage} of {totalPages}</p>
+            </div>
+          </div>
+        </div>
 
-      {/* Pagination controls */}
-      <Flex justifyContent="center" marginTop="20px">
-        <button onClick={() => paginate(currentPage - 1)} disabled={currentPage === 1}>
-          Previous
-        </button>
-        <button onClick={() => paginate(currentPage + 1)} disabled={indexOfLastNotification >= message.length}>
-          Next
-        </button>
-      </Flex>
-    </Flex>
-  )
-}
+        {/* Notifications List */}
+        <div className="space-y-4">
+          {currentNotifications.map((msg, index) => (
+            <NotificationMessage
+              key={index}
+              desc={msg.message}
+              mins={msg.date}
+            />
+          ))}
+        </div>
+
+        {/* Pagination */}
+        {totalPages > 1 && (
+          <div className="mt-8 flex items-center justify-between">
+            <button
+              onClick={() => paginate(currentPage - 1)}
+              disabled={currentPage === 1}
+              className={`flex items-center gap-2 px-4 py-2 rounded-xl border transition-all duration-200 ${
+                currentPage === 1
+                  ? 'border-gray-200 text-gray-400 cursor-not-allowed'
+                  : 'border-gray-300 text-gray-700 hover:bg-gray-50 hover:border-gray-400'
+              }`}
+            >
+              <ArrowLeft2 size={16} />
+              Previous
+            </button>
+            
+            <div className="flex items-center gap-2">
+              {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                <button
+                  key={page}
+                  onClick={() => paginate(page)}
+                  className={`w-10 h-10 rounded-xl transition-all duration-200 ${
+                    currentPage === page
+                      ? 'bg-purple-600 text-white'
+                      : 'border border-gray-300 text-gray-700 hover:bg-gray-50'
+                  }`}
+                >
+                  {page}
+                </button>
+              ))}
+            </div>
+
+            <button
+              onClick={() => paginate(currentPage + 1)}
+              disabled={indexOfLastNotification >= message.length}
+              className={`flex items-center gap-2 px-4 py-2 rounded-xl border transition-all duration-200 ${
+                indexOfLastNotification >= message.length
+                  ? 'border-gray-200 text-gray-400 cursor-not-allowed'
+                  : 'border-gray-300 text-gray-700 hover:bg-gray-50 hover:border-gray-400'
+              }`}
+            >
+              Next
+              <ArrowRight2 size={16} />
+            </button>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
+
+export { Notification };

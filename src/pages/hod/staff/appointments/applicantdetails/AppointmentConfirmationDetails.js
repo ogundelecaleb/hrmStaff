@@ -1,32 +1,17 @@
 import React, { useState, useEffect } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
-import { BsArrowLeftShort } from "react-icons/bs";
-import {
-  TabIndicator,
-  Tab,
-  TabList,
-  TabPanel,
-  TabPanels,
-  Tabs,
-} from "@chakra-ui/tabs";
-import { BiMessageAltDetail } from "react-icons/bi";
-import { Avatar } from '@chakra-ui/react'
-import {
-  Box,
-  Divider,
-  Flex,
-  Grid,
-  GridItem,
-  Stack,
-  Text,
-} from "@chakra-ui/layout";
-import { Input } from "@chakra-ui/input";
-import { Button } from "@chakra-ui/button";
+import { useNavigate, useParams } from "react-router-dom";
+import { Spinner } from "@chakra-ui/react";
 import api from "../../../../../api";
 import { useSnackbar } from "notistack";
-import { MoonLoader } from "react-spinners";
-import { reuseAbleColor } from "../../../../../components/Color";
 import { getUserDetails } from "../../../../../utils/utils";
+import { 
+  ArrowLeft, 
+  DocumentText, 
+  TickCircle,
+  CloseCircle,
+  Clock,
+  MessageText
+} from "iconsax-react";
 
 const AppointmentConfirmationDetails = () => {
   const navigate = useNavigate();
@@ -46,7 +31,6 @@ const AppointmentConfirmationDetails = () => {
       setComments([...comments, commentText]);
       setIsCommentDisplayed(true);
     }
-    console.log("commets", commentText);
   };
 
   useEffect(() => {
@@ -55,13 +39,11 @@ const AppointmentConfirmationDetails = () => {
       api.getConfirmationbyID(id)
       .then(response => {
         const leaveData = response.data;
-        setDetails(leaveData)
-        console.log(response.data);
+        setDetails(leaveData);
         setIsLoading(false);
       })
       .catch(error => {
-        console.log(error);
-        enqueueSnackbar(error.message, { variant: 'error' })
+        enqueueSnackbar(error.message, { variant: 'error' });
         setIsLoading(false);
       });
     }
@@ -70,14 +52,12 @@ const AppointmentConfirmationDetails = () => {
   async function fetchUserDetails() {
     try {
       const userDetails = await getUserDetails();
-      console.log("User Details:", userDetails);
-      setUserDetails(userDetails)
-      
+      setUserDetails(userDetails);
     } catch (error) {
-      console.error("Error fetching your basic details", error);
-      enqueueSnackbar(error.message, { variant: 'error' })
+      enqueueSnackbar(error.message, { variant: 'error' });
     }
   }
+
   useEffect(() => {
     fetchUserDetails();
   }, []);
@@ -106,327 +86,276 @@ const AppointmentConfirmationDetails = () => {
     (approval) => approval.role === userDetails?.data?.role && (approval.status === "approved" || approval.status === "declined")
   );
 
-  if (isLoading) {
-    return (
-        <Box
-        w={"80vw"}
-        display="flex"
-        flexDirection="column"
-        h={"80vh"}
-        alignItems="center"
-        justifyContent="center"
-        >
-        <div
-            className="fixed inset-0 flex items-center justify-center bg-white bg-opacity-70"
-            style={{ zIndex: 9999 }}
-        >
-            <div className="inline-block">
-            <MoonLoader color={"#984779"} size={80} />
-            </div>
-        </div>
-        </Box>
-    );
-  }
-  
-  async function handleApprovedBtn (e)  {
+  async function handleApprovedBtn(e) {
     e.preventDefault();
     if (!isCommentDisplayed) {
-      enqueueSnackbar("Please add a comment before before Accepting.", {
+      enqueueSnackbar("Please add a comment before accepting.", {
         variant: "warning",
       });
       return;
     } 
     setIsLoadinge(true);
     try {
-      const response = await api.handleConfirmationApprove({id,status: "approved",comment: commentText})
-      console.log("responce==>>>>>", response);
-      enqueueSnackbar("Application approved successfully", { variant: 'success' })
+      const response = await api.handleConfirmationApprove({id, status: "approved", comment: commentText});
+      enqueueSnackbar("Application approved successfully", { variant: 'success' });
       setIsLoadinge(false);
       window.location.reload();
     } catch (error) {
-      console.error(error);
       enqueueSnackbar(error.message, { variant: "error" });
       setIsLoadinge(false);
     }
   }
 
-  async function handleDeclinedBtn (e)  {
+  async function handleDeclinedBtn(e) {
     e.preventDefault();
     if (!isCommentDisplayed) {
-      enqueueSnackbar("Please add a comment before before declining.", {
+      enqueueSnackbar("Please add a comment before declining.", {
         variant: "warning",
       });
       return;
     } 
     setIsLoadingd(true);
     try {
-      const response = await api.handleConfirmationDecline({id,status: "declined",comment: commentText})
-      console.log("responce==>>>>>", response);
-      enqueueSnackbar("Application declined successfully", { variant: 'success' })
+      const response = await api.handleConfirmationDecline({id, status: "declined", comment: commentText});
+      enqueueSnackbar("Application declined successfully", { variant: 'success' });
       setIsLoadingd(false);
       window.location.reload();
     } catch (error) {
-      console.error(error);
       enqueueSnackbar(error.message, { variant: "error" });
       setIsLoadingd(false);
     }
   }
 
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <Spinner size="xl" color="purple.500" />
+      </div>
+    );
+  }
 
   return (
-
-    <Stack className='container' pl='12'>
-      <div
-        id='no-padding-res'
-        className='d-flex flex-wrap mt-3 align-items-center justify-content-between'>
-        <Link
-          style={{ cursor: "pointer", marginLeft: "-12px" }}
-          onClick={() => navigate(-1)}
-          className='d-flex align-items-center gap-2'>
-          <BsArrowLeftShort size={"40"} />
-          <p className=' fs-5 mt-3 '>Applicant Details</p>
-        </Link>
+    <div className="min-h-screen bg-gray-50">
+      {/* Header */}
+      <div className="bg-white border-b border-gray-200 px-4 md:px-8 py-6">
+        <div className="max-w-4xl mx-auto">
+          <button
+            onClick={() => navigate(-1)}
+            className="flex items-center gap-2 text-gray-600 hover:text-gray-900 mb-4 transition-colors"
+          >
+            <ArrowLeft size={20} />
+            <span className="text-lg font-medium">Back to Applications</span>
+          </button>
+          <div className="flex items-center gap-3">
+            <div className="p-2 bg-purple-100 rounded-lg">
+              <DocumentText className="text-purple-600" size={24} />
+            </div>
+            <div>
+              <h1 className="text-2xl md:text-3xl font-bold text-gray-900">
+                Confirmation of Appointment
+              </h1>
+              <p className="text-gray-600">Application Review</p>
+            </div>
+          </div>
+        </div>
       </div>
-      <Flex gap='5'>
-        <Box>
-          <Box p='5' border='1px solid #D6DDEB  ' h='fit-content'>
-            <Box className='d-flex gap-1 my-4'>
-              <Flex>
-                <Avatar src={details.user_image} size='xl' />
-                <Box ml='3'>
-                  <Text fontWeight='bold'>
-                    {details.full_name}
-                  </Text>
-                  <Text fontSize='sm'>{details.staffID}</Text>
-                  <Text fontSize='sm'>{details.role}</Text>
-                </Box>
-              </Flex>
-            </Box>
-            <Box className='py-2 px-3 ' style={{ backgroundColor: "#F8F8FD" }}>
-              <Flex justifyContent={"space-between"}>
-                <Text m='0' color='#25324B'>
-                Date Applied: 
-                </Text>
-                <Text m='0' color='#7C8493'>
-                {formatshortDate(details.date || "Application Date not available")}
-                </Text>
-              </Flex>
-              <Divider />
 
-              <Text fontWeight='medium' color='#25324B'>
-              Confirmation of Appointment
-              </Text>
-            </Box>
+      {/* Content */}
+      <div className="max-w-4xl mx-auto px-4 md:px-8 py-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          {/* Left Column - Applicant Info & Actions */}
+          <div className="space-y-6">
+            {/* Profile Card */}
+            <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+              <div className="flex items-center gap-4 mb-6">
+                <img
+                  src={details.user_image}
+                  alt={details.full_name}
+                  className="w-16 h-16 rounded-full object-cover"
+                />
+                <div>
+                  <h3 className="text-lg font-semibold text-gray-900">{details.full_name}</h3>
+                  <p className="text-sm text-gray-600">{details.staffID}</p>
+                  <p className="text-sm text-gray-600">{details.role}</p>
+                </div>
+              </div>
+
+              <div className="bg-purple-50 rounded-lg p-4">
+                <div className="flex justify-between items-center mb-2">
+                  <span className="text-sm text-gray-600">Date Applied:</span>
+                  <span className="text-sm font-medium text-gray-900">
+                    {formatshortDate(details.date || "Application Date not available")}
+                  </span>
+                </div>
+                <div className="border-t border-purple-200 pt-2">
+                  <p className="text-sm font-medium text-purple-900">Confirmation of Appointment</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Comment Section */}
             {!isCommentDisplayed && (
-              <>
-                <Box pt='10'>
-                  <Input
-                    h='16'
-                    borderRadius={"0"}
-                    border='1px solid #2D394C1A'
-                    placeholder='Add a comment...'
+              <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                <h3 className="text-lg font-semibold text-gray-900 mb-4">Add Your Comment</h3>
+                <div className="space-y-4">
+                  <textarea
                     value={commentText}
                     onChange={(e) => setCommentText(e.target.value)}
+                    rows={4}
+                    className="w-full px-4 py-3 border border-gray-300 rounded-xl bg-white text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200 hover:border-gray-400 resize-none"
+                    placeholder="Add your comment for this application..."
                   />
-                  <Flex pt='5' gap='4'>
-                    <Button
-                      h='12'
-                      w='full'
-                      borderRadius={"0"}
-                      border='1px solid #2D394C1A'
-                      bg='white'
-                      color='#4640DE'
-                      onClick={handleCommentSubmit}>
-                      Comment
-                    </Button>
-                    <Button
-                      h='12'
-                      w='16'
-                      borderRadius={"0"}
-                      border='1px solid #2D394C1A'
-                      bg='white'
-                      color='#4640DE'>
-                      <BiMessageAltDetail />
-                    </Button>
-                  </Flex>    
-                </Box>
-                <Divider />
-              </>
+                  <button
+                    onClick={handleCommentSubmit}
+                    className="flex items-center gap-2 md:px-6 md:py-3 px-3 py-2 bg-purple-600 text-white rounded-xl hover:bg-purple-700 transition-colors font-medium"
+                  >
+                    <MessageText size={16} />
+                    Add Comment
+                  </button>
+                </div>
+              </div>
             )}
-            </Box>
-            {details.approvals?.map((approval, index) => (
-              <Box key={index} p="5" border="1px solid #D6DDEB" h="fit-content" mt="7">
-                <Flex justifyContent={"space-between"}>
-                  <Text m='0' color='#25324B' className="fw-semibold fs-8">
-                    {approval.role}
-                  </Text>
-                  <Text m='0' color='#7C8493'>
-                    {formatDate(approval.date)}
-                  </Text>
-                </Flex>
-                <Text color="#7C8493" className="text-muted">
-                  {approval.comment || "No comment available"}
-                </Text>
-              </Box>
-            ))}
-            {comments.length > 0 && (
-            <Box p="5" border="1px solid #D6DDEB" h="fit-content" mt="4">
-              <Flex justifyContent={"space-between"}>
-                <Text m='0' color='#25324B' className="fw-semibold fs-8">
-                {userDetails?.data?.role}
-                </Text>
-                <Text m='0' color='#7C8493'>
-                {formatDate(new Date())}
-                </Text>
-              </Flex>
-              {comments.map((comment, index) => (
-                <Text key={index} color="#7C8493" className="text-muted">
-                  {comment}
-                </Text>
-              ))}
-            </Box>
-            )}
+
+            {/* Action Buttons */}
             {shouldDisplayButtons && (
-              <Flex pt='10' w='full' mb="10" justifyContent={"space-between"}>
-                <Button borderRadius={"0"} color='#D02F44' bg='#F8F8FD' onClick={handleDeclinedBtn}>
-                  {isLoadingd ? (
-                        <MoonLoader color={"white"} size={20} />
-                      ) : ( <>Decline</>
-                      )}
-                </Button>
-                <Button borderRadius={"0"} color='white' bg='#388B41' onClick={handleApprovedBtn}>
-                {isLoading ? (
-                        <MoonLoader color={"white"} size={20} />
-                      ) : ( <>Approve</>
-                      )}
-                </Button>
-              </Flex>
+              <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                <h3 className="text-lg font-semibold text-gray-900 mb-4">Application Decision</h3>
+                <div className="flex gap-4">
+                  <button
+                    onClick={handleDeclinedBtn}
+                    disabled={isLoadingd || isLoadinge}
+                    className="flex items-center gap-2 md:px-6 md:py-3 px-3 py-2 bg-red-600 text-white rounded-xl hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 font-medium flex-1"
+                  >
+                    {isLoadingd ? (
+                      <Spinner size="sm" color="white" />
+                    ) : (
+                      <>
+                        <CloseCircle size={16} />
+                        Decline
+                      </>
+                    )}
+                  </button>
+                  <button
+                    onClick={handleApprovedBtn}
+                    disabled={isLoadingd || isLoadinge}
+                    className="flex items-center gap-2 md:px-6 md:py-3 px-3 py-2 bg-green-600 text-white rounded-xl hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 font-medium flex-1"
+                  >
+                    {isLoadinge ? (
+                      <Spinner size="sm" color="white" />
+                    ) : (
+                      <>
+                        <TickCircle size={16} />
+                        Approve
+                      </>
+                    )}
+                  </button>
+                </div>
+              </div>
             )}
-        </Box>
-        <Box
-          h={"fit-content"}
-          pb='20'
-          px='5'
-          className='col-lg-7 border  tb-res-parent'>
-          {/* <div className='tb-res'> */}
-          <Tabs position='relative' variant={"line"} pt={"2"}>
-            <Box className='tab-scroll' overflowX={"auto"}>
-              <Box className='tb-res-2' position={"relative"}>
-                <TabList className='border-bottom'>
-                  <Tab
-                    _focus={{ color: "black" }}
-                    fontWeight={"semibold"}
-                    color={"gray"}>
-                    Applicant Information
-                  </Tab>
-                  {/* <Tab
-                    _focus={{ color: "black" }}
-                    fontWeight={"semibold"}
-                    color={"gray"}>
-                    Document
-                  </Tab> */}
-                </TabList>
-                <TabIndicator
-                  mt='-1.5px'
-                  height='3px'
-                  borderRadius='9px 9px 0 0'
-                />
-              </Box>
-            </Box>
-            <TabPanels>
-              <TabPanel>
-                <Grid templateColumns='repeat(2, 1fr)' gap={6}>
-                  <GridItem w='100%' h='10'>
-                    <Text fontSize={"lg"} color='#7C8493' m='0'>
-                      Full Name
-                    </Text>
-                    <Text fontSize={"lg"} color='#25324B' fontWeight={"medium"}>
-                      {details.full_name}
-                    </Text>
-                  </GridItem>
-                  <GridItem w='100%' h='10'>
-                    <Text fontSize={"lg"} color='#7C8493' m='0'>
-                     Staff Type
-                    </Text>
-                    <Text fontSize={"lg"} color='#25324B' fontWeight={"medium"}>
-                      {details.staff_type}
-                    </Text>
-                  </GridItem>
-                  <GridItem w='100%' h='10'>
-                    <Text fontSize={"lg"} color='#7C8493' m='0'>
-                    Current Level{" "}
-                    </Text>
-                    <Text fontSize={"lg"} color='#25324B' fontWeight={"medium"}>
-                     {details.level}
-                    </Text>
-                  </GridItem>
-                  <GridItem w='100%' h='10'>
-                    <Text fontSize={"lg"} color='#7C8493' m='0'>
-                    PF/CM No{" "}
-                    </Text>
-                    <Text fontSize={"lg"} color='#25324B' fontWeight={"medium"}>
-                     {details.pf_no}
-                    </Text>
-                  </GridItem>
-                  <GridItem w='100%' h='10'>
-                    <Text fontSize={"lg"} color='#7C8493' m='0'>
-                    Date of first Appointment{" "}
-                    </Text>
-                    <Text fontSize={"lg"} color='#25324B' fontWeight={"medium"}>
+          </div>
+
+          {/* Right Column - Application Details & Timeline */}
+          <div className="space-y-6">
+            {/* Application Details */}
+            <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+              <h3 className="text-lg font-semibold text-gray-900 mb-4">Application Information</h3>
+              <div className="space-y-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="text-sm font-medium text-gray-500">Staff Type</label>
+                    <p className="text-base font-medium text-gray-900 mt-1">{details.staff_type}</p>
+                  </div>
+                  <div>
+                    <label className="text-sm font-medium text-gray-500">Current Level</label>
+                    <p className="text-base font-medium text-gray-900 mt-1">{details.level}</p>
+                  </div>
+                  <div>
+                    <label className="text-sm font-medium text-gray-500">PF/CM No</label>
+                    <p className="text-base font-medium text-gray-900 mt-1">{details.pf_no}</p>
+                  </div>
+                  <div>
+                    <label className="text-sm font-medium text-gray-500">Grade on First Appointment</label>
+                    <p className="text-base font-medium text-gray-900 mt-1">{details.grade_of_first_appointment}</p>
+                  </div>
+                </div>
+                
+                <div>
+                  <label className="text-sm font-medium text-gray-500">Date of First Appointment</label>
+                  <p className="text-base font-medium text-gray-900 mt-1">
                     {formatDate(details.date_of_first_appointment)}
-                    </Text>
-                  </GridItem>
-                  <GridItem w='100%' h='12'>
-                    <Text fontSize={"lg"} color='#7C8493' m='0'>
-                      Division/Department/Unit
-                    </Text>
-                    <Text fontSize={"sm"} color='#25324B' fontWeight={"medium"}>
-                    {details.department?.name || details.faculty?.name || details.unit?.name}
-                    </Text>
-                  </GridItem>
-                  <GridItem w='100%' h='10'>
-                    <Text fontSize={"lg"} color='#7C8493' m='0'>
-                    Date of present Appointment{" "}
-                    </Text>
-                    <Text fontSize={"lg"} color='#25324B' fontWeight={"medium"}>
+                  </p>
+                </div>
+                
+                <div>
+                  <label className="text-sm font-medium text-gray-500">Date of Present Appointment</label>
+                  <p className="text-base font-medium text-gray-900 mt-1">
                     {formatDate(details.date_of_present_appointment)}
-                    </Text>
-                  </GridItem>
-                  <GridItem w='100%' h='10'>
-                    <Text fontSize={"lg"} color='#7C8493' m='0'>
-                     Grade on First Appointment
-                    </Text>
-                    <Text fontSize={"lg"} color='#25324B' fontWeight={"medium"}>
-                      {details.grade_of_first_appointment}
-                    </Text>
-                  </GridItem>
-                  <GridItem w='100%' h='10'>
-                    <Text fontSize={"lg"} color='#7C8493' m='0'>
-                     Grade on temporary Appointment
-                    </Text>
-                    <Text fontSize={"lg"} color='#25324B' fontWeight={"medium"}>
-                      {details.grade_on_temporary_appointment}
-                    </Text>
-                  </GridItem>
-                  <GridItem w='100%' h='12'>
-                    <Text fontSize={"md"} color='#7C8493' m='0'>
-                    Details of work done since Appointment
-                    </Text>
-                    <Text fontSize={"sm"} color='#25324B' fontWeight={"medium"}>
-                      {details.details_of_work_done_since_appointment}
-                    </Text>
-                  </GridItem>
-                  
-                </Grid>
-              </TabPanel>
-              {/* <TabPanel>Document</TabPanel> */}
-            </TabPanels>
-          </Tabs>
-          {/* </div> */}
-        </Box>
-      </Flex>
-    </Stack>
+                  </p>
+                </div>
+                
+                <div>
+                  <label className="text-sm font-medium text-gray-500">Division/Department/Unit</label>
+                  <p className="text-base font-medium text-gray-900 mt-1">
+                    {details.department?.name || details.faculty?.name || details.unit?.name}
+                  </p>
+                </div>
+                
+                <div>
+                  <label className="text-sm font-medium text-gray-500">Grade on Temporary Appointment</label>
+                  <p className="text-base font-medium text-gray-900 mt-1">{details.grade_on_temporary_appointment}</p>
+                </div>
+                
+                <div>
+                  <label className="text-sm font-medium text-gray-500">Details of Work Done Since Appointment</label>
+                  <p className="text-sm text-gray-900 mt-1 leading-relaxed">
+                    {details.details_of_work_done_since_appointment}
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Approval Timeline */}
+            <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+              <h3 className="text-lg font-semibold text-gray-900 mb-4">Approval Timeline</h3>
+              <div className="space-y-4">
+                {details.approvals?.map((approval, index) => (
+                  <div key={index} className="border border-gray-200 rounded-lg p-4">
+                    <div className="flex justify-between items-start mb-2">
+                      <span className="text-sm font-medium text-gray-900">{approval.role}</span>
+                      <div className="flex items-center gap-1 text-xs text-gray-500">
+                        <Clock size={12} />
+                        {formatDate(approval.date)}
+                      </div>
+                    </div>
+                    <p className="text-sm text-gray-600">
+                      {approval.comment || "No comment available"}
+                    </p>
+                  </div>
+                ))}
+                
+                {comments.length > 0 && (
+                  <div className="border border-purple-200 rounded-lg p-4 bg-purple-50">
+                    <div className="flex justify-between items-start mb-2">
+                      <span className="text-sm font-medium text-gray-900">{userDetails?.data?.role}</span>
+                      <div className="flex items-center gap-1 text-xs text-gray-500">
+                        <Clock size={12} />
+                        {formatDate(new Date())}
+                      </div>
+                    </div>
+                    {comments.map((comment, index) => (
+                      <p key={index} className="text-sm text-gray-600">
+                        {comment}
+                      </p>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 };
 
-export default AppointmentConfirmationDetails
+export default AppointmentConfirmationDetails;

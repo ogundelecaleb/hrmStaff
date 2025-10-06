@@ -1,32 +1,32 @@
-import React, { useState, useEffect, useCallback } from "react";
-import { TbDirection, TbGridDots } from "react-icons/tb";
+import React, { useState, useEffect } from "react";
+import { Spinner } from "@chakra-ui/react";
+import { TbGridDots } from "react-icons/tb";
 import { MdSearch } from "react-icons/md";
 import { useSnackbar } from "notistack";
 import api from "../../../../api";
-import { useNavigate, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import {
-  Box,
-} from "@chakra-ui/react";
-import { MoonLoader } from "react-spinners";
-import NoData from "../../../../components/NoData"
+import NoData from "../../../../components/NoData";
+import { AiOutlineMenu } from "react-icons/ai";
+import { Filter } from "iconsax-react";
 
 const AppointmentConfirmation = () => {
-
+  const { enqueueSnackbar } = useSnackbar();
   const [page, setPage] = useState(1);
-
+  const [searchTerm, setSearchTerm] = useState("");
 
   async function getConfirmation(page) {
-    const response = await api.fetchMyConfrimationRequest({ params: { page } })
+    const response = await api.fetchMyConfrimationRequest({ params: { page } });
     return response;
   }
 
-  const { isLoading, isError, data, error, isPreviousData, refetch } = useQuery(['confirmationRequests', page], () =>
-    getConfirmation(page),
+  const { isLoading, isError, data, error, isPreviousData, refetch } = useQuery(
+    ['confirmationRequests', page], 
+    () => getConfirmation(page),
     {
-      keepPreviousData: true, refetchOnWindowFocus: "always",
+      keepPreviousData: true, 
+      refetchOnWindowFocus: "always",
     }
-
   );
   
   function formatDate(dateString) {
@@ -37,186 +37,205 @@ const AppointmentConfirmation = () => {
     return `${year}-${month}-${day}`;
   }
 
-  if (isLoading) {
+  if (isLoading && !data) {
     return (
-        <Box
-        w={"80vw"}
-        display="flex"
-        flexDirection="column"
-        h={"80vh"}
-        alignItems="center"
-        justifyContent="center"
-        >
-        <div
-            className="fixed inset-0 flex items-center justify-center bg-white bg-opacity-70"
-            style={{ zIndex: 9999 }}
-        >
-            <div className="inline-block">
-            <MoonLoader color={"#984779"} size={80} />
-            </div>
-        </div>
-        </Box>
+      <div className="flex justify-center items-center h-screen">
+        <Spinner size="xl" color="purple.500" />
+      </div>
     );
   }
 
-  return (  
-  
-    <div className='container px-4 border-top'>
-      <div className='px-3 tb-res-parent mt-4  '>
-        <div className='tb-res'>
-          <table class='table table-hover'>
-            <thead>
-              <tr className='border'>
-                <th scope='col' className='py-3'>
-                  <input type='checkbox' className='border' />
+  return (
+    <div className="min-h-screen bg-gray-50 p-4 md:p-6">
+      {/* Header */}
+      <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-6">
+        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+          <div>
+            <h1 className="text-2xl font-bold text-gray-900 mb-2">Appointment Confirmation</h1>
+            <p className="text-gray-600">Total Applications: {data?.meta?.total || 0}</p>
+          </div>
+          
+          {/* Search and Actions */}
+          <div className="flex flex-col sm:flex-row gap-4">
+            {/* Search Input */}
+            <div className="relative">
+              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <MdSearch className="h-5 w-5 text-gray-400" />
+              </div>
+              <input
+                type="text"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-xl leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200"
+                placeholder="Search for staff..."
+              />
+            </div>
+            
+            {/* Action Buttons */}
+            <div className="flex gap-2">
+              <button className="flex items-center gap-2 px-4 py-3 border border-gray-300 rounded-xl hover:bg-gray-50 transition-colors">
+                <TbGridDots size={16} />
+              </button>
+              <button className="flex items-center gap-2 px-4 py-3 border border-gray-300 rounded-xl hover:bg-gray-50 transition-colors">
+                <AiOutlineMenu size={16} />
+              </button>
+              <button className="flex items-center gap-2 px-4 py-3 border border-gray-300 rounded-xl hover:bg-gray-50 transition-colors">
+                <Filter size={16} />
+                <span className="hidden sm:inline">Filter</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Desktop Table */}
+      <div className="hidden lg:block bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+        <div className="overflow-x-auto">
+          <table className="min-w-full divide-y divide-gray-200">
+            <thead className="bg-gray-50">
+              <tr>
+                <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <input type="checkbox" className="rounded border-gray-300 text-purple-600 focus:ring-purple-500" />
                 </th>
-                <th scope='col' className='fw-light py-3 text-muted fs-6'>
-                  Applicant Name{" "}
-                  <label style={{ marginBottom: "-8px" }}>
-                    <TbDirection size={"25"} />
-                  </label>
+                <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Applicant Name
                 </th>
-                <th scope='col' className='fw-light py-3 text-muted fs-6'>
-                  Stage{" "}
-                  <label style={{ marginBottom: "-8px" }}>
-                    <TbDirection size={"25"} />
-                  </label>
+                <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Stage
                 </th>
-                <th scope='col' className='fw-light py-3 text-muted fs-6'>
-                  Applied Date{" "}
-                  <label style={{ marginBottom: "-8px" }}>
-                    <TbDirection size={"25"} />
-                  </label>
+                <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Applied Date
                 </th>
-                <th scope='col' className='fw-light py-3 text-muted fs-6'>
-                  Department{" "}
-                  <label style={{ marginBottom: "-8px" }}>
-                    <TbDirection size={"25"} />
-                  </label>
+                <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Department
                 </th>
-                <th scope='col' className='fw-light py-3 text-muted fs-6'>
-                  Action{" "}
-                  <label style={{ marginBottom: "-8px" }}>
-                    <TbDirection size={"25"} />
-                  </label>
+                <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Action
                 </th>
               </tr>
             </thead>
-            <br />
-            {data?.data?.map((item) => (
-              <tbody key={item.id} className='border'>
-                <tr>
-                  <th scope='row'>
-                    <input type='checkbox' className='mt-4' />
-                  </th>
-                  <td>
-                    <div className='d-flex gap-4'>
-                       <img
+            <tbody className="bg-white divide-y divide-gray-200">
+              {data?.data?.map((item) => (
+                <tr key={item.id} className="hover:bg-gray-50 transition-colors">
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <input type="checkbox" className="rounded border-gray-300 text-purple-600 focus:ring-purple-500" />
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <div className="flex items-center">
+                      <img
+                        className="h-10 w-10 rounded-full object-cover"
                         src={item.user_image}
-                        style={{
-                          borderRadius: "50%",
-                          width: "40px",
-                          height: "40px",
-                        }}
-                        className='mt-2'
-                        alt='/'
+                        alt=""
                       />
-                      <div style={{ lineHeight: "5px" }}>
-                        <p className='fw-semibold mt-3'>{item.full_name}</p>
-                        <p className='fw-lighter text-muted'>{item.id}</p>
+                      <div className="ml-4">
+                        <div className="text-sm font-medium text-gray-900">{item.full_name}</div>
+                        <div className="text-sm text-gray-500">ID: {item.id}</div>
                       </div>
                     </div>
                   </td>
-                  <td>
-                    <button className='btn fw-semibold btn-outline-primary mt-3 btn-sm rounded-5'>
-                    {item.stage}
-                    </button>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <span className="inline-flex px-3 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-800">
+                      {item.stage}
+                    </span>
                   </td>
-                  <td className='fw-semibold'>
-                  <p className='mt-3'>{formatDate(item.date)}</p>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                    {formatDate(item.date)}
                   </td>
-                  <td className='fw-semibold pt-4'>{item.department?.name || item.faculty?.name || item.unit?.name}</td>
-                  <td className='fw-semibold'>
-                    <Link
-                      to={`confirmation-details/${item.id}`}
-                      state={{ item: item }}>
-                      <button
-                        className='btn py-1 px-3 rounded-0 mt-3 btn-sm rounded-0 fw-semibold'
-                        style={{
-                          border: "1px solid #984779",
-                          color: "#987779",
-                          backgroundColor: "#E9EBFD",
-                        }}>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                    {item.department?.name || item.faculty?.name || item.unit?.name}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <Link to={`confirmation-details/${item.id}`} state={{ item: item }}>
+                      <button className="inline-flex items-center px-4 py-2 border border-purple-300 rounded-lg text-sm font-medium text-purple-700 bg-purple-50 hover:bg-purple-100 transition-colors">
                         View Application
                       </button>
                     </Link>
                   </td>
                 </tr>
-              </tbody>
-            ))}
+              ))}
+            </tbody>
           </table>
         </div>
       </div>
-      {data && data.data && data?.data?.length === 0 && ( 
-        <Box
-          w={"80vw"}
-          display="flex"
-          flexDirection="column"
-          h={"20vh"}
-          alignItems="center"
-          justifyContent="center"
-        >
-          <div className='row mt-5 ' style={{ height: "10px", width:"80%"}}>
-            <NoData/>
+
+      {/* Mobile Cards */}
+      <div className="lg:hidden space-y-4">
+        {data?.data?.map((item) => (
+          <div key={item.id} className="bg-white rounded-xl shadow-sm border border-gray-200 p-4">
+            <div className="flex items-start justify-between mb-3">
+              <div className="flex items-center space-x-3">
+                <input type="checkbox" className="rounded border-gray-300 text-purple-600 focus:ring-purple-500" />
+                <img
+                  className="h-12 w-12 rounded-full object-cover"
+                  src={item.user_image}
+                  alt=""
+                />
+                <div>
+                  <h3 className="text-sm font-medium text-gray-900">{item.full_name}</h3>
+                  <p className="text-xs text-gray-500">ID: {item.id}</p>
+                </div>
+              </div>
+              <span className="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-800">
+                {item.stage}
+              </span>
+            </div>
+            
+            <div className="space-y-2 mb-4">
+              <div className="flex justify-between text-sm">
+                <span className="text-gray-500">Applied Date:</span>
+                <span className="text-gray-900">{formatDate(item.date)}</span>
+              </div>
+              <div className="flex justify-between text-sm">
+                <span className="text-gray-500">Department:</span>
+                <span className="text-gray-900">{item.department?.name || item.faculty?.name || item.unit?.name}</span>
+              </div>
+            </div>
+            
+            <Link to={`confirmation-details/${item.id}`} state={{ item: item }}>
+              <button className="w-full inline-flex justify-center items-center px-4 py-2 border border-purple-300 rounded-lg text-sm font-medium text-purple-700 bg-purple-50 hover:bg-purple-100 transition-colors">
+                View Application
+              </button>
+            </Link>
           </div>
-  
-        </Box>
+        ))}
+      </div>
+
+      {/* Empty State */}
+      {data?.data?.length === 0 && (
+        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-12">
+          <NoData />
+        </div>
       )}
-      {data && data.data && data?.data?.length > 0 && (
-          <div className='row px-4'>
-            <div className='col-lg-4 d-flex gap-3 align-items-center '>
-              <div className="mt-4 flex justify-center text-gray-500 text-sm">
-                <span className="mr-2">
-                  Showing {data?.meta?.from} - {data.meta?.to}{" "}
-                  of {data?.meta?.total} results
-                </span>
-                <span className="mr-2">|</span>
-                <span className="mr-2">
-                  Page {data?.meta?.current_page} of {data?.meta?.last_page}
-                </span>
-                <span className="mr-2">|</span>
-                {/* <span className="mr-2">Page Size: {data?.meta?.per_page}</span> */}
-              </div>
+
+      {/* Pagination */}
+      {data?.data?.length > 0 && (
+        <div className="bg-white rounded-xl shadow-sm border border-gray-200 px-6 py-4 mt-6">
+          <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
+            <div className="text-sm text-gray-500">
+              Showing {data?.meta?.from} - {data?.meta?.to} of {data?.meta?.total} results
+              <span className="mx-2">|</span>
+              Page {data?.meta?.current_page} of {data?.meta?.last_page}
             </div>
-            <div className='col-lg-4 '></div>
-            <div className='col-lg-4'>
-              <div className='d-flex justify-content-end py-2 mt-4 px-5'>
-                <h1>
-                 
-                    <nav aria-label='Page navigation example'>
-                      <ul class='pagination'>
-                        <li className={`page-item ${data?.meta?.current_page === 1 ? 'disabled' : ''}`}>
-                          <p className='page-link'  onClick={() => setPage(prev => Math.max(prev - 1, 1))} disabled={data.links.prev === null || data?.meta?.current_page === 1 || isPreviousData}>
-                            <span aria-hidden='true'>Prev</span>
-                          </p>
-                        </li>
-
-                        
-
-                        <li className={`page-item ${data?.meta?.current_page === data?.meta?.last_page ? 'disabled' : ''}`}>
-                          <p className='page-link' onClick={() => setPage(prev => prev + 1)}
-                    disabled={data.links.next === null || data?.meta?.current_page === data?.meta?.last_page || isPreviousData}>
-                            <span aria-hidden='true'>Next</span>
-                          </p>
-                        </li>
-                      </ul>
-                    </nav>
-                 
-                </h1>
-              </div>
+            
+            <div className="flex gap-2">
+              <button
+                onClick={() => setPage(prev => Math.max(prev - 1, 1))}
+                disabled={data?.meta?.current_page === 1 || isPreviousData}
+                className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              >
+                Previous
+              </button>
+              <button
+                onClick={() => setPage(prev => prev + 1)}
+                disabled={data?.meta?.current_page === data?.meta?.last_page || isPreviousData}
+                className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              >
+                Next
+              </button>
             </div>
           </div>
-          )}
+        </div>
+      )}
     </div>
   );
 };

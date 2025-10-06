@@ -10,9 +10,9 @@ const Resumption = () => {
   const [page, setPage] = useState(1);
   const [selectedStatus, setSelectedStatus] = useState("All");
   const [userDetails, setUserDetails] = useState(null);
-  const [firstName, setFirstName] = useState("")
-  const [lastName, setLastName] = useState("")
-  const [pf, setPf] = useState("")
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [pf, setPf] = useState("");
   const navigate = useNavigate();
 
   async function fetchUserDetails() {
@@ -34,7 +34,9 @@ const Resumption = () => {
 
       if (["HNASEJ"].includes(role)) {
         // Fetch data for 'HOD' or 'HNASEJ' role
-        const response = await api.getNasejResumption({ params: { page, first_name:firstName } });
+        const response = await api.getNasejResumption({
+          params: { page, first_name: firstName },
+        });
         return response;
       } else if (["HNASES"].includes(role)) {
         // Fetch data for 'HOD' or 'HNASES' role
@@ -87,31 +89,31 @@ const Resumption = () => {
   });
   return (
     <div className="p-4 md:p-6">
-     <h3  className="text-lg font-semibold">Leave Resumption</h3> 
+      <h3 className="text-lg font-semibold">Leave Resumption</h3>
       <div className="flex items-center gap-4 overflow-x-auto custom-scrollbar mt-4">
-        <Filter color="purple" variant="Bold"/>
-            <input
-              type="text"
-              placeholder="First Name"
-              className="w-[200px] h-[36px] bg-[#F9FAFB]  px-2 py-[8px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#667185] placeholder:text-[12px]  border-[#D0D5DD] focus:border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#9326ae] focus:border-[#9326ae] "
-              value={firstName}
-              onChange={(e) => setFirstName(e.target.value)}
-            />
-               <input
-              type="text"
-              placeholder="Last Name"
-              className="w-[200px] h-[36px] bg-[#F9FAFB]  px-2 py-[8px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#667185] placeholder:text-[12px]  border-[#D0D5DD] focus:border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#9326ae] focus:border-[#9326ae] "
-              value={lastName}
-              onChange={(e) => setLastName(e.target.value)}
-            />
-               <input
-              type="text"
-              placeholder="PF Number"
-              className="w-[200px] h-[36px] bg-[#F9FAFB]  px-2 py-[8px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#667185] placeholder:text-[12px]  border-[#D0D5DD] focus:border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#9326ae] focus:border-[#9326ae] "
-              value={pf}
-              onChange={(e) => setPf(e.target.value)}
-            />
-            </div>
+        <Filter color="purple" variant="Bold" />
+        <input
+          type="text"
+          placeholder="First Name"
+          className="w-[200px] h-[36px] bg-[#F9FAFB]  px-2 py-[8px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#667185] placeholder:text-[12px]  border-[#D0D5DD] focus:border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#9326ae] focus:border-[#9326ae] "
+          value={firstName}
+          onChange={(e) => setFirstName(e.target.value)}
+        />
+        <input
+          type="text"
+          placeholder="Last Name"
+          className="w-[200px] h-[36px] bg-[#F9FAFB]  px-2 py-[8px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#667185] placeholder:text-[12px]  border-[#D0D5DD] focus:border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#9326ae] focus:border-[#9326ae] "
+          value={lastName}
+          onChange={(e) => setLastName(e.target.value)}
+        />
+        <input
+          type="text"
+          placeholder="PF Number"
+          className="w-[200px] h-[36px] bg-[#F9FAFB]  px-2 py-[8px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#667185] placeholder:text-[12px]  border-[#D0D5DD] focus:border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#9326ae] focus:border-[#9326ae] "
+          value={pf}
+          onChange={(e) => setPf(e.target.value)}
+        />
+      </div>
       <div className="sm:-mx-6 lg:-mx-8 mt-3 ">
         <div className="inline-block min-w-full sm:px-6 lg:px-8">
           <div className="overflow-x-auto rounded-lg">
@@ -212,13 +214,16 @@ const Resumption = () => {
                         {result?.leave?.leave_duration}
                       </td>
                       <td className="whitespace-nowrap text-center py-[16px] bg-white px-3 border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px] text-[#667185] font-medium">
-                        <button   onClick={() =>
-                          navigate("/portal/resumption-details", {
-                            state: {
-                              details: result,
-                            },
-                          })
-                        } className="px-2 py-[6px] bg-purple-800 hover:bg-purple-700 text-white rounded-md">
+                        <button
+                          onClick={() =>
+                            navigate("/portal/resumption-details", {
+                              state: {
+                                details: result,
+                              },
+                            })
+                          }
+                          className="px-2 py-[6px] bg-purple-800 hover:bg-purple-700 text-white rounded-md"
+                        >
                           View Details
                         </button>
                       </td>

@@ -1,19 +1,27 @@
 import {
   Avatar,
-  AvatarIcon,
   Box,
-  Flex,
-  HStack,
   Link,
   Text,
-  VStack,
   WrapItem,
+  Spinner,
+  Badge,
+  Divider,
 } from "@chakra-ui/react";
 import React, { useState, useEffect } from "react";
 import { useSnackbar } from "notistack";
 import { getUserDetails } from "../../../utils/utils";
 import { RxAvatar } from "react-icons/rx";
-import { MoonLoader } from "react-spinners";
+import { 
+  User, 
+  Call, 
+  Location, 
+  Briefcase, 
+  People, 
+  Heart, 
+  Award, 
+  Setting2 
+} from "iconsax-react";
 import api from "../../../api";
 
 const Settings = ({ reuseableNavigation }) => {
@@ -52,341 +60,249 @@ const Settings = ({ reuseableNavigation }) => {
     fetchRoles()
   }, []);
 
-  const Details = ({ label, fullName }) => {
+  const DetailItem = ({ label, value, icon }) => {
+    if (!value) return null;
     return (
-      <Box mt="3" className="flex items-center ">
-        <Text className="whitespace-nowrap" fontWeight={"medium"} m="0" color={"#7C8493"} fontSize={"16px"}>
-          {label}
-        </Text>
-        <Text fontWeight={"medium"} m="0" color={"#7C8493"} fontSize={"16px"}>
-          {":"}
-        </Text>
-        <Text
-          fontWeight={"medium"}
-          m="0"
-          color={"#25324B"}
-          fontSize={"16px"}
-          className="pl-2"
-        >
-          {fullName}
-        </Text>
-      </Box>
+      <div className="flex items-start gap-3 py-2">
+        {icon && <div className="text-[#984779] mt-1">{icon}</div>}
+        <div className="flex-1">
+          <p className="text-sm text-gray-500 mb-1">{label}</p>
+          <p className="text-gray-900 font-medium">{value}</p>
+        </div>
+      </div>
+    );
+  };
+
+  const SectionCard = ({ title, icon, children, className = "" }) => {
+    return (
+      <div className={`bg-white rounded-lg border border-gray-200 p-4 md:p-6 shadow-sm ${className}`}>
+        <div className="flex items-center gap-3 mb-4">
+          <div className="text-[#984779]">{icon}</div>
+          <h3 className="text-lg font-semibold text-gray-900">{title}</h3>
+        </div>
+        <div className="space-y-1">{children}</div>
+      </div>
     );
   };
 
   return (
     <div>
       {isLoadinge ? (
-        <Box
-          w={"85vw"}
-          display="flex"
-          flexDirection="column"
-          h={"80vh"}
-          alignItems="center"
-          justifyContent="center"
-        >
-          <div
-            className="fixed inset-0 flex items-center justify-center bg-white bg-opacity-70"
-            style={{ zIndex: 9999 }}
-          >
-            <div className="inline-block">
-              <MoonLoader color={"#984779"} size={80} />
+        <div className="flex justify-center items-center h-screen">
+          <Spinner size="xl" color="purple.500" />
+        </div>
+      ) : (
+        <div className="min-h-screen bg-gray-50 px-4 md:px-6 py-6">
+          {/* Header */}
+          <div className="bg-white rounded-lg border border-gray-200 p-4 md:p-6 mb-6 shadow-sm">
+            <div className="flex flex-col md:flex-row items-start md:items-center gap-6">
+              <div className="relative">
+                {userDetails.image ? (
+                  <Avatar
+                    h={"120px"}
+                    w={"120px"}
+                    src={userDetails.image}
+                    borderWidth={4}
+                    borderColor={"#984779"}
+                  />
+                ) : (
+                  <div className="w-[120px] h-[120px] bg-gray-100 rounded-full flex items-center justify-center border-4 border-[#984779]">
+                    <RxAvatar size={80} color={"#984779"} />
+                  </div>
+                )}
+                <Badge
+                  position="absolute"
+                  bottom="0"
+                  right="0"
+                  colorScheme="purple"
+                  borderRadius="full"
+                  px={3}
+                  py={1}
+                >
+                  {userDetails?.role}
+                </Badge>
+              </div>
+              <div className="flex-1">
+                <h1 className="text-3xl font-bold text-gray-900 mb-2">
+                  {userDetails?.first_name} {userDetails?.last_name}
+                </h1>
+                <p className="text-lg text-gray-600 mb-2">
+                  {roles?.find(role => role.name === userDetails?.role)?.description}
+                </p>
+                <div className="flex flex-wrap gap-4 text-sm text-gray-500">
+                  <span className="flex items-center gap-1">
+                    <Call size={16} />
+                    {userDetails?.phone}
+                  </span>
+                  <span className="flex items-center gap-1">
+                    <Location size={16} />
+                    {userDetails?.email}
+                  </span>
+                </div>
+              </div>
+              <div className="flex flex-col gap-2">
+                <button
+                  onClick={() => reuseableNavigation("change-password")}
+                  className="flex items-center gap-2 px-4 py-2 bg-[#984779] text-white rounded-lg hover:bg-[#7a3660] transition-colors"
+                >
+                  <Setting2 size={16} />
+                  Change Password
+                </button>
+              </div>
             </div>
           </div>
-        </Box>
-      ) : (
-        <div
-          className="px-4 md:px-6 h-screen overflow-y-auto"
-         // style={{ width: "100%", height: "900px" }}
-        >
-          <Box borderBottom="1px solid #EBEAED">
-            <Text fontSize={28} py="3" m="0" fontWeight="medium">
-              Profile
-            </Text>
-          </Box>
-          <Box pt="10">
-            <WrapItem>
-              {userDetails.image ? (
-                <Avatar
-                  h={"100px"}
-                  w={"100px"}
-                  src={userDetails.image}
-                  borderWidth={1}
-                  borderColor={"#ccc"}
-                />
-              ) : (
-                <RxAvatar size={130} color={"#25324B"} />
+
+          {/* Content Grid */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
+            {/* Personal Information */}
+            <SectionCard
+              title="Personal Information"
+              icon={<User size={20} />}
+            >
+              <DetailItem label="Title" value={userDetails?.title} />
+              <DetailItem label="Date of Birth" value={userDetails?.date_of_birth} />
+              <DetailItem label="Age" value={userDetails?.age} />
+              <DetailItem label="Gender" value={userDetails?.gender} />
+              <DetailItem label="Blood Group" value={userDetails?.blood_group} />
+              <DetailItem label="State of Origin" value={userDetails?.state_of_origin} />
+              <DetailItem label="Nationality" value={userDetails?.nationality} />
+              <DetailItem label="Marital Status" value={userDetails?.marital_status} />
+            </SectionCard>
+
+            {/* Contact Information */}
+            <SectionCard
+              title="Contact Information"
+              icon={<Call size={20} />}
+            >
+              <DetailItem label="Phone Number" value={userDetails?.phone} />
+              <DetailItem label="Email Address" value={userDetails?.email} />
+              <DetailItem label="Home Address" value={userDetails?.address} />
+              <DetailItem label="Contact Address" value={userDetails?.contact_address} />
+            </SectionCard>
+
+            {/* Work Details */}
+            <SectionCard
+              title="Work Details"
+              icon={<Briefcase size={20} />}
+            >
+              <DetailItem label="Staff Number" value={userDetails?.staff_number} />
+              <DetailItem label="Date of First Appointment" value={userDetails?.date_of_first_appointment} />
+              <DetailItem label="Level" value={userDetails?.level} />
+              {userDetails?.unit && (
+                <DetailItem label="Office" value={userDetails?.unit?.name} />
               )}
-            </WrapItem>
-            <div className="grid grid-cols sm:grid-cols-2  lg:grid-cols-3  gap-5 py-4">
-              <Box>
-                <Box>
-                  <p className="text-lg font-semibold mt-2 mb-[0px]">
-                    Personal Information
-                  </p>
-                  <Details
-                    label={"Title"}
-                    fullName={`${userDetails?.title} `}
-                  />
-                  <Details
-                    label={"Full Name"}
-                    fullName={`${userDetails?.first_name} ${userDetails?.last_name}`}
-                  />
+              {userDetails?.department && (
+                <>
+                  <DetailItem label="Department" value={userDetails?.department?.name} />
+                  <DetailItem label="Faculty" value={userDetails?.faculty?.name} />
+                </>
+              )}
+            </SectionCard>
 
-                  <Details
-                    label={"Date of Birth"}
-                    fullName={userDetails?.date_of_birth}
-                  />
-                  <Details label={"Age"} fullName={userDetails?.age} />
-                  <Details label={"Gender"} fullName={userDetails?.gender} />
-                  <Details
-                    label={"Blood Group"}
-                    fullName={userDetails?.blood_group}
-                  />
+            {/* Family Details */}
+            {(userDetails?.spouse?.full_name || userDetails?.children?.length > 0) && (
+              <SectionCard
+                title="Family Details"
+                icon={<People size={20} />}
+                className="lg:col-span-2"
+              >
+                {userDetails?.spouse?.full_name && (
+                  <div className="mb-4">
+                    <h4 className="font-semibold text-gray-700 mb-2">Spouse Information</h4>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <DetailItem label="Name" value={userDetails?.spouse?.full_name} />
+                      <DetailItem label="Phone" value={userDetails?.spouse?.phone} />
+                      <DetailItem label="Email" value={userDetails?.spouse?.email} />
+                      <DetailItem label="Address" value={userDetails?.spouse?.address} />
+                    </div>
+                  </div>
+                )}
+                {userDetails?.children?.length > 0 && (
+                  <div>
+                    <h4 className="font-semibold text-gray-700 mb-2">Children</h4>
+                    <div className="space-y-4">
+                      {userDetails?.children?.map((child, index) => (
+                        <div key={index} className="border-l-4 border-[#984779] pl-4">
+                          <h5 className="font-medium text-gray-600 mb-2">Child {index + 1}</h5>
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                            <DetailItem label="Name" value={child?.full_name} />
+                            <DetailItem label="Gender" value={child?.gender} />
+                            <DetailItem label="Date of Birth" value={child?.date_of_birth} />
+                            <DetailItem label="Phone" value={child?.phone} />
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </SectionCard>
+            )}
 
-                  <Details
-                    label={"State of Origin"}
-                    fullName={userDetails?.state_of_origin}
-                  />
-                  <Details
-                    label={"Nationality"}
-                    fullName={userDetails?.nationality}
-                  />
-                  <Details
-                    label={"Marital Status"}
-                    fullName={userDetails?.marital_status}
-                  />
-                </Box>
-                <Box mt="20" display={"flex"} flexDirection={"column"} gap={5}>
-                  {/* <Link
-                    fontSize={"16px"}
-                    fontWeight={"medium"}
-                    onClick={() => reuseableNavigation("edit-profile")}
-                    color={"#984779"}
-                  >
-                    Edit Details
-                  </Link> */}
-                  <Link
-                    fontSize={"16px"}
-                    fontWeight={"medium"}
-                    onClick={() => reuseableNavigation("change-password")}
-                    color={"#984779"}
-                  >
-                    Change Password
-                  </Link>
-                </Box>
-              </Box>
-              <Box>
-                <Box>
-                  <p className="text-lg font-semibold mt-2 mb-[0px]">
-                    Contact Information
-                  </p>
-                  <Details
-                    label={"Phone Number "}
-                    fullName={userDetails?.phone}
-                  />
-                  <Details
-                    label={"E-mail Address "}
-                    fullName={userDetails?.email}
-                  />
-                  <Details
-                    label={"Home Address "}
-                    fullName={userDetails?.address}
-                  />
-
-                  <Details
-                    label={"Contact Address "}
-                    fullName={userDetails?.contact_address}
-                  />
-
-                  <p className="mt-2 mb-0 text-gray-900 underline">
-                    Work Details
-                  </p>
-                  <Details
-                    label={"Date of First Appointment"}
-                    fullName={userDetails?.date_of_first_appointment}
-                  />
-                    <Details
-                    label={"Staff Number "}
-                    fullName={userDetails?.staff_number}
-                  />
-
-                  {userDetails?.unit && (
-                    <>
-                      <Details
-                        label={"Office"}
-                        fullName={userDetails?.unit?.name}
-                      />
-                    </>
-                  )}
-
-                  {userDetails?.department && (
-                    <>
-                      <Details
-                        label={"Department"}
-                        fullName={userDetails?.department?.name}
-                      />
-                      <Details
-                        label={"Faculty"}
-                        fullName={userDetails?.faculty?.name}
-                      />
-                    </>
-                  )}
-                  <Details label={"Level"} fullName={userDetails?.level} />
-
-                  <Details label={"Designation"} fullName={roles && roles?.map((role)=> role.name === userDetails?.role ?  role.description : "") } />
-                </Box>
-              </Box>
-              <Box>
-                <Box>
-                  <p className="text-lg font-semibold mt-2 mb-[0px]">
-                    Family Details
-                  </p>
-
-
-                  {userDetails?.spouse?.full_name && (
-                    <>
-                      <Details
-                        label={"Spouse Name"}
-                        fullName={userDetails?.spouse?.full_name}
-                      />
-                      <Details
-                        label={"Spouse Contact"}
-                        fullName={userDetails?.spouse?.phone}
-                      />
-                      <Details
-                        label={"Spouse Email"}
-                        fullName={userDetails?.spouse?.email}
-                      />
-                      <Details
-                        label={"Spouse Address"}
-                        fullName={userDetails?.spouse?.address}
-                      />
-                    </>
-                  )}
-
-                  <p className="mt-2 mb-0 text-gray-900 underline">
-                    Children Details
-                  </p>
-
-                  {userDetails &&
-                    userDetails?.children?.map((child) => (
-                      <>
-                        <Details
-                          label={"Child Name"}
-                          fullName={child?.full_name}
-                        />
-                        <Details
-                          label={"Child Phone"}
-                          fullName={child?.phone}
-                        />
-                        <Details
-                          label={"Child Email"}
-                          fullName={child?.email}
-                        />
-                        <Details
-                          label={"Child Gender"}
-                          fullName={child?.gender}
-                        />
-                        <Details
-                          label={"Child Date Of Birth"}
-                          fullName={child?.date_of_birth}
-                        />
-                      </>
+            {/* Next of Kin */}
+            <SectionCard
+              title="Next of Kin & Beneficiaries"
+              icon={<Heart size={20} />}
+              className="lg:col-span-2"
+            >
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {/* Next of Kin 1 */}
+                {userDetails?.k1_full_name && (
+                  <div>
+                    <h4 className="font-semibold text-gray-700 mb-2">Next of Kin 1</h4>
+                    <DetailItem label="Name" value={userDetails?.k1_full_name} />
+                    <DetailItem label="Phone" value={userDetails?.k1_phone} />
+                    <DetailItem label="Relationship" value={userDetails?.k1_relationship} />
+                  </div>
+                )}
+                {/* Next of Kin 2 */}
+                {userDetails?.k2_full_name && (
+                  <div>
+                    <h4 className="font-semibold text-gray-700 mb-2">Next of Kin 2</h4>
+                    <DetailItem label="Name" value={userDetails?.k2_full_name} />
+                    <DetailItem label="Phone" value={userDetails?.k2_phone} />
+                    <DetailItem label="Relationship" value={userDetails?.k2_relationship} />
+                  </div>
+                )}
+              </div>
+              {/* Beneficiaries */}
+              {userDetails?.beneficiary?.length > 0 && (
+                <div className="mt-6">
+                  <h4 className="font-semibold text-gray-700 mb-2">Beneficiaries</h4>
+                  <div className="space-y-4">
+                    {userDetails?.beneficiary?.map((ben, index) => (
+                      <div key={index} className="border-l-4 border-green-500 pl-4">
+                        <h5 className="font-medium text-gray-600 mb-2">Beneficiary {index + 1}</h5>
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
+                          <DetailItem label="Name" value={ben?.full_name} />
+                          <DetailItem label="Relationship" value={ben?.relationship} />
+                          <DetailItem label="Percentage" value={`${ben?.percentage}%`} />
+                        </div>
+                      </div>
                     ))}
-                </Box>
-              </Box>
-              <Box>
-                <p className="text-lg font-semibold mt-2 mb-[0px]">
-                  Next of Kin and Beneficiaries
-                </p>
+                  </div>
+                </div>
+              )}
+            </SectionCard>
 
-                <p className="mt-2 mb-0 text-gray-900 underline">
-                  Next of Kin 1
-                </p>
-                <Details
-                  label={"Full Name "}
-                  fullName={userDetails?.k1_full_name}
-                />
-                <Details
-                  label={"Phone Number  "}
-                  fullName={userDetails?.k1_phone}
-                />
-                <Details
-                  label={"Relationship To You  "}
-                  fullName={userDetails?.k1_relationship}
-                />
-
-                <p className="mt-2 mb-0 text-gray-900 underline">
-                  Next of Kin 2
-                </p>
-                <Details
-                  label={"Full Name "}
-                  fullName={userDetails?.k2_full_name}
-                />
-                <Details
-                  label={"Phone Number  "}
-                  fullName={userDetails?.k2_phone}
-                />
-                <Details
-                  label={"Relationship To You  "}
-                  fullName={userDetails?.k2_relationship}
-                />
-
-                <p className="mt-2 mb-0 text-gray-900 underline">
-                  Beneficiaries
-                </p>
-
-                {userDetails &&
-                  userDetails?.beneficiary?.map((ben, index) => (
-                    <>
-                      <p className="mt-2 mb-0 text-gray-900">{index + 1}</p>
-                      <Details label={"Name"} fullName={ben?.full_name} />
-                      <Details label={"phone "} fullName={ben?.phone} />
-                      <Details label={"Email "} fullName={ben?.email} />
-                      <Details
-                        label={"Relationship To You "}
-                        fullName={ben?.relationship}
-                      />
-                      <Details
-                        label={"Percentage (%) "}
-                        fullName={ben?.percentage}
-                      />
-                    </>
+            {/* Academic Qualifications */}
+            {userDetails?.staff_academic_qualification?.length > 0 && (
+              <SectionCard
+                title="Academic Qualifications"
+                icon={<Award size={20} />}
+              >
+                <div className="space-y-4">
+                  {userDetails?.staff_academic_qualification?.map((acad, index) => (
+                    <div key={index} className="border-l-4 border-blue-500 pl-4">
+                      <h5 className="font-medium text-gray-600 mb-2">Qualification {index + 1}</h5>
+                      <DetailItem label="Institution" value={acad?.name_of_institution} />
+                      <DetailItem label="Qualification" value={acad?.qualification} />
+                      <DetailItem label="End Year" value={acad?.end_year} />
+                    </div>
                   ))}
-              </Box>
-              <Box>
-                <p className="text-lg font-semibold mt-2 mb-[0px]">
-                  Academic Qualification
-                </p>
-
-                {userDetails &&
-                  userDetails?.staff_academic_qualification?.map(
-                    (acad, index) => (
-                      <>
-                        <p className="mt-2 mb-0 text-gray-900">{index + 1}</p>
-                        <Details
-                          label={"Institution"}
-                          fullName={acad?.name_of_institution}
-                        />
-                        <Details
-                          label={"Qualification "}
-                          fullName={acad?.qualification}
-                        />
-                        {/* <Details
-                          label={"Start Date "}
-                          fullName={acad?.start_year}
-                        /> */}
-                        <Details
-                          label={"End Year "}
-                          fullName={acad?.end_year}
-                        />
-                      </>
-                    )
-                  )}
-              </Box>
-            </div>
-          </Box>
+                </div>
+              </SectionCard>
+            )}
+          </div>
         </div>
       )}
     </div>

@@ -14,7 +14,6 @@ const ResumptionOfLeaveApplication = ({ navigate }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [isLoadingd, setIsLoadingd] = useState(false);
   const [concludedLeave, setConcludedLeave] = useState("");
-  const [dateResumed, setDateresumed] = useState("");
   const [leaveDuration, setLeaveDuration] = useState("");
 
   const [formValues, setFormValues] = useState({});
@@ -52,10 +51,8 @@ const ResumptionOfLeaveApplication = ({ navigate }) => {
     try {
       setIsLoading(true);
       const userDetails = await getUserDetails();
-      console.log("User Details:", userDetails);
       setUserDetails(userDetails.data);
     } catch (error) {
-      console.error("Error fetching your basic details", error);
       enqueueSnackbar(error.message, { variant: "error" });
     } finally {
       setIsLoading(false);
@@ -66,10 +63,8 @@ const ResumptionOfLeaveApplication = ({ navigate }) => {
     try {
       setIsLoading(true);
       const lastLeave = await api.getLastLeave();
-      console.log("User Details:", lastLeave);
       setLastLeaveDetails(lastLeave.last_approved_leave);
     } catch (error) {
-      console.error("Error fetching your last leave details", error);
       enqueueSnackbar(error?.message, { variant: "error" });
     } finally {
       setIsLoading(false);

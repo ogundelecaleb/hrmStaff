@@ -105,14 +105,14 @@ const ResumptionDetails = () => {
 
       const isUserMatchRole = userRole === lastObject;
       if (isUserMatchRole) {
-        status = "Approve";
+        status = "Confirm";
       }
     } else if (approvals === 1 && approves === 1) {
       const firstObject = leaveDetails?.approval_bodies[0];
       const user = userDetails?.data?.email;
       const isUserIncludeObject = user?.includes(firstObject);
       if (isUserIncludeObject) {
-        status = "Approve";
+        status = "Confirm";
       }
     }
     return status;
@@ -358,7 +358,7 @@ const ResumptionDetails = () => {
                     {isLoadingd ? (
                       <MoonLoader color={"white"} size={20} />
                     ) : (
-                      <> Decline </>
+                      <> Not Confirmed </>
                     )}
                   </Button>
                   <Button
@@ -429,22 +429,7 @@ const ResumptionDetails = () => {
 
                         </h3>
                       </GridItem>
-                      <GridItem w="100%" h="10">
-                        <h2 className="text-base font-medium text-[#7C8493]">
-                          Marital Status{" "}
-                        </h2>
-                        <h3 className="text-sm font-medium text-[#000]">
-                          {leaveDetails?.leave?.marital_status}
-                        </h3>
-                      </GridItem>
-                      <GridItem w="100%" h="10">
-                        <h2 className="text-base font-medium text-[#7C8493]">
-                          Date of First Appointment{" "}
-                        </h2>
-                        <h3 className="text-sm font-medium text-[#000]">
-                          {formatDate(leaveDetails?.leave?.date_of_first_appointment)}
-                        </h3>
-                      </GridItem>
+                    
                       <GridItem w="100%" h="10">
                         <h2 className="text-base font-medium text-[#7C8493]">
                           Division/Department/Unit
@@ -469,18 +454,11 @@ const ResumptionDetails = () => {
                               {leaveDetails.total_leave_due}
                             </Text>
                           </GridItem> */}
-                      <GridItem w="100%" h="10" mt="4">
-                        <h2 className="text-base font-medium text-[#7C8493]">
-                          To be relived by (Name of Staff)
-                        </h2>
-                        <h3 className="text-sm font-medium text-[#000]">
-                          {leaveDetails?.leave?.replacement_on_duty}
-                        </h3>
-                      </GridItem>
+                     
 
                       <GridItem w="100%" h="10">
                         <h2 className="text-base font-medium text-[#7C8493]">
-                          Start Date
+                         Date Leave Commenced
                         </h2>
                         <h3 className="text-sm font-medium text-[#000]">
                           {formatDate(leaveDetails?.leave?.start_date)}
@@ -504,7 +482,7 @@ const ResumptionDetails = () => {
                       </GridItem>
                       <GridItem w="100%" h="10">
                         <h2 className="text-base font-medium text-[#7C8493]">
-                          Resumption Date
+                         Date of Resumption
                         </h2>
                         <h3 className="text-sm font-medium text-[#000]">
                           {formatDate(leaveDetails?.leave?.resumption_date)}

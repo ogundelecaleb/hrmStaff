@@ -1,27 +1,15 @@
 import React, { useState, useEffect } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
-import { BsArrowLeftShort } from "react-icons/bs";
-import {
-  TabIndicator,
-  Tab,
-  TabList,
-  TabPanel,
-  TabPanels,
-  Tabs,
-} from "@chakra-ui/tabs";
-import { Avatar, Spinner } from "@chakra-ui/react";
-import {
-  Box,
-  Divider,
-  Flex,
-  Grid,
-  GridItem,
-  Stack,
-  Text,
-} from "@chakra-ui/layout";
+import { useNavigate, useParams } from "react-router-dom";
+import { Spinner } from "@chakra-ui/react";
 import api from "../../../../../api";
 import { useSnackbar } from "notistack";
-import { MoonLoader } from "react-spinners";
+import { 
+  ArrowLeft, 
+  DocumentText, 
+  TickCircle,
+  CloseCircle,
+  Clock
+} from "iconsax-react";
 
 const AppointmentRegularizationDetails = () => {
   const navigate = useNavigate();
@@ -46,11 +34,9 @@ const AppointmentRegularizationDetails = () => {
       .then((response) => {
         const leaveData = response.data;
         setDetails(leaveData);
-        console.log(response.data);
         setIsLoading(false);
       })
       .catch((error) => {
-        console.log(error);
         enqueueSnackbar(error.message, { variant: "error" });
         setIsLoading(false);
       });
@@ -76,44 +62,18 @@ const AppointmentRegularizationDetails = () => {
     return date.toLocaleDateString(undefined, options);
   };
 
-  if (isLoading) {
-    return (
-      <Box
-        w={"80vw"}
-        display="flex"
-        flexDirection="column"
-        h={"80vh"}
-        alignItems="center"
-        justifyContent="center"
-      >
-        <div
-          className="fixed inset-0 flex items-center justify-center bg-white bg-opacity-70"
-          style={{ zIndex: 9999 }}
-        >
-          <div className="inline-block">
-            <MoonLoader color={"#984779"} size={80} />
-          </div>
-        </div>
-      </Box>
-    );
-  }
-
   const handleSubmit = async (agreement) => {
-    // setIsLoadingw(true)
     try {
-      const response = await api.AgreeDisagreeHodComment({
+      const response = await api.handleRegularizedDecline({
         id: details?.id,
         agree_or_decline: agreement,
         comment: comment,
-        // regularization_of_appointment_form:uploadedDocuments,
       });
-      console.log("responce==>>>>>", response);
-      enqueueSnackbar(" successfull", { variant: "success" });
+      enqueueSnackbar("Response submitted successfully", { variant: "success" });
       fetchRegularizationRequest();
       setIsLoadingw(false);
       setIsLoadingf(false);
     } catch (error) {
-      console.error(error);
       enqueueSnackbar(error.message || "An error occurred", {
         variant: "error",
       });
@@ -122,251 +82,226 @@ const AppointmentRegularizationDetails = () => {
     }
   };
 
-  return (
-    <Stack className="" px="12">
-      <div
-        id="no-padding-res"
-        className="d-flex flex-wrap mt-3 align-items-center justify-content-between"
-      >
-        <Link
-          style={{ cursor: "pointer", marginLeft: "-12px" }}
-          onClick={() => navigate(-1)}
-          className="d-flex align-items-center gap-2"
-        >
-          <BsArrowLeftShort size={"40"} />
-          <p className=" fs-5 mt-3 ">Applicant Details</p>
-        </Link>
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <Spinner size="xl" color="purple.500" />
       </div>
-      <div className="flex flex-col lg:flex-row gap-8">
-        <Box className="w-full lg:w-[30%] ">
-          <Box p="5" border="1px solid #D6DDEB  " h="fit-content">
-            <Box className="d-flex gap-2 my-4">
-              <Flex>
-                <Avatar src={details.user_image} size="xl" />
-                <Box ml="3">
-                  <Text fontWeight="bold">{details.full_name}</Text>
-                  <Text fontSize="sm">{details.staffID}</Text>
-                  <Text fontSize="sm">{details.role}</Text>
-                </Box>
-              </Flex>
-            </Box>
-            <Box className="py-2 px-3 " style={{ backgroundColor: "#F8F8FD" }}>
-              <Flex justifyContent={"space-between"}>
-                <Text m="0" color="#25324B">
-                  Date Applied:
-                </Text>
-                <Text m="0" color="#7C8493">
-                  {formatshortDate(
-                    details.date || "Application Date not available"
-                  )}
-                </Text>
-              </Flex>
-              <Divider />
+    );
+  }
 
-              <Text fontWeight="medium" color="#25324B">
+  return (
+    <div className="min-h-screen bg-gray-50">
+      {/* Header */}
+      <div className="bg-white border-b border-gray-200 px-4 md:px-8 py-6">
+        <div className="max-w-4xl mx-auto">
+          <button
+            onClick={() => navigate(-1)}
+            className="flex items-center gap-2 text-gray-600 hover:text-gray-900 mb-4 transition-colors"
+          >
+            <ArrowLeft size={20} />
+            <span className="text-lg font-medium">Back to Applications</span>
+          </button>
+          <div className="flex items-center gap-3">
+            <div className="p-2 bg-purple-100 rounded-lg">
+              <DocumentText className="text-purple-600" size={24} />
+            </div>
+            <div>
+              <h1 className="text-lg md:text-2xl font-bold text-gray-900">
                 Regularization of Appointment
-              </Text>
-            </Box>
-            <Divider />
-            {details.approvals?.map((approval, index) => (
-              <Box
-                key={index}
-                p="5"
-                border="1px solid #D6DDEB"
-                h="fit-content"
-                mt="7"
-              >
-                <Flex justifyContent={"space-between"}>
-                  <Text m="0" color="#25324B" className="fw-semibold fs-8">
-                    {approval.role}
-                  </Text>
-                  <Text m="0" color="#7C8493">
-                    {formatDate(approval.date)}
-                  </Text>
-                </Flex>
-                <Text color="#7C8493" className="text-muted">
-                  {approval.comment || "No comment available"}
-                </Text>
-              </Box>
-            ))}
+              </h1>
+              <p className="text-gray-600">Application Details</p>
+            </div>
+          </div>
+        </div>
+      </div>
 
-            <Text fontWeight="medium" color="#25324B" className="mb-2">
-              HOD/HOU Comment: {details.hod_approval}
-            </Text>
-
-          
-            {!details?.applicant_approval_status_to_hod ||
-            !details?.applicant_comment_to_hod ? (
-              <div>
-                <Text fontWeight="medium" color="#25324B" className="mb-2">
-                  Staff Comment on HOD/HOU Comment
-                </Text>
-                <textarea
-                  value={comment}
-                  onChange={(e) => setComment(e.target.value)}
-                  className="h-[80px] form-control rounded-0 mb-2"
+      {/* Content */}
+      <div className="max-w-4xl mx-auto px-4 md:px-8 py-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2  gap-4 md:gap-8">
+          {/* Left Column - Applicant Info */}
+          <div className="space-y-3 md:space-y-6">
+            {/* Profile Card */}
+            <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-3 md:p-6">
+              <div className="flex items-center gap-4 mb-6">
+                <img
+                  src={details.user_image}
+                  alt={details.full_name}
+                  className="w-16 h-16 rounded-full object-cover"
                 />
-
-                <p>Agree or Disagree to HOD/HOU Comment</p>
-                <div className="flex items-center justify-between">
-                  <button
-                    onClick={() => {
-                      handleSubmit("accept");
-                      setIsLoadingw(true);
-                    }}
-                    className="py-2 px-3 rounded-md bg-green-400 text-white flex "
-                  >
-                    {" "}
-                    {isLoadingw ? <Spinner size="sm" color="white" /> : "Agree"}
-                  </button>
-                  <button
-                    onClick={() => {
-                      handleSubmit("disapprove");
-                      setIsLoadingf(true);
-                    }}
-                    className="py-2 px-3 rounded-md bg-red-400 text-white "
-                  >
-                    {isLoadingf ? (
-                      <Spinner size="sm" color="white" />
-                    ) : (
-                      "Disagree"
-                    )}
-                  </button>
+                <div>
+                  <h3 className="text-lg font-semibold text-gray-900">{details.full_name}</h3>
+                  <p className="text-sm text-gray-600">{details.staffID}</p>
+                  <p className="text-sm text-gray-600">{details.role}</p>
                 </div>
               </div>
-            ) : (
-              <div className="mt-2">
-                <Text fontSize={"md"} color="#7C8493" m="0">
-                  Staff Comment HOD/HOU Comment:
-                </Text>
-                <Text fontSize={"md"} color="#25324B" fontWeight={""}>
-                  {details?.applicant_comment_to_hod}
-                </Text>{" "}
-                <Text fontSize={"md"} color="#7C8493" m="0">
-                  Staff Response HOD/HOU Comment:
-                </Text>
-                <Text fontSize={"md"} color="#25324B" fontWeight={""}>
-                  {details?.applicant_approval_status_to_hod}
-                </Text>
+
+              <div className="bg-purple-50 rounded-lg p-4">
+                <div className="flex justify-between items-center mb-2">
+                  <span className="text-sm text-gray-600">Date Applied:</span>
+                  <span className="text-sm font-medium text-gray-900">
+                    {formatshortDate(details.date || "Application Date not available")}
+                  </span>
+                </div>
+                <div className="border-t border-purple-200 pt-2">
+                  <p className="text-sm font-medium text-purple-900">Regularization of Appointment</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Application Details Card */}
+            <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-3 md:p-6">
+              <h3 className="text-lg font-semibold text-gray-900 mb-4">Application Information</h3>
+              <div className="space-y-2 md:space-y-4">                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="text-sm font-medium text-gray-500">Staff Type</label>
+                    <p className="text-base font-medium text-gray-900 mt-1">{details.staff_type}</p>
+                  </div>
+                  <div>
+                    <label className="text-sm font-medium text-gray-500">PF/CM No</label>
+                    <p className="text-base font-medium text-gray-900 mt-1">{details.pf_no}</p>
+                  </div>
+                  <div>
+                    <label className="text-sm font-medium text-gray-500">Current Level</label>
+                    <p className="text-base font-medium text-gray-900 mt-1">{details.level}</p>
+                  </div>
+                  <div>
+                    <label className="text-sm font-medium text-gray-500">Grade on Temporary Appointment</label>
+                    <p className="text-base font-medium text-gray-900 mt-1">{details.grade_on_temporary_appointment}</p>
+                  </div>
+                </div>
+                
+                <div>
+                  <label className="text-sm font-medium text-gray-500">Date of First Appointment</label>
+                  <p className="text-base font-medium text-gray-900 mt-1">
+                    {formatDate(details.date_of_first_appointment)}
+                  </p>
+                </div>
+                
+                <div>
+                  <label className="text-sm font-medium text-gray-500">Division/Department/Unit</label>
+                  <p className="text-base font-medium text-gray-900 mt-1">
+                    {details.department?.name || details.faculty?.name || details.unit?.name}
+                  </p>
+                </div>
+                
+                <div>
+                  <label className="text-sm font-medium text-gray-500">Details of Work Done Since Appointment</label>
+                  <p className="text-sm text-gray-900 mt-1 leading-relaxed">
+                    {details.details_of_work_done_since_appointment}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Right Column - Timeline & Response */}
+          <div className="space-y-3 md:space-y-6">
+            {/* Approval Timeline */}
+            <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-3 md:p-6">
+              <h3 className="text-lg font-semibold text-gray-900 mb-4">Approval Timeline</h3>
+              <div className="space-y-2 md:space-y-4">
+                {details.approvals?.map((approval, index) => (
+                  <div key={index} className="border border-gray-200 rounded-lg p-4">
+                    <div className="flex justify-between items-start mb-2">
+                      <span className="text-sm font-medium text-gray-900">{approval.role}</span>
+                      <div className="flex items-center gap-1 text-xs text-gray-500">
+                        <Clock size={12} />
+                        {formatDate(approval.date)}
+                      </div>
+                    </div>
+                    <p className="text-sm text-gray-600">
+                      {approval.comment || "No comment available"}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* HOD Comment */}
+            {details.hod_approval && (
+              <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-3 md:p-6">
+                <h3 className="text-lg font-semibold text-gray-900 mb-4">HOD/HOU Comment</h3>
+                <div className="bg-blue-50 rounded-lg p-4 border border-blue-200">
+                  <p className="text-sm text-gray-900">{details.hod_approval}</p>
+                </div>
               </div>
             )}
-          </Box>
-        </Box>
 
-        <Box pb="20" px="5" className="w-full lg:w-[70%] ">
-          {/* <div className='tb-res'> */}
-          <Tabs position="relative" variant={"line"} pt={"2"}>
-            <Box className="tab-scroll" overflowX={"auto"}>
-              <Box className="tb-res-2" position={"relative"}>
-                <TabList className="border-bottom">
-                  <Tab
-                    _focus={{ color: "black" }}
-                    fontWeight={"semibold"}
-                    color={"gray"}
-                  >
-                    Applicant Information
-                  </Tab>
-                  <Tab
-                    _focus={{ color: "black" }}
-                    fontWeight={"semibold"}
-                    color={"gray"}
-                  >
-                    Document
-                  </Tab>
-                </TabList>
-                <TabIndicator
-                  mt="-1.5px"
-                  height="3px"
-                  borderRadius="9px 9px 0 0"
-                />
-              </Box>
-            </Box>
-            <TabPanels>
-              <TabPanel>
-                <Grid templateColumns="repeat(2, 1fr)" gap={6}>
-                  <GridItem w="100%" h="10">
-                    <Text fontSize={"lg"} color="#7C8493" m="0">
-                      Full Name
-                    </Text>
-                    <Text fontSize={"lg"} color="#25324B" fontWeight={"medium"}>
-                      {details.full_name}
-                    </Text>
-                  </GridItem>
-                  <GridItem w="100%" h="10">
-                    <Text fontSize={"lg"} color="#7C8493" m="0">
-                      Staff Type
-                    </Text>
-                    <Text fontSize={"lg"} color="#25324B" fontWeight={"medium"}>
-                      {details.staff_type}
-                    </Text>
-                  </GridItem>
-                  <GridItem w="100%" h="10">
-                    <Text fontSize={"lg"} color="#7C8493" m="0">
-                      PF/CM No{" "}
-                    </Text>
-                    <Text fontSize={"lg"} color="#25324B" fontWeight={"medium"}>
-                      {details.pf_no}
-                    </Text>
-                  </GridItem>
-                  <GridItem w="100%" h="10">
-                    <Text fontSize={"lg"} color="#7C8493" m="0">
-                      Current Level{" "}
-                    </Text>
-                    <Text fontSize={"lg"} color="#25324B" fontWeight={"medium"}>
-                      {details.level}
-                    </Text>
-                  </GridItem>
-                  <GridItem w="100%" h="10">
-                    <Text fontSize={"lg"} color="#7C8493" m="0">
-                      Date of First Appointment{" "}
-                    </Text>
-                    <Text fontSize={"lg"} color="#25324B" fontWeight={"medium"}>
-                      {formatDate(details.date_of_first_appointment)}
-                    </Text>
-                  </GridItem>
-                  <GridItem w="100%" h="10">
-                    <Text fontSize={"lg"} color="#7C8493" m="0">
-                      Division/Department/Unit
-                    </Text>
-                    <Text fontSize={"md"} color="#25324B" fontWeight={"medium"}>
-                      {details.department?.name ||
-                        details.faculty?.name ||
-                        details.unit?.name}
-                    </Text>
-                  </GridItem>
-                  <GridItem w="100%" h="10">
-                    <Text fontSize={"lg"} color="#7C8493" m="0">
-                      Grade on Temporary Appointment
-                    </Text>
-                    <Text fontSize={"lg"} color="#25324B" fontWeight={"medium"}>
-                      {details.grade_on_temporary_appointment}
-                    </Text>
-                  </GridItem>
-                  <GridItem w="100%" h="12">
-                    <Text fontSize={"lg"} color="#7C8493" m="0" mt="5">
-                      Regularization of appointment form
-                    </Text>
-                    <Text fontSize={"md"} color="#25324B" fontWeight={"medium"}>
-                      {details.regularization_of_appointment_form}
-                    </Text>
-                  </GridItem>
-                  <GridItem w="100%" h="12">
-                    <Text fontSize={"md"} color="#7C8493" m="0">
-                      Details of work done since Appointment
-                    </Text>
-                    <Text fontSize={"sm"} color="#25324B" fontWeight={"medium"}>
-                      {details.details_of_work_done_since_appointment}
-                    </Text>
-                  </GridItem>
-                </Grid>
-              </TabPanel>
-              <TabPanel>Document</TabPanel>
-            </TabPanels>
-          </Tabs>
-          {/* </div> */}
-        </Box>
+            {/* Staff Response Section */}
+            <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-3 md:p-6">
+              <h3 className="text-lg font-semibold text-gray-900 mb-4">Staff Response</h3>
+              
+              {details && !details?.approvals?.length > 1 ? (
+                <div className="space-y-2 md:space-y-4">                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Your Comment</label>
+                    <textarea
+                      value={comment}
+                      onChange={(e) => setComment(e.target.value)}
+                      rows={4}
+                      className="w-full px-4 py-3 border border-gray-300 rounded-xl bg-white text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200 hover:border-gray-400 resize-none"
+                      placeholder="Enter your comment on the HOD/HOU response..."
+                    />
+                  </div>
+
+                  <div>
+                    <p className="text-sm font-medium text-gray-700 mb-3">Do you agree with the HOD/HOU comment?</p>
+                  <div className="flex gap-3">
+                      <button
+                        onClick={() => {
+                          handleSubmit("accept");
+                          setIsLoadingw(true);
+                        }}
+                        disabled={isLoadingw || isLoadingf}
+                        className="flex items-center gap-2 md:px-6 md:py-3 px-3 py-2 bg-green-600 text-white rounded-xl hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 font-medium"
+                      >
+                        {isLoadingw ? (
+                          <Spinner size="sm" color="white" />
+                        ) : (
+                          <>
+                            <TickCircle size={16} />
+                            Agree
+                          </>
+                        )}
+                      </button>
+                      <button
+                        onClick={() => {
+                          handleSubmit("disapprove");
+                          setIsLoadingf(true);
+                        }}
+                        disabled={isLoadingw || isLoadingf}
+                        className="flex items-center gap-2 md:px-6 md:py-3 px-3 py-2 bg-red-600 text-white rounded-xl hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 font-medium"
+                      >
+                        {isLoadingf ? (
+                          <Spinner size="sm" color="white" />
+                        ) : (
+                          <>
+                            <CloseCircle size={16} />
+                            Disagree
+                          </>
+                        )}
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                <div className="space-y-2 md:space-y-4">                  <div className="bg-gray-50 rounded-lg p-4">
+                    <label className="text-sm font-medium text-gray-500">Your Comment:</label>
+                    <p className="text-sm text-gray-900 mt-1">{details?.applicant_comment_to_hod}</p>
+                  </div>
+                  <div className="bg-gray-50 rounded-lg p-4">
+                    <label className="text-sm font-medium text-gray-500">Your Decision:</label>
+                    <p className="text-sm text-gray-900 mt-1 capitalize font-medium">
+                      {details?.applicant_approval_status_to_hod}
+                    </p>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
       </div>
-    </Stack>
+    </div>
   );
 };
 

@@ -1,75 +1,67 @@
 import React from "react";
-import {
-  Box,
-  TabIndicator,
-  TabList,
-  TabPanel,
-  TabPanels,
-  Tabs,
-  Tab,
-} from "@chakra-ui/react";
-import { AiOutlineMenu, AiOutlinePlus } from "react-icons/ai";
-import { TbDirection, TbGridDots } from "react-icons/tb";
-import { MdSearch } from "react-icons/md";
-import { Link } from "react-router-dom";
+import { DocumentText } from "iconsax-react";
 import AppointmentConfirmation from "./AppointmentConfirmation";
 import AppointmentRegularization from "./AppointmentRegularization";
-import AppointmentWithrawal from "./AppointmentWithdrawal";
+import AppointmentWithdrawal from "./AppointmentWithdrawal";
 import AssumptionOfDuty from "./AssumptionOfDuty";
 
 const AllApplications = () => {
-  return (
-    <Box className='container'>
-      <Tabs position='relative' isFitted variant='enclosed'>
-        <Box className='table-responsive pt-3'>
-          <TabList>
-            <Tab
+  const [activeTab, setActiveTab] = React.useState("confirmation");
 
-              fontWeight={"normal"}
-              color='black'>
-              Appointment Confirmation
-            </Tab>
-            <Tab
-              fontWeight={"normal"}
-              color='black'>
-              Appointment Regularization
-            </Tab>
-            <Tab
-              fontWeight={"normal"}
-              color='black'>
-              {" "}
-              Appointment Withdrawal
-            </Tab>
-            <Tab
-              fontWeight={"normal"}
-              color='black'>
-              Assumption of Duty
-            </Tab>
-          </TabList>
-        </Box>
-        <TabIndicator
-          mt='2px'
-          height='3px'
-          bg='blue.500'
-          borderRadius='6px 6px 0 0'
-          width='45px'
-        />
-        <TabPanels>
-          <TabPanel>
-            <AppointmentConfirmation />
-          </TabPanel>
-          <TabPanel>
-            <AppointmentRegularization />
-          </TabPanel>
-          <TabPanel>
-            <AppointmentWithrawal />
-          </TabPanel>
-          <TabPanel>
-            <AssumptionOfDuty />
-          </TabPanel>
-        </TabPanels>
-      </Tabs>
-    </Box>
+  const tabs = [
+    { id: "confirmation", label: "Appointment Confirmation", component: AppointmentConfirmation },
+    { id: "regularization", label: "Appointment Regularization", component: AppointmentRegularization },
+    { id: "withdrawal", label: "Appointment Withdrawal", component: AppointmentWithdrawal },
+    { id: "assumption", label: "Assumption of Duty", component: AssumptionOfDuty },
+  ];
+
+  const ActiveComponent = tabs.find(tab => tab.id === activeTab)?.component || AppointmentConfirmation;
+
+  return (
+    <div className="min-h-screen bg-gray-50">
+      {/* Header */}
+      <div className="bg-white border-b border-gray-200 px-4 md:px-8 py-6">
+        <div className="max-w-7xl mx-auto">
+          <div className="flex items-center gap-3 mb-6">
+            <div className="p-2 bg-purple-100 rounded-lg">
+              <DocumentText className="text-purple-600" size={24} />
+            </div>
+            <div>
+              <h1 className="text-lg md:text-2xl font-bold text-gray-900">
+                All Applications
+              </h1>
+              <p className="text-gray-600">
+                Manage your appointment applications
+              </p>
+            </div>
+          </div>
+
+          {/* Tabs */}
+          <div className="border-b border-gray-200">
+            <nav className="flex space-x-8 overflow-x-auto">
+              {tabs.map((tab) => (
+                <button
+                  key={tab.id}
+                  onClick={() => setActiveTab(tab.id)}
+                  className={`py-2 md:py-4 px-1 border-b-2 font-medium text-sm whitespace-nowrap transition-colors ${
+                    activeTab === tab.id
+                      ? "border-purple-500 text-purple-600"
+                      : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
+                  }`}
+                >
+                  {tab.label}
+                </button>
+              ))}
+            </nav>
+          </div>
+        </div>
+      </div>
+
+      {/* Tab Content */}
+      <div className="max-w-7xl mx-auto">
+        <ActiveComponent />
+      </div>
+    </div>
   );
 };
 

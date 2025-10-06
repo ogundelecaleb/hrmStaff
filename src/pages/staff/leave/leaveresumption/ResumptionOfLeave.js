@@ -3,7 +3,7 @@ import { TbDirection } from "react-icons/tb";
 import api from "../../../../api";
 import { Link, useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import { Box } from "@chakra-ui/react";
+import { Box, Spinner } from "@chakra-ui/react";
 import { MoonLoader } from "react-spinners";
 import { ArrowLeft } from "iconsax-react";
 
@@ -35,25 +35,11 @@ const ResumptionOfLeave = () => {
     return `${year}-${month}-${day}`;
   }
 
-  if (isLoading) {
+  if (isLoading && !data) {
     return (
-      <Box
-        w={"80vw"}
-        display="flex"
-        flexDirection="column"
-        h={"80vh"}
-        alignItems="center"
-        justifyContent="center"
-      >
-        <div
-          className="fixed inset-0 flex items-center justify-center bg-white bg-opacity-70"
-          style={{ zIndex: 9999 }}
-        >
-          <div className="inline-block">
-            <MoonLoader color={"#984779"} size={40} />
-          </div>
-        </div>
-      </Box>
+      <div className="flex justify-center py-12">
+        <Spinner size="xl" color="purple.500" />
+      </div>
     );
   }
 
@@ -66,134 +52,186 @@ const ResumptionOfLeave = () => {
         <ArrowLeft size={14} />
         Leave Resumption
       </h3>
-      <div className="sm:-mx-6 lg:-mx-8 mt-3 ">
+      {/* Desktop Table */}
+      <div className="hidden md:block sm:-mx-6 lg:-mx-8 mt-3">
         <div className="inline-block min-w-full sm:px-6 lg:px-8">
           <div className="overflow-x-auto rounded-lg">
             <table className="min-w-full mb-6 border-[0.8px] border-r-[0.8px] border-l-[0.8px] border-[#E4E7EC] rounded-lg">
               <thead className="bg-[#F9FAFB]">
-                <tr className="">
-                  <th
-                    scope="col"
-                    className="whitespace-nowrap border-b-[0.8px] border-[#E4E7EC] py-[12px] text-center px-3 gap-[6px] md:gap-[12px] text-[14px] md:text-[16px] text-[#98A2B3] font-medium leading-[20px] md:leading-[24px] tracking-[0.2%]"
-                  >
+                <tr>
+                  <th className="border-b-[0.8px] border-[#E4E7EC] py-[12px] px-3 text-[16px] text-[#98A2B3] font-medium">
                     Staff Name
                   </th>
-                  <th
-                    scope="col"
-                    className="border-b-[0.8px] whitespace-nowrap border-[#E4E7EC] py-[12px] px-3 gap-[6px] text-center md:gap-[12px] text-[14px] md:text-[16px] text-[#98A2B3] font-medium leading-[20px] md:leading-[24px] tracking-[0.2%]"
-                  >
-                    Leave type
+                  <th className="border-b-[0.8px] border-[#E4E7EC] py-[12px] px-3 text-[16px] text-[#98A2B3] font-medium">
+                    Leave Type
                   </th>
-                  <th
-                    scope="col"
-                    className="border-b-[0.8px] border-[#E4E7EC] py-[12px] px-3 gap-[6px] text-center md:gap-[12px] text-[14px] md:text-[16px] text-[#98A2B3] font-medium leading-[20px] md:leading-[24px] tracking-[0.2%]"
-                  >
+                  <th className="border-b-[0.8px] border-[#E4E7EC] py-[12px] px-3 text-[16px] text-[#98A2B3] font-medium">
                     Stage
                   </th>
-                  <th
-                    scope="col"
-                    className="border-b-[0.8px] whitespace-nowrap border-[#E4E7EC] py-[12px] px-3 gap-[6px] text-center md:gap-[12px] text-[14px] md:text-[16px] text-[#98A2B3] font-medium leading-[20px] md:leading-[24px] tracking-[0.2%]"
-                  >
+                  <th className="border-b-[0.8px] border-[#E4E7EC] py-[12px] px-3 text-[16px] text-[#98A2B3] font-medium">
                     Start Date
                   </th>
-                  <th
-                    scope="col"
-                    className="border-b-[0.8px] whitespace-nowrap border-[#E4E7EC] py-[12px] px-3 gap-[6px] text-center md:gap-[12px] text-[14px] md:text-[16px] text-[#98A2B3] font-medium leading-[20px] md:leading-[24px] tracking-[0.2%]"
-                  >
+                  <th className="border-b-[0.8px] border-[#E4E7EC] py-[12px] px-3 text-[16px] text-[#98A2B3] font-medium">
                     No. of Days
                   </th>
-                  <th
-                    scope="col"
-                    className="border-b-[0.8px] border-[#E4E7EC] py-[12px] px-3 gap-[6px] text-center md:gap-[12px] text-[14px] md:text-[16px] text-[#98A2B3] font-medium leading-[20px] md:leading-[24px] tracking-[0.2%]"
-                  >
+                  <th className="border-b-[0.8px] border-[#E4E7EC] py-[12px] px-3 text-[16px] text-[#98A2B3] font-medium">
                     Action
                   </th>
                 </tr>
               </thead>
               <tbody>
-                {isLoading && <>loading ...</>}
-                {/* {results?.data && results?.data?.data?.length === 0 && (
-                  <EmptyWallet
-                    cols={8}
-                    action={"Invoice"}
-                    subheading={"Your invoices will appear here."}
-                    paymentlinkbutton={true}
-                  />
-                )} */}
-
-                {resumeData &&
-                  resumeData?.map((result) => (
-                    <tr key={result.id} className="mb-2 hover:bg-light-gray">
-                      <td
-                        onClick={() =>
-                          navigate("/portal/resumption-details", {
-                            state: {
-                              details: result,
-                            },
-                          })
-                        }
-                        className="whitespace-nowrap uppercase cursor-pointer flex items-center text-center text-primary underline  py-[16px] bg-white px-3 border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px] text-[#667185] font-medium"
-                      >
+                {resumeData?.map((result) => (
+                  <tr key={result.id} className="hover:bg-gray-50">
+                    <td className="py-4 px-3 border-b border-[#E4E7EC] text-[14px] text-[#667185] font-medium">
+                      <div className="flex items-center gap-2">
                         {result?.leave?.user_image && (
                           <img
                             src={result?.leave?.user_image}
                             className="h-6 w-6 rounded-full"
+                            alt=""
                           />
                         )}
-
-                        {result?.leave?.full_name}
-                      </td>
-                      <td className="whitespace-nowrap text-center py-[16px] bg-white px-3 border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px] text-[#667185] font-medium">
-                        {result?.leave?.leave_type}
-                      </td>
-                      <td className="whitespace-nowrap text-center py-[16px] bg-white px-3 border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px] text-[#667185] font-medium">
-                        <button
-                          className={`rounded-[20px] md:rounded-[40px] w-[60px] md:w-[74px] py-[2px] md:py-[4px] mx-auto ${
-                            result.approval_status === "pending"
-                              ? "bg-[rgb(255,245,230)] text-[#FF9800]"
-                              : result.approval_status === "Ongoing"
-                              ? "bg-[#F9FAFB] text-[#667185]"
-                              : "bg-[#EDF7EE] text-[#4CAF50]"
-                          } text-[10px] md:text-[12px] font-semibold leading-[16px] md:leading-[18px]`}
+                        <span
+                          onClick={() =>
+                            navigate("/portal/resumption-details", {
+                              state: { details: result },
+                            })
+                          }
+                          className="cursor-pointer text-primary underline uppercase"
                         >
-                          {result?.approval_status}
-                        </button>
-                      </td>
-                      <td className="whitespace-nowrap text-center py-[16px] bg-white px-3 border-b-[0.8px] border-[#E4E7EC] text-[14px]  tracking-[0.2px] text-[#667185] font-medium">
-                        {formatDate(result?.leave?.start_date)}
-                      </td>
-                      <td className="whitespace-nowrap text-center py-[16px] bg-white px-3 border-b-[0.8px] border-[#E4E7EC] text-[14px]  tracking-[0.2px] text-[#667185] font-medium">
-                        {result?.leave?.leave_duration}
-                      </td>
-                      <td className="whitespace-nowrap text-center py-[16px] gap-2 bg-white px-3 border-b-[0.8px] border-[#E4E7EC] text-[14px]  text-[#667185] font-medium">
+                          {result?.leave?.full_name}
+                        </span>
+                      </div>
+                    </td>
+                    <td className="py-4 px-3 border-b border-[#E4E7EC] text-[14px] text-[#667185] font-medium">
+                      {result?.leave?.leave_type}
+                    </td>
+                    <td className="py-4 px-3 border-b border-[#E4E7EC] text-center">
+                      <span className={`px-3 py-1 rounded-full text-xs font-semibold ${
+                        result.approval_status === "pending"
+                          ? "bg-yellow-100 text-yellow-600"
+                          : result.approval_status === "Ongoing"
+                          ? "bg-gray-100 text-gray-600"
+                          : "bg-green-100 text-green-600"
+                      }`}>
+                        {result?.approval_status}
+                      </span>
+                    </td>
+                    <td className="py-4 px-3 border-b border-[#E4E7EC] text-[14px] text-[#667185] font-medium">
+                      {formatDate(result?.leave?.start_date)}
+                    </td>
+                    <td className="py-4 px-3 border-b border-[#E4E7EC] text-[14px] text-[#667185] font-medium">
+                      {result?.leave?.leave_duration} days
+                    </td>
+                    <td className="py-4 px-3 border-b border-[#E4E7EC]">
+                      <div className="flex gap-2">
                         {result?.approval_status === "approved" && (
                           <Link to="/leave-resumption-certificate" state={result}>
-                            {" "}
-                            <button className="text-[#984779] px-2 py-1 rounded-md border hover:bg-gray-300  ">
+                            <button className="text-[#984779] px-2 py-1 rounded-md border hover:bg-gray-100">
                               View Certificate
                             </button>
                           </Link>
                         )}
-
                         <button
                           onClick={() =>
                             navigate("/portal/resumption-details", {
-                              state: {
-                                details: result,
-                              },
+                              state: { details: result },
                             })
                           }
-                          className="px-2 py-[6px] ml-2 bg-purple-800 hover:bg-purple-700 text-white rounded-md"
+                          className="px-2 py-1 bg-purple-800 hover:bg-purple-700 text-white rounded-md"
                         >
                           View Details
                         </button>
-                      </td>
-                    </tr>
-                  ))}
+                      </div>
+                    </td>
+                  </tr>
+                ))}
               </tbody>
             </table>
           </div>
         </div>
+      </div>
+
+      {/* Mobile Cards */}
+      <div className="md:hidden mt-3 space-y-3">
+        {isLoading && !data ? (
+          <div className="flex justify-center py-8">
+            <Spinner size="lg" color="purple.500" />
+          </div>
+        ) : resumeData?.length === 0 ? (
+          <div className="text-center py-8">
+            <p className="text-gray-500">No resumption applications found</p>
+          </div>
+        ) : (
+          resumeData?.map((result) => (
+            <div key={result.id} className="bg-white border border-[#E4E7EC] rounded-lg p-4 shadow-sm">
+              <div className="flex justify-between items-start mb-3">
+                <div className="flex items-center gap-2 flex-1">
+                  {result?.leave?.user_image && (
+                    <img
+                      src={result?.leave?.user_image}
+                      className="h-8 w-8 rounded-full"
+                      alt=""
+                    />
+                  )}
+                  <div>
+                    <h4
+                      onClick={() =>
+                        navigate("/portal/resumption-details", {
+                          state: { details: result },
+                        })
+                      }
+                      className="font-semibold text-[#1A202C] text-sm cursor-pointer text-primary underline uppercase"
+                    >
+                      {result?.leave?.full_name}
+                    </h4>
+                    <p className="text-xs text-[#667185] mt-1">{result?.leave?.leave_type}</p>
+                  </div>
+                </div>
+                <span className={`px-2 py-1 rounded-full text-xs font-semibold ${
+                  result.approval_status === "pending"
+                    ? "bg-yellow-100 text-yellow-600"
+                    : result.approval_status === "Ongoing"
+                    ? "bg-gray-100 text-gray-600"
+                    : "bg-green-100 text-green-600"
+                }`}>
+                  {result?.approval_status}
+                </span>
+              </div>
+              <div className="space-y-2 mb-3">
+                <div className="flex justify-between text-xs">
+                  <span className="text-[#98A2B3]">Start Date:</span>
+                  <span className="text-[#667185]">{formatDate(result?.leave?.start_date)}</span>
+                </div>
+                <div className="flex justify-between text-xs">
+                  <span className="text-[#98A2B3]">Duration:</span>
+                  <span className="text-[#667185]">{result?.leave?.leave_duration} days</span>
+                </div>
+              </div>
+              <div className="flex gap-2">
+                {result?.approval_status === "approved" && (
+                  <Link to="/leave-resumption-certificate" state={result} className="flex-1">
+                    <button className="w-full text-[#984779] px-3 py-2 rounded-md border border-[#984779] hover:bg-gray-100 text-sm">
+                      View Certificate
+                    </button>
+                  </Link>
+                )}
+                <button
+                  onClick={() =>
+                    navigate("/portal/resumption-details", {
+                      state: { details: result },
+                    })
+                  }
+                  className={`px-3 py-2 bg-purple-800 hover:bg-purple-700 text-white rounded-md text-sm ${
+                    result?.approval_status === "approved" ? "flex-1" : "w-full"
+                  }`}
+                >
+                  View Details
+                </button>
+              </div>
+            </div>
+          ))
+        )}
       </div>
     </div>
   );

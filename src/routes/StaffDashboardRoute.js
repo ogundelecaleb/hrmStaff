@@ -17,7 +17,7 @@ import EmailMessage from "../pages/staff/inbox/EmailMessage";
 import StaffLeaveRoute from "./StaffLeaveRoute";
 import StaffInboxRoute from "./StaffInboxRoute";
 import PersonalRecord from "../pages/staff/personalrecord/PersonalRecord";
-import { Notification } from "../pages/staff/notification/Notification";
+import Notification from "../pages/staff/notification/Notification";
 import SpaDevRoute from "./SpaDevRoute";
 import ResumptionOfLeave from "../pages/staff/leave/leaveresumption/ResumptionOfLeave";
 import LeaveResumptionCertificate from "../pages/staff/leave/ResumptionCertificate";

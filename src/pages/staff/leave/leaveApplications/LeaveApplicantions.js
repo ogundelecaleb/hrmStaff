@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { Skeleton, Box } from "@chakra-ui/react";
+import { Skeleton, Box, Spinner } from "@chakra-ui/react";
 import { Text } from "@chakra-ui/layout";
 import { AiOutlineMenu, AiOutlinePlus } from "react-icons/ai";
 import { TbDirection, TbGridDots } from "react-icons/tb";
@@ -10,6 +10,7 @@ import api from "../../../../api";
 import { useNavigate, Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import NoData from "../../../../components/NoData";
+import { ArrowLeft } from "iconsax-react";
 
 const CustomSkeletonLoader = ({ count }) => {
   const skeletonRows = Array.from({ length: count }, (_, index) => (
@@ -62,29 +63,18 @@ const LeaveApplicantions = () => {
 
   return (
     <div>
-      {isLoading ? (
-        <div className=" shadow mx-3 pb-5 mb-5 mt-5">
-          <p className="fw-semibold ps-4 fs-4 py-4 border-bottom">
-            Leave Applications
-          </p>
-
-          <div className="tb-res-parent mt-4">
-            <div className="tb-res">
-              <table className="table table-hover table-bordered">
-                <thead></thead>
-                <tbody>
-                  <CustomSkeletonLoader count={6} />
-                </tbody>
-              </table>
-            </div>
-          </div>
+      {isLoading && !data ? (
+        <div className="flex justify-center py-12">
+          <Spinner size="xl" color="purple.500" />
         </div>
       ) : (
         <div>
           <div className=" px-4 md:px-6">
-            <div className="flex  justify-between mt-4  px-3">
-              <div className="col-lg-4 pt-3 " style={{ height: "70px" }}>
-                <p className="fs-5 ">
+            <div className="flex  justify-between flex-col md:flex-row mt-4 ">
+              <div className="flex items-center " onClick={() => navigate(-1)}>
+                <ArrowLeft size={14} />
+
+                <p className="text-lg md:text-xl font-semibold ">
                   Total Leave Applied : {data?.meta?.total}
                 </p>
               </div>
@@ -93,131 +83,161 @@ const LeaveApplicantions = () => {
                   <div style={{ position: "absolute" }}>
                     <input
                       type="text"
-                      className="form-control mt-2 "
-                      style={{ height: "45px" }}
+                      className="border   "
+                      style={{ height: "45px", paddingLeft: "40px" }}
                       placeholder="Search for staff"
                     />
                   </div>
                   <div
-                    style={{ position: "absolute", top: "18px", left: "10px" }}
+                    style={{ position: "absolute", top: "12px", left: "10px" }}
                   >
                     <MdSearch size={"25"} />
                   </div>
                 </div>
               </div>
-             
             </div>
-            <div className="overflow-x-auto">
-              <div class="sm:-mx-6 lg:-mx-8 mt-5">
-                <div class="inline-block min-w-full  sm:px-6 lg:px-8">
-                  <div class="overflow-x-auto rounded-lg">
-                    <table className="min-w-full mb-6 border-[0.8px] border-r-[0.8px]  border-l-[0.8px] border-[#E4E7EC] rounded-lg">
+            {/* Desktop Table */}
+            <div className="hidden md:block overflow-x-auto">
+              <div className="sm:-mx-6 lg:-mx-8">
+                <div className="inline-block min-w-full sm:px-6 lg:px-8">
+                  <div className="overflow-x-auto rounded-lg">
+                    <table className="min-w-full mb-6 border-[0.8px] border-r-[0.8px] border-l-[0.8px] border-[#E4E7EC] rounded-lg">
                       <thead className="bg-[#F9FAFB]">
-                        <tr className="">
-                          <th
-                            scope="col"
-                            className="  border-b-[0.8px] border-[#E4E7EC] py-[12px] px-5  gap-[6px] md:gap-[12px] text-[14px] md:text-[16px] text-[#98A2B3]  font-medium leading-[20px] md:leading-[24px] tracking-[0.2%]"
-                          >
-                              Staff Name
+                        <tr>
+                          <th className="border-b-[0.8px] border-[#E4E7EC] py-[12px] px-5 text-[16px] text-[#98A2B3] font-medium">
+                            Staff Name
                           </th>
-                          <th
-                            scope="col"
-                            className="  border-b-[0.8px] border-[#E4E7EC] py-[12px] px-5  gap-[6px] md:gap-[12px] text-[14px] md:text-[16px] text-[#98A2B3]  font-medium leading-[20px] md:leading-[24px] tracking-[0.2%]"
-                          >
-                              Leave Type{" "}
+                          <th className="border-b-[0.8px] border-[#E4E7EC] py-[12px] px-5 text-[16px] text-[#98A2B3] font-medium">
+                            Leave Type
                           </th>
-                          <th
-                            scope="col"
-                            className="  border-b-[0.8px] border-[#E4E7EC] py-[12px] px-5  gap-[6px] md:gap-[12px] text-[14px] md:text-[16px] text-[#98A2B3]  font-medium leading-[20px] md:leading-[24px] tracking-[0.2%]"
-                          >
-                              Status{" "}
+                          <th className="border-b-[0.8px] border-[#E4E7EC] py-[12px] px-5 text-[16px] text-[#98A2B3] font-medium">
+                            Status
                           </th>
-                          <th
-                            scope="col"
-                            className="  border-b-[0.8px] border-[#E4E7EC] py-[12px] px-5  gap-[6px] md:gap-[12px] text-[14px] md:text-[16px] text-[#98A2B3]  font-medium leading-[20px] md:leading-[24px] tracking-[0.2%]"
-                          >
-                              Date Applied{" "}
+                          <th className="border-b-[0.8px] border-[#E4E7EC] py-[12px] px-5 text-[16px] text-[#98A2B3] font-medium">
+                            Date Applied
                           </th>
-
-                          <th
-                            scope="col"
-                            className="  border-b-[0.8px] border-[#E4E7EC] py-[12px] px-5  gap-[6px] md:gap-[12px] text-[14px] md:text-[16px] text-[#98A2B3]  font-medium leading-[20px] md:leading-[24px] tracking-[0.2%]"
-                          >
-                              Department{" "}
+                          <th className="border-b-[0.8px] border-[#E4E7EC] py-[12px] px-5 text-[16px] text-[#98A2B3] font-medium">
+                            Department
                           </th>
-
-                          <th
-                            scope="col"
-                            className="  border-b-[0.8px] border-[#E4E7EC] py-[12px] gap-[6px] md:gap-[12px] text-[14px] md:text-[16px] text-[#98A2B3]  font-medium leading-[20px] md:leading-[24px] tracking-[0.2%]"
-                          >
-                              Action{" "}
+                          <th className="border-b-[0.8px] border-[#E4E7EC] py-[12px] px-5 text-[16px] text-[#98A2B3] font-medium">
+                            Action
                           </th>
                         </tr>
                       </thead>
                       <tbody>
-                        {isLoading && !isPreviousData && (
-                          <div className="text-base">Loading...</div>
-                        )}
-                        {data && data.data && data?.data?.length === 0 && (
-                          <tr className="mt-4">
-                          <td
-                            className="
-                          "
-                            colspan={6}
-                          >
-                              <NoData />
-                           </td>
-                           </tr>
-                        )}
-
                         {data?.data?.map((item) => (
-                          <tr key={item?.id} className="mb-2 hover:bg-light-gray">
-                            <td className="whitespace-nowrap py-[16px] bg-white  px-5  border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px] text-[#667185] font-medium text-center ">
-                              <div className="flex items-center gap-1 ">
-                                
-                                <div className="">{item.full_name}</div>
-                              </div>
+                          <tr key={item?.id} className="hover:bg-gray-50">
+                            <td className="py-4 px-5 border-b border-[#E4E7EC] text-[14px] text-[#667185] font-medium">
+                              {item.full_name}
                             </td>
-                            <td className="whitespace-nowrap py-[16px] bg-white  px-5  border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px] text-[#667185] font-medium text-center  ">
+                            <td className="py-4 px-5 border-b border-[#E4E7EC] text-[14px] text-[#667185] font-medium">
                               {item.leave_type}
                             </td>
-                            <td className="whitespace-nowrap py-[16px] bg-white  px-5  border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px] text-[#667185] font-medium text-center  ">
-                              {item.status}
+                            <td className="py-4 px-5 border-b border-[#E4E7EC] text-center">
+                              <span
+                                className={`px-3 py-1 rounded-full text-xs font-semibold ${
+                                  item.status === "declined"
+                                    ? "bg-red-100 text-red-600"
+                                    : item.status === "pending"
+                                    ? "bg-yellow-100 text-yellow-600"
+                                    : "bg-green-100 text-green-600"
+                                }`}
+                              >
+                                {item.status}
+                              </span>
                             </td>
-                            <td className="whitespace-nowrap py-[16px] bg-white  px-5  border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px] text-[#667185] font-medium text-center  ">
+                            <td className="py-4 px-5 border-b border-[#E4E7EC] text-[14px] text-[#667185] font-medium">
                               {formatDate(item.date)}
                             </td>
-
-                            <td className="whitespace-nowrap py-[16px] bg-white  px-5  border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px] text-[#667185] font-medium text-center  ">
-                              <p className="text-sm mb-0 text-[#25324B]">
-                                {item.department?.name ||
-                                  item.faculty?.name ||
-                                  item.unit?.name}
-                              </p>{" "}
+                            <td className="py-4 px-5 border-b border-[#E4E7EC] text-[14px] text-[#667185] font-medium">
+                              {item.department?.name ||
+                                item.faculty?.name ||
+                                item.unit?.name}
                             </td>
-
-                            <td className="whitespace-nowrap py-[16px]  gap-2 bg-white  px-5  border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px] text-[#1A202C] font-medium text-center  ">
+                            <td className="py-4 px-5 border-b border-[#E4E7EC] text-center">
                               <Link to={`leave-applicant-details/${item.id}`}>
-                                <button
-                                  className="btn py-1 px-3 rounded-lg mt-3 btn-sm"
-                                  style={{
-                                    border: "1px solid #984779",
-                                    color: "#987779",
-                                    backgroundColor: "#E9EBFD",
-                                  }}
-                                >
+                                <button className="text-[#984779] px-3 py-1 rounded-md border border-[#984779] bg-[#E9EBFD] hover:bg-gray-100">
                                   View Application
                                 </button>
                               </Link>
                             </td>
                           </tr>
                         ))}
-                        {/* ))} */}
                       </tbody>
                     </table>
                   </div>
                 </div>
               </div>
+            </div>
+
+            {/* Mobile Cards */}
+            <div className="md:hidden space-y-3">
+              {isLoading && !isPreviousData ? (
+                <div className="flex justify-center py-8">
+                  <Spinner size="lg" color="purple.500" />
+                </div>
+              ) : data?.data?.length === 0 ? (
+                <div className="py-8">
+                  <NoData />
+                </div>
+              ) : (
+                data?.data?.map((item) => (
+                  <div
+                    key={item?.id}
+                    className="bg-white border border-[#E4E7EC] rounded-lg p-4 shadow-sm"
+                  >
+                    <div className="flex justify-between items-start mb-3">
+                      <div className="flex-1">
+                        <h4 className="font-semibold text-[#1A202C] text-sm">
+                          {item.full_name}
+                        </h4>
+                        <p className="text-xs text-[#667185] mt-1">
+                          {item.leave_type}
+                        </p>
+                      </div>
+                      <span
+                        className={`px-2 py-1 rounded-full text-xs font-semibold ${
+                          item.status === "declined"
+                            ? "bg-red-100 text-red-600"
+                            : item.status === "pending"
+                            ? "bg-yellow-100 text-yellow-600"
+                            : "bg-green-100 text-green-600"
+                        }`}
+                      >
+                        {item.status}
+                      </span>
+                    </div>
+                    <div className="space-y-2 mb-3">
+                      <div className="flex justify-between text-xs">
+                        <span className="text-[#98A2B3]">Date Applied:</span>
+                        <span className="text-[#667185]">
+                          {formatDate(item.date)}
+                        </span>
+                      </div>
+                      <div className="flex justify-between text-xs">
+                        <span className="text-[#98A2B3]">Department:</span>
+                        <span className="text-[#667185]">
+                          {item.department?.name ||
+                            item.faculty?.name ||
+                            item.unit?.name}
+                        </span>
+                      </div>
+                    </div>
+                    <Link to={`leave-applicant-details/${item.id}`}>
+                      <button className="w-full text-[#984779] px-3 py-2 rounded-md border border-[#984779] bg-[#E9EBFD] hover:bg-gray-100 text-sm">
+                        View Application
+                      </button>
+                    </Link>
+                    {item?.status === "approved" && (
+                      <Link to="/leave-certificate" state={item}>
+                        <button className="text-[#984779] text-xs px-2 py-1 rounded border hover:bg-gray-100">
+                          View Certificate
+                        </button>
+                      </Link>
+                    )}
+                  </div>
+                ))
+              )}
             </div>
 
             {data && data.data && data?.data?.length > 0 && (
