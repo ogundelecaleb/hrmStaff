@@ -54,6 +54,8 @@ const RegularizationAppointmentSenior = ({ data, datas }) => {
         date_on_temporary_appointment: formattedRegularDate,
         unit_id: datas.unitId,
         level: data.staffLevel,
+        supervisor_id: datas.supervisor_office?.id,
+
       });
       
       enqueueSnackbar('Application submitted successfully', { variant: 'success' });
