@@ -16,14 +16,14 @@ const AppointmentRegularization = () => {
   const [page, setPage] = useState(1);
   const [userDetails, setUserDetails] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
-  
+
   async function fetchUserDetails() {
     try {
       const userDetails = await getUserDetails();
       setUserDetails(userDetails);
     } catch (error) {
       console.error("Error fetching your basic details", error);
-      enqueueSnackbar(error.message, { variant: 'error' });
+      enqueueSnackbar(error.message, { variant: "error" });
     }
   }
 
@@ -35,52 +35,66 @@ const AppointmentRegularization = () => {
     try {
       const userDetails = await getUserDetails();
       const role = userDetails.data.role;
-  
-      if (['CS'].includes(role)) {
-        const response = await api.fetchCSRegularizationRequest({ params: { page } });
+
+      if (["CS"].includes(role)) {
+        const response = await api.fetchCSRegularizationRequest({
+          params: { page },
+        });
         return response;
-      } else if (['PT'].includes(role)) {
-        const response = await api.fetchPTRegularizationRequest({ params: { page } });
+      } else if (["PT"].includes(role)) {
+        const response = await api.fetchPTRegularizationRequest({
+          params: { page },
+        });
         return response;
-      } else if (['DEAN'].includes(role)) {
-        const response = await api.fetchDEANRegularizationRequest({ params: { page } });
+      } else if (["DEAN"].includes(role)) {
+        const response = await api.fetchDEANRegularizationRequest({
+          params: { page },
+        });
         return response;
-      } else if (['HOD'].includes(role)) {
-        const response = await api.fetchHodRegularizationRequest({ params: { page } });
+      } else if (["HOD"].includes(role)) {
+        const response = await api.fetchHodRegularizationRequest({
+          params: { page },
+        });
         return response;
-      } else if (['HNASEJ'].includes(role)) {
-        const response = await api.fetchHNASEJRegularizationRequest({ params: { page } });
+      } else if (["HNASEJ"].includes(role)) {
+        const response = await api.fetchHNASEJRegularizationRequest({
+          params: { page },
+        });
         return response;
-      } else if (['HNASES'].includes(role)) {
-        const response = await api.fetchHNASESRegularizationRequest({ params: { page } });
+      } else if (["HNASES"].includes(role)) {
+        const response = await api.fetchHNASESRegularizationRequest({
+          params: { page },
+        });
         return response;
-      } else if (['HOU'].includes(role)) {
-        const response = await api.fetchUnitRegularizationRequest({ params: { page } });
+      } else if (["HOU"].includes(role)) {
+        const response = await api.fetchUnitRegularizationRequest({
+          params: { page },
+        });
         return response;
       } else {
         return { data: [] };
       }
     } catch (error) {
       console.error("Error fetching regularization data", error);
-      enqueueSnackbar(error.message, { variant: 'error' });
+      enqueueSnackbar(error.message, { variant: "error" });
       throw error;
     }
   }
 
   const { isLoading, isError, data, error, isPreviousData, refetch } = useQuery(
-    ['regularizationRequests', page], 
+    ["regularizationRequests", page],
     () => getRegularization(page),
     {
-      keepPreviousData: true, 
+      keepPreviousData: true,
       refetchOnWindowFocus: "always",
     }
   );
-  
+
   function formatDate(dateString) {
     const date = new Date(dateString);
     const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
     return `${year}-${month}-${day}`;
   }
 
@@ -98,10 +112,14 @@ const AppointmentRegularization = () => {
       <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-6">
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
           <div>
-            <h1 className="text-2xl font-bold text-gray-900 mb-2">Appointment Regularization</h1>
-            <p className="text-gray-600">Total Applications: {data?.meta?.total || 0}</p>
+            <h1 className="text-2xl font-bold text-gray-900 mb-2">
+              Appointment Regularization
+            </h1>
+            <p className="text-gray-600">
+              Total Applications: {data?.meta?.total || 0}
+            </p>
           </div>
-          
+
           {/* Search and Actions */}
           <div className="flex flex-col sm:flex-row gap-4">
             {/* Search Input */}
@@ -117,7 +135,7 @@ const AppointmentRegularization = () => {
                 placeholder="Search for staff..."
               />
             </div>
-            
+
             {/* Action Buttons */}
             <div className="flex gap-2">
               <button className="flex items-center gap-2 px-4 py-3 border border-gray-300 rounded-xl hover:bg-gray-50 transition-colors">
@@ -148,7 +166,10 @@ const AppointmentRegularization = () => {
             <thead className="bg-gray-50">
               <tr>
                 <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  <input type="checkbox" className="rounded border-gray-300 text-purple-600 focus:ring-purple-500" />
+                  <input
+                    type="checkbox"
+                    className="rounded border-gray-300 text-purple-600 focus:ring-purple-500"
+                  />
                 </th>
                 <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Applicant Name
@@ -169,9 +190,15 @@ const AppointmentRegularization = () => {
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
               {data?.data?.map((item) => (
-                <tr key={item.id} className="hover:bg-gray-50 transition-colors">
+                <tr
+                  key={item.id}
+                  className="hover:bg-gray-50 transition-colors"
+                >
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <input type="checkbox" className="rounded border-gray-300 text-purple-600 focus:ring-purple-500" />
+                    <input
+                      type="checkbox"
+                      className="rounded border-gray-300 text-purple-600 focus:ring-purple-500"
+                    />
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="flex items-center">
@@ -181,24 +208,41 @@ const AppointmentRegularization = () => {
                         alt=""
                       />
                       <div className="ml-4">
-                        <div className="text-sm font-medium text-gray-900">{item.full_name}</div>
-                        <div className="text-sm text-gray-500">ID: {item.id}</div>
+                        <div className="text-sm font-medium text-gray-900">
+                          {item.full_name}
+                        </div>
+                        <div className="text-sm text-gray-500">
+                          ID: {item.id}
+                        </div>
                       </div>
                     </div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <span className="inline-flex px-3 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-800">
-                      {item.stage}
-                    </span>
+                    <button
+                      className={`rounded-[20px] md:rounded-[40px] w-[60px] md:w-[74px] py-[2px] md:py-[4px] mx-auto ${
+                        item.status === "pending"
+                          ? "bg-[rgb(255,245,230)] text-[#FF9800]"
+                          : item.status === "Ongoing"
+                          ? "bg-[#F9FAFB] text-[#667185]"
+                          : "bg-[#EDF7EE] text-[#4CAF50]"
+                      }  text-[10px] md:text-[12px]  font-semibold leading-[16px] md:leading-[18px]`}
+                    >
+                      {item.status}
+                    </button>{" "}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                     {formatDate(item.date)}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                    {item.department?.name || item.faculty?.name || item.unit?.name}
+                    {item.department?.name ||
+                      item.faculty?.name ||
+                      item.unit?.name}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <Link to={`regularization-details/${item.id}`} state={{ item: item }}>
+                    <Link
+                      to={`regularization-details/${item.id}`}
+                      state={{ item: item }}
+                    >
                       <button className="inline-flex items-center px-4 py-2 border border-purple-300 rounded-lg text-sm font-medium text-purple-700 bg-purple-50 hover:bg-purple-100 transition-colors">
                         View Application
                       </button>
@@ -214,25 +258,41 @@ const AppointmentRegularization = () => {
       {/* Mobile Cards */}
       <div className="lg:hidden space-y-4">
         {data?.data?.map((item) => (
-          <div key={item.id} className="bg-white rounded-xl shadow-sm border border-gray-200 p-4">
+          <div
+            key={item.id}
+            className="bg-white rounded-xl shadow-sm border border-gray-200 p-4"
+          >
             <div className="flex items-start justify-between mb-3">
               <div className="flex items-center space-x-3">
-                <input type="checkbox" className="rounded border-gray-300 text-purple-600 focus:ring-purple-500" />
+                <input
+                  type="checkbox"
+                  className="rounded border-gray-300 text-purple-600 focus:ring-purple-500"
+                />
                 <img
                   className="h-12 w-12 rounded-full object-cover"
                   src={item.user_image}
                   alt=""
                 />
                 <div>
-                  <h3 className="text-sm font-medium text-gray-900">{item.full_name}</h3>
+                  <h3 className="text-sm font-medium text-gray-900">
+                    {item.full_name}
+                  </h3>
                   <p className="text-xs text-gray-500">ID: {item.id}</p>
                 </div>
               </div>
-              <span className="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-800">
-                {item.stage}
-              </span>
+              <button
+                className={`rounded-[20px] md:rounded-[40px] w-[60px] md:w-[74px] py-[2px] md:py-[4px] mx-auto ${
+                  item.status === "pending"
+                    ? "bg-[rgb(255,245,230)] text-[#FF9800]"
+                    : item.status === "Ongoing"
+                    ? "bg-[#F9FAFB] text-[#667185]"
+                    : "bg-[#EDF7EE] text-[#4CAF50]"
+                }  text-[10px] md:text-[12px]  font-semibold leading-[16px] md:leading-[18px]`}
+              >
+                {item.status}
+              </button>{" "}
             </div>
-            
+
             <div className="space-y-2 mb-4">
               <div className="flex justify-between text-sm">
                 <span className="text-gray-500">Applied Date:</span>
@@ -240,11 +300,18 @@ const AppointmentRegularization = () => {
               </div>
               <div className="flex justify-between text-sm">
                 <span className="text-gray-500">Department:</span>
-                <span className="text-gray-900">{item.department?.name || item.faculty?.name || item.unit?.name}</span>
+                <span className="text-gray-900">
+                  {item.department?.name ||
+                    item.faculty?.name ||
+                    item.unit?.name}
+                </span>
               </div>
             </div>
-            
-            <Link to={`regularization-details/${item.id}`} state={{ item: item }}>
+
+            <Link
+              to={`regularization-details/${item.id}`}
+              state={{ item: item }}
+            >
               <button className="w-full inline-flex justify-center items-center px-4 py-2 border border-purple-300 rounded-lg text-sm font-medium text-purple-700 bg-purple-50 hover:bg-purple-100 transition-colors">
                 View Application
               </button>
@@ -265,22 +332,26 @@ const AppointmentRegularization = () => {
         <div className="bg-white rounded-xl shadow-sm border border-gray-200 px-6 py-4 mt-6">
           <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
             <div className="text-sm text-gray-500">
-              Showing {data?.meta?.from} - {data?.meta?.to} of {data?.meta?.total} results
+              Showing {data?.meta?.from} - {data?.meta?.to} of{" "}
+              {data?.meta?.total} results
               <span className="mx-2">|</span>
               Page {data?.meta?.current_page} of {data?.meta?.last_page}
             </div>
-            
+
             <div className="flex gap-2">
               <button
-                onClick={() => setPage(prev => Math.max(prev - 1, 1))}
+                onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
                 disabled={data?.meta?.current_page === 1 || isPreviousData}
                 className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
               >
                 Previous
               </button>
               <button
-                onClick={() => setPage(prev => prev + 1)}
-                disabled={data?.meta?.current_page === data?.meta?.last_page || isPreviousData}
+                onClick={() => setPage((prev) => prev + 1)}
+                disabled={
+                  data?.meta?.current_page === data?.meta?.last_page ||
+                  isPreviousData
+                }
                 className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
               >
                 Next
