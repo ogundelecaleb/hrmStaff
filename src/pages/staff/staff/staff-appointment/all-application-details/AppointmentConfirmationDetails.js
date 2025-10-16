@@ -3,12 +3,14 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { Spinner } from "@chakra-ui/react";
 import api from "../../../../../api";
 import { useSnackbar } from "notistack";
-import { 
-  ArrowLeft, 
-  User, 
-  Calendar, 
-  DocumentText, 
-  Building 
+import {
+  ArrowLeft,
+  User,
+  Calendar,
+  DocumentText,
+  Building,
+  TickCircle,
+  CloseCircle,
 } from "iconsax-react";
 
 const AppointmentConfirmationDetails = () => {
@@ -18,24 +20,32 @@ const AppointmentConfirmationDetails = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [details, setDetails] = useState([]);
   const [activeTab, setActiveTab] = useState("info");
+  const [comment, setComment] = useState("");
+  const [isLoadingf, setIsLoadingf] = useState(false);
+  const [isLoadingw, setIsLoadingw] = useState(false);
 
   useEffect(() => {
     setIsLoading(true);
     if (id) {
-      api.getConfirmationbyID(id)
-      .then(response => {
+      fetchConfirmationRequest();
+    }
+  }, [id]);
+
+  const fetchConfirmationRequest = () => {
+    api
+      .getConfirmationbyID(id)
+      .then((response) => {
         const leaveData = response.data;
         setDetails(leaveData);
         console.log(response.data);
         setIsLoading(false);
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(error);
-        enqueueSnackbar(error.message, { variant: 'error' });
+        enqueueSnackbar(error.message, { variant: "error" });
         setIsLoading(false);
       });
-    }
-  }, [id]);
+  };
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -57,6 +67,28 @@ const AppointmentConfirmationDetails = () => {
     return date.toLocaleDateString(undefined, options);
   };
 
+  const handleSubmit = async (agreement) => {
+    try {
+      const response = await api.handleConfirmationApprove({
+        id: details?.id,
+        agree_or_decline: agreement,
+        comment: comment,
+      });
+      enqueueSnackbar("Response submitted successfully", {
+        variant: "success",
+      });
+      fetchConfirmationRequest();
+      setIsLoadingw(false);
+      setIsLoadingf(false);
+    } catch (error) {
+      enqueueSnackbar(error.message || "An error occurred", {
+        variant: "error",
+      });
+      setIsLoadingf(false);
+      setIsLoadingw(false);
+    }
+  };
+
   if (isLoading) {
     return (
       <div className="flex justify-center items-center h-screen">
@@ -64,7 +96,7 @@ const AppointmentConfirmationDetails = () => {
       </div>
     );
   }
-  
+
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
@@ -85,7 +117,9 @@ const AppointmentConfirmationDetails = () => {
               <h1 className="text-lg md:text-2xl font-bold text-gray-900">
                 Applicant Details
               </h1>
-              <p className="text-gray-600">Confirmation of Appointment Application</p>
+              <p className="text-gray-600">
+                Confirmation of Appointment Application
+              </p>
             </div>
           </div>
         </div>
@@ -93,7 +127,7 @@ const AppointmentConfirmationDetails = () => {
 
       {/* Content */}
       <div className="max-w-7xl mx-auto px-4 md:px-8 py-8">
-        <div className="grid grid-cols-1 lg:grid-cols-3  gap-4 md:gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2  gap-4 md:gap-8">
           {/* Left Sidebar - Applicant Info */}
           <div className="lg:col-span-1">
             <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-3 md:p-6 mb-6">
@@ -105,7 +139,9 @@ const AppointmentConfirmationDetails = () => {
                   className="w-16 h-16 rounded-full object-cover"
                 />
                 <div>
-                  <h3 className="text-lg font-semibold text-gray-900">{details.full_name}</h3>
+                  <h3 className="text-lg font-semibold text-gray-900">
+                    {details.full_name}
+                  </h3>
                   <p className="text-sm text-gray-600">{details.staffID}</p>
                   <p className="text-sm text-gray-600">{details.role}</p>
                 </div>
@@ -116,21 +152,36 @@ const AppointmentConfirmationDetails = () => {
                 <div className="flex justify-between items-center mb-2">
                   <span className="text-sm text-gray-600">Date Applied:</span>
                   <span className="text-sm font-medium text-gray-900">
-                    {formatshortDate(details.date || "Application Date not available")}
+                    {formatshortDate(
+                      details.date || "Application Date not available"
+                    )}
                   </span>
                 </div>
                 <div className="border-t border-purple-200 pt-2">
-                  <p className="text-sm font-medium text-purple-900">Confirmation of Appointment</p>
+                  <p className="text-sm font-medium text-purple-900">
+                    Confirmation of Appointment
+                  </p>
                 </div>
               </div>
 
               {/* Approvals Timeline */}
-              <div className="space-y-2 md:space-y-4">                <h4 className="text-sm font-semibold text-gray-900 uppercase tracking-wide">Approval Timeline</h4>
+              <div className="space-y-2 md:space-y-4">
+                {" "}
+                <h4 className="text-sm font-semibold text-gray-900 uppercase tracking-wide">
+                  Approval Timeline
+                </h4>
                 {details.approvals?.map((approval, index) => (
-                  <div key={index} className="border border-gray-200 rounded-lg p-4">
+                  <div
+                    key={index}
+                    className="border border-gray-200 rounded-lg p-4"
+                  >
                     <div className="flex justify-between items-start mb-2">
-                      <span className="text-sm font-medium text-gray-900">{approval.role}</span>
-                      <span className="text-xs text-gray-500">{formatDate(approval.date)}</span>
+                      <span className="text-sm font-medium text-gray-900">
+                        {approval.role}
+                      </span>
+                      <span className="text-xs text-gray-500">
+                        {formatDate(approval.date)}
+                      </span>
                     </div>
                     <p className="text-sm text-gray-600">
                       {approval.comment || "No comment available"}
@@ -139,6 +190,92 @@ const AppointmentConfirmationDetails = () => {
                 ))}
               </div>
             </div>
+          </div>
+          {/* Staff Response Section */}
+          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-3 md:p-6">
+            <h3 className="text-lg font-semibold text-gray-900 mb-4">
+              Staff Response
+            </h3>
+
+            {details && details?.approvals?.length === 1 ? (
+              <div className="space-y-2 md:space-y-4">
+                {" "}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Your Comment
+                  </label>
+                  <textarea
+                    value={comment}
+                    onChange={(e) => setComment(e.target.value)}
+                    rows={4}
+                    className="w-full px-4 py-3 border border-gray-300 rounded-xl bg-white text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200 hover:border-gray-400 resize-none"
+                    placeholder="Enter your comment on the HOD/HOU response..."
+                  />
+                </div>
+
+                <div>
+                  <p className="text-sm font-medium text-gray-700 mb-3">
+                    Do you agree with the HOD/HOU comment?
+                  </p>
+                  <div className="flex gap-3">
+                    <button
+                      onClick={() => {
+                        handleSubmit("accept");
+                        setIsLoadingw(true);
+                      }}
+                      disabled={isLoadingw || isLoadingf}
+                      className="flex items-center gap-2 md:px-6 md:py-3 px-3 py-2 bg-green-600 text-white rounded-xl hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 font-medium"
+                    >
+                      {isLoadingw ? (
+                        <Spinner size="sm" color="white" />
+                      ) : (
+                        <>
+                          <TickCircle size={16} />
+                          Agree
+                        </>
+                      )}
+                    </button>
+                    <button
+                      onClick={() => {
+                        handleSubmit("disapprove");
+                        setIsLoadingf(true);
+                      }}
+                      disabled={isLoadingw || isLoadingf}
+                      className="flex items-center gap-2 md:px-6 md:py-3 px-3 py-2 bg-red-600 text-white rounded-xl hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 font-medium"
+                    >
+                      {isLoadingf ? (
+                        <Spinner size="sm" color="white" />
+                      ) : (
+                        <>
+                          <CloseCircle size={16} />
+                          Disagree
+                        </>
+                      )}
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <div className="space-y-2 md:space-y-4">
+                {" "}
+                <div className="bg-gray-50 rounded-lg p-4">
+                  <label className="text-sm font-medium text-gray-500">
+                    Your Comment:
+                  </label>
+                  <p className="text-sm text-gray-900 mt-1">
+                    {(details && details?.approvals[1]?.comment) || "No comment available"}
+                  </p>
+                </div>
+                {/* <div className="bg-gray-50 rounded-lg p-4">
+                  <label className="text-sm font-medium text-gray-500">
+                    Your Decision:
+                  </label>
+                  <p className="text-sm text-gray-900 mt-1 capitalize font-medium">
+                    {details?.applicant_approval_status_to_hod}
+                  </p>
+                </div> */}
+              </div>
+            )}
           </div>
 
           {/* Right Content - Details */}
@@ -174,60 +311,90 @@ const AppointmentConfirmationDetails = () => {
               <div className="p-3 md:p-6">
                 {activeTab === "info" && (
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:p-6">
-                    <div className="space-y-2 md:space-y-4">                      <div>
-                        <label className="text-sm font-medium text-gray-500">Full Name</label>
-                        <p className="text-base font-medium text-gray-900 mt-1">{details.full_name}</p>
-                      </div>
-                      
+                    <div className="space-y-2 md:space-y-4">
+                      {" "}
                       <div>
-                        <label className="text-sm font-medium text-gray-500">Staff Type</label>
-                        <p className="text-base font-medium text-gray-900 mt-1">{details.staff_type}</p>
+                        <label className="text-sm font-medium text-gray-500">
+                          Full Name
+                        </label>
+                        <p className="text-base font-medium text-gray-900 mt-1">
+                          {details.full_name}
+                        </p>
                       </div>
-                      
                       <div>
-                        <label className="text-sm font-medium text-gray-500">Current Level</label>
-                        <p className="text-base font-medium text-gray-900 mt-1">{details.level}</p>
+                        <label className="text-sm font-medium text-gray-500">
+                          Staff Type
+                        </label>
+                        <p className="text-base font-medium text-gray-900 mt-1">
+                          {details.staff_type}
+                        </p>
                       </div>
-                      
                       <div>
-                        <label className="text-sm font-medium text-gray-500">PF/CM No</label>
-                        <p className="text-base font-medium text-gray-900 mt-1">{details.pf_no}</p>
+                        <label className="text-sm font-medium text-gray-500">
+                          Current Level
+                        </label>
+                        <p className="text-base font-medium text-gray-900 mt-1">
+                          {details.level}
+                        </p>
                       </div>
-                      
                       <div>
-                        <label className="text-sm font-medium text-gray-500">Date of First Appointment</label>
+                        <label className="text-sm font-medium text-gray-500">
+                          PF/CM No
+                        </label>
+                        <p className="text-base font-medium text-gray-900 mt-1">
+                          {details.pf_no}
+                        </p>
+                      </div>
+                      <div>
+                        <label className="text-sm font-medium text-gray-500">
+                          Date of First Appointment
+                        </label>
                         <p className="text-base font-medium text-gray-900 mt-1">
                           {formatDate(details.date_of_first_appointment)}
                         </p>
                       </div>
                     </div>
 
-                    <div className="space-y-2 md:space-y-4">                      <div>
-                        <label className="text-sm font-medium text-gray-500">Division/Department/Unit</label>
+                    <div className="space-y-2 md:space-y-4">
+                      {" "}
+                      <div>
+                        <label className="text-sm font-medium text-gray-500">
+                          Division/Department/Unit
+                        </label>
                         <p className="text-base font-medium text-gray-900 mt-1">
-                          {details.department?.name || details.faculty?.name || details.unit?.name}
+                          {details.department?.name ||
+                            details.faculty?.name ||
+                            details.unit?.name}
                         </p>
                       </div>
-                      
                       <div>
-                        <label className="text-sm font-medium text-gray-500">Date of Present Appointment</label>
+                        <label className="text-sm font-medium text-gray-500">
+                          Date of Present Appointment
+                        </label>
                         <p className="text-base font-medium text-gray-900 mt-1">
                           {formatDate(details.date_of_present_appointment)}
                         </p>
                       </div>
-                      
                       <div>
-                        <label className="text-sm font-medium text-gray-500">Grade on First Appointment</label>
-                        <p className="text-base font-medium text-gray-900 mt-1">{details.grade_of_first_appointment}</p>
+                        <label className="text-sm font-medium text-gray-500">
+                          Grade on First Appointment
+                        </label>
+                        <p className="text-base font-medium text-gray-900 mt-1">
+                          {details.grade_of_first_appointment}
+                        </p>
                       </div>
-                      
+                      {/* <div>
+                        <label className="text-sm font-medium text-gray-500">
+                          Grade on Temporary Appointment
+                        </label>
+                        <p className="text-base font-medium text-gray-900 mt-1">
+                          {details.grade_on_temporary_appointment}
+                        </p>
+                      </div> */}
                       <div>
-                        <label className="text-sm font-medium text-gray-500">Grade on Temporary Appointment</label>
-                        <p className="text-base font-medium text-gray-900 mt-1">{details.grade_on_temporary_appointment}</p>
-                      </div>
-                      
-                      <div>
-                        <label className="text-sm font-medium text-gray-500">Details of Work Done Since Appointment</label>
+                        <label className="text-sm font-medium text-gray-500">
+                          Details of Work Done Since Appointment
+                        </label>
                         <p className="text-sm text-gray-900 mt-1 leading-relaxed">
                           {details.details_of_work_done_since_appointment}
                         </p>
@@ -239,8 +406,12 @@ const AppointmentConfirmationDetails = () => {
                 {activeTab === "documents" && (
                   <div className="text-center py-12">
                     <DocumentText className="mx-auto h-12 w-12 text-gray-400" />
-                    <h3 className="mt-2 text-sm font-medium text-gray-900">No documents available</h3>
-                    <p className="mt-1 text-sm text-gray-500">Documents will appear here when uploaded.</p>
+                    <h3 className="mt-2 text-sm font-medium text-gray-900">
+                      No documents available
+                    </h3>
+                    <p className="mt-1 text-sm text-gray-500">
+                      Documents will appear here when uploaded.
+                    </p>
                   </div>
                 )}
               </div>

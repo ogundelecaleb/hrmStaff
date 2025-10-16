@@ -4,13 +4,13 @@ import { Spinner } from "@chakra-ui/react";
 import api from "../../../../../api";
 import { useSnackbar } from "notistack";
 import { getUserDetails } from "../../../../../utils/utils";
-import { 
-  ArrowLeft, 
-  DocumentText, 
+import {
+  ArrowLeft,
+  DocumentText,
   TickCircle,
   CloseCircle,
   Clock,
-  MessageText
+  MessageText,
 } from "iconsax-react";
 
 const AppointmentConfirmationDetails = () => {
@@ -36,16 +36,17 @@ const AppointmentConfirmationDetails = () => {
   useEffect(() => {
     setIsLoading(true);
     if (id) {
-      api.getConfirmationbyID(id)
-      .then(response => {
-        const leaveData = response.data;
-        setDetails(leaveData);
-        setIsLoading(false);
-      })
-      .catch(error => {
-        enqueueSnackbar(error.message, { variant: 'error' });
-        setIsLoading(false);
-      });
+      api
+        .getConfirmationbyID(id)
+        .then((response) => {
+          const leaveData = response.data;
+          setDetails(leaveData);
+          setIsLoading(false);
+        })
+        .catch((error) => {
+          enqueueSnackbar(error.message, { variant: "error" });
+          setIsLoading(false);
+        });
     }
   }, [id]);
 
@@ -54,7 +55,7 @@ const AppointmentConfirmationDetails = () => {
       const userDetails = await getUserDetails();
       setUserDetails(userDetails);
     } catch (error) {
-      enqueueSnackbar(error.message, { variant: 'error' });
+      enqueueSnackbar(error.message, { variant: "error" });
     }
   }
 
@@ -82,9 +83,13 @@ const AppointmentConfirmationDetails = () => {
     return date.toLocaleDateString(undefined, options);
   };
 
-  const shouldDisplayButtons = !details.approvals || !details.approvals.some(
-    (approval) => approval.role === userDetails?.data?.role && (approval.status === "approved" || approval.status === "declined")
-  );
+  const shouldDisplayButtons =
+    !details.approvals ||
+    !details.approvals.some(
+      (approval) =>
+        approval.role === userDetails?.data?.role &&
+        (approval.status === "approved" || approval.status === "declined")
+    );
 
   async function handleApprovedBtn(e) {
     e.preventDefault();
@@ -93,11 +98,17 @@ const AppointmentConfirmationDetails = () => {
         variant: "warning",
       });
       return;
-    } 
+    }
     setIsLoadinge(true);
     try {
-      const response = await api.handleConfirmationApprove({id, status: "approved", comment: commentText});
-      enqueueSnackbar("Application approved successfully", { variant: 'success' });
+      const response = await api.handleConfirmationApprove({
+        id,
+        status: "approved",
+        comment: commentText,
+      });
+      enqueueSnackbar("Application approved successfully", {
+        variant: "success",
+      });
       setIsLoadinge(false);
       window.location.reload();
     } catch (error) {
@@ -113,11 +124,17 @@ const AppointmentConfirmationDetails = () => {
         variant: "warning",
       });
       return;
-    } 
+    }
     setIsLoadingd(true);
     try {
-      const response = await api.handleConfirmationDecline({id, status: "declined", comment: commentText});
-      enqueueSnackbar("Application declined successfully", { variant: 'success' });
+      const response = await api.handleConfirmationDecline({
+        id,
+        status: "declined",
+        comment: commentText,
+      });
+      enqueueSnackbar("Application declined successfully", {
+        variant: "success",
+      });
       setIsLoadingd(false);
       window.location.reload();
     } catch (error) {
@@ -174,7 +191,9 @@ const AppointmentConfirmationDetails = () => {
                   className="w-16 h-16 rounded-full object-cover"
                 />
                 <div>
-                  <h3 className="text-lg font-semibold text-gray-900">{details.full_name}</h3>
+                  <h3 className="text-lg font-semibold text-gray-900">
+                    {details.full_name}
+                  </h3>
                   <p className="text-sm text-gray-600">{details.staffID}</p>
                   <p className="text-sm text-gray-600">{details.role}</p>
                 </div>
@@ -184,11 +203,15 @@ const AppointmentConfirmationDetails = () => {
                 <div className="flex justify-between items-center mb-2">
                   <span className="text-sm text-gray-600">Date Applied:</span>
                   <span className="text-sm font-medium text-gray-900">
-                    {formatshortDate(details.date || "Application Date not available")}
+                    {formatshortDate(
+                      details.date || "Application Date not available"
+                    )}
                   </span>
                 </div>
                 <div className="border-t border-purple-200 pt-2">
-                  <p className="text-sm font-medium text-purple-900">Confirmation of Appointment</p>
+                  <p className="text-sm font-medium text-purple-900">
+                    Confirmation of Appointment
+                  </p>
                 </div>
               </div>
             </div>
@@ -196,7 +219,9 @@ const AppointmentConfirmationDetails = () => {
             {/* Comment Section */}
             {!isCommentDisplayed && (
               <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-                <h3 className="text-lg font-semibold text-gray-900 mb-4">Add Your Comment</h3>
+                <h3 className="text-lg font-semibold text-gray-900 mb-4">
+                  Add Your Comment
+                </h3>
                 <div className="space-y-4">
                   <textarea
                     value={commentText}
@@ -219,7 +244,9 @@ const AppointmentConfirmationDetails = () => {
             {/* Action Buttons */}
             {shouldDisplayButtons && (
               <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-                <h3 className="text-lg font-semibold text-gray-900 mb-4">Application Decision</h3>
+                <h3 className="text-lg font-semibold text-gray-900 mb-4">
+                  Application Decision
+                </h3>
                 <div className="flex gap-4">
                   <button
                     onClick={handleDeclinedBtn}
@@ -258,55 +285,83 @@ const AppointmentConfirmationDetails = () => {
           <div className="space-y-6">
             {/* Application Details */}
             <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">Application Information</h3>
+              <h3 className="text-lg font-semibold text-gray-900 mb-4">
+                Application Information
+              </h3>
               <div className="space-y-4">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <label className="text-sm font-medium text-gray-500">Staff Type</label>
-                    <p className="text-base font-medium text-gray-900 mt-1">{details.staff_type}</p>
+                    <label className="text-sm font-medium text-gray-500">
+                      Staff Type
+                    </label>
+                    <p className="text-base font-medium text-gray-900 mt-1">
+                      {details.staff_type}
+                    </p>
                   </div>
                   <div>
-                    <label className="text-sm font-medium text-gray-500">Current Level</label>
-                    <p className="text-base font-medium text-gray-900 mt-1">{details.level}</p>
+                    <label className="text-sm font-medium text-gray-500">
+                      Current Level
+                    </label>
+                    <p className="text-base font-medium text-gray-900 mt-1">
+                      {details.level}
+                    </p>
                   </div>
                   <div>
-                    <label className="text-sm font-medium text-gray-500">PF/CM No</label>
-                    <p className="text-base font-medium text-gray-900 mt-1">{details.pf_no}</p>
+                    <label className="text-sm font-medium text-gray-500">
+                      PF/CM No
+                    </label>
+                    <p className="text-base font-medium text-gray-900 mt-1">
+                      {details.pf_no}
+                    </p>
                   </div>
                   <div>
-                    <label className="text-sm font-medium text-gray-500">Grade on First Appointment</label>
-                    <p className="text-base font-medium text-gray-900 mt-1">{details.grade_of_first_appointment}</p>
+                    <label className="text-sm font-medium text-gray-500">
+                      Grade on First Appointment
+                    </label>
+                    <p className="text-base font-medium text-gray-900 mt-1">
+                      {details.grade_of_first_appointment}
+                    </p>
                   </div>
                 </div>
-                
+
                 <div>
-                  <label className="text-sm font-medium text-gray-500">Date of First Appointment</label>
+                  <label className="text-sm font-medium text-gray-500">
+                    Date of First Appointment
+                  </label>
                   <p className="text-base font-medium text-gray-900 mt-1">
                     {formatDate(details.date_of_first_appointment)}
                   </p>
                 </div>
-                
+
                 <div>
-                  <label className="text-sm font-medium text-gray-500">Date of Present Appointment</label>
+                  <label className="text-sm font-medium text-gray-500">
+                    Date of Present Appointment
+                  </label>
                   <p className="text-base font-medium text-gray-900 mt-1">
                     {formatDate(details.date_of_present_appointment)}
                   </p>
                 </div>
-                
+
                 <div>
-                  <label className="text-sm font-medium text-gray-500">Division/Department/Unit</label>
+                  <label className="text-sm font-medium text-gray-500">
+                    Division/Department/Unit
+                  </label>
                   <p className="text-base font-medium text-gray-900 mt-1">
-                    {details.department?.name || details.faculty?.name || details.unit?.name}
+                    {details.department?.name ||
+                      details.faculty?.name ||
+                      details.unit?.name}
                   </p>
                 </div>
-                
-                <div>
+
+                {/* <div>
                   <label className="text-sm font-medium text-gray-500">Grade on Temporary Appointment</label>
                   <p className="text-base font-medium text-gray-900 mt-1">{details.grade_on_temporary_appointment}</p>
-                </div>
-                
+                </div> */}
+
                 <div>
-                  <label className="text-sm font-medium text-gray-500">Details of Work Done Since Appointment</label>
+                  <label className="text-sm font-medium text-gray-500">
+                    Details of Work Done Since Appointment
+                  </label>
                   <p className="text-sm text-gray-900 mt-1 leading-relaxed">
                     {details.details_of_work_done_since_appointment}
                   </p>
@@ -316,12 +371,19 @@ const AppointmentConfirmationDetails = () => {
 
             {/* Approval Timeline */}
             <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">Approval Timeline</h3>
+              <h3 className="text-lg font-semibold text-gray-900 mb-4">
+                Approval Timeline
+              </h3>
               <div className="space-y-4">
                 {details.approvals?.map((approval, index) => (
-                  <div key={index} className="border border-gray-200 rounded-lg p-4">
+                  <div
+                    key={index}
+                    className="border border-gray-200 rounded-lg p-4"
+                  >
                     <div className="flex justify-between items-start mb-2">
-                      <span className="text-sm font-medium text-gray-900">{approval.role}</span>
+                      <span className="text-sm font-medium text-gray-900">
+                        {approval.role}
+                      </span>
                       <div className="flex items-center gap-1 text-xs text-gray-500">
                         <Clock size={12} />
                         {formatDate(approval.date)}
@@ -332,11 +394,13 @@ const AppointmentConfirmationDetails = () => {
                     </p>
                   </div>
                 ))}
-                
+
                 {comments.length > 0 && (
                   <div className="border border-purple-200 rounded-lg p-4 bg-purple-50">
                     <div className="flex justify-between items-start mb-2">
-                      <span className="text-sm font-medium text-gray-900">{userDetails?.data?.role}</span>
+                      <span className="text-sm font-medium text-gray-900">
+                        {userDetails?.data?.role}
+                      </span>
                       <div className="flex items-center gap-1 text-xs text-gray-500">
                         <Clock size={12} />
                         {formatDate(new Date())}

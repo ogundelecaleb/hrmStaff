@@ -6,7 +6,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { getYear, getMonth } from "date-fns";
 import api from "../../../../../api";
-import { Calendar, DocumentText, User } from "iconsax-react";
+import { Calendar, DocumentText, User, DocumentUpload, Eye } from "iconsax-react";
 
 const RegularizationAppointmentJunior = ({ data, datas }) => {
   const navigate = useNavigate();
@@ -15,6 +15,8 @@ const RegularizationAppointmentJunior = ({ data, datas }) => {
   const [workDone, setWorkDone] = useState("");
   const [grade, setGrade] = useState("");
   const [appointDate, setAppointDate] = useState("");
+  const [cvFile, setCvFile] = useState(null);
+  const [cvPreview, setCvPreview] = useState(null);
 
   function range(start, end, step) {
     const result = [];
@@ -44,9 +46,18 @@ const RegularizationAppointmentJunior = ({ data, datas }) => {
     ? new Date(appointDate).toISOString().split("T")[0]
     : null;
 
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setCvFile(file);
+      const fileUrl = URL.createObjectURL(file);
+      setCvPreview(fileUrl);
+    }
+  };
+
   const handleSubmit = async () => {
-    if (!grade || !appointDate || !workDone) {
-      enqueueSnackbar("Please fill in all required fields", {
+    if (!grade || !appointDate || !workDone || !cvFile) {
+      enqueueSnackbar("Please fill in all required fields including CV upload", {
         variant: "error",
       });
       return;
@@ -54,20 +65,22 @@ const RegularizationAppointmentJunior = ({ data, datas }) => {
 
     setIsSubmitting(true);
     try {
-      const response = await api.createNewRegularization({
-        full_name: data.full_name,
-        staff_type: data.type,
-        pf_no: datas.pfNumber,
-        date_of_first_appointment: datas.formattedAppointDate,
-        grade_on_temporary_appointment: grade,
-        details_of_work_done_since_appointment: workDone,
-        faculty_id: datas.facultyId,
-        department_id: datas.departmentId,
-        date_on_temporary_appointment: formattedRegularDate,
-        unit_id: datas.unitId,
-        level: data.staffLevel,
-        supervisor_id: datas.supervisor_office?.id,
-      });
+      const formData = new FormData();
+      formData.append('full_name', data.full_name);
+      formData.append('staff_type', data.type);
+      formData.append('pf_no', datas.pfNumber);
+      formData.append('date_of_first_appointment', datas.formattedAppointDate);
+      formData.append('grade_on_temporary_appointment', grade);
+      formData.append('details_of_work_done_since_appointment', workDone);
+      formData.append('faculty_id', datas.facultyId);
+      formData.append('department_id', datas.departmentId);
+      formData.append('date_on_temporary_appointment', formattedRegularDate);
+      formData.append('unit_id', datas.unitId);
+      formData.append('level', data.staffLevel);
+      formData.append('supervisor_id', datas.supervisor_office?.id);
+      formData.append('form_upload', cvFile);
+
+      const response = await api.createNewRegularization(formData);
 
       enqueueSnackbar("Application submitted successfully", {
         variant: "success",
@@ -98,8 +111,8 @@ const RegularizationAppointmentJunior = ({ data, datas }) => {
       </div>
 
       {/* Form Content */}
-      <div className="max-w-4xl mx-auto px-4 md:px-8 py-8">
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-3 md:p-8">
+        <div className="max-w-4xl mx-auto px-2 md:px-8 py-8">
+            <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-2 py-4 md:p-8">
           <div className="grid grid-cols-1 lg:grid-cols-2  gap-4 md:gap-8">
             <div className="space-y-3 md:space-y-6">
               <div className="mb-6">
@@ -115,7 +128,7 @@ const RegularizationAppointmentJunior = ({ data, datas }) => {
                   value={grade}
                   onChange={(e) => setGrade(e.target.value)}
                   placeholder="Enter grade on temporary appointment"
-                  className="w-full px-4 py-3 border border-gray-300 rounded-xl bg-white text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200 hover:border-gray-400"
+                  className="w-full md:px-4 md:py-3 px-2 py-2 border border-gray-300 md:rounded-xl rounded-md bg-white text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200 hover:border-gray-400"
                   required
                 />
               </div>
@@ -197,7 +210,7 @@ const RegularizationAppointmentJunior = ({ data, datas }) => {
                       }
                     }}
                     dateFormat="yyyy-MM-dd"
-                    className="w-full px-4 py-3 border border-gray-300 rounded-xl bg-white text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200 hover:border-gray-400"
+                    className="w-full md:px-4 md:py-3 px-2 py-2 border border-gray-300 md:rounded-xl rounded-md bg-white text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200 hover:border-gray-400"
                     placeholderText="Select date"
                     shouldCloseOnSelect={true}
                   />
@@ -217,9 +230,47 @@ const RegularizationAppointmentJunior = ({ data, datas }) => {
                   onChange={(e) => setWorkDone(e.target.value)}
                   placeholder="Describe the work done since appointment..."
                   rows={4}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-xl bg-white text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200 hover:border-gray-400 resize-none"
+                  className="w-full md:px-4 md:py-3 px-2 py-2 border border-gray-300 md:rounded-xl rounded-md bg-white text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200 hover:border-gray-400 resize-none"
                   required
                 />
+              </div>
+
+              <div className="mb-6">
+                <label className="flex items-center gap-2 text-sm font-semibold text-gray-700 mb-2">
+                  <span className="text-purple-600">
+                    <DocumentUpload size={16} />
+                  </span>
+                  Upload CV
+                  <span className="text-red-500">*</span>
+                </label>
+                <div className="space-y-3">
+                  <input
+                    type="file"
+                    accept=".pdf,.doc,.docx"
+                    onChange={handleFileChange}
+                    className="w-full md:px-4 md:py-3 px-2 py-1 min-h-[40px] border border-gray-300 md:rounded-xl rounded-md bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200 hover:border-gray-400"
+                    required
+                  />
+                  {cvFile && (
+                    <div className="flex items-center justify-between p-3 bg-purple-50 rounded-lg border border-purple-200">
+                      <div className="flex items-center gap-2">
+                        <DocumentText className="text-purple-600" size={16} />
+                        <span className="text-sm font-medium text-purple-900">{cvFile.name}</span>
+                      </div>
+                      {cvPreview && (
+                        <a
+                          href={cvPreview}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex items-center gap-1 px-3 py-1 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors text-xs"
+                        >
+                          <Eye size={12} />
+                          Preview
+                        </a>
+                      )}
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
 
@@ -252,6 +303,12 @@ const RegularizationAppointmentJunior = ({ data, datas }) => {
                     <span className="text-gray-600">PF Number:</span>
                     <span className="font-medium text-gray-900">
                       {datas?.pfNumber}
+                    </span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-600">CV Status:</span>
+                    <span className={`font-medium ${cvFile ? 'text-green-600' : 'text-red-600'}`}>
+                      {cvFile ? 'Uploaded' : 'Required'}
                     </span>
                   </div>
                 </div>

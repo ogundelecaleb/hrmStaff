@@ -160,7 +160,7 @@ const AppointmentRegularization = ({ navigate }) => {
       onChange={onChange}
       placeholder={placeholder}
       disabled={disabled}
-      className={`w-full px-4 py-3 border border-gray-300 rounded-xl bg-white text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200 hover:border-gray-400 ${
+      className={`w-full md:px-4 md:py-3 px-2 py-2 border border-gray-300 md:rounded-xl rounded-md bg-white text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200 hover:border-gray-400 ${
         disabled ? 'bg-gray-50 text-gray-500 cursor-not-allowed' : ''
       }`}
       required
@@ -171,7 +171,7 @@ const AppointmentRegularization = ({ navigate }) => {
     <select
       value={value}
       onChange={onChange}
-      className="w-full px-4 py-3 border border-gray-300 rounded-xl bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200 hover:border-gray-400"
+      className="w-full md:px-4 md:py-3 px-2 py-1 border border-gray-300 md:rounded-xl rounded-md bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200 hover:border-gray-400"
       required
     >
       <option value="">{placeholder}</option>
@@ -235,7 +235,7 @@ const AppointmentRegularization = ({ navigate }) => {
       selected={selectedDate ? new Date(selectedDate) : null}
       onChange={onChange}
       dateFormat='yyyy-MM-dd'
-      className="w-full px-4 py-3 border border-gray-300 rounded-xl bg-white text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200 hover:border-gray-400"
+      className="w-full md:px-4 md:py-3 px-2 py-2 border border-gray-300 md:rounded-xl rounded-md bg-white text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200 hover:border-gray-400"
       placeholderText={placeholder}
       shouldCloseOnSelect={true}
     />
@@ -284,8 +284,8 @@ const AppointmentRegularization = ({ navigate }) => {
           </div>
 
           {/* Form Content */}
-          <div className="max-w-4xl mx-auto px-4 md:px-8 py-8">
-            <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-4 md:p-8">
+        <div className="max-w-4xl mx-auto px-2 md:px-8 py-8">
+            <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-2 py-4 md:p-8">
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-8">
                 <div className="space-y-3 md:space-y-6">
                   <InputField 

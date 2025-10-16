@@ -274,7 +274,7 @@ export function leaveResumption(data) {
 }
 
 export function createNewRegularization(data) {
-  return apiPost(REGULARIZATIONAPPLICATION, data);
+  return apiPost(REGULARIZATIONAPPLICATION, data, { 'Content-Type': 'multipart/form-data' });
 }
 
 export function AgreeDisagreeHodComment(data) {
@@ -282,7 +282,7 @@ export function AgreeDisagreeHodComment(data) {
 }
 
 export function createNewCONFIRMATION(data) {
-  return apiPost(APPOINTMENTCONFIRMATION, data);
+  return apiPost(APPOINTMENTCONFIRMATION, data, { 'Content-Type': 'multipart/form-data' });
 }
 
 export function appointmentWithdrawal(data) {
