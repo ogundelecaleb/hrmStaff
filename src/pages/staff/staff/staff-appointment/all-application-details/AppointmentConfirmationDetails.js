@@ -11,6 +11,7 @@ import {
   Building,
   TickCircle,
   CloseCircle,
+  Eye,
 } from "iconsax-react";
 
 const AppointmentConfirmationDetails = () => {
@@ -212,7 +213,6 @@ const AppointmentConfirmationDetails = () => {
                     placeholder="Enter your comment on the HOD/HOU response..."
                   />
                 </div>
-
                 <div>
                   <p className="text-sm font-medium text-gray-700 mb-3">
                     Do you agree with the HOD/HOU comment?
@@ -262,9 +262,12 @@ const AppointmentConfirmationDetails = () => {
                   <label className="text-sm font-medium text-gray-500">
                     Your Comment:
                   </label>
-                  <p className="text-sm text-gray-900 mt-1">
-                    {(details && details?.approvals[1]?.comment) || "No comment available"}
-                  </p>
+                  {details && details?.approvals && (
+                    <p className="text-sm text-gray-900 mt-1">
+                      {(details && details?.approvals[1]?.comment) ||
+                        "No comment available"}
+                    </p>
+                  )}
                 </div>
                 {/* <div className="bg-gray-50 rounded-lg p-4">
                   <label className="text-sm font-medium text-gray-500">
@@ -404,14 +407,41 @@ const AppointmentConfirmationDetails = () => {
                 )}
 
                 {activeTab === "documents" && (
-                  <div className="text-center py-12">
-                    <DocumentText className="mx-auto h-12 w-12 text-gray-400" />
-                    <h3 className="mt-2 text-sm font-medium text-gray-900">
-                      No documents available
-                    </h3>
-                    <p className="mt-1 text-sm text-gray-500">
-                      Documents will appear here when uploaded.
-                    </p>
+                  <div>
+                    {details?.form_upload ? (
+                      <div className="space-y-4">
+                        <div className="bg-purple-50 rounded-lg p-4 border border-purple-200">
+                          <div className="flex items-center justify-between">
+                            <div className="flex items-center gap-3">
+                              <DocumentText className="text-purple-600" size={24} />
+                              <div>
+                                <h4 className="text-sm font-medium text-gray-900">CV Document</h4>
+                                <p className="text-xs text-gray-500">Uploaded application document</p>
+                              </div>
+                            </div>
+                            <a
+                              href={details.form_upload}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="flex items-center gap-2 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors text-sm font-medium"
+                            >
+                              <Eye size={16} />
+                              Preview Document
+                            </a>
+                          </div>
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="text-center py-12">
+                        <DocumentText className="mx-auto h-12 w-12 text-gray-400" />
+                        <h3 className="mt-2 text-sm font-medium text-gray-900">
+                          No documents available
+                        </h3>
+                        <p className="mt-1 text-sm text-gray-500">
+                          Documents will appear here when uploaded.
+                        </p>
+                      </div>
+                    )}
                   </div>
                 )}
               </div>

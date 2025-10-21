@@ -51,7 +51,7 @@ const AppointmentWithdrawal = () => {
       <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-6">
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
           <div>
-            <h1 className="text-2xl font-bold text-gray-900 mb-2">Appointment Withdrawal</h1>
+            <h1 className="textlg md:text-xl font-bold text-gray-900 mb-2">Appointment Withdrawal</h1>
             <p className="text-gray-600">Total Applications: {data?.meta?.total || 0}</p>
           </div>
           
@@ -72,7 +72,7 @@ const AppointmentWithdrawal = () => {
             </div>
             
             {/* Action Buttons */}
-            <div className="flex gap-2">
+            {/* <div className="flex gap-2">
               <button className="flex items-center gap-2 px-4 py-3 border border-gray-300 rounded-xl hover:bg-gray-50 transition-colors">
                 <TbGridDots size={16} />
               </button>
@@ -83,7 +83,7 @@ const AppointmentWithdrawal = () => {
                 <Filter size={16} />
                 <span className="hidden sm:inline">Filter</span>
               </button>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>

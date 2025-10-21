@@ -9,6 +9,8 @@ import Submitted from "../components/submittedPage";
 import StaffApplicationRoute from "./StaffApplicationRoute";
 import ResumptionOfLeave from "../pages/staff/staff/staff-appointment/resumptionOfLeave/ResumptionOfLeave";
 import AllApplications from "../pages/staff/staff/all-applications/AllApplications";
+import AppointmentConfirmationCertificate from "../pages/staff/staff/staff-appointment/AppointmentConfirmationCertificate";
+import AppointmentRegularizationCertificate from "../pages/staff/staff/staff-appointment/AppointmentRegularizationCertificate";
 
 const StaffRoute = () => {
   const navigation = useNavigate();
@@ -55,6 +57,14 @@ const StaffRoute = () => {
         <Route
           path='confirmation-of-appointment/success-submit'
           element={<Submitted navigate={navigate} />}
+        />
+         <Route
+          path='appointment-confirmation-certificate'
+          element={<AppointmentConfirmationCertificate navigate={navigate} />}
+        />
+         <Route
+          path='appointment-regularization-certificate'
+          element={<AppointmentRegularizationCertificate navigate={navigate} />}
         />
         <Route
           path='withdrawal/withdrawal-second-page'

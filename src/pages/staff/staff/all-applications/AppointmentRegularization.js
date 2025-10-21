@@ -51,7 +51,7 @@ const AppointmentRegularization = () => {
       <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-2 md:p-6 mb-6">
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
           <div>
-            <h1 className="text-2xl font-bold text-gray-900 mb-2">
+            <h1 className="textlg md:text-xl font-bold text-gray-900 mb-2">
               Appointment Regularization
             </h1>
             <p className="text-gray-600">
@@ -76,7 +76,7 @@ const AppointmentRegularization = () => {
             </div>
 
             {/* Action Buttons */}
-            <div className="flex gap-2">
+            {/* <div className="flex gap-2">
               <button className="flex items-center gap-2 px-4 py-3 border border-gray-300 rounded-xl hover:bg-gray-50 transition-colors">
                 <TbGridDots size={16} />
               </button>
@@ -87,7 +87,7 @@ const AppointmentRegularization = () => {
                 <Filter size={16} />
                 <span className="hidden sm:inline">Filter</span>
               </button>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>
@@ -198,14 +198,23 @@ const AppointmentRegularization = () => {
                       item.unit?.name}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <Link
-                      to={`regularization-details/${item.id}`}
-                      state={{ item: item }}
-                    >
-                      <button className="inline-flex items-center px-4 py-2 border border-purple-300 rounded-lg text-sm font-medium text-purple-700 bg-purple-50 hover:bg-purple-100 transition-colors">
-                        View Application
-                      </button>
-                    </Link>
+                    <div className="flex gap-2">
+                      <Link
+                        to={`regularization-details/${item.id}`}
+                        state={{ item: item }}
+                      >
+                        <button className="inline-flex items-center px-4 py-2 border border-purple-300 rounded-lg text-sm font-medium text-purple-700 bg-purple-50 hover:bg-purple-100 transition-colors">
+                          View Application
+                        </button>
+                      </Link>
+                      {item.status === "completed" && (
+                        <Link to={`/staff/appointment-regularization-certificate`} state={{ item: item }}>
+                          <button className="inline-flex items-center px-4 py-2 bg-purple-600 text-white rounded-lg text-sm font-medium hover:bg-purple-700 transition-colors">
+                            Download Certificate
+                          </button>
+                        </Link>
+                      )}
+                    </div>
                   </td>
                 </tr>
               ))}
@@ -263,14 +272,23 @@ const AppointmentRegularization = () => {
               </div>
             </div>
 
-            <Link
-              to={`regularization-details/${item.id}`}
-              state={{ item: item }}
-            >
-              <button className="w-full inline-flex justify-center items-center px-4 py-2 border border-purple-300 rounded-lg text-sm font-medium text-purple-700 bg-purple-50 hover:bg-purple-100 transition-colors">
-                View Application
-              </button>
-            </Link>
+            <div className="space-y-2">
+              <Link
+                to={`regularization-details/${item.id}`}
+                state={{ item: item }}
+              >
+                <button className="w-full inline-flex justify-center items-center px-4 py-2 border border-purple-300 rounded-lg text-sm font-medium text-purple-700 bg-purple-50 hover:bg-purple-100 transition-colors">
+                  View Application
+                </button>
+              </Link>
+              {item.status === "completed" && (
+                <Link to={`/staff/appointment-regularization-certificate`} state={{ item: item }}>
+                  <button className="w-full mt-4 inline-flex justify-center items-center px-4 py-2 bg-purple-600 text-white rounded-lg text-sm font-medium hover:bg-purple-700 transition-colors">
+                    Download Certificate
+                  </button>
+                </Link>
+              )}
+            </div>
           </div>
         ))}
       </div>
